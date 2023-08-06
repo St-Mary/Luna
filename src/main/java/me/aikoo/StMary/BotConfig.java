@@ -1,10 +1,9 @@
-package me.aikoo;
+package me.aikoo.StMary;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BotConfig {
