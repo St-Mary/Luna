@@ -1,6 +1,6 @@
 package me.aikoo.StMary.command;
 
-import me.aikoo.StMary.StMaryClient;
+import me.aikoo.StMary.core.StMaryClient;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -11,13 +11,15 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractCommand {
     private final Logger LOGGER = LoggerFactory.getLogger(AbstractCommand.class);
     protected String name;
     protected String description;
-    private final StMaryClient stMaryClient;
-    private final List<OptionData> options = new ArrayList<>();
+    protected Long cooldown = 0L;
+    protected final StMaryClient stMaryClient;
+    protected final List<OptionData> options = new ArrayList<>();
 
     public AbstractCommand(StMaryClient stMaryClient) {
         this.stMaryClient = stMaryClient;
@@ -27,12 +29,32 @@ public abstract class AbstractCommand {
 
     public abstract void execute(SlashCommandInteractionEvent event);
 
+    public void run(SlashCommandInteractionEvent event) {
+        if (this.cooldown > 0) {
+            if (this.stMaryClient.getCooldownManager().hasCooldown(event.getUser().getId(), this.name) && this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name) > 0) {
+                long timeRemaining = this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name);
+                long timestampRemaining = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + timeRemaining);
+
+                event.reply(String.format("Please wait <t:%s:R>", timestampRemaining)).queue();
+                return;
+            }
+
+            this.stMaryClient.getCooldownManager().addCooldown(event.getUser().getId(), this.name, this.cooldown);
+        }
+
+        this.execute(event);
+    }
+
     public String getName() {
         return name;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public Long getCooldown() {
+        return cooldown;
     }
 
     public CommandData buildCommandData() {

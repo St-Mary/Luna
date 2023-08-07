@@ -1,6 +1,7 @@
 package me.aikoo.StMary.events;
 
-import me.aikoo.StMary.StMaryClient;
+import me.aikoo.StMary.BotConfig;
+import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.command.AbstractCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -9,6 +10,8 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
 
 public class EventsListener extends ListenerAdapter {
 
@@ -20,19 +23,23 @@ public class EventsListener extends ListenerAdapter {
     }
     @Override
     public void onReady(@NotNull ReadyEvent event) {
-        System.out.println("I am ready!");
+        LOGGER.info("StMary is logged as {}", event.getJDA().getSelfUser().getName());
 
-        this.stMaryClient.getJda().updateCommands().addCommands(this.stMaryClient.getCommandManager().getCommands().values().stream().map(AbstractCommand::buildCommandData).toArray(CommandData[]::new)).queue(cmds -> {
-            LOGGER.info("Registered {} commands !", cmds.size());
-        });
+        if (BotConfig.getMode().equals("dev")) {
+            this.stMaryClient.getJda().getGuildById(BotConfig.getDevGuildId()).updateCommands().addCommands(this.stMaryClient.getCommandManager().getCommands().values().stream().map(AbstractCommand::buildCommandData).toArray(CommandData[]::new)).queue(cmds -> {
+                LOGGER.info("Registered {} development commands !", cmds.size());
+            });
+        } else {
+            this.stMaryClient.getJda().updateCommands().addCommands(this.stMaryClient.getCommandManager().getCommands().values().stream().map(AbstractCommand::buildCommandData).toArray(CommandData[]::new)).queue(cmds -> {
+                LOGGER.info("Registered {} commands !", cmds.size());
+            });
+        }
+
     }
 
-    // onSlashCommandInteraction
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if(event.getGuild() == null) return;
-
         AbstractCommand command = this.stMaryClient.getCommandManager().getCommand(event.getName());
         if(command == null) return;
-        command.execute(event);
+        command.run(event);
     }
 }
