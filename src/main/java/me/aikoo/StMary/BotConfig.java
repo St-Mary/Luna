@@ -51,6 +51,6 @@ public class BotConfig {
     }
 
     public static String getDatabaseName() {
-        return dotenv.get("DATABASE_NAME");
+        return (getMode().equals("dev")) ? dotenv.get("DATABASE_DEV_DB") : dotenv.get("DATABASE_PROD_DB");
     }
 }

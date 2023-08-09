@@ -2,6 +2,7 @@ package me.aikoo.StMary.core;
 
 import jakarta.persistence.Entity;
 import me.aikoo.StMary.BotConfig;
+import me.aikoo.StMary.database.entities.Player;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -49,7 +50,7 @@ public class DatabaseManager {
                 registry = registryBuilder.build();
 
                 MetadataSources sources = new MetadataSources(registry);
-                Reflections reflections = new Reflections("fr.redboxing.redbot.database.entities");
+                Reflections reflections = new Reflections("me.aikoo.StMary.database.entities");
                 for(Class<?> cls : reflections.getTypesAnnotatedWith(Entity.class)) {
                     sources.addAnnotatedClass(cls);
                 }
@@ -106,5 +107,13 @@ public class DatabaseManager {
         session.beginTransaction();
         session.saveOrUpdate(object);
         session.getTransaction().commit();
+    }
+
+    public static Player getPlayer(long idLong) {
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction();
+        Player player = session.createQuery("from Player where discordId = :discordId", Player.class).setParameter("discordId", idLong).uniqueResult();
+        session.getTransaction().commit();
+        return player;
     }
 }
