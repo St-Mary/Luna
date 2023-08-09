@@ -20,7 +20,7 @@ dependencies {
     implementation("ch.qos.logback", "logback-classic", "1.2.9")
 
     // Database
-    implementation("org.mariadb.jdbc:mariadb-java-client:3.1.4")
+    implementation("org.mariadb.jdbc:mariadb-java-client:2.1.2")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.hibernate.orm:hibernate-core:6.3.0.CR1")
     implementation("org.hibernate.orm:hibernate-hikaricp:6.3.0.CR1")

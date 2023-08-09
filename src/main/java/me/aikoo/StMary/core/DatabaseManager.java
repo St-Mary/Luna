@@ -32,7 +32,6 @@ public class DatabaseManager {
                 settings.put(Environment.SHOW_SQL, false);
                 settings.put(Environment.FORMAT_SQL, true);
                 settings.put(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider");
-                settings.put(Environment.DIALECT, "org.hibernate.dialect.MariaDBDialect");
 
                 // HikariCP settings
 

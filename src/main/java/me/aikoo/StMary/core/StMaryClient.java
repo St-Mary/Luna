@@ -17,6 +17,7 @@ public class StMaryClient {
         this.commandManager = new CommandManager();
         this.commandManager.loadCommands(this);
 
+        DatabaseManager.getSessionFactory();
         startStMaryClient();
     }
 
