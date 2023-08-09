@@ -33,4 +33,24 @@ public class BotConfig {
         }
         return dotenv.get("MODE");
     }
+
+    public static String getDatabaseHost() {
+        return dotenv.get("DATABASE_HOST");
+    }
+
+    public static String getDatabasePort() {
+        return dotenv.get("DATABASE_PORT");
+    }
+
+    public static String getDatabaseUsername() {
+        return dotenv.get("DATABASE_USERNAME");
+    }
+
+    public static String getDatabasePassword() {
+        return dotenv.get("DATABASE_PASSWORD");
+    }
+
+    public static String getDatabaseName() {
+        return dotenv.get("DATABASE_NAME");
+    }
 }

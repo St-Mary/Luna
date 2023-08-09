@@ -2,13 +2,10 @@ package me.aikoo.StMary.core;
 
 import me.aikoo.StMary.BotConfig;
 import me.aikoo.StMary.command.CommandManager;
-import me.aikoo.StMary.events.EventsListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
 
 public class StMaryClient {
     private final Logger LOGGER = LoggerFactory.getLogger(StMaryClient.class);

@@ -18,7 +18,12 @@ dependencies {
     implementation("org.reflections", "reflections", "0.10.2")
     implementation("io.github.cdimascio", "java-dotenv", "5.1.1")
     implementation("ch.qos.logback", "logback-classic", "1.2.9")
-    implementation("io.github.cdimascio", "java-dotenv", "5.1.1")
+
+    // Database
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.1.4")
+    implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("org.hibernate.orm:hibernate-core:6.3.0.CR1")
+    implementation("org.hibernate.orm:hibernate-hikaricp:6.3.0.CR1")
 }
 
 tasks.test {
