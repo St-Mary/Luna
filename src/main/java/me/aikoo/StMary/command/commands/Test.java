@@ -17,7 +17,6 @@ public class Test extends AbstractCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        // Check if player exists in database
         Player playerT = DatabaseManager.getPlayer(event.getUser().getIdLong());
 
         if (playerT == null) {
