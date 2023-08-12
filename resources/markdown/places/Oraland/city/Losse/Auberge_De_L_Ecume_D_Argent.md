@@ -1,4 +1,4 @@
-## 📍 Auberge du Banc Brisé
+## 📍 Auberge de l'Écume d'Argent
 
 ### Description
 

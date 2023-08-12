@@ -1,4 +1,4 @@
-## 📍 Temple des Eaux Paisibles
+## 📍 Sanctuaire Bézieu
 
 ### Description
 

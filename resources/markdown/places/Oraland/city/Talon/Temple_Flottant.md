@@ -1,4 +1,4 @@
-## 📍Temple Des Flots Marins
+## 📍Temple Flottant
 
 ### Description
 

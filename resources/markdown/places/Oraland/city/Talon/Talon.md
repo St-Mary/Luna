@@ -10,9 +10,9 @@ Le seigneur Gyr Talon, maître de la ville et chef de la prestigieuse famille Ta
 
 Lieux visitables pour les joueurs :
 1. **Place du Griffon Marin** : Le cœur de la ville, où les marchands dévoilent leurs trésors venant des mers lointaines et où se croisent habitants et voyageurs.
-2. **Château des Marées** : La résidence imposante de la famille Talon, ornée d'emblèmes maritimes et renfermant des secrets familiaux profonds.
+2. **Château Glacé** : La résidence imposante de la famille Talon, ornée d'emblèmes maritimes et renfermant des secrets familiaux profonds.
 3. **Taverne des Vagues Brillantes** : Un refuge pour les marins et aventuriers, où les histoires de mers agitées et de créatures mystérieuses sont partagées autour d'une chope.
 4. **Promenade de la Mer Naia** : Une esplanade qui longe la côte, offrant des vues spectaculaires sur la mer scintillante et permettant aux habitants de méditer face à l'horizon.
-5. **Temple des Flots Bienveillants** : Un sanctuaire dédié aux divinités marines, où les pêcheurs prient pour des voyages sûrs et des prises abondantes.
+5. **Temple Flottant** : Un sanctuaire dédié aux divinités marines, où les pêcheurs prient pour des voyages sûrs et des prises abondantes.
 
 Talon, aux confins des terres et des mers, est une cité où les liens entre la mer et la terre sont tissés dans chaque pierre et chaque vague. Les joueurs seront invités à explorer son histoire complexe et à naviguer entre les courants de richesse et de rivalités qui l'animent. 
