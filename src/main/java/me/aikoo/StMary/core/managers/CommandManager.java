@@ -1,5 +1,6 @@
-package me.aikoo.StMary.command;
+package me.aikoo.StMary.core.managers;
 
+import me.aikoo.StMary.commands.AbstractCommand;
 import me.aikoo.StMary.core.StMaryClient;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class CommandManager {
     }
 
     public void loadCommands(StMaryClient stMaryClient) {
-        Reflections reflections = new Reflections("me.aikoo.StMary.command.commands", new org.reflections.scanners.Scanner[0]);
+        Reflections reflections = new Reflections("me.aikoo.StMary.commands", new org.reflections.scanners.Scanner[0]);
         Set<Class<? extends AbstractCommand>> classes = reflections.getSubTypesOf(AbstractCommand.class);
         for (Class<? extends AbstractCommand> s : classes) {
             try {

@@ -1,4 +1,4 @@
-package me.aikoo.StMary.core;
+package me.aikoo.StMary.core.managers;
 
 import jakarta.persistence.Entity;
 import me.aikoo.StMary.BotConfig;

@@ -1,4 +1,4 @@
-package me.aikoo.StMary.command;
+package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -27,9 +27,9 @@ public abstract class AbstractCommand {
         this.description = "No description provided.";
     }
 
-    public abstract void execute(SlashCommandInteractionEvent event);
+    public abstract void execute(StMaryClient client, SlashCommandInteractionEvent event);
 
-    public void run(SlashCommandInteractionEvent event) {
+    public void run(StMaryClient client, SlashCommandInteractionEvent event) {
         if (this.cooldown > 0) {
             if (this.stMaryClient.getCooldownManager().hasCooldown(event.getUser().getId(), this.name) && this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name) > 0) {
                 long timeRemaining = this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name);
@@ -42,7 +42,7 @@ public abstract class AbstractCommand {
             this.stMaryClient.getCooldownManager().addCooldown(event.getUser().getId(), this.name, this.cooldown);
         }
 
-        this.execute(event);
+        this.execute(client, event);
     }
 
     public String getName() {

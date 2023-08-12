@@ -1,7 +1,6 @@
-package me.aikoo.StMary.command.commands;
+package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.command.AbstractCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class Ping extends AbstractCommand {
@@ -14,7 +13,7 @@ public class Ping extends AbstractCommand {
     }
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
         event.reply("Pong!").queue();
     }
 }

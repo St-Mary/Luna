@@ -1,6 +1,5 @@
 package me.aikoo.StMary;
 
-import me.aikoo.StMary.core.CooldownManager;
 import me.aikoo.StMary.core.StMaryClient;
 
 public class Main {

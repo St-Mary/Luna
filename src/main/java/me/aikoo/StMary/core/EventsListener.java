@@ -1,7 +1,7 @@
 package me.aikoo.StMary.core;
 
 import me.aikoo.StMary.BotConfig;
-import me.aikoo.StMary.command.AbstractCommand;
+import me.aikoo.StMary.commands.AbstractCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -37,6 +37,6 @@ public class EventsListener extends ListenerAdapter {
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         AbstractCommand command = this.stMaryClient.getCommandManager().getCommand(event.getName());
         if(command == null) return;
-        command.run(event);
+        command.run(stMaryClient, event);
     }
 }
