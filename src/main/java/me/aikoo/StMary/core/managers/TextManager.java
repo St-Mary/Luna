@@ -21,7 +21,7 @@ public class TextManager {
     }
 
     public String generateScene(String title, String text) {
-        String regex = "\\{location:([^\\{\\}]+)\\}";
+        String regex = "\\{location:([^{}]+)\\}";
         String formattedText = text
                 .replaceAll("\n\n", "\n- ");
                 // .replaceAll(regex, this.formatLocation(text));
@@ -33,7 +33,7 @@ public class TextManager {
             }
         }
 
-        return "╭───────────┈ ➤ ✎ **" + title + "**\n\n- " + formattedText + "\n╰─────────── ·\uFEFF \uFEFF \uFEFF· \uFEFF ·\uFEFF \uFEFF \uFEFF· \uFEFF✦";
+        return "╭───────────┈ ➤ ✎ **" + title + "**\n- " + formattedText + "\n╰─────────── ·\uFEFF \uFEFF \uFEFF· \uFEFF ·\uFEFF \uFEFF \uFEFF· \uFEFF✦";
     }
 
     private String formatLocation(String text) {

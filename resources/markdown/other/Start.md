@@ -4,4 +4,4 @@ Cette carte mystérieuse, ornée de symboles énigmatiques, indique des lieux ca
 
 Ton but est clair : explorer ces lieux, résoudre d'anciennes énigmes et révéler les vérités cachées. Chaque décision que tu prendras influencera le sort de ce monde médiéval et magique, où les légendes et les liens entre les cités attendent d'être ravivés. 
 
-Ton voyage sera un test de courage, d'intelligence et de détermination, te transformant en un héros appelé à forger ton propre destin au travers de l'histoire.
+Ton voyage sera un test de courage, d'intelligence et de détermination, te transformant en un héros appelé à forger ton propre destin au travers de l'histoire. Bonne chance, jeune aventurier, tu en auras besoin...
