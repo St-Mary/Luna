@@ -3,7 +3,7 @@ package me.aikoo.StMary.system.places;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Place {
+public class Place extends Location {
     @Getter
     private final String name;
 

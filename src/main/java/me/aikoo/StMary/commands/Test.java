@@ -15,7 +15,8 @@ public class Test extends AbstractCommand {
 
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
-        Town talon = client.getLocationManager().getTown("Talon");
-        event.reply(talon.getPlace("Place du Griffon Marin").getRegion().getDescription()).queue();
+        String text = client.getTextManager().getText("start_adventure");
+        String title = client.getTextManager().getTitle("start_adventure");
+        event.reply(client.getTextManager().generateScene(title, text)).queue();
     }
 }

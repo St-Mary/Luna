@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 
-public class Town {
+public class Town extends Location {
     @Getter
     private final String name;
 
@@ -12,7 +12,7 @@ public class Town {
     private final String description;
 
     @Getter
-    private final String icon = "\uD83C\uDFD8\uFE0F";
+    private final String icon = "\uD83C\uDFD8\uFE0F ";
 
     @Getter
     private final Region region;

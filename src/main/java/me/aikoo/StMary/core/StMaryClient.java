@@ -2,10 +2,7 @@ package me.aikoo.StMary.core;
 
 import lombok.Getter;
 import me.aikoo.StMary.BotConfig;
-import me.aikoo.StMary.core.managers.CommandManager;
-import me.aikoo.StMary.core.managers.CooldownManager;
-import me.aikoo.StMary.core.managers.DatabaseManager;
-import me.aikoo.StMary.core.managers.LocationManager;
+import me.aikoo.StMary.core.managers.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.slf4j.Logger;
@@ -25,6 +22,9 @@ public class StMaryClient {
 
     @Getter
     private final LocationManager locationManager = new LocationManager();
+
+    @Getter
+    private final TextManager textManager = new TextManager(this);
 
     public StMaryClient() {
         this.commandManager = new CommandManager();

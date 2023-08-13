@@ -2,6 +2,7 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
 import me.aikoo.StMary.core.JSONFileReader;
+import me.aikoo.StMary.system.places.Location;
 import me.aikoo.StMary.system.places.Place;
 import me.aikoo.StMary.system.places.Region;
 import me.aikoo.StMary.system.places.Town;
@@ -23,6 +24,14 @@ public class LocationManager {
 
     public LocationManager() {
         this.load();
+    }
+
+    public Location getLocation(String name) {
+        Location location = this.getRegion(name);
+        location = (location != null) ? location : this.getTown(name);
+        location = (location != null) ? location : this.getPlace(name);
+
+        return location;
     }
 
     public Town getTown(String name) {

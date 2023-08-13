@@ -13,11 +13,19 @@ import java.util.List;
 
 public class JSONFileReader {
     public static ArrayList<JsonObject> readAllFilesFrom(String dir, String subDir) {
+        String path = "src/main/resources/json/" + dir + "/" + subDir;
+        return readFiles(path);
+    }
+
+    public static ArrayList<JsonObject> readAllFilesFrom(String dir) {
+        String path = "src/main/resources/json/" + dir;
+        return readFiles(path);
+    }
+
+    private static ArrayList<JsonObject> readFiles(String path) {
         Gson gson = new Gson();
         ArrayList<JsonObject> objects = new ArrayList<>();
-
         try {
-            String path = "src/main/resources/json/" + dir + "/" + subDir;
             List<String> jsonFiles = Files.list(Path.of(path))
                     .filter(Files::isRegularFile)
                     .map(Path::toString)
@@ -35,4 +43,4 @@ public class JSONFileReader {
 
         return objects;
     }
-}
+ }
