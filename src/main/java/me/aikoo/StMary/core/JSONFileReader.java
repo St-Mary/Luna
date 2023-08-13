@@ -2,16 +2,14 @@ package me.aikoo.StMary.core;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.reflections.Reflections;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 public class JSONFileReader {
     public static ArrayList<JsonObject> readAllFilesFrom(String dir, String subDir) {

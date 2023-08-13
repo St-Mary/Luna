@@ -15,9 +15,9 @@ public class LocationManager {
 
     private HashMap<String, Region> regions = new HashMap<>();
     private final ArrayList<Town> towns = new ArrayList<>();
-    private final ArrayList<String> places = new ArrayList<>();
+    private final ArrayList<Place> places = new ArrayList<>();
 
-    private ArrayList<JsonObject> placesObject = new ArrayList<>();
+    private final ArrayList<JsonObject> placesObject = new ArrayList<>();
     private final ArrayList<JsonObject> townsObjects = new ArrayList<>();
     private final Logger LOGGER = LoggerFactory.getLogger(LocationManager.class);
 
@@ -26,28 +26,15 @@ public class LocationManager {
     }
 
     public Town getTown(String name) {
-        for (Town town : this.towns) {
-            if (town.getName().equalsIgnoreCase(name)) {
-                return town;
-            }
-        }
-
-        return null;
+        return this.towns.stream().filter(town -> town.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
-    public Place getPlaceFromTown(String townName, String placeName) {
-        Town town = this.getTown(townName);
-        if (town == null) {
-            return null;
-        }
+    public Region getRegion(String name) {
+        return this.regions.get(name);
+    }
 
-        for (Place place : town.getPlaces()) {
-            if (place.getName().equalsIgnoreCase(placeName)) {
-                return place;
-            }
-        }
-
-        return null;
+    public Place getPlace(String name) {
+        return this.places.stream().filter(place -> place.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     private HashMap<String, Region> loadRegions() {
@@ -84,7 +71,7 @@ public class LocationManager {
                     Place p = new Place(placeObject.get("name").getAsString(), placeObject.get("description").getAsString(), region);
                     p.setTown(t);
                     t.addPlace(p);
-                    this.places.add(p.getName());
+                    this.places.add(p);
                 });
                 this.towns.add(t);
             });
@@ -102,7 +89,7 @@ public class LocationManager {
 
                 Place p = new Place(placeObject.get("name").getAsString(), placeObject.get("description").getAsString(), region);
                 region.addPlace(p);
-                this.places.add(p.getName());
+                this.places.add(p);
             });
         }
 
