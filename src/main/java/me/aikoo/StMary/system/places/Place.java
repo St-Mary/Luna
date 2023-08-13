@@ -3,7 +3,7 @@ package me.aikoo.StMary.system.places;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Places {
+public class Place {
     @Getter
     private final String name;
 
@@ -20,7 +20,7 @@ public class Places {
     @Setter
     private Town town = null;
 
-    public Places(String name, String description, Region region) {
+    public Place(String name, String description, Region region) {
         this.name = name;
         this.description = description;
         this.region = region;

@@ -1,25 +1,24 @@
 package me.aikoo.StMary.core.managers;
 
-import me.aikoo.StMary.commands.AbstractCommand;
-import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.system.places.Places;
+import com.google.gson.JsonObject;
+import me.aikoo.StMary.core.JSONFileReader;
+import me.aikoo.StMary.system.places.Place;
 import me.aikoo.StMary.system.places.Region;
 import me.aikoo.StMary.system.places.Town;
-import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 public class LocationManager {
 
     private HashMap<String, Region> regions = new HashMap<>();
     private final ArrayList<Town> towns = new ArrayList<>();
-    private final ArrayList<Places> places = new ArrayList<>();
+    private final ArrayList<String> places = new ArrayList<>();
+
+    private ArrayList<JsonObject> placesObject = new ArrayList<>();
+    private final ArrayList<JsonObject> townsObjects = new ArrayList<>();
     private final Logger LOGGER = LoggerFactory.getLogger(LocationManager.class);
 
     public LocationManager() {
@@ -36,13 +35,13 @@ public class LocationManager {
         return null;
     }
 
-    public Places getPlaceFromTown(String townName, String placeName) {
+    public Place getPlaceFromTown(String townName, String placeName) {
         Town town = this.getTown(townName);
         if (town == null) {
             return null;
         }
 
-        for (Places place : town.getPlaces()) {
+        for (Place place : town.getPlaces()) {
             if (place.getName().equalsIgnoreCase(placeName)) {
                 return place;
             }
@@ -52,33 +51,67 @@ public class LocationManager {
     }
 
     private HashMap<String, Region> loadRegions() {
-        HashMap<String, Region> tmpRegions = new HashMap<>();
-        Reflections reflections = new Reflections("me.aikoo.StMary.system.places", new org.reflections.scanners.Scanner[0]);
-        Set<Class<? extends Region>> classes = reflections.getSubTypesOf(Region.class);
-        for (Class<? extends Region> s : classes) {
-            try {
-                if (Modifier.isAbstract(s.getModifiers()))
-                    continue;
+        ArrayList<JsonObject> regions = JSONFileReader.readAllFilesFrom("places", "regions");
+        HashMap<String, Region> regionHashMap = new HashMap<>();
 
-                Region c = s.getConstructor().newInstance();
-                if (!regions.containsKey(c.getName())) {
-                    LOGGER.info("Loaded region: " + c.getName());
-                    tmpRegions.put(c.getName(), c);
+        for (JsonObject regionObject : regions) {
+            String name = regionObject.get("name").getAsString();
+            String description = regionObject.get("description").getAsString();
+
+            Region region = new Region(name, description);
+
+            regionObject.get("towns").getAsJsonArray().forEach(town -> {
+                String townName = town.getAsString();
+                JsonObject townObject = this.townsObjects.stream().filter(t -> t.get("name").getAsString().equalsIgnoreCase(townName)).findFirst().orElse(null);
+
+                if (townObject == null) {
+                    LOGGER.error("Town " + townName + " not found!");
+                    return;
                 }
-            } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
-                e.printStackTrace();
-            }
+
+                if (!townObject.get("region").getAsString().equals(region.getName())) return;
+
+                Town t = new Town(townObject.get("name").getAsString(), townObject.get("description").getAsString(), region);
+                townObject.get("places").getAsJsonArray().forEach(place -> {
+                    String placeName = place.getAsString();
+                    JsonObject placeObject = this.placesObject.stream().filter(p -> p.get("name").getAsString().equalsIgnoreCase(placeName)).findFirst().orElse(null);
+
+                    if (placeObject == null) {
+                        LOGGER.error("Place " + placeName + " not found!");
+                        return;
+                    }
+
+                    Place p = new Place(placeObject.get("name").getAsString(), placeObject.get("description").getAsString(), region);
+                    p.setTown(t);
+                    t.addPlace(p);
+                    this.places.add(p.getName());
+                });
+                this.towns.add(t);
+            });
+
+            regionObject.get("places").getAsJsonArray().forEach(place -> {
+                String placeName = place.getAsString();
+                JsonObject placeObject = this.placesObject.stream().filter(p -> p.get("name").getAsString().equalsIgnoreCase(placeName)).findFirst().orElse(null);
+
+                if (placeObject == null) {
+                    LOGGER.error("Place " + placeName + " not found!");
+                    return;
+                }
+
+                if (!placeObject.get("region").getAsString().equals(region.getName())) return;
+
+                Place p = new Place(placeObject.get("name").getAsString(), placeObject.get("description").getAsString(), region);
+                region.addPlace(p);
+                this.places.add(p.getName());
+            });
         }
 
-        return tmpRegions;
+        return regionHashMap;
     }
 
     private void load() {
+        this.placesObject.addAll(JSONFileReader.readAllFilesFrom("places", "places"));
+        this.townsObjects.addAll(JSONFileReader.readAllFilesFrom("places", "towns"));
         this.regions = this.loadRegions();
-
-        for (Region region : this.regions.values()) {
-            this.towns.addAll(region.getTowns());
-            this.places.addAll(region.getPlaces());
-        }
     }
 }
