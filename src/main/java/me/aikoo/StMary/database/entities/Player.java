@@ -1,15 +1,17 @@
 package me.aikoo.StMary.database.entities;
 
+import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DialectOverride;
+import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.system.Title;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.hibernate.collection.spi.PersistentSet;
 
 import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 
 @Entity
 @Table(name = "players")
@@ -17,40 +19,38 @@ public class Player {
 
     @Id
     @Getter
-    @Setter
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", nullable = false)
-    private String id;
+    @GeneratedValue(generator = "uuid-hibernate-generator")
+    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
 
     @Getter
     @Setter
     @Column(name = "discord_id", nullable = false)
     private Long discordId;
 
-    @Getter
     @Setter
-    @ElementCollection
-    @Column(name = "titles", nullable = false)
-    private HashSet<String> title;
-
     @Getter
+    @ElementCollection
+    @Column(name = "titles")
+    private List<String> titles;
+
     @Setter
     @Column(name = "current_title", nullable = false)
     private String currentTitle;
 
     @Getter
     @Setter
-    @Column(name = "current_location_region", columnDefinition = "varchar(255) default 'Oraland'", nullable = false)
+    @Column(name = "current_location_region", nullable = false)
     private String currentLocationRegion;
 
     @Getter
     @Setter
-    @Column(name = "current_location_town", columnDefinition = "varchar(255) default 'Talon'")
+    @Column(name = "current_location_town")
     private String currentLocationTown;
 
     @Getter
     @Setter
-    @Column(name = "current_location_place", columnDefinition = "varchar(255) default 'Place du Griffon Marin'", nullable = false)
+    @Column(name = "current_location_place", nullable = false)
     private String currentLocationPlace;
 
     @Getter
@@ -65,11 +65,24 @@ public class Player {
 
     @Getter
     @Setter
-    @Column(name = "money", nullable = false)
+    @Column(name = "money", columnDefinition = "bigint default 0", nullable = false)
     private BigInteger money;
 
     @Getter
     @Setter
     @Column(name = "creation_timestamp", nullable = false)
     private Date creationTimestamp;
+
+    public Title getCurrentTitle(StMaryClient client) {
+        System.out.println(this.currentTitle);
+        return client.getTitleManager().getTitle(this.currentTitle);
+    }
+
+    public HashMap<String, Title> getTitles(StMaryClient client) {
+        HashMap<String, Title> titles = new HashMap<>();
+        for (String title : this.titles) {
+            titles.put(title, client.getTitleManager().getTitle(title));
+        }
+        return titles;
+    }
 }

@@ -1,4 +1,4 @@
-package me.aikoo.StMary.system.places;
+package me.aikoo.StMary.system;
 
 import lombok.Getter;
 import lombok.Setter;

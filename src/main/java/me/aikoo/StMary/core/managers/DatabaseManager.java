@@ -16,11 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DatabaseManager {
-    private static StandardServiceRegistry registry;
-    private static SessionFactory sessionFactory;
+    private StandardServiceRegistry registry;
+    private SessionFactory sessionFactory;
 
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
+    public SessionFactory getSessionFactory() {
+        if (this.sessionFactory == null) {
             try {
                 StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
 
@@ -67,53 +67,57 @@ public class DatabaseManager {
         return sessionFactory;
     }
 
-    public static void shutdown() {
+    public void shutdown() {
         if (registry != null) {
             StandardServiceRegistryBuilder.destroy(registry);
         }
     }
 
-    public static <T> T findById(Long id, Class<T> cls) {
-        Session session = getSessionFactory().openSession();
+    public <T> T findById(Long id, Class<T> cls) {
+        Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
         T obj = session.find(cls, id);
         session.getTransaction().commit();
         return obj;
     }
 
-    public static void save(Object obj) {
-        Session session = getSessionFactory().openSession();
+    public void save(Object obj) {
+        Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
         session.saveOrUpdate(obj);
         session.getTransaction().commit();
     }
 
-    public static void delete(Object obj) {
-        Session session = getSessionFactory().openSession();
+    public void delete(Object obj) {
+        Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
         session.delete(obj);
         session.getTransaction().commit();
+        session.close();
     }
 
-    public static void update(Object obj) {
-        Session session = getSessionFactory().openSession();
+    public void update(Object obj) {
+        Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
-        session.update(obj);
+        session.merge(obj);
         session.getTransaction().commit();
+        session.close();
     }
 
-    public static void createOrUpdate(Object object) {
-        Session session = getSessionFactory().openSession();
+    public void createOrUpdate(Object object) {
+        Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
         session.saveOrUpdate(object);
         session.getTransaction().commit();
+        session.close();
     }
 
-    public static Player getPlayer(long idLong) {
-        Session session = getSessionFactory().openSession();
+    public Player getPlayer(long idLong) {
+        Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
         Player player = session.createQuery("from Player where discordId = :discordId", Player.class).setParameter("discordId", idLong).uniqueResult();
         session.getTransaction().commit();
+        session.close();
         return player;
     }
 }

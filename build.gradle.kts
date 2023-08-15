@@ -28,6 +28,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.hibernate.orm:hibernate-core:6.3.0.CR1")
     implementation("org.hibernate.orm:hibernate-hikaricp:6.3.0.CR1")
+    implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
 }
 
 tasks.test {

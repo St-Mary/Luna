@@ -2,10 +2,10 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
 import me.aikoo.StMary.core.JSONFileReader;
-import me.aikoo.StMary.system.places.Location;
-import me.aikoo.StMary.system.places.Place;
-import me.aikoo.StMary.system.places.Region;
-import me.aikoo.StMary.system.places.Town;
+import me.aikoo.StMary.system.Location;
+import me.aikoo.StMary.system.Place;
+import me.aikoo.StMary.system.Region;
+import me.aikoo.StMary.system.Town;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

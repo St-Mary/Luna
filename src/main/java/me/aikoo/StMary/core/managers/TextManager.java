@@ -3,7 +3,8 @@ package me.aikoo.StMary.core.managers;
 import com.google.gson.JsonObject;
 import me.aikoo.StMary.core.JSONFileReader;
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.system.places.Location;
+import me.aikoo.StMary.system.Location;
+import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
 
 public class TextManager {
 
-    private HashMap<String, JsonObject> texts = new HashMap<>();
+    private final HashMap<String, JsonObject> texts = new HashMap<>();
     private final StMaryClient stMaryClient;
 
     public TextManager(StMaryClient stMaryClient) {
@@ -24,7 +25,6 @@ public class TextManager {
         String regex = "\\{location:([^{}]+)\\}";
         String formattedText = text
                 .replaceAll("\n\n", "\n- ");
-                // .replaceAll(regex, this.formatLocation(text));
 
         Pattern pattern = Pattern.compile(regex);
         if ((pattern.matcher(formattedText).find())) {
@@ -34,6 +34,14 @@ public class TextManager {
         }
 
         return "╭───────────┈ ➤ ✎ **" + title + "**\n- " + formattedText + "\n╰─────────── ·\uFEFF \uFEFF \uFEFF· \uFEFF ·\uFEFF \uFEFF \uFEFF· \uFEFF✦";
+    }
+
+    public EmbedBuilder generateErrorEmbed(String title, String text) {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setTitle(":x: Une erreur est survenue!" + title);
+        embedBuilder.setDescription(text);
+        embedBuilder.setColor(0xff0000);
+        return embedBuilder;
     }
 
     private String formatLocation(String text) {

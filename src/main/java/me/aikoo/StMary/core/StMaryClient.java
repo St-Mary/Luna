@@ -26,11 +26,17 @@ public class StMaryClient {
     @Getter
     private final TextManager textManager = new TextManager(this);
 
+    @Getter
+    private final DatabaseManager databaseManager = new DatabaseManager();
+
+    @Getter
+    private final TitleManager titleManager = new TitleManager();
+
     public StMaryClient() {
         this.commandManager = new CommandManager();
         this.commandManager.loadCommands(this);
 
-        DatabaseManager.getSessionFactory();
+        this.databaseManager.getSessionFactory();
         startStMaryClient();
     }
 
