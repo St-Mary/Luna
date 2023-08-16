@@ -4,11 +4,13 @@ import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.database.entities.Player;
 import me.aikoo.StMary.system.Button;
 import me.aikoo.StMary.system.Title;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class Menu extends AbstractCommand {
 
@@ -16,7 +18,7 @@ public class Menu extends AbstractCommand {
         super(stMaryClient);
 
         this.name = "menu";
-        this.description = ":evergreen_tree: Menu principal";
+        this.description = "\uD83C\uDF32 Menu principal";
         this.cooldown = 10000L;
     }
 
@@ -31,11 +33,13 @@ public class Menu extends AbstractCommand {
 
             InventoryBtn inventoryBtn = new InventoryBtn(player);
             ProfilBtn profilBtn = new ProfilBtn(player);
+            TitlesBtn titlesBtn = new TitlesBtn(player);
 
             this.buttons.put(inventoryBtn.getId(), inventoryBtn);
             this.buttons.put(profilBtn.getId(), profilBtn);
+            this.buttons.put(titlesBtn.getId(), titlesBtn);
 
-            event.reply(profil).addActionRow(profilBtn.getButton(), inventoryBtn.getButton()).queue(msg -> {
+            event.reply(profil).addActionRow(profilBtn.getButton(), inventoryBtn.getButton(), titlesBtn.getButton()).queue(msg -> {
                 msg.retrieveOriginal().queue(res -> {
                     stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
                 });
@@ -79,7 +83,7 @@ public class Menu extends AbstractCommand {
         private final Player player;
 
         public InventoryBtn(Player player) {
-            super("inv_btn", "Inventory", ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDFF9"), stMaryClient);
+            super("inv_btn", "Sac à Dos", ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDF92"), stMaryClient);
 
             this.player = player;
         }
@@ -94,6 +98,38 @@ public class Menu extends AbstractCommand {
                     "▬▬▬▬▬▬▬▬▬▬\n";
 
             event.editMessage(stringBuilder).queue();
+        }
+    }
+
+    private class TitlesBtn extends Button {
+
+        private final Player player;
+
+        public TitlesBtn(Player player) {
+            super("titles_btn", "Titres", ButtonStyle.DANGER, Emoji.fromUnicode("\uD83C\uDFC5"), stMaryClient);
+
+            this.player = player;
+        }
+
+        @Override
+        public void onClick(ButtonInteractionEvent event) {
+            Title title = player.getCurrentTitle(stMaryClient);
+            String icon = title.getIcon();
+
+            StringBuilder stringBuilder = new StringBuilder(String.format("### %s | %s | Titres\n", icon, event.getUser().getGlobalName()));
+            HashMap<String, Title> titles = player.getTitles(stMaryClient);
+
+            for (Title t : titles.values()) {
+                stringBuilder.append(t.getIcon()).append(" | `").append(t.getName()).append("`");
+                if (t.getName().equals(title.getName())) {
+                    stringBuilder.append("   ⬅\uFE0F **Actif**\n");
+                } else {
+                    stringBuilder.append("\n");
+                }
+            }
+            stringBuilder.append("▬▬▬▬▬▬▬▬▬▬\n**Nombre de titres:** `").append(titles.size()).append("`");
+
+            event.editMessage(stringBuilder.toString()).queue();
         }
     }
 }

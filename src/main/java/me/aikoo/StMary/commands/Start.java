@@ -2,12 +2,8 @@ package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.database.entities.Player;
-import me.aikoo.StMary.system.Button;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 import java.math.BigInteger;
 import java.util.Date;
@@ -19,7 +15,7 @@ public class Start extends AbstractCommand {
         super(stMaryClient);
 
         this.name = "start";
-        this.description = ":evergreen_tree: Démarrer l'aventure !";
+        this.description = "\uD83C\uDF32 Démarrer l'aventure !";
         this.cooldown = 10000L;
     }
 

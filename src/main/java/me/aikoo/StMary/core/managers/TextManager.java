@@ -38,7 +38,7 @@ public class TextManager {
 
     public EmbedBuilder generateErrorEmbed(String title, String text) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setTitle(":x: Une erreur est survenue!" + title);
+        embedBuilder.setAuthor("❌ | Une erreur est survenue: " + title);
         embedBuilder.setDescription(text);
         embedBuilder.setColor(0xff0000);
         return embedBuilder;

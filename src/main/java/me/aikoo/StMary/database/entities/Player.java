@@ -1,6 +1,7 @@
 package me.aikoo.StMary.database.entities;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
 import me.aikoo.StMary.core.StMaryClient;
@@ -29,7 +30,6 @@ public class Player {
     private Long discordId;
 
     @Setter
-    @Getter
     @ElementCollection
     @Column(name = "titles")
     private List<String> titles;
@@ -77,6 +77,7 @@ public class Player {
         return client.getTitleManager().getTitle(this.currentTitle);
     }
 
+    @Transactional
     public HashMap<String, Title> getTitles(StMaryClient client) {
         HashMap<String, Title> titles = new HashMap<>();
         for (String title : this.titles) {

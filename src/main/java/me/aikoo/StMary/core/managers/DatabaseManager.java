@@ -93,7 +93,6 @@ public class DatabaseManager {
         session.beginTransaction();
         session.delete(obj);
         session.getTransaction().commit();
-        session.close();
     }
 
     public void update(Object obj) {
@@ -101,7 +100,6 @@ public class DatabaseManager {
         session.beginTransaction();
         session.merge(obj);
         session.getTransaction().commit();
-        session.close();
     }
 
     public void createOrUpdate(Object object) {
@@ -109,7 +107,6 @@ public class DatabaseManager {
         session.beginTransaction();
         session.saveOrUpdate(object);
         session.getTransaction().commit();
-        session.close();
     }
 
     public Player getPlayer(long idLong) {
@@ -117,7 +114,6 @@ public class DatabaseManager {
         session.beginTransaction();
         Player player = session.createQuery("from Player where discordId = :discordId", Player.class).setParameter("discordId", idLong).uniqueResult();
         session.getTransaction().commit();
-        session.close();
         return player;
     }
 }
