@@ -74,7 +74,6 @@ public class Player {
     private Date creationTimestamp;
 
     public Title getCurrentTitle(StMaryClient client) {
-        System.out.println(this.currentTitle);
         return client.getTitleManager().getTitle(this.currentTitle);
     }
 
