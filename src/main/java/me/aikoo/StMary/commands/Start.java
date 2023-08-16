@@ -2,17 +2,11 @@ package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.database.entities.Player;
-import me.aikoo.StMary.system.Button;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
-import org.hibernate.collection.spi.PersistentSet;
 
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 public class Start extends AbstractCommand {
@@ -20,9 +14,9 @@ public class Start extends AbstractCommand {
     public Start(StMaryClient stMaryClient) {
         super(stMaryClient);
 
-            this.name = "start";
-            this.description = ":evergreen_tree: Démarrer l'aventure !";
-            this.cooldown = 10000L;
+        this.name = "start";
+        this.description = ":evergreen_tree: Démarrer l'aventure !";
+        this.cooldown = 10000L;
     }
 
     @Override

@@ -12,12 +12,13 @@ import org.slf4j.LoggerFactory;
 
 public class EventsListener extends ListenerAdapter {
 
-    private final StMaryClient stMaryClient;
     private static final Logger LOGGER = LoggerFactory.getLogger(EventsListener.class);
+    private final StMaryClient stMaryClient;
 
     public EventsListener(StMaryClient client) {
         this.stMaryClient = client;
     }
+
     @Override
     public void onReady(@NotNull ReadyEvent event) {
         LOGGER.info("StMary is logged as {}", event.getJDA().getSelfUser().getName());
@@ -36,7 +37,7 @@ public class EventsListener extends ListenerAdapter {
 
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         AbstractCommand command = this.stMaryClient.getCommandManager().getCommand(event.getName());
-        if(command == null) return;
+        if (command == null) return;
         command.run(stMaryClient, event);
     }
 }

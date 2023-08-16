@@ -3,7 +3,6 @@ package me.aikoo.StMary.system;
 import lombok.Getter;
 import me.aikoo.StMary.core.StMaryClient;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
@@ -17,11 +16,9 @@ public abstract class Button {
 
     @Getter
     private final ButtonStyle style;
-
+    private final StMaryClient stMaryClient;
     @Getter
     private Emoji emoji = null;
-
-    private final StMaryClient stMaryClient;
 
     public Button(String id, String name, ButtonStyle style, Emoji emoji, StMaryClient stMaryClient) {
         this.id = id;

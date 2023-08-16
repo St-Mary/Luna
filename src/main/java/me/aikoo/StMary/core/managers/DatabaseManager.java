@@ -51,7 +51,7 @@ public class DatabaseManager {
 
                 MetadataSources sources = new MetadataSources(registry);
                 Reflections reflections = new Reflections("me.aikoo.StMary.database.entities");
-                for(Class<?> cls : reflections.getTypesAnnotatedWith(Entity.class)) {
+                for (Class<?> cls : reflections.getTypesAnnotatedWith(Entity.class)) {
                     sources.addAnnotatedClass(cls);
                 }
 

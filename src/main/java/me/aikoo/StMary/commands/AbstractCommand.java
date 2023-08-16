@@ -17,15 +17,14 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractCommand {
+    protected final StMaryClient stMaryClient;
+    protected final List<OptionData> options = new ArrayList<>();
+    @Getter
+    protected final HashMap<String, Button> buttons = new HashMap<>();
     private final Logger LOGGER = LoggerFactory.getLogger(AbstractCommand.class);
     protected String name;
     protected String description;
     protected Long cooldown = 0L;
-    protected final StMaryClient stMaryClient;
-    protected final List<OptionData> options = new ArrayList<>();
-
-    @Getter
-    protected final HashMap<String, Button> buttons = new HashMap<>();
 
     public AbstractCommand(StMaryClient stMaryClient) {
         this.stMaryClient = stMaryClient;

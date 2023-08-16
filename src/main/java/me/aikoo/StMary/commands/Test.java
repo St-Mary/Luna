@@ -7,9 +7,6 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
-import java.sql.Array;
-import java.util.ArrayList;
-
 public class Test extends AbstractCommand {
     public Test(StMaryClient stMaryClient) {
         super(stMaryClient);

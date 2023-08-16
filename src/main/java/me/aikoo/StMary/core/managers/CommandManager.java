@@ -36,7 +36,8 @@ public class CommandManager {
                     LOGGER.info("Loaded command '" + c.getName());
                     commands.put(c.getName(), c);
                 }
-            } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                     NoSuchMethodException e) {
                 e.printStackTrace();
             }
         }

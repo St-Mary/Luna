@@ -63,11 +63,11 @@ public class TextManager {
     }
 
     public String getText(String name) {
-        return (this.texts.get(name) != null) ?  this.texts.get(name).get("text").getAsString() : null;
+        return (this.texts.get(name) != null) ? this.texts.get(name).get("text").getAsString() : null;
     }
 
     public String getTitle(String name) {
-        return (this.texts.get(name) != null) ?  this.texts.get(name).get("title").getAsString() : null;
+        return (this.texts.get(name) != null) ? this.texts.get(name).get("title").getAsString() : null;
     }
 
     private void load() {

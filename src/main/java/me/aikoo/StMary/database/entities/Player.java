@@ -1,17 +1,17 @@
 package me.aikoo.StMary.database.entities;
 
-import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.system.Title;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-import org.hibernate.collection.spi.PersistentSet;
 
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "players")

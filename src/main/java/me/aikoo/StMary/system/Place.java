@@ -26,13 +26,13 @@ public class Place extends Location {
         this.region = region;
     }
 
+    public boolean isTownPlace() {
+        return this.town != null;
+    }
+
     public void setTownPlace(Town town) {
         if (this.town == null) {
             this.setTown(town);
         }
-    }
-
-    public boolean isTownPlace() {
-        return this.town != null;
     }
 }

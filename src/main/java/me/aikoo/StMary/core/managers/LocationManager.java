@@ -14,13 +14,12 @@ import java.util.HashMap;
 
 public class LocationManager {
 
-    private HashMap<String, Region> regions = new HashMap<>();
     private final ArrayList<Town> towns = new ArrayList<>();
     private final ArrayList<Place> places = new ArrayList<>();
-
     private final ArrayList<JsonObject> placesObject = new ArrayList<>();
     private final ArrayList<JsonObject> townsObjects = new ArrayList<>();
     private final Logger LOGGER = LoggerFactory.getLogger(LocationManager.class);
+    private HashMap<String, Region> regions = new HashMap<>();
 
     public LocationManager() {
         this.load();

@@ -13,27 +13,20 @@ public class StMaryClient {
 
     @Getter
     private final CooldownManager cooldownManager = new CooldownManager();
-
-    @Getter
-    private JDA jda;
-
     @Getter
     private final CommandManager commandManager;
-
     @Getter
     private final LocationManager locationManager = new LocationManager();
-
     @Getter
     private final TextManager textManager = new TextManager(this);
-
     @Getter
     private final DatabaseManager databaseManager = new DatabaseManager();
-
     @Getter
     private final TitleManager titleManager = new TitleManager();
-
     @Getter
     private final ButtonManager buttonManager;
+    @Getter
+    private JDA jda;
 
     public StMaryClient() {
         this.commandManager = new CommandManager();

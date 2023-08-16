@@ -3,7 +3,6 @@ package me.aikoo.StMary.commands;
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.database.entities.Player;
 import me.aikoo.StMary.system.Title;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class Menu extends AbstractCommand {
