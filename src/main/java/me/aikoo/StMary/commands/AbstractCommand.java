@@ -1,6 +1,8 @@
 package me.aikoo.StMary.commands;
 
+import lombok.Getter;
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.system.Button;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -10,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -20,6 +23,9 @@ public abstract class AbstractCommand {
     protected Long cooldown = 0L;
     protected final StMaryClient stMaryClient;
     protected final List<OptionData> options = new ArrayList<>();
+
+    @Getter
+    protected final HashMap<String, Button> buttons = new HashMap<>();
 
     public AbstractCommand(StMaryClient stMaryClient) {
         this.stMaryClient = stMaryClient;
@@ -43,6 +49,11 @@ public abstract class AbstractCommand {
         }
 
         this.execute(client, event);
+    }
+
+    protected ArrayList<Button> getArrayListButtons() {
+        ArrayList<Button> btns = new ArrayList<>(this.buttons.values());
+        return btns;
     }
 
     public String getName() {

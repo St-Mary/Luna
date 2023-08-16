@@ -32,9 +32,14 @@ public class StMaryClient {
     @Getter
     private final TitleManager titleManager = new TitleManager();
 
+    @Getter
+    private final ButtonManager buttonManager;
+
     public StMaryClient() {
         this.commandManager = new CommandManager();
         this.commandManager.loadCommands(this);
+
+        this.buttonManager = new ButtonManager(this);
 
         this.databaseManager.getSessionFactory();
         startStMaryClient();
@@ -46,6 +51,7 @@ public class StMaryClient {
 
         jda = JDABuilder.createDefault(token)
                 .addEventListeners(new EventsListener(this))
+                .addEventListeners(buttonManager)
                 .build();
     }
 }
