@@ -2,6 +2,7 @@ package me.aikoo.StMary.core.managers;
 
 import jakarta.persistence.Entity;
 import me.aikoo.StMary.BotConfig;
+import me.aikoo.StMary.database.entities.Administrators;
 import me.aikoo.StMary.database.entities.Player;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -91,7 +92,7 @@ public class DatabaseManager {
     public void delete(Object obj) {
         Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
-        session.delete(obj);
+        session.remove(obj);
         session.getTransaction().commit();
     }
 
@@ -115,5 +116,21 @@ public class DatabaseManager {
         Player player = session.createQuery("from Player where discordId = :discordId", Player.class).setParameter("discordId", idLong).uniqueResult();
         session.getTransaction().commit();
         return player;
+    }
+
+    public Administrators getAdministrator(long idLong) {
+        Session session = this.getSessionFactory().openSession();
+        session.beginTransaction();
+        Administrators admin = session.createQuery("from Administrators where discordId = :discordId", Administrators.class).setParameter("discordId", idLong).uniqueResult();
+        session.getTransaction().commit();
+        return admin;
+    }
+
+    public boolean isAdministrator(long idLong) {
+        Session session = this.getSessionFactory().openSession();
+        session.beginTransaction();
+        Administrators admin = session.createQuery("from Administrators where discordId = :discordId", Administrators.class).setParameter("discordId", idLong).uniqueResult();
+        session.getTransaction().commit();
+        return admin != null;
     }
 }

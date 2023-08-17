@@ -14,13 +14,22 @@ import java.util.Set;
 public class CommandManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
     private final HashMap<String, AbstractCommand> commands = new HashMap<>();
+    private final HashMap<String, AbstractCommand> adminCommands = new HashMap<>();
 
     public AbstractCommand getCommand(String name) {
         return this.commands.get(name);
     }
 
+    public AbstractCommand getAdminCommand(String name) {
+        return this.adminCommands.get(name);
+    }
+
     public HashMap<String, AbstractCommand> getCommands() {
         return commands;
+    }
+
+    public HashMap<String, AbstractCommand> getAdminCommands() {
+        return adminCommands;
     }
 
     public void loadCommands(StMaryClient stMaryClient) {
@@ -34,7 +43,9 @@ public class CommandManager {
                 AbstractCommand c = s.getConstructor(StMaryClient.class).newInstance(stMaryClient);
                 if (!commands.containsKey(c.getName())) {
                     LOGGER.info("Loaded command '" + c.getName());
-                    commands.put(c.getName(), c);
+                    if (c.isAdminCommand()) {
+                        adminCommands.put(c.getName(), c);
+                    } else commands.put(c.getName(), c);
                 }
             } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                      NoSuchMethodException e) {

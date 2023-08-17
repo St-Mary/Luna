@@ -16,6 +16,7 @@ public class Adminaddtitle extends AbstractCommand {
         this.description = "Add a title to a user";
         this.cooldown = 10000L;
         this.setMustBeRegistered(false);
+        this.setAdminCommand(true);
 
         this.options.add(new OptionData(OptionType.STRING, "title", "Add a title to a user")
                 .setRequired(true));
@@ -27,7 +28,20 @@ public class Adminaddtitle extends AbstractCommand {
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
         if (!event.getUser().getId().equals("985986599995187270")) return;
         String titleName = event.getOption("title").getAsString();
+        String userId = event.getOption("userid").getAsString();
+
+        if (!userId.matches("[0-9]+")) {
+            event.reply("This user doesn't exist").queue();
+            return;
+        }
+
         Player player = client.getDatabaseManager().getPlayer(event.getOption("userid").getAsLong());
+
+        if (player == null) {
+            event.reply("This user doesn't exist").queue();
+            return;
+        }
+
         if (client.getTitleManager().getTitle(titleName) == null) {
             event.reply("This title doesn't exist").queue();
             return;

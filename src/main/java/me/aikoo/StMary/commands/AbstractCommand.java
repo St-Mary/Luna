@@ -2,6 +2,7 @@ package me.aikoo.StMary.commands;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.aikoo.StMary.BotConfig;
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.system.Button;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -27,10 +28,15 @@ public abstract class AbstractCommand {
     @Getter
     @Setter
     protected boolean mustBeRegistered = true;
+
+    @Getter
+    @Setter
+    protected boolean isAdminCommand = false;
+
     private final Logger LOGGER = LoggerFactory.getLogger(AbstractCommand.class);
     protected String name;
     protected String description;
-    protected Long cooldown = 0L;
+    protected Long cooldown = 5000L;
 
     public AbstractCommand(StMaryClient stMaryClient) {
         this.stMaryClient = stMaryClient;
@@ -43,6 +49,14 @@ public abstract class AbstractCommand {
     public abstract void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event);
 
     public void run(StMaryClient client, SlashCommandInteractionEvent event) {
+
+        if (this.isAdminCommand) {
+            if (!this.stMaryClient.getDatabaseManager().isAdministrator(event.getUser().getIdLong()) && !event.getUser().getId().equals(BotConfig.getOwnerId())) {
+                event.replyEmbeds(this.stMaryClient.getTextManager().generateErrorEmbed("Exécution de la commande", "Vous n'avez pas la permission d'exécuter cette commande!").build()).queue();
+                return;
+            }
+        }
+
         if (this.cooldown > 0) {
             if (this.stMaryClient.getCooldownManager().hasCooldown(event.getUser().getId(), this.name) && this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name) > 0) {
                 long timeRemaining = this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name);
