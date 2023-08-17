@@ -1,8 +1,10 @@
 package me.aikoo.StMary.commands;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.system.Button;
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -21,6 +23,10 @@ public abstract class AbstractCommand {
     protected final List<OptionData> options = new ArrayList<>();
     @Getter
     protected final HashMap<String, Button> buttons = new HashMap<>();
+
+    @Getter
+    @Setter
+    protected boolean mustBeRegistered = true;
     private final Logger LOGGER = LoggerFactory.getLogger(AbstractCommand.class);
     protected String name;
     protected String description;
@@ -34,6 +40,8 @@ public abstract class AbstractCommand {
 
     public abstract void execute(StMaryClient client, SlashCommandInteractionEvent event);
 
+    public abstract void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event);
+
     public void run(StMaryClient client, SlashCommandInteractionEvent event) {
         if (this.cooldown > 0) {
             if (this.stMaryClient.getCooldownManager().hasCooldown(event.getUser().getId(), this.name) && this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name) > 0) {
@@ -45,6 +53,11 @@ public abstract class AbstractCommand {
             }
 
             this.stMaryClient.getCooldownManager().addCooldown(event.getUser().getId(), this.name, this.cooldown);
+        }
+
+        if (this.mustBeRegistered && this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong()) == null) {
+            event.replyEmbeds(this.stMaryClient.getTextManager().generateErrorEmbed("Exécution de la commande", "Vous devez posséder un compte aventure pour exécuter cette commande!").build()).queue();
+            return;
         }
 
         this.execute(client, event);

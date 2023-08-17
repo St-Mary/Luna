@@ -85,4 +85,8 @@ public class Player {
         }
         return titles;
     }
+
+    public void addTitle(String titleName) {
+        this.titles.add(titleName);
+    }
 }

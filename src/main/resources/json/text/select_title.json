@@ -1,0 +1,5 @@
+{
+  "name": "select_title",
+  "title": "Sélection du Titre Actuel",
+  "text": "Votre nouveau titre actuel est: **{{title}}** !"
+}

@@ -3,8 +3,11 @@ package me.aikoo.StMary.commands;
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.system.Button;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 public class Test extends AbstractCommand {
@@ -16,6 +19,9 @@ public class Test extends AbstractCommand {
         this.cooldown = 10000L;
 
         this.buttons.put("test", new testBtn());
+        this.options.add(new OptionData(OptionType.STRING, "test", "Test option")
+                        .setAutoComplete(true)
+                .setRequired(true));
     }
 
     @Override
@@ -27,8 +33,11 @@ public class Test extends AbstractCommand {
                 stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
             });
         });
+    }
 
-
+    @Override
+    public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {
+        event.replyChoice("Un", "deux").queue();
     }
 
     private class testBtn extends Button {

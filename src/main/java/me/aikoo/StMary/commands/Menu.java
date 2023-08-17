@@ -5,6 +5,7 @@ import me.aikoo.StMary.database.entities.Player;
 import me.aikoo.StMary.system.Button;
 import me.aikoo.StMary.system.Title;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
@@ -31,9 +32,9 @@ public class Menu extends AbstractCommand {
         } else {
             String profil = profilEmbed(client, event.getUser().getGlobalName(), player);
 
-            InventoryBtn inventoryBtn = new InventoryBtn(player);
-            ProfilBtn profilBtn = new ProfilBtn(player);
-            TitlesBtn titlesBtn = new TitlesBtn(player);
+            InventoryBtn inventoryBtn = new InventoryBtn(player, event.getUser().getId());
+            ProfilBtn profilBtn = new ProfilBtn(player, event.getUser().getId());
+            TitlesBtn titlesBtn = new TitlesBtn(player, event.getUser().getId());
 
             this.buttons.put(inventoryBtn.getId(), inventoryBtn);
             this.buttons.put(profilBtn.getId(), profilBtn);
@@ -46,6 +47,9 @@ public class Menu extends AbstractCommand {
             });
         }
     }
+
+    @Override
+    public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {}
 
     private String profilEmbed(StMaryClient client, String name, Player player) {
         Title title = player.getCurrentTitle(client);
@@ -65,15 +69,18 @@ public class Menu extends AbstractCommand {
 
     private class ProfilBtn extends Button {
             private final Player player;
+            private final String id;
 
-            public ProfilBtn(Player player) {
+            public ProfilBtn(Player player, String id) {
                 super("profil_btn", "Profil", ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83D\uDCDD"), stMaryClient);
 
                 this.player = player;
+                this.id = id;
             }
 
             @Override
             public void onClick(ButtonInteractionEvent event) {
+                if (!event.getUser().getId().equals(id)) return;
                 event.editMessage(profilEmbed(stMaryClient, event.getUser().getGlobalName(), player)).queue();
             }
     }
@@ -81,15 +88,18 @@ public class Menu extends AbstractCommand {
     private class InventoryBtn extends Button {
 
         private final Player player;
+        private final String id;
 
-        public InventoryBtn(Player player) {
+        public InventoryBtn(Player player, String id) {
             super("inv_btn", "Sac à Dos", ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDF92"), stMaryClient);
 
             this.player = player;
+            this.id = id;
         }
 
         @Override
         public void onClick(ButtonInteractionEvent event) {
+            if (!event.getUser().getId().equals(id)) return;
             Title title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
 
@@ -104,15 +114,19 @@ public class Menu extends AbstractCommand {
     private class TitlesBtn extends Button {
 
         private final Player player;
+        private final String id;
 
-        public TitlesBtn(Player player) {
+        public TitlesBtn(Player player, String id) {
             super("titles_btn", "Titres", ButtonStyle.DANGER, Emoji.fromUnicode("\uD83C\uDFC5"), stMaryClient);
 
             this.player = player;
+            this.id = id;
         }
 
         @Override
         public void onClick(ButtonInteractionEvent event) {
+            if (!event.getUser().getId().equals(id)) return;
+
             Title title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
 

@@ -18,4 +18,8 @@ public class Title {
         this.description = description;
         this.icon = icon;
     }
+
+    public String format() {
+        return this.icon + " " + this.name;
+    }
 }

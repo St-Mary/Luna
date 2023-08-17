@@ -3,6 +3,7 @@ package me.aikoo.StMary.commands;
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.database.entities.Player;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.math.BigInteger;
@@ -17,6 +18,7 @@ public class Start extends AbstractCommand {
         this.name = "start";
         this.description = "\uD83C\uDF32 Démarrer l'aventure !";
         this.cooldown = 10000L;
+        this.setMustBeRegistered(false);
     }
 
     @Override
@@ -46,4 +48,7 @@ public class Start extends AbstractCommand {
             event.replyEmbeds(embedBuilder.build()).queue();
         }
     }
+
+    @Override
+    public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {}
 }
