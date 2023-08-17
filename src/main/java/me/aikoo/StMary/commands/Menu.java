@@ -1,17 +1,27 @@
 package me.aikoo.StMary.commands;
 
+import javassist.expr.Handler;
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.database.entities.Player;
 import me.aikoo.StMary.system.Button;
 import me.aikoo.StMary.system.Title;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 public class Menu extends AbstractCommand {
 
@@ -21,31 +31,53 @@ public class Menu extends AbstractCommand {
         this.name = "menu";
         this.description = "\uD83C\uDF32 Menu principal";
         this.cooldown = 10000L;
+
+        this.options.add(new OptionData(OptionType.USER, "user", "L'utilisateur dont voir le menu"));
     }
 
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
-        Player player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        User user = event.getOption("user") == null ? event.getUser() : event.getOption("user").getAsUser();
+        Player player = client.getDatabaseManager().getPlayer(user.getIdLong());
 
         if (player == null) {
-            event.reply("Vous n'avez pas encore commencé l'aventure !").queue();
+            event.replyEmbeds(client.getTextManager().generateErrorEmbed("Menu de Joueur", "Cet utilisateur n'a pas de compte aventure!").build()).queue();
         } else {
-            String profil = profilEmbed(client, event.getUser().getGlobalName(), player);
+            String profil = profilEmbed(client, user.getGlobalName(), player);
 
-            InventoryBtn inventoryBtn = new InventoryBtn(player, event.getUser().getId());
-            ProfilBtn profilBtn = new ProfilBtn(player, event.getUser().getId());
-            TitlesBtn titlesBtn = new TitlesBtn(player, event.getUser().getId());
+            InventoryBtn inventoryBtn = new InventoryBtn(player, user.getId());
+            ProfilBtn profilBtn = new ProfilBtn(player, user.getId());
+            TitlesBtn titlesBtn = new TitlesBtn(player, user.getId());
+            CloseBtn closeBtn = new CloseBtn(user.getId());
 
             this.buttons.put(inventoryBtn.getId(), inventoryBtn);
             this.buttons.put(profilBtn.getId(), profilBtn);
             this.buttons.put(titlesBtn.getId(), titlesBtn);
+            this.buttons.put(closeBtn.getId(), closeBtn);
 
-            event.reply(profil).addActionRow(profilBtn.getButton(), inventoryBtn.getButton(), titlesBtn.getButton()).queue(msg -> {
+            event.reply(profil).addActionRow(profilBtn.getButton(), inventoryBtn.getButton(), titlesBtn.getButton(), closeBtn.getButton()).queue(msg -> {
                 msg.retrieveOriginal().queue(res -> {
                     stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
+                    new java.util.Timer().schedule(
+                            new java.util.TimerTask() {
+                                @Override
+                                public void run() {
+                                    closeMenu(res, user.getId());
+                                }
+                            },
+                            20000
+                    );
                 });
             });
         }
+    }
+
+    public void closeMenu(Message message, String id) {
+        String text = stMaryClient.getTextManager().generateScene("Fermeture du Menu Joueur", "**Le menu joueur de <@" + id + "> a été fermé.**");
+        List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
+        buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
+
+        message.editMessage(text).setActionRow(buttons).queue();
     }
 
     @Override
@@ -117,7 +149,7 @@ public class Menu extends AbstractCommand {
         private final String id;
 
         public TitlesBtn(Player player, String id) {
-            super("titles_btn", "Titres", ButtonStyle.DANGER, Emoji.fromUnicode("\uD83C\uDFC5"), stMaryClient);
+            super("titles_btn", "Titres", ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDFC5"), stMaryClient);
 
             this.player = player;
             this.id = id;
@@ -145,5 +177,19 @@ public class Menu extends AbstractCommand {
 
             event.editMessage(stringBuilder.toString()).queue();
         }
+    }
+
+    private class CloseBtn extends Button {
+
+            String id;
+            public CloseBtn(String id) {
+                super("close_btn", "Fermer", ButtonStyle.DANGER, Emoji.fromUnicode("\u274C"), stMaryClient);
+                this.id = id;
+            }
+
+            @Override
+            public void onClick(ButtonInteractionEvent event) {
+                closeMenu(event.getMessage(), id);
+            }
     }
 }

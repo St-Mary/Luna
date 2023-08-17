@@ -1,6 +1,7 @@
 package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
+import lombok.Getter;
 import me.aikoo.StMary.core.JSONFileReader;
 import me.aikoo.StMary.system.Title;
 
@@ -9,6 +10,7 @@ import java.util.HashMap;
 
 public class TitleManager {
 
+    @Getter
     public HashMap<String, Title> titles = new HashMap<>();
 
     public TitleManager() {

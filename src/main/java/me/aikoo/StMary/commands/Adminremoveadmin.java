@@ -20,7 +20,7 @@ public class Adminremoveadmin extends AbstractCommand {
         this.cooldown = 10000L;
         this.setAdminCommand(true);
 
-        this.options.add(new OptionData(OptionType.USER, "user", "The old administrator")
+        this.options.add(new OptionData(OptionType.STRING, "userid", "The old administrator")
                 .setRequired(true));
     }
 
@@ -31,7 +31,14 @@ public class Adminremoveadmin extends AbstractCommand {
             event.replyEmbeds(error.build()).queue();
         }
 
-        Administrators administrator = client.getDatabaseManager().getAdministrator(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
+        String userId = event.getOption("userid").getAsString();
+
+        if (!userId.matches("[0-9]+")) {
+            event.reply("This user doesn't exist").queue();
+            return;
+        }
+
+        Administrators administrator = client.getDatabaseManager().getAdministrator(Long.parseLong(userId));
         if (administrator == null) {
             EmbedBuilder error = client.getTextManager().generateErrorEmbed("Retrait d'un administrateur", "Cet utilisateur n'est pas administrateur !");
             event.replyEmbeds(error.build()).queue();
