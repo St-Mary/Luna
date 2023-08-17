@@ -23,7 +23,7 @@ public class Place extends Location {
     private Town town = null;
 
     @Getter
-    private final ArrayList<String> availableMoves = new ArrayList<>();
+    private final ArrayList<Move> availableMoves = new ArrayList<>();
 
     public Place(String name, String description, Region region) {
         this.name = name;
@@ -41,7 +41,11 @@ public class Place extends Location {
         }
     }
 
-    public void addMove(Place p) {
-        this.availableMoves.add(p.getName());
+    public void addMove(Move m) {
+        this.availableMoves.add(m);
+    }
+
+    public Move getMove(String name) {
+        return this.availableMoves.stream().filter(move -> move.getTo().getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 }

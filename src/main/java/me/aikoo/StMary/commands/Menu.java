@@ -66,7 +66,7 @@ public class Menu extends AbstractCommand {
     }
 
     public void closeMenu(Message message, String id) {
-        String text = stMaryClient.getTextManager().generateScene("Fermeture du Menu Joueur", "**Le Menu Joueur de <@" + id + "> a été fermé.**");
+        String text = stMaryClient.getTextManager().generateScene("Fermeture du Menu Joueur", "Le Menu Joueur de <@" + id + "> a été fermé.");
         List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
         buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
 
@@ -105,6 +105,7 @@ public class Menu extends AbstractCommand {
             public void onClick(ButtonInteractionEvent event) {
                 if (!event.getUser().getId().equals(id)) return;
                 event.editMessage(profilEmbed(stMaryClient, event.getUser().getGlobalName(), player)).queue();
+                event.deferEdit().queue();
             }
     }
 
@@ -131,6 +132,7 @@ public class Menu extends AbstractCommand {
                     "▬▬▬▬▬▬▬▬▬▬\n";
 
             event.editMessage(stringBuilder).queue();
+            event.deferEdit().queue();
         }
     }
 
@@ -181,6 +183,7 @@ public class Menu extends AbstractCommand {
             @Override
             public void onClick(ButtonInteractionEvent event) {
                 closeMenu(event.getMessage(), id);
+                event.deferEdit().queue();
             }
     }
 }

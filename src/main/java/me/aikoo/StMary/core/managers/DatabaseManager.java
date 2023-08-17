@@ -3,6 +3,7 @@ package me.aikoo.StMary.core.managers;
 import jakarta.persistence.Entity;
 import me.aikoo.StMary.BotConfig;
 import me.aikoo.StMary.database.entities.Administrators;
+import me.aikoo.StMary.database.entities.Moves;
 import me.aikoo.StMary.database.entities.Player;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,6 +16,7 @@ import org.reflections.Reflections;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class DatabaseManager {
     private StandardServiceRegistry registry;
@@ -132,5 +134,13 @@ public class DatabaseManager {
         Administrators admin = session.createQuery("from Administrators where discordId = :discordId", Administrators.class).setParameter("discordId", idLong).uniqueResult();
         session.getTransaction().commit();
         return admin != null;
+    }
+
+    public Moves getMoves(UUID uuid) {
+        Session session = this.getSessionFactory().openSession();
+        session.beginTransaction();
+        Moves moves = session.createQuery("from Moves where playerId = :uuid", Moves.class).setParameter("uuid", uuid).uniqueResult();
+        session.getTransaction().commit();
+        return moves;
     }
 }

@@ -2,10 +2,7 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
 import me.aikoo.StMary.core.JSONFileReader;
-import me.aikoo.StMary.system.Location;
-import me.aikoo.StMary.system.Place;
-import me.aikoo.StMary.system.Region;
-import me.aikoo.StMary.system.Town;
+import me.aikoo.StMary.system.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,6 +120,7 @@ public class LocationManager {
 
             placeObject.get("availableMoves").getAsJsonArray().forEach(move -> {
                 String moveName = move.getAsJsonObject().get("name").getAsString();
+                Long duration = move.getAsJsonObject().get("duration").getAsLong();
 
                 Place p = this.getPlace(moveName);
 
@@ -131,7 +129,7 @@ public class LocationManager {
                     return;
                 }
 
-                place.addMove(p);
+                place.addMove(new Move(place, p, duration));
             });
         }
     }

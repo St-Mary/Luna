@@ -11,7 +11,8 @@
     {
       "name": "Place du Griffon Marin",
       "town": "Talon",
-      "region": "Oraland"
+      "region": "Oraland",
+      "duration": 1
     }
   ]
 }
