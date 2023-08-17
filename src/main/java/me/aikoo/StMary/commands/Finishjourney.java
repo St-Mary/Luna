@@ -15,6 +15,10 @@ public class Finishjourney extends AbstractCommand {
 
     public Finishjourney(StMaryClient stMaryClient) {
         super(stMaryClient);
+
+        this.name = "endjourney";
+        this.description = "\uD83D\uDDFA\uFE0F Arriver à destination.";
+        this.cooldown = 15000L;
     }
 
     @Override

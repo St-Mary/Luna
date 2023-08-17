@@ -21,6 +21,8 @@ import java.util.List;
 
 public class Journey extends AbstractCommand {
 
+    private boolean isStarted = false;
+
     public Journey(StMaryClient stMaryClient) {
         super(stMaryClient);
 
@@ -70,7 +72,11 @@ public class Journey extends AbstractCommand {
              new java.util.Timer().schedule(
                      new java.util.TimerTask() {
                          @Override
-                         public void run() {close(res, destinationPlace);    }
+                         public void run() {
+                             if (!isStarted) {
+                                close(res, destinationPlace);
+                             }
+                         }
                      },
                      20000
              );
@@ -132,6 +138,7 @@ public class Journey extends AbstractCommand {
                 moves.setStart(System.currentTimeMillis());
 
                 stMaryClient.getDatabaseManager().createOrUpdate(moves);
+                isStarted = true;
 
                 String text = stMaryClient.getTextManager().generateScene("Déplacement", "Vous vous déplacez vers **" + move.getTo().getIcon() + move.getTo().getName() + "**. Ce déplacement prendra `" + move.getTime() + "` minutes.");
                 List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = event.getMessage().getButtons();

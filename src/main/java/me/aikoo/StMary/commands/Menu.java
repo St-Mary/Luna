@@ -20,6 +20,8 @@ import java.util.Objects;
 
 public class Menu extends AbstractCommand {
 
+    private boolean isClosed = false;
+
     public Menu(StMaryClient stMaryClient) {
         super(stMaryClient);
 
@@ -56,7 +58,9 @@ public class Menu extends AbstractCommand {
                         new java.util.TimerTask() {
                             @Override
                             public void run() {
-                                closeMenu(res, user.getId());
+                                if (!isClosed) {
+                                    closeMenu(res, user.getId());
+                                }
                             }
                         },
                         60000
@@ -182,6 +186,7 @@ public class Menu extends AbstractCommand {
             @Override
             public void onClick(ButtonInteractionEvent event) {
                 closeMenu(event.getMessage(), id);
+                isClosed = true;
                 event.deferEdit().queue();
             }
     }
