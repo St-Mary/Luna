@@ -59,7 +59,7 @@ public class Menu extends AbstractCommand {
                                 closeMenu(res, user.getId());
                             }
                         },
-                        30000
+                        60000
                 );
             }));
         }

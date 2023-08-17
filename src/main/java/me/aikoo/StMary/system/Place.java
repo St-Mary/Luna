@@ -3,6 +3,8 @@ package me.aikoo.StMary.system;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+
 public class Place extends Location {
     @Getter
     private final String name;
@@ -20,6 +22,9 @@ public class Place extends Location {
     @Setter
     private Town town = null;
 
+    @Getter
+    private final ArrayList<String> availableMoves = new ArrayList<>();
+
     public Place(String name, String description, Region region) {
         this.name = name;
         this.description = description;
@@ -34,5 +39,9 @@ public class Place extends Location {
         if (this.town == null) {
             this.setTown(town);
         }
+    }
+
+    public void addMove(Place p) {
+        this.availableMoves.add(p.getName());
     }
 }

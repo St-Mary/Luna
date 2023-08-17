@@ -65,8 +65,16 @@ public class LocationManager {
                 }
 
                 if (!townObject.get("region").getAsString().equals(region.getName())) return;
+                JsonObject entryPointObject = this.placesObject.stream().filter(p -> p.get("name").getAsString().equalsIgnoreCase(townObject.get("entryPoint").getAsString()) && p.get("town").getAsJsonObject().get("name").getAsString().equalsIgnoreCase(townObject.get("name").getAsString())).findFirst().orElse(null);
 
-                Town t = new Town(townObject.get("name").getAsString(), townObject.get("description").getAsString(), region);
+                if (entryPointObject == null) {
+                    LOGGER.error("Entry point " + townObject.get("entryPoint").getAsString() + " not found!");
+                    return;
+                }
+
+                Place entryPoint = new Place(entryPointObject.get("name").getAsString(), entryPointObject.get("description").getAsString(), region);
+
+                Town t = new Town(townObject.get("name").getAsString(), townObject.get("description").getAsString(), region, entryPoint);
                 townObject.get("places").getAsJsonArray().forEach(place -> {
                     String placeName = place.getAsString();
                     JsonObject placeObject = this.placesObject.stream().filter(p -> p.get("name").getAsString().equalsIgnoreCase(placeName)).findFirst().orElse(null);
@@ -104,9 +112,34 @@ public class LocationManager {
         return regionHashMap;
     }
 
+    private void loadMoves() {
+        for (Place place : this.places) {
+            JsonObject placeObject = this.placesObject.stream().filter(p -> p.get("name").getAsString().equalsIgnoreCase(place.getName())).findFirst().orElse(null);
+
+            if (placeObject == null) {
+                LOGGER.error("Place " + place.getName() + " not found!");
+                return;
+            }
+
+            placeObject.get("availableMoves").getAsJsonArray().forEach(move -> {
+                String moveName = move.getAsJsonObject().get("name").getAsString();
+
+                Place p = this.getPlace(moveName);
+
+                if (p == null) {
+                    LOGGER.error("Place " + moveName + " not found!d");
+                    return;
+                }
+
+                place.addMove(p);
+            });
+        }
+    }
+
     private void load() {
         this.placesObject.addAll(JSONFileReader.readAllFilesFrom("places", "places"));
         this.townsObjects.addAll(JSONFileReader.readAllFilesFrom("places", "towns"));
         this.regions = this.loadRegions();
+        this.loadMoves();
     }
 }

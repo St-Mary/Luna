@@ -4,6 +4,14 @@
   "region": "Oraland",
   "town": {
     "isTownPlace": true,
-    "name": "Talon"
-  }
+    "name": "Talon",
+    "isEntryPoint": false
+  },
+  "availableMoves": [
+    {
+      "name": "Entrée de la Cité",
+      "town": "Talon",
+      "region": "Oraland"
+    }
+  ]
 }

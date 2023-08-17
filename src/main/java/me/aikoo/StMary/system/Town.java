@@ -20,10 +20,14 @@ public class Town extends Location {
     @Getter
     private final ArrayList<Place> places = new ArrayList<>();
 
-    public Town(String name, String description, Region region) {
+    @Getter
+    private final Place entryPoint;
+
+    public Town(String name, String description, Region region, Place entryPoint) {
         this.name = name;
         this.description = description;
         this.region = region;
+        this.entryPoint = entryPoint;
     }
 
     public void addPlace(Place place) {
