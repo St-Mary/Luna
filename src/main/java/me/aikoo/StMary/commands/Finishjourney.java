@@ -28,12 +28,11 @@ public class Finishjourney extends AbstractCommand {
         Moves moves = client.getDatabaseManager().getMoves(uuid);
 
         if (moves == null) {
-            EmbedBuilder error = client.getTextManager().generateErrorEmbed("Fin de Voyage", "Vous n'avez pas de déplacement en cours.");
-            event.replyEmbeds(error.build()).queue();
+            String text = client.getTextManager().generateScene("Fin de Voyage Impossible", "Vous n'avez aucun voyage en cours.");
+            event.reply(text).queue();
             return;
         }
 
-        // check if move is finished
         long start = moves.getStart();
         long time = moves.getTime() * 60000L;
         long now = System.currentTimeMillis();
@@ -41,7 +40,7 @@ public class Finishjourney extends AbstractCommand {
 
         if (now < end) {
             long remaining = end - now;
-            String text = client.getTextManager().generateScene("Fin de Voyage", String.format("Vous n'avez pas encore fini votre déplacement. Veuillez attend <t:%s:R> avant d'arriver à votre destination", TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + remaining)));
+            String text = client.getTextManager().generateScene("Fin de Voyage", String.format("Vous n'avez pas encore fini votre voyage. Veuillez attendre <t:%s:R> avant d'arriver à votre destination", TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + remaining)));
             event.reply(text).queue();
             return;
         }

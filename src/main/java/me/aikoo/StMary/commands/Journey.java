@@ -42,20 +42,23 @@ public class Journey extends AbstractCommand {
          Place destinationPlace = client.getLocationManager().getPlace(destination);
 
          if (moves != null) {
-             EmbedBuilder error = client.getTextManager().generateErrorEmbed("Voyage", "Vous avez déjà un déplacement en cours.");
-             event.replyEmbeds(error.build()).queue();
+             Place toPlace = client.getLocationManager().getPlace(moves.getTo());
+             String text = client.getTextManager().generateScene("Voyage en Cours", "Vous êtes déjà en voyage vers **" + toPlace.getIcon() + toPlace.getName() + "**.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant.");
+             event.reply(text).queue();
              return;
          }
 
          if (place == null || destinationPlace == null) {
-             event.reply("La destination n'existe pas.").queue();
+             EmbedBuilder error = client.getTextManager().generateErrorEmbed("Voyage Impossible", "La destination n'existe pas.");
+             event.replyEmbeds(error.build()).queue();
              return;
          }
 
          me.aikoo.StMary.system.Move move = place.getMove(destination);
 
          if (!place.getAvailableMoves().contains(move)) {
-             event.reply("Vous ne pouvez pas vous déplacer vers cette destination.").queue();
+             EmbedBuilder error = client.getTextManager().generateErrorEmbed("Voyage Impossible", "Vous ne pouvez pas vous déplacer vers cette destination.");
+             event.replyEmbeds(error.build()).queue();
              return;
          }
 
@@ -66,7 +69,7 @@ public class Journey extends AbstractCommand {
 
          long time = move.getTime();
 
-         String str = client.getTextManager().generateScene("Déplacement", "Êtes-vous sûr de vouloir vous déplacer vers **" + destinationPlace.getIcon() + destinationPlace.getName() + "** en** `" + time + " minutes` **?");
+         String str = client.getTextManager().generateScene("Voyage", "Êtes-vous sûr de vouloir vous déplacer vers **" + destinationPlace.getIcon() + destinationPlace.getName() + "** en** `" + time + " minutes` **?");
          event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
              stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
              new java.util.Timer().schedule(
@@ -84,7 +87,7 @@ public class Journey extends AbstractCommand {
     }
 
     private void close(Message message, Place destinationPlace) {
-        String text = stMaryClient.getTextManager().generateScene("Annulation du déplacement", "Le déplacement vers **" + destinationPlace.getIcon() + destinationPlace.getName() + "** a été annulé.");
+        String text = stMaryClient.getTextManager().generateScene("Annulation du voyage", "Le voyage vers **" + destinationPlace.getIcon() + destinationPlace.getName() + "** a été annulé.");
         List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
         buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
 
@@ -140,7 +143,7 @@ public class Journey extends AbstractCommand {
                 stMaryClient.getDatabaseManager().createOrUpdate(moves);
                 isStarted = true;
 
-                String text = stMaryClient.getTextManager().generateScene("Déplacement", "Vous vous déplacez vers **" + move.getTo().getIcon() + move.getTo().getName() + "**. Ce déplacement prendra `" + move.getTime() + "` minutes.");
+                String text = stMaryClient.getTextManager().generateScene("Voyage", "Vous voyagez vers **" + move.getTo().getIcon() + move.getTo().getName() + "**. Ce déplacement prendra `" + move.getTime() + "` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant.");
                 List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = event.getMessage().getButtons();
                 buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
 

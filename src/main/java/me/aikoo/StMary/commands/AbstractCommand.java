@@ -62,7 +62,8 @@ public abstract class AbstractCommand {
                 long timeRemaining = this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name);
                 long timestampRemaining = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + timeRemaining);
 
-                event.reply(String.format("Veuillez patienter <t:%s:R> avant de pouvoir refaire une commande.", timestampRemaining)).queue();
+                String text = client.getTextManager().generateScene("Doucement, jeune aventurier!", String.format("Patiente <t:%s:R> avant de pouvoir repartir au galop.", timestampRemaining));
+                event.reply(text).queue();
                 return;
             }
 
