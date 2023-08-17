@@ -132,7 +132,6 @@ public class Menu extends AbstractCommand {
                     "▬▬▬▬▬▬▬▬▬▬\n";
 
             event.editMessage(stringBuilder).queue();
-            event.deferEdit().queue();
         }
     }
 
