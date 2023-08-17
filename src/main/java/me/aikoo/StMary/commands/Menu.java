@@ -1,8 +1,10 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.database.entities.Moves;
 import me.aikoo.StMary.database.entities.Player;
 import me.aikoo.StMary.system.Button;
+import me.aikoo.StMary.system.Place;
 import me.aikoo.StMary.system.Title;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
@@ -85,12 +87,22 @@ public class Menu extends AbstractCommand {
         String icon = title.getIcon();
         String town = (player.getCurrentLocationTown() != null) ? player.getCurrentLocationTown() : "Aucune ville";
         String place = player.getCurrentLocationPlace();
+        String location = "`%s` - `%s`\n".formatted(town, place);
+        Moves move = client.getDatabaseManager().getMoves(player.getId());
+
+        if (move != null) {
+            Place to = client.getLocationManager().getPlace(move.getTo());
+            Place from = client.getLocationManager().getPlace(move.getFrom());
+            if (!to.getTown().equals(from.getTown())) {
+                location = "Entre `%s` et `%s` `/n`".formatted(from.getTown().getName(), to.getTown().getName());
+            } else location = "Entre `%s` et `%s` - `%s`\n".formatted(from.getName(), to.getName(), to.getTown().getName());
+        }
 
         return String.format("### %s | %s | Menu Joueur\n", icon, name) +
                 "**Niveau :** `" + player.getLevel() + "`\n" +
                 "**Expérience :** `" + player.getExperience() + " EXP`\n" +
                 "▬▬▬▬▬▬▬▬▬▬\n" +
-                "**Localisation :** `%s` - `%s`\n".formatted(town, place) +
+                "**Localisation :** " + location +
                 "**Région :** `%s`\n".formatted(player.getCurrentLocationRegion());
     }
 
