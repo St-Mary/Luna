@@ -62,7 +62,7 @@ public abstract class AbstractCommand {
                 long timeRemaining = this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name);
                 long timestampRemaining = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + timeRemaining);
 
-                event.reply(String.format("Please wait <t:%s:R>", timestampRemaining)).queue();
+                event.reply(String.format("Veuillez patienter <t:%s:R> avant de pouvoir refaire une commande.", timestampRemaining)).queue();
                 return;
             }
 
@@ -78,8 +78,7 @@ public abstract class AbstractCommand {
     }
 
     protected ArrayList<Button> getArrayListButtons() {
-        ArrayList<Button> btns = new ArrayList<>(this.buttons.values());
-        return btns;
+        return new ArrayList<>(this.buttons.values());
     }
 
     public String getName() {

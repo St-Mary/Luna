@@ -1,7 +1,6 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.managers.DatabaseManager;
 import me.aikoo.StMary.database.entities.Player;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

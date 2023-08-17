@@ -1,6 +1,5 @@
 package me.aikoo.StMary.commands;
 
-import javassist.expr.Handler;
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.database.entities.Player;
 import me.aikoo.StMary.system.Button;
@@ -14,14 +13,10 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
-import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
 
 public class Menu extends AbstractCommand {
 
@@ -37,11 +32,11 @@ public class Menu extends AbstractCommand {
 
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
-        User user = event.getOption("user") == null ? event.getUser() : event.getOption("user").getAsUser();
+        User user = event.getOption("user") == null ? event.getUser() : Objects.requireNonNull(event.getOption("user")).getAsUser();
         Player player = client.getDatabaseManager().getPlayer(user.getIdLong());
 
         if (player == null) {
-            event.replyEmbeds(client.getTextManager().generateErrorEmbed("Menu de Joueur", "Cet utilisateur n'a pas de compte aventure!").build()).queue();
+            event.replyEmbeds(client.getTextManager().generateErrorEmbed("Menu Joueur", "Cet utilisateur n'a pas de compte aventure!").build()).queue();
         } else {
             String profil = profilEmbed(client, user.getGlobalName(), player);
 
@@ -55,25 +50,23 @@ public class Menu extends AbstractCommand {
             this.buttons.put(titlesBtn.getId(), titlesBtn);
             this.buttons.put(closeBtn.getId(), closeBtn);
 
-            event.reply(profil).addActionRow(profilBtn.getButton(), inventoryBtn.getButton(), titlesBtn.getButton(), closeBtn.getButton()).queue(msg -> {
-                msg.retrieveOriginal().queue(res -> {
-                    stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
-                    new java.util.Timer().schedule(
-                            new java.util.TimerTask() {
-                                @Override
-                                public void run() {
-                                    closeMenu(res, user.getId());
-                                }
-                            },
-                            20000
-                    );
-                });
-            });
+            event.reply(profil).addActionRow(profilBtn.getButton(), inventoryBtn.getButton(), titlesBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
+                stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                closeMenu(res, user.getId());
+                            }
+                        },
+                        30000
+                );
+            }));
         }
     }
 
     public void closeMenu(Message message, String id) {
-        String text = stMaryClient.getTextManager().generateScene("Fermeture du Menu Joueur", "**Le menu joueur de <@" + id + "> a été fermé.**");
+        String text = stMaryClient.getTextManager().generateScene("Fermeture du Menu Joueur", "**Le Menu Joueur de <@" + id + "> a été fermé.**");
         List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
         buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
 
@@ -89,14 +82,12 @@ public class Menu extends AbstractCommand {
         String town = (player.getCurrentLocationTown() != null) ? player.getCurrentLocationTown() : "Aucune ville";
         String place = player.getCurrentLocationPlace();
 
-        String stringBuilder = String.format("### %s | %s | Menu Joueur\n", icon, name) +
+        return String.format("### %s | %s | Menu Joueur\n", icon, name) +
                 "**Niveau :** `" + player.getLevel() + "`\n" +
                 "**Expérience :** `" + player.getExperience() + " EXP`\n" +
                 "▬▬▬▬▬▬▬▬▬▬\n" +
                 "**Localisation :** `%s` - `%s`\n".formatted(town, place) +
                 "**Région :** `%s`\n".formatted(player.getCurrentLocationRegion());
-
-        return stringBuilder;
     }
 
     private class ProfilBtn extends Button {
@@ -168,7 +159,7 @@ public class Menu extends AbstractCommand {
             for (Title t : titles.values()) {
                 stringBuilder.append(t.getIcon()).append(" | `").append(t.getName()).append("`");
                 if (t.getName().equals(title.getName())) {
-                    stringBuilder.append("   ⬅\uFE0F **Actif**\n");
+                    stringBuilder.append("   ⬅️ **Actif**\n");
                 } else {
                     stringBuilder.append("\n");
                 }
@@ -183,7 +174,7 @@ public class Menu extends AbstractCommand {
 
             String id;
             public CloseBtn(String id) {
-                super("close_btn", "Fermer", ButtonStyle.DANGER, Emoji.fromUnicode("\u274C"), stMaryClient);
+                super("close_btn", "Fermer", ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
                 this.id = id;
             }
 

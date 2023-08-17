@@ -13,7 +13,7 @@ public class InfoTitles extends AbstractCommand {
 
         this.name = "infotitles";
         this.description = "\uD83C\uDFC5 Afficher les informations sur les titres disponibles";
-        this.cooldown = 10000L;
+        this.cooldown = 5000L;
     }
 
     @Override

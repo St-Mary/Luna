@@ -28,11 +28,7 @@ public class Test extends AbstractCommand {
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
         String text = client.getTextManager().getText("start_adventure");
         String title = client.getTextManager().getTitle("start_adventure");
-        event.reply(client.getTextManager().generateScene(title, text)).addActionRow(this.buttons.get("test").getButton()).queue(msg -> {
-            msg.retrieveOriginal().queue(res -> {
-                stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
-            });
-        });
+        event.reply(client.getTextManager().generateScene(title, text)).addActionRow(this.buttons.get("test").getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons())));
     }
 
     @Override

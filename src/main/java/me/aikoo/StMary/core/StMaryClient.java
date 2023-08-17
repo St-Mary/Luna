@@ -8,9 +8,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
 public class StMaryClient {
     private final Logger LOGGER = LoggerFactory.getLogger(StMaryClient.class);
 

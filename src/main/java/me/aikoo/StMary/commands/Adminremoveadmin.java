@@ -9,8 +9,6 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-import java.util.Objects;
-
 public class Adminremoveadmin extends AbstractCommand {
     public Adminremoveadmin(StMaryClient stMaryClient) {
         super(stMaryClient);

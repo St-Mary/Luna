@@ -22,7 +22,7 @@ public class SelectTitle extends AbstractCommand {
 
         this.name = "selecttitle";
         this.description = "\uD83C\uDFC5 Select your current title to display";
-        this.cooldown = 10000L;
+        this.cooldown = 15000L;
         this.options.add(new OptionData(OptionType.STRING, "title", "Select your current title to display")
                 .setAutoComplete(true)
                 .setRequired(true));
