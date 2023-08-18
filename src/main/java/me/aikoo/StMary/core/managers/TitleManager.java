@@ -21,7 +21,6 @@ public class TitleManager {
         ArrayList<JsonObject> jsonObjects = JSONFileReader.readAllFilesFrom("titles");
 
         for (JsonObject jsonObject : jsonObjects) {
-            System.out.println(jsonObject);
             String name = jsonObject.get("name").getAsString();
             String description = jsonObject.get("description").getAsString();
             String icon = jsonObject.get("icon").getAsString();

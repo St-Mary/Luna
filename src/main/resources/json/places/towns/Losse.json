@@ -1,0 +1,9 @@
+{
+  "name":  "Losse",
+  "description": "Nichée au bord des eaux miroitantes de la rivière Lucca, la ville de Losse émerge telle une perle entre les bras tendres de l'onde. Cette cité pittoresque, autrefois paisible, est désormais le théâtre d'un conflit commercial féroce avec la voisine Hiriel, dont les eaux de la Lucca sont le point d'acheminement des richesses tant convoitées.\n\nLes rues pavées de Losse débordent d'activité, les étals colorés des pêcheurs ornent les quais animés, chaque prise est un pas vers la survie. Les habitants vaquent à leurs tâches, tout en restant sur leurs gardes face à la tension qui règne. Un vieux conte circule : il fut un temps où Losse et Hiriel, réunies par des liens plus forts que le commerce, s'échangeaient leurs marchandises et festoyaient ensemble. Mais l'avarice a terni l'amitié, et désormais l'eau qui unissait les deux cités les sépare dans un conflit incessant.\n\nParmi ces allées escarpées et les maisons aux toits de chaume, se cache une histoire particulière : celle de deux amoureux des clans rivaux, dont l'affection interdite a été le déclencheur du conflit actuel. Leurs noms sont gravés sur un vieux banc près du quai, symbole des liaisons impossibles qui persistent à Losse.",
+  "region": "Oraland",
+  "places": [
+    "Entrée de Losse"
+  ],
+  "entryPoint": "Entrée de Losse"
+}

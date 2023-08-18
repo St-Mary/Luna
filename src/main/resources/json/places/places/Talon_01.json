@@ -13,6 +13,12 @@
       "town": "Talon",
       "region": "Oraland",
       "duration": 1
+    },
+    {
+      "name": "Entrée de Losse",
+      "town": "Losse",
+      "region": "Oraland",
+      "duration": 2
     }
   ]
 }

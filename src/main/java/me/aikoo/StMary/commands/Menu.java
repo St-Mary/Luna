@@ -87,22 +87,22 @@ public class Menu extends AbstractCommand {
         String icon = title.getIcon();
         String town = (player.getCurrentLocationTown() != null) ? player.getCurrentLocationTown() : "Aucune ville";
         String place = player.getCurrentLocationPlace();
-        String location = "`%s` - `%s`\n".formatted(town, place);
+        String location = "**Localisation :** " + "`%s` - `%s`\n".formatted(town, place);
         Moves move = client.getDatabaseManager().getMoves(player.getId());
 
         if (move != null) {
             Place to = client.getLocationManager().getPlace(move.getTo());
             Place from = client.getLocationManager().getPlace(move.getFrom());
             if (!to.getTown().equals(from.getTown())) {
-                location = "Entre `%s` et `%s` `/n`".formatted(from.getTown().getName(), to.getTown().getName());
-            } else location = "Entre `%s` et `%s` - `%s`\n".formatted(from.getName(), to.getName(), to.getTown().getName());
+                location = "**Localisation :** Voyage vers `%s`\n**Départ:** `%s`\n".formatted(to.getTown().getName(), from.getTown().getName());
+            } else location = "**Localisation :** Voyage vers `%s` - `%s`\n**Départ:** `%s`\n".formatted(to.getName(), to.getTown().getName(), from.getName());
         }
 
         return String.format("### %s | %s | Menu Joueur\n", icon, name) +
                 "**Niveau :** `" + player.getLevel() + "`\n" +
                 "**Expérience :** `" + player.getExperience() + " EXP`\n" +
                 "▬▬▬▬▬▬▬▬▬▬\n" +
-                "**Localisation :** " + location +
+                location +
                 "**Région :** `%s`\n".formatted(player.getCurrentLocationRegion());
     }
 
@@ -121,7 +121,9 @@ public class Menu extends AbstractCommand {
             public void onClick(ButtonInteractionEvent event) {
                 if (!event.getUser().getId().equals(id)) return;
                 event.editMessage(profilEmbed(stMaryClient, event.getUser().getGlobalName(), player)).queue();
-                event.deferEdit().queue();
+                if (!event.getInteraction().isAcknowledged()) {
+                    event.deferEdit().queue();
+                }
             }
     }
 
@@ -148,6 +150,9 @@ public class Menu extends AbstractCommand {
                     "▬▬▬▬▬▬▬▬▬▬\n";
 
             event.editMessage(stringBuilder).queue();
+            if (!event.getInteraction().isAcknowledged()) {
+                event.deferEdit().queue();
+            }
         }
     }
 
@@ -184,6 +189,9 @@ public class Menu extends AbstractCommand {
             stringBuilder.append("▬▬▬▬▬▬▬▬▬▬\n**Nombre de titres:** `").append(titles.size()).append("`");
 
             event.editMessage(stringBuilder.toString()).queue();
+            if (!event.getInteraction().isAcknowledged()) {
+                event.deferEdit().queue();
+            }
         }
     }
 
@@ -199,7 +207,9 @@ public class Menu extends AbstractCommand {
             public void onClick(ButtonInteractionEvent event) {
                 closeMenu(event.getMessage(), id);
                 isClosed = true;
-                event.deferEdit().queue();
+                if (!event.getInteraction().isAcknowledged()) {
+                    event.deferEdit().queue();
+                }
             }
     }
 }

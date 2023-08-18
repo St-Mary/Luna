@@ -125,7 +125,7 @@ public class LocationManager {
                 Place p = this.getPlace(moveName);
 
                 if (p == null) {
-                    LOGGER.error("Place " + moveName + " not found!d");
+                    LOGGER.error("Place " + moveName + " not found!");
                     return;
                 }
 

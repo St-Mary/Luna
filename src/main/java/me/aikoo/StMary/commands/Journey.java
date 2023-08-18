@@ -43,7 +43,8 @@ public class Journey extends AbstractCommand {
 
          if (moves != null) {
              Place toPlace = client.getLocationManager().getPlace(moves.getTo());
-             String text = client.getTextManager().generateScene("Voyage en Cours", "Vous êtes déjà en voyage vers **" + toPlace.getIcon() + toPlace.getName() + "**.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant.");
+             String formattedText = (place.getTown() == toPlace.getTown()) ? toPlace.getIcon() + toPlace.getName() : toPlace.getTown().getIcon() + toPlace.getTown().getName();
+             String text = client.getTextManager().generateScene("Voyage en Cours", "Vous êtes déjà en voyage vers **" + formattedText + "**.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant.");
              event.reply(text).queue();
              return;
          }
@@ -69,7 +70,8 @@ public class Journey extends AbstractCommand {
 
          long time = move.getTime();
 
-         String str = client.getTextManager().generateScene("Voyage", "Êtes-vous sûr de vouloir vous déplacer vers **" + destinationPlace.getIcon() + destinationPlace.getName() + "** en** `" + time + " minutes` **?");
+         String formattedText = (place.getTown() == destinationPlace.getTown()) ? destinationPlace.getIcon() + destinationPlace.getName() : destinationPlace.getTown().getIcon() + destinationPlace.getTown().getName();
+         String str = client.getTextManager().generateScene("Voyage", "Êtes-vous sûr de vouloir vous déplacer vers **" + formattedText + "** en** `" + time + " minutes` **?");
          event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
              stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
              new java.util.Timer().schedule(
@@ -113,7 +115,8 @@ public class Journey extends AbstractCommand {
         ArrayList<Command.Choice> choices = new ArrayList<>();
         for (me.aikoo.StMary.system.Move move : place.getAvailableMoves()) {
             Place destination = client.getLocationManager().getPlace(move.getTo().getName());
-            choices.add(new Command.Choice(destination.getIcon() + " " + destination.getName(), move.getTo().getName()));
+            String name = (place.getTown() == destination.getTown()) ? destination.getIcon() + " " + destination.getName() : destination.getTown().getIcon() + " " + destination.getTown().getName();
+            choices.add(new Command.Choice(name, move.getTo().getName()));
         }
 
         event.replyChoices(choices).queue();
@@ -133,6 +136,8 @@ public class Journey extends AbstractCommand {
 
             @Override
             public void onClick(ButtonInteractionEvent event) {
+                Place oldPlace = stMaryClient.getLocationManager().getPlace(player.getCurrentLocationPlace());
+                Place destinationPlace = stMaryClient.getLocationManager().getPlace(move.getTo().getName());
                 Moves moves = new Moves();
                 moves.setPlayerId(player.getId());
                 moves.setFrom(move.getFrom().getName());
@@ -143,7 +148,9 @@ public class Journey extends AbstractCommand {
                 stMaryClient.getDatabaseManager().createOrUpdate(moves);
                 isStarted = true;
 
-                String text = stMaryClient.getTextManager().generateScene("Voyage", "Vous voyagez vers **" + move.getTo().getIcon() + move.getTo().getName() + "**. Ce déplacement prendra `" + move.getTime() + "` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant.");
+                String formattedText = (oldPlace.getTown() == destinationPlace.getTown()) ? destinationPlace.getIcon() + destinationPlace.getName() : destinationPlace.getTown().getIcon() + destinationPlace.getTown().getName();
+
+                String text = stMaryClient.getTextManager().generateScene("Voyage", "Vous voyagez vers **" + formattedText + "**. Ce déplacement prendra `" + move.getTime() + "` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant.");
                 List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = event.getMessage().getButtons();
                 buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
 
