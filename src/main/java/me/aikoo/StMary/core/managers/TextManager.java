@@ -29,7 +29,8 @@ public class TextManager {
         Pattern pattern = Pattern.compile(regex);
         if ((pattern.matcher(formattedText).find())) {
             while (pattern.matcher(formattedText).find()) {
-                formattedText = formattedText.replaceFirst(regex, this.formatLocation(formattedText));
+                String name = this.extractLocationName(formattedText);
+                formattedText = formattedText.replaceFirst(regex, this.formatLocation(name));
             }
         }
 
@@ -44,10 +45,9 @@ public class TextManager {
         return embedBuilder;
     }
 
-    private String formatLocation(String text) {
-        String name = this.extractLocationName(text);
-        Location location = this.stMaryClient.getLocationManager().getLocation(name);
-        return (location != null) ? location.getIcon() + "**" + location.getName() + "**" : "Unknown location";
+    public String formatLocation(String text) {
+        Location location = this.stMaryClient.getLocationManager().getLocation(text);
+        return (location != null) ? location.getIcon() + location.getName() : "Unknown location";
     }
 
     public String extractLocationName(String input) {

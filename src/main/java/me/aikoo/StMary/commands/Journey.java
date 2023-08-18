@@ -70,8 +70,8 @@ public class Journey extends AbstractCommand {
 
          long time = move.getTime();
 
-         String formattedText = (place.getTown() == destinationPlace.getTown()) ? destinationPlace.getIcon() + destinationPlace.getName() : destinationPlace.getTown().getIcon() + destinationPlace.getTown().getName();
-         String str = client.getTextManager().generateScene("Voyage", "Êtes-vous sûr de vouloir vous déplacer vers **" + formattedText + "** en** `" + time + " minutes` **?");
+        String formattedText = (place.getTown() == destinationPlace.getTown()) ? stMaryClient.getTextManager().formatLocation(destinationPlace.getName()) : stMaryClient.getTextManager().formatLocation(destinationPlace.getTown().getName());
+        String str = client.getTextManager().generateScene("Voyage", "Êtes-vous sûr de vouloir vous déplacer vers **" + formattedText + "** en** `" + time + " minutes` **?");
          event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
              stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
              new java.util.Timer().schedule(
@@ -115,7 +115,7 @@ public class Journey extends AbstractCommand {
         ArrayList<Command.Choice> choices = new ArrayList<>();
         for (me.aikoo.StMary.system.Move move : place.getAvailableMoves()) {
             Place destination = client.getLocationManager().getPlace(move.getTo().getName());
-            String name = (place.getTown() == destination.getTown()) ? destination.getIcon() + " " + destination.getName() : destination.getTown().getIcon() + " " + destination.getTown().getName();
+            String name = (place.getTown() == destination.getTown()) ? this.stMaryClient.getTextManager().formatLocation(destination.getName()) : this.stMaryClient.getTextManager().formatLocation(destination.getTown().getName());
             choices.add(new Command.Choice(name, move.getTo().getName()));
         }
 
@@ -148,7 +148,7 @@ public class Journey extends AbstractCommand {
                 stMaryClient.getDatabaseManager().createOrUpdate(moves);
                 isStarted = true;
 
-                String formattedText = (oldPlace.getTown() == destinationPlace.getTown()) ? destinationPlace.getIcon() + destinationPlace.getName() : destinationPlace.getTown().getIcon() + destinationPlace.getTown().getName();
+                String formattedText = (oldPlace.getTown() == destinationPlace.getTown()) ? stMaryClient.getTextManager().formatLocation(destinationPlace.getName()) : stMaryClient.getTextManager().formatLocation(destinationPlace.getTown().getName());
 
                 String text = stMaryClient.getTextManager().generateScene("Voyage", "Vous voyagez vers **" + formattedText + "**. Ce déplacement prendra `" + move.getTime() + "` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant.");
                 List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = event.getMessage().getButtons();

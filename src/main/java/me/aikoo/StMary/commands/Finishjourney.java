@@ -38,14 +38,16 @@ public class Finishjourney extends AbstractCommand {
         long now = System.currentTimeMillis();
         long end = start + time;
 
+        Place destinationPlace = client.getLocationManager().getPlace(moves.getTo());
+        Place fromPlace = client.getLocationManager().getPlace(moves.getFrom());
+        String formatted = (fromPlace.getTown() == destinationPlace.getTown()) ? this.stMaryClient.getTextManager().formatLocation(destinationPlace.getName()) : this.stMaryClient.getTextManager().formatLocation(destinationPlace.getTown().getName());
+
         if (now < end) {
             long remaining = end - now;
-            String text = client.getTextManager().generateScene("Fin de Voyage", String.format("Vous n'avez pas encore fini votre voyage. Veuillez attendre <t:%s:R> avant d'arriver à votre destination", TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + remaining)));
+            String text = client.getTextManager().generateScene("Fin de Voyage", String.format("Vous n'avez pas encore fini votre voyage vers **%s**. Veuillez attendre <t:%s:R> avant d'arriver à votre destination", formatted, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + remaining)));
             event.reply(text).queue();
             return;
         }
-
-        Place destinationPlace = client.getLocationManager().getPlace(moves.getTo());
 
         player.setCurrentLocationPlace(destinationPlace.getName());
         player.setCurrentLocationRegion(destinationPlace.getRegion().getName());
@@ -54,7 +56,7 @@ public class Finishjourney extends AbstractCommand {
         client.getDatabaseManager().delete(moves);
         client.getDatabaseManager().update(player);
 
-        String text = client.getTextManager().generateScene("Rapport de Fin de Voyage", String.format("Vous êtes arrivé à **%s**.", destinationPlace.getIcon() + destinationPlace.getName()));
+        String text = client.getTextManager().generateScene("Rapport de Fin de Voyage", String.format("Vous êtes arrivé à **%s**.", formatted));
         event.reply(text).queue();
     }
 
