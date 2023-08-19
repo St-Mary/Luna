@@ -28,8 +28,7 @@ public class Test extends AbstractCommand {
 
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
-        String test = event.getOption("test").getAsString();
-        event.reply("Destination: " + test).queue();
+        event.reply("Test <:book_1:1142570454834499724>").queue();
     }
 
     @Override

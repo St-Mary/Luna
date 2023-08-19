@@ -31,6 +31,13 @@ public class SelectTitle extends AbstractCommand {
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
         String titleName = Objects.requireNonNull(event.getOption("title")).getAsString();
+
+        if (client.getTitleManager().getTitle(titleName) == null) {
+            EmbedBuilder error = this.stMaryClient.getTextManager().generateErrorEmbed("Sélection du Titre Actuel", "Ce titre n'existe pas.");
+            event.replyEmbeds(error.build()).queue();
+            return;
+        }
+
         Player player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
         String title = client.getTextManager().getTitle("select_title");
         String text = client.getTextManager().getText("select_title").replace("{{title}}", client.getTitleManager().getTitle(titleName).format());

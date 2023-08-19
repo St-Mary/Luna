@@ -24,6 +24,8 @@ public class StMaryClient {
     @Getter
     private final TitleManager titleManager = new TitleManager();
     @Getter
+    private final ObjectManager objectManager = new ObjectManager();
+    @Getter
     private final ButtonManager buttonManager;
     @Getter
     private JDA jda;

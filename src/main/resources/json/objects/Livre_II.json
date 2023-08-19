@@ -1,5 +1,7 @@
 {
   "id": "book_II",
   "name": "Grimoire de l'Initié",
+  "icon": "book",
+  "type": "magical_book",
   "description": "Un grimoire aux pages jaunies qui appartint à un étudiant passionné. Il contient des sorts de base, appris lors de sa première année à l'académie de magie."
 }

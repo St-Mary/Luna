@@ -1,5 +1,7 @@
 {
   "id": "book_V",
   "name": "Grand Grimoire des Enchanteurs",
+  "icon": "book",
+  "type": "magical_book",
   "description": "Un grimoire massif orné d'or, contenant des sorts d'enchantement avancés. Il a été créé par un mage légendaire pour protéger son royaume."
 }
