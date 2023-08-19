@@ -8,7 +8,7 @@
 
 4. **Tome de l'Élémentaliste (Grade IV)** : Un tome décrivant les secrets de la manipulation des éléments. Il a été transmis de génération en génération dans une lignée d'élémentalistes.
 
-5. **Grande Grimoire des Enchanteurs (Grade V)** : Un grimoire massif orné d'or, contenant des sorts d'enchantement avancés. Il a été créé par un mage légendaire pour protéger son royaume.
+5. **Grand Grimoire des Enchanteurs (Grade V)** : Un grimoire massif orné d'or, contenant des sorts d'enchantement avancés. Il a été créé par un mage légendaire pour protéger son royaume.
 
 6. **Livre de la Lune et des Étoiles (Grade VI)** : Un livre lié à la magie des astres et de la nuit. Il aurait été écrit par un observateur des étoiles qui pouvait prédire l'avenir grâce aux constellations.
 
@@ -18,4 +18,4 @@
 
 9. **Codex des Abysses (Grade IX)** : Un codex maléfique qui révèle les sombres pouvoirs de l'abîme. Son origine est inconnue, mais il est recherché par les sorciers avides de puissance.
 
-10. **Livre de l'Archimage (Grade X)** : Le livre ultime de la magie, créer un archimage légendaire. Il contient des sorts d'une puissance incommensurable et ne peut être utilisé que par les plus sages et les plus dignes de sa grande puissance.
+10. **La Bible de l'Archimage (Grade X)** : Le livre ultime de la magie, créer un archimage légendaire. Il contient des sorts d'une puissance incommensurable et ne peut être utilisé que par les plus sages et les plus dignes de sa grande puissance.
