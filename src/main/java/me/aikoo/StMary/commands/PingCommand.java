@@ -4,8 +4,8 @@ import me.aikoo.StMary.core.StMaryClient;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-public class Ping extends AbstractCommand {
-    public Ping(StMaryClient stMaryClient) {
+public class PingCommand extends AbstractCommand {
+    public PingCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "ping";

@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * A command to finish a journey and arrive at the destination.
  */
-public class Finishjourney extends AbstractCommand {
+public class FinishJourneyCommand extends AbstractCommand {
 
-    public Finishjourney(StMaryClient stMaryClient) {
+    public FinishJourneyCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "endjourney";
@@ -23,6 +23,11 @@ public class Finishjourney extends AbstractCommand {
         this.cooldown = 15000L;
     }
 
+    /**
+     * Arrives at the destination.
+     * @param client The StMaryClient instance.
+     * @param event  The interaction event.
+     */
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
         PlayerEntity player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
@@ -46,6 +51,7 @@ public class Finishjourney extends AbstractCommand {
                 this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) :
                 this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
 
+        // Check if the player has arrived at the destination.
         if (now < end) {
             long remaining = end - now;
             String text = client.getTextManager().generateScene("Fin de Voyage",
@@ -59,9 +65,11 @@ public class Finishjourney extends AbstractCommand {
         player.setCurrentLocationRegion(destinationPlace.getRegion().getName());
         player.setCurrentLocationTown(destinationPlace.getTown().getName());
 
+        // Update the player's location in the database.
         client.getDatabaseManager().delete(moves);
         client.getDatabaseManager().update(player);
 
+        // Send the arrival message.
         String text = client.getTextManager().generateScene("Rapport de Fin de Voyage", String.format("Vous êtes arrivé à **%s**.", formatted));
         event.reply(text).queue();
     }

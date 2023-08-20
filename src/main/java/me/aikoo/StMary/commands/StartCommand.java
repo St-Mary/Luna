@@ -13,14 +13,14 @@ import java.util.List;
 /**
  * The Start command allows users to begin their adventure.
  */
-public class Start extends AbstractCommand {
+public class StartCommand extends AbstractCommand {
 
     /**
      * Creates a new Start command.
      *
      * @param stMaryClient The StMaryClient instance.
      */
-    public Start(StMaryClient stMaryClient) {
+    public StartCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "start";

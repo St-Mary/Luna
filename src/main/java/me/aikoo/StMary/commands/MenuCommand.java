@@ -24,7 +24,7 @@ import java.util.Objects;
 /**
  * A command to display a user's menu, including their profile, inventory, and titles.
  */
-public class Menu extends AbstractCommand {
+public class MenuCommand extends AbstractCommand {
 
     // Indicates if the menu is closed
     private boolean isClosed = false;
@@ -34,7 +34,7 @@ public class Menu extends AbstractCommand {
      *
      * @param stMaryClient The StMaryClient instance.
      */
-    public Menu(StMaryClient stMaryClient) {
+    public MenuCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "menu";

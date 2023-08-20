@@ -17,14 +17,14 @@ import java.util.Objects;
 /**
  * A command to select and display a title for the user.
  */
-public class SelectTitle extends AbstractCommand {
+public class SelectTitleCommand extends AbstractCommand {
 
     /**
      * Constructs a SelectTitle command.
      *
      * @param stMaryClient The StMaryClient instance.
      */
-    public SelectTitle(StMaryClient stMaryClient) {
+    public SelectTitleCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "selecttitle";

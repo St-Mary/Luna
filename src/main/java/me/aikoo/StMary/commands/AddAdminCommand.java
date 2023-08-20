@@ -10,8 +10,8 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Objects;
 
-public class Adminaddadmin extends AbstractCommand {
-    public Adminaddadmin(StMaryClient stMaryClient) {
+public class AddAdminCommand extends AbstractCommand {
+    public AddAdminCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "adminaddadmin";

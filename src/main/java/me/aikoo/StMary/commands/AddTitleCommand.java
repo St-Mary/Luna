@@ -7,8 +7,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-public class Adminaddtitle extends AbstractCommand {
-    public Adminaddtitle(StMaryClient stMaryClient) {
+public class AddTitleCommand extends AbstractCommand {
+    public AddTitleCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "adminaddtitle";

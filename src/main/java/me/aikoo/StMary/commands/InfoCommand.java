@@ -13,9 +13,13 @@ import java.util.ArrayList;
 /**
  * A command to obtain information about a game element.
  */
-public class Info extends AbstractCommand {
+public class InfoCommand extends AbstractCommand {
 
-    public Info(StMaryClient stMaryClient) {
+    /**
+     * Constructor of the Info command.
+     * @param stMaryClient The StMaryClient instance.
+     */
+    public InfoCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "info";
@@ -33,6 +37,11 @@ public class Info extends AbstractCommand {
         this.options.add(new OptionData(OptionType.STRING, "name", "Le nom de l'élément sur lequel vous souhaitez obtenir des informations.", false));
     }
 
+    /**
+     * Provides information about all titles.
+     * @param client The StMaryClient instance.
+     * @param event  The interaction event.
+     */
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
         String element = (event.getOption("element") != null) ? event.getOption("element").getAsString() : null;

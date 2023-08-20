@@ -6,13 +6,15 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-public class Test extends AbstractCommand {
-    public Test(StMaryClient stMaryClient) {
+public class TestCommand extends AbstractCommand {
+    public TestCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "test";
         this.description = "Test command";
         this.cooldown = 10000L;
+
+        this.setAdminCommand(true);
 
         this.options.add(new OptionData(OptionType.STRING, "destination", "Test option").setAutoComplete(true).setRequired(true));
     }

@@ -8,8 +8,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-public class Adminremoveadmin extends AbstractCommand {
-    public Adminremoveadmin(StMaryClient stMaryClient) {
+public class RemoveAdminCommand extends AbstractCommand {
+    public RemoveAdminCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "adminremoveadmin";

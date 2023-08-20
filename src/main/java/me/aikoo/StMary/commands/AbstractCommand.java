@@ -38,6 +38,10 @@ public abstract class AbstractCommand {
     protected String description;
     protected Long cooldown = 5000L;
 
+    /**
+     * Constructor for the AbstractCommand class
+     * @param stMaryClient The client instance
+     */
     public AbstractCommand(StMaryClient stMaryClient) {
         this.stMaryClient = stMaryClient;
         this.name = this.getClass().getSimpleName().toLowerCase();
@@ -58,6 +62,8 @@ public abstract class AbstractCommand {
         }
 
         if (this.cooldown > 0) {
+
+            // If the user has a cooldown, we check if it's over. If not, we send an error message, otherwise we add a new cooldown.
             if (this.stMaryClient.getCooldownManager().hasCooldown(event.getUser().getId(), this.name) && this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name) > 0) {
                 long timeRemaining = this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name);
                 long timestampRemaining = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + timeRemaining);
@@ -67,14 +73,17 @@ public abstract class AbstractCommand {
                 return;
             }
 
+            // Add a new cooldown
             this.stMaryClient.getCooldownManager().addCooldown(event.getUser().getId(), this.name, this.cooldown);
         }
 
+        // If the command requires the user to be registered in-game, we check if he is. If not, we send an error message.
         if (this.mustBeRegistered && this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong()) == null) {
             event.reply(this.stMaryClient.getTextManager().generateError("Exécution de la commande", "Vous devez posséder un compte aventure pour exécuter cette commande!")).setEphemeral(true).queue();
             return;
         }
 
+        // Execute the command
         this.execute(client, event);
     }
 

@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * A command to initiate a journey to a destination.
  */
-public class Journey extends AbstractCommand {
+public class JourneyCommand extends AbstractCommand {
 
     private boolean isStarted = false;
 
@@ -30,7 +30,7 @@ public class Journey extends AbstractCommand {
      *
      * @param stMaryClient The StMaryClient instance.
      */
-    public Journey(StMaryClient stMaryClient) {
+    public JourneyCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "journey";
@@ -40,32 +40,47 @@ public class Journey extends AbstractCommand {
         this.options.add(new OptionData(OptionType.STRING, "destination", "La destination où aller").setAutoComplete(true).setRequired(true));
     }
 
+    /**
+     * Executes the "journey" command, allowing a player to initiate a journey to a specified destination.
+     *
+     * @param client The StMaryClient instance.
+     * @param event  The SlashCommandInteractionEvent representing the command interaction.
+     */
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
         String destination = event.getOption("destination").getAsString();
         PlayerEntity player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
-        MoveEntity moves = client.getDatabaseManager().getMoves(player.getId());
         Place place = client.getLocationManager().getPlace(player.getCurrentLocationPlace());
         Place destinationPlace = client.getLocationManager().getPlace(destination);
 
-        if (moves != null) {
-            Place toPlace = client.getLocationManager().getPlace(moves.getTo());
-            String formattedText = (place.getTown() == toPlace.getTown()) ? toPlace.getIcon() + toPlace.getName() : toPlace.getTown().getIcon() + toPlace.getTown().getName();
-            String text = client.getTextManager().generateScene("Voyage en Cours", "Vous êtes déjà en voyage vers **" + formattedText + "**.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant.");
-            event.reply(text).queue();
-            return;
-        }
-
+        // Check if either the current place or destination place is null.
         if (place == null || destinationPlace == null) {
             String errorText = client.getTextManager().generateError("Voyage Impossible", "La destination n'existe pas.");
             event.reply(errorText).setEphemeral(true).queue();
             return;
         }
 
+        // Retrieve any existing journey moves for the player.
+        MoveEntity moves = client.getDatabaseManager().getMoves(player.getId());
+
+        // Retrieve the journey move for the specified destination.
         me.aikoo.StMary.system.Journey move = place.getMove(destination);
 
-        if (!place.getAvailableMoves().contains(move)) {
-            String errorText = client.getTextManager().generateError("Voyage Impossible", "Vous ne pouvez pas vous déplacer vers cette destination.");
+        // Check if there are existing moves or if the move to the destination is not available.
+        if (moves != null || !place.getAvailableMoves().contains(move)) {
+            String errorMessage;
+
+            // Check if the player is already on a journey.
+            if (moves != null) {
+                Place toPlace = client.getLocationManager().getPlace(moves.getTo());
+                String formattedText = (place.getTown() == toPlace.getTown()) ? toPlace.getIcon() + toPlace.getName() : toPlace.getTown().getIcon() + toPlace.getTown().getName();
+
+                errorMessage = String.format("Vous êtes déjà en voyage vers **%s**.%n%nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant.", formattedText);
+            } else {
+                errorMessage = "Vous ne pouvez pas vous déplacer vers cette destination.";
+            }
+
+            String errorText = client.getTextManager().generateError("Voyage Impossible", errorMessage);
             event.reply(errorText).setEphemeral(true).queue();
             return;
         }
@@ -79,8 +94,12 @@ public class Journey extends AbstractCommand {
 
         String formattedText = (place.getTown() == destinationPlace.getTown()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
         String str = client.getTextManager().generateScene("Voyage", "Êtes-vous sûr de vouloir vous déplacer vers **" + formattedText + "** en** `" + time + " minutes` **?");
+
         event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
+            // Add buttons to the message for user interaction.
             stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
+
+            // Schedule a timer to close the journey if it is not started.
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
                         @Override
@@ -94,6 +113,7 @@ public class Journey extends AbstractCommand {
             );
         }));
     }
+
 
     /**
      * Closes the journey message.
@@ -109,14 +129,22 @@ public class Journey extends AbstractCommand {
         message.editMessage(text).setActionRow(buttons).queue();
     }
 
+    /**
+     * Handles auto-completion of a command based on the user's current location.
+     *
+     * @param client The StMaryClient instance for accessing game data.
+     * @param event  The CommandAutoCompleteInteractionEvent triggered by the user.
+     */
     @Override
     public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {
         PlayerEntity player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+
         if (player == null) {
             return;
         }
 
         Place place = client.getLocationManager().getPlace(player.getCurrentLocationPlace());
+
         if (place == null) {
             return;
         }
@@ -125,16 +153,30 @@ public class Journey extends AbstractCommand {
             return;
         }
 
+        // Create a list to store auto-completion choices.
         ArrayList<Command.Choice> choices = new ArrayList<>();
+
+        // Iterate through available moves and generate choices.
         for (me.aikoo.StMary.system.Journey move : place.getAvailableMoves()) {
-            Place destination = client.getLocationManager().getPlace(move.getTo().getName());
-            System.out.println(destination.getName());
-            String name = (place.getTown() == destination.getTown()) ? this.stMaryClient.getLocationManager().formatLocation(destination.getName()) : this.stMaryClient.getLocationManager().formatLocation(destination.getTown().getName());
-            choices.add(new Command.Choice(name, move.getTo().getName()));
+            // Retrieve the destination information.
+            String destinationName = move.getTo().getName();
+            Place destination = client.getLocationManager().getPlace(destinationName);
+
+            // Determine the display name based on the destination's town.
+            String name;
+            if (place.getTown() == destination.getTown()) {
+                name = this.stMaryClient.getLocationManager().formatLocation(destinationName);
+            } else {
+                name = this.stMaryClient.getLocationManager().formatLocation(destination.getTown().getName());
+            }
+
+            choices.add(new Command.Choice(name, destinationName));
         }
 
+        // Reply with the auto-completion choices.
         event.replyChoices(choices).queue();
     }
+
 
     /**
      * Represents a confirm button for journey.
@@ -160,8 +202,11 @@ public class Journey extends AbstractCommand {
 
         @Override
         public void onClick(ButtonInteractionEvent event) {
+            // Get the old place and destination place based on the player's current location and destination.
             Place oldPlace = stMaryClient.getLocationManager().getPlace(player.getCurrentLocationPlace());
             Place destinationPlace = stMaryClient.getLocationManager().getPlace(move.getTo().getName());
+
+            // Create a new MoveEntity to track the journey details.
             MoveEntity moves = new MoveEntity();
             moves.setPlayerId(player.getId());
             moves.setFrom(move.getFrom().getName());
@@ -169,17 +214,31 @@ public class Journey extends AbstractCommand {
             moves.setTime(move.getTime());
             moves.setStart(System.currentTimeMillis());
 
+            // Create or update the journey details in the database.
             stMaryClient.getDatabaseManager().createOrUpdate(moves);
+
+            // Set the journey as started.
             isStarted = true;
 
-            String formattedText = (oldPlace.getTown() == destinationPlace.getTown()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
+            // Determine the formatted text based on the town of the destination.
+            String formattedText = (oldPlace.getTown() == destinationPlace.getTown()) ?
+                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) :
+                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
 
-            String text = stMaryClient.getTextManager().generateScene("Voyage", "Vous voyagez vers **" + formattedText + "**. Ce déplacement prendra `" + move.getTime() + "` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant.");
+            // Generate a message to inform the user about the journey.
+            String text = stMaryClient.getTextManager().generateScene("Voyage",
+                    "Vous voyagez vers **" + formattedText + "**. Ce déplacement prendra `" + move.getTime() + "` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant.");
+
+            // Get the list of buttons from the event message and disable them.
             List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = event.getMessage().getButtons();
             buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
 
+            // Edit the message to update the journey details and disabled buttons.
             event.getMessage().editMessage(text).setActionRow(buttons).queue();
+
+            // Defer the edit of the interaction.
             event.deferEdit().queue();
+
         }
     }
 
