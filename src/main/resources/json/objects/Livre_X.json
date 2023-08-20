@@ -1,7 +1,7 @@
 {
   "id": "book_X",
   "name": "La Bible de l'Archimage",
-  "icon": "book",
+  "icon": "\uD83D\uDD16",
   "type": "magical_book",
   "description": "Le livre ultime de la magie, créer un archimage légendaire. Il contient des sorts d'une puissance incommensurable et ne peut être utilisé que par les plus sages et les plus dignes de sa grande puissance."
 }

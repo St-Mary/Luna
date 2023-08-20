@@ -1,7 +1,7 @@
 {
   "id": "book_VIII",
-  "name": "Grimoire des Âmes Perdues",
-  "icon": "book",
+  "name": "Grimoire des Âmes Damnées",
+  "icon": "\uD83D\uDD16",
   "type": "magical_book",
   "description": "Un grimoire maudit contenant des sorts liés à l'âme et à la nécromancie. Il aurait été utilisé par un sorcier déchu pour convoquer des esprits."
 }

@@ -20,8 +20,9 @@ public class ObjectManager {
     }
 
     public Object getObjectByName(String name) {
+        name = name.toLowerCase();
         for (Object object : objects.values()) {
-            if (object.getName().equalsIgnoreCase(name)) {
+            if (object.getName().toLowerCase().equalsIgnoreCase(name)) {
                 return object;
             }
         }

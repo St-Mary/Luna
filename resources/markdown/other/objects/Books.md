@@ -14,7 +14,7 @@
 
 7. **Tome des Mille Formes (Grade VII)** : Un livre mystérieux qui enseigne la magie de la métamorphose. On dit qu'il a été caché dans une bibliothèque secrète depuis des siècles.
 
-8. **Grimoire des Âmes Perdues (Grade VIII)** : Un grimoire maudit contenant des sorts liés à l'âme et à la nécromancie. Il aurait été utilisé par un sorcier déchu pour convoquer des esprits.
+8. **Grimoire des Âmes Damnées (Grade VIII)** : Un grimoire maudit contenant des sorts liés à l'âme et à la nécromancie. Il aurait été utilisé par un sorcier déchu pour convoquer des esprits.
 
 9. **Codex des Abysses (Grade IX)** : Un codex maléfique qui révèle les sombres pouvoirs de l'abîme. Son origine est inconnue, mais il est recherché par les sorciers avides de puissance.
 

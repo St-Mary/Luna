@@ -71,6 +71,7 @@ public class Info extends AbstractCommand {
         if (name == null) {
             String text = client.getTextManager().generateError("Information à propos d'un objet", "Veuillez entrer le nom de l'objet que vous souhaitez consulter.");
             event.reply(text).queue();
+            return;
         }
 
         Object object = client.getObjectManager().getObjectByName(name);
@@ -78,9 +79,9 @@ public class Info extends AbstractCommand {
         if (object == null) {
             String error = client.getTextManager().generateError("Information à propos d'un objet", "L'objet demandé n'existe pas.");
             event.reply(error).queue();
+            return;
         }
 
-        assert object != null;
         String description = String.format("**Nom :** %s `%s`\n\n**Type :** `%s`\n\n**Description de l'objet:** `%s`", object.getIcon(), object.getName(), object.getType().getId(), object.getDescription());
         String text = client.getTextManager().generateScene("Information à propos d'un objet", description);
 

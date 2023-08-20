@@ -1,7 +1,7 @@
 {
   "id": "book_VII",
   "name": "Tome des Mille Formes",
-  "icon": "book",
+  "icon": "\uD83D\uDD16",
   "type": "magical_book",
   "description": "Un livre mystérieux qui enseigne la magie de la métamorphose. On dit qu'il a été caché dans une bibliothèque secrète depuis des siècles."
 }

@@ -1,7 +1,7 @@
 {
   "id": "book_III",
   "name": "Codex des Arcanes",
-  "icon": "book",
+  "icon": "\uD83D\uDD16",
   "type": "magical_book",
   "description": "Ce précieux codex appartenait à un mage itinérant qui a voyagé à travers des terres lointaines pour recueillir des sorts plus puissants. Il est couvert de runes mystiques."
 }
