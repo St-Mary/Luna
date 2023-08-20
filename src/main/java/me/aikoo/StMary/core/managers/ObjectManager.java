@@ -2,11 +2,9 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
 import me.aikoo.StMary.core.JSONFileReader;
-import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.system.Object;
 import me.aikoo.StMary.system.ObjectType;
 
-import java.awt.desktop.ScreenSleepEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,6 +17,15 @@ public class ObjectManager {
 
     public Object getObject(String id) {
         return objects.get(id);
+    }
+
+    public Object getObjectByName(String name) {
+        for (Object object : objects.values()) {
+            if (object.getName().equalsIgnoreCase(name)) {
+                return object;
+            }
+        }
+        return null;
     }
 
     private void load() {

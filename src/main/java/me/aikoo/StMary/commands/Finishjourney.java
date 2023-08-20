@@ -4,7 +4,6 @@ import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.database.entities.Moves;
 import me.aikoo.StMary.database.entities.Player;
 import me.aikoo.StMary.system.Place;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 

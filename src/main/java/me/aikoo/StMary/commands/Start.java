@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInterac
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +25,13 @@ public class Start extends AbstractCommand {
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
         Player player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        LocalDate creationDate = event.getUser().getTimeCreated().toLocalDateTime().toLocalDate();
+
+        if (creationDate.isAfter(LocalDate.now().minusWeeks(1))) {
+            EmbedBuilder embedBuilder = client.getTextManager().generateErrorEmbed("Création du Joueur", "Vous devez avoir un compte Discord créé depuis plus d'une semaine pour pouvoir jouer.");
+            event.replyEmbeds(embedBuilder.build()).queue();
+            return;
+        }
 
         if (player == null) {
             player = new Player();
