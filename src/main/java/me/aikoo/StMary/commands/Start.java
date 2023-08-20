@@ -44,6 +44,7 @@ public class Start extends AbstractCommand {
             player.setCurrentLocationTown("Talon");
             player.setCurrentLocationPlace("Place du Griffon Marin");
             player.setCurrentTitle("Néophyte");
+            player.setMagicalBook("book_I");
 
             client.getDatabaseManager().createOrUpdate(player);
 

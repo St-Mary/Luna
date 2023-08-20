@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.system.Object;
 import me.aikoo.StMary.system.Title;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -73,6 +74,10 @@ public class Player {
     @Column(name = "creation_timestamp", nullable = false)
     private Date creationTimestamp;
 
+    @Setter
+    @Column(name = "magical_book", nullable = false)
+    private String magicalBook;
+
     public Title getCurrentTitle(StMaryClient client) {
         return client.getTitleManager().getTitle(this.currentTitle);
     }
@@ -88,5 +93,9 @@ public class Player {
 
     public void addTitle(String titleName) {
         this.titles.add(titleName);
+    }
+
+    public Object getMagicalBook(StMaryClient client) {
+        return client.getObjectManager().getObject(this.magicalBook);
     }
 }

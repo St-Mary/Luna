@@ -4,6 +4,7 @@ import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.database.entities.Moves;
 import me.aikoo.StMary.database.entities.Player;
 import me.aikoo.StMary.system.Button;
+import me.aikoo.StMary.system.Object;
 import me.aikoo.StMary.system.Place;
 import me.aikoo.StMary.system.Title;
 import net.dv8tion.jda.api.entities.Message;
@@ -144,9 +145,12 @@ public class Menu extends AbstractCommand {
             if (!event.getUser().getId().equals(id)) return;
             Title title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
+            Object magicalBook = player.getMagicalBook(stMaryClient);
+            String magicalBookName = (magicalBook != null) ? "%s `%s`\n".formatted(magicalBook.getIcon(), magicalBook.getName()) : "`Aucun`\n";
 
             String stringBuilder = String.format("### %s | %s | Sac à Dos\n", icon, event.getUser().getGlobalName()) +
-                    "**Argent :** `" + player.getMoney() + "`\n" +
+                    String.format("**Argent :** `%s`\n", player.getMoney()) +
+                    String.format("**Livre Magique :** %s\n", magicalBookName) +
                     "▬▬▬▬▬▬▬▬▬▬\n";
 
             event.editMessage(stringBuilder).queue();
