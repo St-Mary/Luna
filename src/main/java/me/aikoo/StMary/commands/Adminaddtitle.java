@@ -1,7 +1,7 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.database.entities.Player;
+import me.aikoo.StMary.database.entities.PlayerEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -34,7 +34,7 @@ public class Adminaddtitle extends AbstractCommand {
             return;
         }
 
-        Player player = client.getDatabaseManager().getPlayer(event.getOption("userid").getAsLong());
+        PlayerEntity player = client.getDatabaseManager().getPlayer(event.getOption("userid").getAsLong());
 
         if (player == null) {
             event.reply("This user doesn't exist").queue();
@@ -45,7 +45,7 @@ public class Adminaddtitle extends AbstractCommand {
             event.reply("This title doesn't exist").queue();
             return;
         }
-        player.addTitle(titleName);
+        player.addTitle(titleName, client);
         client.getDatabaseManager().update(player);
 
         event.reply("The title has been added to the user").queue();

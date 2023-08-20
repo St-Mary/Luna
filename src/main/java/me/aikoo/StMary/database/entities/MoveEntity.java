@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "moves")
-public class Moves {
+public class MoveEntity {
     @Id
     @Getter
     @GeneratedValue(generator = "uuid-hibernate-generator")
@@ -35,18 +35,38 @@ public class Moves {
     @Setter
     private UUID playerId;
 
+    /**
+     * Get the starting location of the move.
+     *
+     * @return The starting location of the move.
+     */
     public String getFrom() {
         return this.fromValue;
     }
 
+    /**
+     * Set the starting location of the move.
+     *
+     * @param from The starting location of the move.
+     */
     public void setFrom(String from) {
         this.fromValue = from;
     }
 
+    /**
+     * Get the destination location of the move.
+     *
+     * @return The destination location of the move.
+     */
     public String getTo() {
         return this.toValue;
     }
 
+    /**
+     * Set the destination location of the move.
+     *
+     * @param to The destination location of the move.
+     */
     public void setTo(String to) {
         this.toValue = to;
     }

@@ -5,7 +5,11 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a place within a region or town in the game world.
+ */
 public class Place extends Location {
+
     @Getter
     private final String name;
 
@@ -13,7 +17,7 @@ public class Place extends Location {
     private final String description;
 
     @Getter
-    private final String icon = "\uD83D\uDCCD";
+    private final String icon = "\uD83D\uDCCD"; // You can customize this icon.
 
     @Getter
     private final Region region;
@@ -23,19 +27,37 @@ public class Place extends Location {
     private Town town = null;
 
     @Getter
-    private final ArrayList<Move> availableMoves = new ArrayList<>();
+    private final ArrayList<Journey> availableMoves = new ArrayList<>();
 
+    /**
+     * Creates a new Place instance with the specified name, description, and region.
+     *
+     * @param name        The name of the place.
+     * @param description A brief description of the place.
+     * @param region      The region to which the place belongs.
+     */
     public Place(String name, String description, Region region) {
         this.name = name;
         this.description = description;
         this.region = region;
     }
 
-    public void addMove(Move m) {
-        this.availableMoves.add(m);
+    /**
+     * Adds a move to the list of available moves from this place.
+     *
+     * @param move The move to add.
+     */
+    public void addMove(Journey move) {
+        this.availableMoves.add(move);
     }
 
-    public Move getMove(String name) {
+    /**
+     * Retrieves a move by its name from the list of available moves.
+     *
+     * @param name The name of the move to retrieve.
+     * @return The Move instance with the specified name, or null if not found.
+     */
+    public Journey getMove(String name) {
         return this.availableMoves.stream().filter(move -> move.getTo().getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 }

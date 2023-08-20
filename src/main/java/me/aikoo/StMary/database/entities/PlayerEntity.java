@@ -10,14 +10,11 @@ import me.aikoo.StMary.system.Title;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigInteger;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "players")
-public class Player {
+public class PlayerEntity {
 
     @Id
     @Getter
@@ -30,10 +27,10 @@ public class Player {
     @Column(name = "discord_id", nullable = false)
     private Long discordId;
 
-    @Setter
-    @ElementCollection
-    @Column(name = "titles")
-    private List<String> titles;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "player_titles", joinColumns = @JoinColumn(name = "player_id"))
+    @Column(name = "title")
+    private List<TitleEntity> titles;
 
     @Setter
     @Column(name = "current_title", nullable = false)
@@ -78,24 +75,69 @@ public class Player {
     @Column(name = "magical_book", nullable = false)
     private String magicalBook;
 
+    /**
+     * Get the current title of the player.
+     *
+     * @param client The StMaryClient instance.
+     * @return The current title of the player.
+     */
     public Title getCurrentTitle(StMaryClient client) {
         return client.getTitleManager().getTitle(this.currentTitle);
     }
 
+    /**
+     * Get all titles owned by the player.
+     *
+     * @param client The StMaryClient instance.
+     * @return A HashMap of title names and Title objects.
+     */
     @Transactional
     public HashMap<String, Title> getTitles(StMaryClient client) {
         HashMap<String, Title> titles = new HashMap<>();
-        for (String title : this.titles) {
-            titles.put(title, client.getTitleManager().getTitle(title));
+        for (TitleEntity title : this.titles) {
+            titles.put(title.getName(), client.getTitleManager().getTitle(title.getName()));
         }
         return titles;
     }
 
-    public void addTitle(String titleName) {
-        this.titles.add(titleName);
+    /**
+     * Add a title to the player's collection of titles.
+     *
+     * @param titleName The name of the title to add.
+     * @param client    The StMaryClient instance.
+     */
+    public void addTitle(String titleName, StMaryClient client) {
+        TitleEntity titleEntity = new TitleEntity();
+        titleEntity.setName(titleName);
+        client.getDatabaseManager().createOrUpdate(titleEntity);
+        this.titles.add(titleEntity);
     }
 
+    /**
+     * Get the magical book owned by the player.
+     *
+     * @param client The StMaryClient instance.
+     * @return The magical book owned by the player.
+     */
     public Object getMagicalBook(StMaryClient client) {
         return client.getObjectManager().getObject(this.magicalBook);
+    }
+
+    /**
+     * Set the titles of the player.
+     *
+     * @param strings The list of title names.
+     * @param client  The StMaryClient instance.
+     */
+    public void setTitles(List<String> strings, StMaryClient client) {
+        ArrayList<TitleEntity> titles = new ArrayList<>();
+        for (String name : strings) {
+            TitleEntity titleEntity = new TitleEntity();
+            titleEntity.setName(name);
+            titles.add(titleEntity);
+            client.getDatabaseManager().createOrUpdate(titleEntity);
+        }
+
+        this.titles = titles;
     }
 }

@@ -8,15 +8,25 @@ import me.aikoo.StMary.system.Title;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Title manager for players.
+ */
 public class TitleManager {
 
     @Getter
     public HashMap<String, Title> titles = new HashMap<>();
 
+    /**
+     * Constructor for the TitleManager class.
+     * Loads titles from JSON files.
+     */
     public TitleManager() {
         this.load();
     }
 
+    /**
+     * Load titles from JSON files and add them to the list of titles.
+     */
     public void load() {
         ArrayList<JsonObject> jsonObjects = JSONFileReader.readAllFilesFrom("titles");
 
@@ -29,6 +39,12 @@ public class TitleManager {
         }
     }
 
+    /**
+     * Get a title by its name.
+     *
+     * @param name The name of the title to retrieve.
+     * @return The title corresponding to the name, or null if it doesn't exist.
+     */
     public Title getTitle(String name) {
         return this.titles.get(name);
     }

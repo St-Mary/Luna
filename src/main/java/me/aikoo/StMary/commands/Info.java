@@ -3,16 +3,18 @@ package me.aikoo.StMary.commands;
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.system.Object;
 import me.aikoo.StMary.system.Title;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
+/**
+ * A command to obtain information about a game element.
+ */
 public class Info extends AbstractCommand {
+
     public Info(StMaryClient stMaryClient) {
         super(stMaryClient);
 
@@ -62,11 +64,25 @@ public class Info extends AbstractCommand {
         }
     }
 
+    /**
+     * Provides information about a place.
+     *
+     * @param client The StMaryClient instance.
+     * @param event  The interaction event.
+     * @param name   The name of the place.
+     */
     private void infoPlace(StMaryClient client, SlashCommandInteractionEvent event, String name) {
         String text = client.getTextManager().generateScene("Information à propos d'un lieu", "Cette page n'est pas encore disponible !");
         event.reply(text).queue();
     }
 
+    /**
+     * Provides information about an object.
+     *
+     * @param client The StMaryClient instance.
+     * @param event  The interaction event.
+     * @param name   The name of the object.
+     */
     private void infoObject(StMaryClient client, SlashCommandInteractionEvent event, String name) {
         if (name == null) {
             String text = client.getTextManager().generateError("Information à propos d'un objet", "Veuillez entrer le nom de l'objet que vous souhaitez consulter.");
@@ -88,26 +104,60 @@ public class Info extends AbstractCommand {
         event.reply(text).queue();
     }
 
+    /**
+     * Provides information about a title or all titles.
+     *
+     * @param client The StMaryClient instance.
+     * @param event  The interaction event.
+     * @param name   The name of the title or null for all titles.
+     */
     private void infoTitle(StMaryClient client, SlashCommandInteractionEvent event, String name) {
         String text = (name == null) ? infoAllTitles(client) : infoOneTitle(client, name);
         event.reply(text).queue();
     }
 
+    /**
+     * Provides information about a character.
+     *
+     * @param client The StMaryClient instance.
+     * @param event  The interaction event.
+     * @param name   The name of the character.
+     */
     private void infoCharacter(StMaryClient client, SlashCommandInteractionEvent event, String name) {
         String text = client.getTextManager().generateScene("Information à propos d'un personnage", "Cette page n'est pas encore disponible !");
         event.reply(text).queue();
     }
 
+    /**
+     * Provides information about a monster.
+     *
+     * @param client The StMaryClient instance.
+     * @param event  The interaction event.
+     * @param name   The name of the monster.
+     */
     private void infoMonster(StMaryClient client, SlashCommandInteractionEvent event, String name) {
         String text = client.getTextManager().generateScene("Information à propos d'un monstre", "Cette page n'est pas encore disponible !");
         event.reply(text).queue();
     }
 
+    /**
+     * Provides information about a quest.
+     *
+     * @param client The StMaryClient instance.
+     * @param event  The interaction event.
+     * @param name   The name of the quest.
+     */
     private void infoQuest(StMaryClient client, SlashCommandInteractionEvent event, String name) {
         String text = client.getTextManager().generateScene("Information à propos d'une quête", "Cette page n'est pas encore disponible !");
         event.reply(text).queue();
     }
 
+    /**
+     * Generates information about all titles.
+     *
+     * @param client The StMaryClient instance.
+     * @return A formatted string with information about all titles.
+     */
     private String infoAllTitles(StMaryClient client) {
         ArrayList<Title> titles = new ArrayList<>(client.getTitleManager().getTitles().values());
         StringBuilder stringBuilder = new StringBuilder();
@@ -123,6 +173,13 @@ public class Info extends AbstractCommand {
         return client.getTextManager().generateScene("Titres", stringBuilder.toString());
     }
 
+    /**
+     * Generates information about a specific title.
+     *
+     * @param client The StMaryClient instance.
+     * @param name   The name of the title.
+     * @return A formatted string with information about the title.
+     */
     private String infoOneTitle(StMaryClient client, String name) {
         Title title = client.getTitleManager().getTitle(name);
 
@@ -135,6 +192,6 @@ public class Info extends AbstractCommand {
 
     @Override
     public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {
-
+        // Auto-complete logic can be added here if needed.
     }
 }

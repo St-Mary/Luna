@@ -13,11 +13,19 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
+/**
+ * This class handles various Discord events and interactions.
+ */
 public class EventsListener extends ListenerAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventsListener.class);
     private final StMaryClient stMaryClient;
 
+    /**
+     * Constructor to initialize the EventsListener with the StMaryClient.
+     *
+     * @param client The StMaryClient instance.
+     */
     public EventsListener(StMaryClient client) {
         this.stMaryClient = client;
     }
@@ -28,24 +36,30 @@ public class EventsListener extends ListenerAdapter {
 
         if (BotConfig.getMode().equals("dev")) {
             // Merge commands and admin commands
-            ArrayList<AbstractCommand> c = new ArrayList<>(this.stMaryClient.getCommandManager().getCommands().values());
-            c.addAll(this.stMaryClient.getCommandManager().getAdminCommands().values());
+            ArrayList<AbstractCommand> commands = new ArrayList<>(this.stMaryClient.getCommandManager().getCommands().values());
+            commands.addAll(this.stMaryClient.getCommandManager().getAdminCommands().values());
 
-            this.stMaryClient.getJda().getGuildById(BotConfig.getDevGuildId()).updateCommands().addCommands(c.stream().map(AbstractCommand::buildCommandData).toArray(CommandData[]::new)).queue(cmds -> {
-                LOGGER.info("Registered {} development commands !", cmds.size());
-            });
+            this.stMaryClient.getJda().getGuildById(BotConfig.getDevGuildId()).updateCommands()
+                    .addCommands(commands.stream().map(AbstractCommand::buildCommandData).toArray(CommandData[]::new))
+                    .queue(cmds -> {
+                        LOGGER.info("Registered {} development commands !", cmds.size());
+                    });
         } else {
-            this.stMaryClient.getJda().updateCommands().addCommands(this.stMaryClient.getCommandManager().getCommands().values().stream().map(AbstractCommand::buildCommandData).toArray(CommandData[]::new)).queue(cmds -> {
-                LOGGER.info("Registered {} commands !", cmds.size());
-            });
+            this.stMaryClient.getJda().updateCommands()
+                    .addCommands(this.stMaryClient.getCommandManager().getCommands().values().stream().map(AbstractCommand::buildCommandData).toArray(CommandData[]::new))
+                    .queue(cmds -> {
+                        LOGGER.info("Registered {} commands !", cmds.size());
+                    });
 
-            this.stMaryClient.getJda().getGuildById(BotConfig.getDevGuildId()).updateCommands().addCommands(this.stMaryClient.getCommandManager().getAdminCommands().values().stream().map(AbstractCommand::buildCommandData).toArray(CommandData[]::new)).queue(cmds -> {
-                LOGGER.info("Registered {} admin commands !", cmds.size());
-            });
+            this.stMaryClient.getJda().getGuildById(BotConfig.getDevGuildId()).updateCommands()
+                    .addCommands(this.stMaryClient.getCommandManager().getAdminCommands().values().stream().map(AbstractCommand::buildCommandData).toArray(CommandData[]::new))
+                    .queue(cmds -> {
+                        LOGGER.info("Registered {} admin commands !", cmds.size());
+                    });
         }
-
     }
 
+    @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         AbstractCommand command = this.stMaryClient.getCommandManager().getCommand(event.getName());
         command = (command == null) ? this.stMaryClient.getCommandManager().getAdminCommand(event.getName()) : command;
@@ -53,6 +67,7 @@ public class EventsListener extends ListenerAdapter {
         command.run(stMaryClient, event);
     }
 
+    @Override
     public void onCommandAutoCompleteInteraction(CommandAutoCompleteInteractionEvent event) {
         AbstractCommand command = this.stMaryClient.getCommandManager().getCommand(event.getInteraction().getName());
         if (command == null) return;

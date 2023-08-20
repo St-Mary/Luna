@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "administrators")
-public class Administrators {
+public class AdministratorEntity {
     @Id
     @Getter
     @GeneratedValue(generator = "uuid-hibernate-generator")

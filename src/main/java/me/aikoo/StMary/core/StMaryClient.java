@@ -8,15 +8,20 @@ import net.dv8tion.jda.api.JDABuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * StMaryClient is the main class of the bot. It contains all the managers and the JDA instance.
+ */
 public class StMaryClient {
+    // Logger
     private final Logger LOGGER = LoggerFactory.getLogger(StMaryClient.class);
 
+    // Principal managers of the bot
     @Getter
     private final CooldownManager cooldownManager = new CooldownManager();
     @Getter
     private final CommandManager commandManager;
     @Getter
-    private final LocationManager locationManager = new LocationManager();
+    private final LocationManager locationManager = new LocationManager(this);
     @Getter
     private final TextManager textManager = new TextManager(this);
     @Getter
@@ -27,19 +32,32 @@ public class StMaryClient {
     private final ObjectManager objectManager = new ObjectManager();
     @Getter
     private final ButtonManager buttonManager;
+
+    // JDA instance to interact with Discord
     @Getter
     private JDA jda;
 
+    /**
+     * StMaryClient constructor. It initialize all managers and start the bot.
+     */
     public StMaryClient() {
+        // Initialize the command manager
         this.commandManager = new CommandManager();
         this.commandManager.loadCommands(this);
 
+        // Initialize the button manager
         this.buttonManager = new ButtonManager(this);
 
+        // Initialize the database manager
         this.databaseManager.getSessionFactory();
+
+        // Start the bot
         startStMaryClient();
     }
 
+    /**
+     * Start StMaryClient by creating a JDA instance.
+     */
     private void startStMaryClient() {
         LOGGER.info("Starting StMaryClient...");
         String token = (BotConfig.getMode().equals("dev")) ? BotConfig.getDevToken() : BotConfig.getToken();
@@ -50,3 +68,4 @@ public class StMaryClient {
                 .build();
     }
 }
+

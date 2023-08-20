@@ -2,8 +2,7 @@ package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.BotConfig;
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.database.entities.Administrators;
-import net.dv8tion.jda.api.EmbedBuilder;
+import me.aikoo.StMary.database.entities.AdministratorEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -31,14 +30,14 @@ public class Adminaddadmin extends AbstractCommand {
             event.reply(errMsg).queue();
         }
 
-        Administrators administrators = client.getDatabaseManager().getAdministrator(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
+        AdministratorEntity administrators = client.getDatabaseManager().getAdministrator(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
         if (administrators != null) {
             String errMsg = client.getTextManager().generateError("Ajout d'un administrateur", "Cet utilisateur est déjà administrateur !");
             event.reply(errMsg).queue();
             return;
         }
 
-        Administrators newAdmin = new Administrators();
+        AdministratorEntity newAdmin = new AdministratorEntity();
         newAdmin.setDiscordId(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
 
         client.getDatabaseManager().createOrUpdate(newAdmin);

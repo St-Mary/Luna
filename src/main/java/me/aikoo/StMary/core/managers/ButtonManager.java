@@ -9,25 +9,55 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Manages interactive buttons in the bot.
+ */
 public class ButtonManager extends ListenerAdapter {
 
     private final StMaryClient stMaryClient;
     private final HashMap<String, ArrayList<Button>> commands = new HashMap<>();
 
+    /**
+     * Constructs a ButtonManager with the provided StMaryClient instance.
+     *
+     * @param stMaryClient The StMaryClient instance.
+     */
     public ButtonManager(StMaryClient stMaryClient) {
         this.stMaryClient = stMaryClient;
     }
 
+    /**
+     * Handles button interactions.
+     *
+     * @param event The ButtonInteractionEvent triggered by a button click.
+     */
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
+        // Check if the message ID is associated with any registered buttons
         if (!commands.containsKey(event.getMessageId())) return;
-        Button button = commands.get(event.getMessageId()).stream().filter(btn -> btn.getId().equals(event.getComponentId())).findFirst().orElse(null);
+
+        // Find the button that was clicked based on the component ID
+        Button button = commands.get(event.getMessageId()).stream()
+                .filter(btn -> btn.getId().equals(event.getComponentId()))
+                .findFirst()
+                .orElse(null);
+
+        // If the button is not found, return
         if (button == null) return;
 
+        // Execute the onClick action of the button
         button.onClick(event);
+
+        // Remove the executed button from the commands
         commands.remove(event.getId());
     }
 
+    /**
+     * Adds a list of buttons associated with a message ID.
+     *
+     * @param id      The ID of the message the buttons are associated with.
+     * @param buttons The list of Button objects to add.
+     */
     public void addButtons(String id, ArrayList<Button> buttons) {
         commands.put(id, buttons);
     }

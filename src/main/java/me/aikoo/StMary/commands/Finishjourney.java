@@ -1,8 +1,8 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.database.entities.Moves;
-import me.aikoo.StMary.database.entities.Player;
+import me.aikoo.StMary.database.entities.MoveEntity;
+import me.aikoo.StMary.database.entities.PlayerEntity;
 import me.aikoo.StMary.system.Place;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -10,6 +10,9 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A command to finish a journey and arrive at the destination.
+ */
 public class Finishjourney extends AbstractCommand {
 
     public Finishjourney(StMaryClient stMaryClient) {
@@ -22,9 +25,9 @@ public class Finishjourney extends AbstractCommand {
 
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
-        Player player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        PlayerEntity player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
         UUID uuid = player.getId();
-        Moves moves = client.getDatabaseManager().getMoves(uuid);
+        MoveEntity moves = client.getDatabaseManager().getMoves(uuid);
 
         if (moves == null) {
             String text = client.getTextManager().generateScene("Fin de Voyage Impossible", "Vous n'avez aucun voyage en cours.");
@@ -39,15 +42,19 @@ public class Finishjourney extends AbstractCommand {
 
         Place destinationPlace = client.getLocationManager().getPlace(moves.getTo());
         Place fromPlace = client.getLocationManager().getPlace(moves.getFrom());
-        String formatted = (fromPlace.getTown() == destinationPlace.getTown()) ? this.stMaryClient.getTextManager().formatLocation(destinationPlace.getName()) : this.stMaryClient.getTextManager().formatLocation(destinationPlace.getTown().getName());
+        String formatted = (fromPlace.getTown() == destinationPlace.getTown()) ?
+                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) :
+                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
 
         if (now < end) {
             long remaining = end - now;
-            String text = client.getTextManager().generateScene("Fin de Voyage", String.format("Vous n'avez pas encore fini votre voyage vers **%s**. Veuillez attendre <t:%s:R> avant d'arriver à votre destination", formatted, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + remaining)));
+            String text = client.getTextManager().generateScene("Fin de Voyage",
+                    String.format("Vous n'avez pas encore fini votre voyage vers **%s**. Veuillez attendre <t:%s:R> avant d'arriver à votre destination", formatted, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + remaining)));
             event.reply(text).queue();
             return;
         }
 
+        // Update the player's location and remove the journey record from the database.
         player.setCurrentLocationPlace(destinationPlace.getName());
         player.setCurrentLocationRegion(destinationPlace.getRegion().getName());
         player.setCurrentLocationTown(destinationPlace.getTown().getName());
@@ -61,6 +68,6 @@ public class Finishjourney extends AbstractCommand {
 
     @Override
     public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {
-
+        // Auto-complete logic can be added here if needed.
     }
 }

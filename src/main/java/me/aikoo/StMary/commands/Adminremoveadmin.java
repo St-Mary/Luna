@@ -2,8 +2,7 @@ package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.BotConfig;
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.database.entities.Administrators;
-import net.dv8tion.jda.api.EmbedBuilder;
+import me.aikoo.StMary.database.entities.AdministratorEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -36,7 +35,7 @@ public class Adminremoveadmin extends AbstractCommand {
             return;
         }
 
-        Administrators administrator = client.getDatabaseManager().getAdministrator(Long.parseLong(userId));
+        AdministratorEntity administrator = client.getDatabaseManager().getAdministrator(Long.parseLong(userId));
         if (administrator == null) {
             String errMsg = client.getTextManager().generateError("Retrait d'un administrateur", "Cet utilisateur n'est pas administrateur !");
             event.reply(errMsg).queue();
