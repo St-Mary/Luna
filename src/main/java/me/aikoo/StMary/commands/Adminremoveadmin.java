@@ -25,8 +25,8 @@ public class Adminremoveadmin extends AbstractCommand {
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
         if (!event.getUser().getId().equals(BotConfig.getOwnerId())) {
-            EmbedBuilder error = client.getTextManager().generateErrorEmbed("Retrait d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
-            event.replyEmbeds(error.build()).queue();
+            String errMsg = client.getTextManager().generateError("Retrait d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
+            event.reply(errMsg).queue();
         }
 
         String userId = event.getOption("userid").getAsString();
@@ -38,8 +38,8 @@ public class Adminremoveadmin extends AbstractCommand {
 
         Administrators administrator = client.getDatabaseManager().getAdministrator(Long.parseLong(userId));
         if (administrator == null) {
-            EmbedBuilder error = client.getTextManager().generateErrorEmbed("Retrait d'un administrateur", "Cet utilisateur n'est pas administrateur !");
-            event.replyEmbeds(error.build()).queue();
+            String errMsg = client.getTextManager().generateError("Retrait d'un administrateur", "Cet utilisateur n'est pas administrateur !");
+            event.reply(errMsg).queue();
             return;
         }
 

@@ -28,8 +28,7 @@ public class Start extends AbstractCommand {
         LocalDate creationDate = event.getUser().getTimeCreated().toLocalDateTime().toLocalDate();
 
         if (creationDate.isAfter(LocalDate.now().minusWeeks(1))) {
-            EmbedBuilder embedBuilder = client.getTextManager().generateErrorEmbed("Création du Joueur", "Vous devez avoir un compte Discord créé depuis plus d'une semaine pour pouvoir jouer.");
-            event.replyEmbeds(embedBuilder.build()).queue();
+            event.reply(client.getTextManager().generateError("Création du Joueur", "Vous devez avoir un compte Discord créé depuis plus d'une semaine pour pouvoir jouer.")).queue();
             return;
         }
 
@@ -52,8 +51,8 @@ public class Start extends AbstractCommand {
             String title = client.getTextManager().getTitle("start_adventure");
             event.reply(client.getTextManager().generateScene(title, text)).queue();
         } else {
-            EmbedBuilder embedBuilder = client.getTextManager().generateErrorEmbed("Démarrage de l'aventure", "Vous ne pouvez pas recommencer l'aventure !");
-            event.replyEmbeds(embedBuilder.build()).queue();
+            String error = client.getTextManager().generateError("Démarrage de l'aventure", "Vous ne pouvez pas recommencer l'aventure !");
+            event.reply(error).queue();
         }
     }
 

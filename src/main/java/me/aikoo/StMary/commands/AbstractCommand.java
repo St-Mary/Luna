@@ -52,7 +52,7 @@ public abstract class AbstractCommand {
 
         if (this.isAdminCommand) {
             if (!this.stMaryClient.getDatabaseManager().isAdministrator(event.getUser().getIdLong()) && !event.getUser().getId().equals(BotConfig.getOwnerId())) {
-                event.replyEmbeds(this.stMaryClient.getTextManager().generateErrorEmbed("Exécution de la commande", "Vous n'avez pas la permission d'exécuter cette commande!").build()).queue();
+                event.reply(client.getTextManager().generateError("Exécution de la commande", "Vous n'avez pas la permission d'exécuter cette commande!")).setEphemeral(true).queue();
                 return;
             }
         }
@@ -62,8 +62,8 @@ public abstract class AbstractCommand {
                 long timeRemaining = this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name);
                 long timestampRemaining = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + timeRemaining);
 
-                String text = client.getTextManager().generateScene("Doucement, jeune aventurier!", String.format("Patiente <t:%s:R> avant de pouvoir repartir au galop.", timestampRemaining));
-                event.reply(text).queue();
+                String text = client.getTextManager().generateError("Doucement, jeune aventurier!", String.format("Patiente <t:%s:R> avant de pouvoir repartir au galop.", timestampRemaining));
+                event.reply(text).setEphemeral(true).queue();
                 return;
             }
 
@@ -71,7 +71,7 @@ public abstract class AbstractCommand {
         }
 
         if (this.mustBeRegistered && this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong()) == null) {
-            event.replyEmbeds(this.stMaryClient.getTextManager().generateErrorEmbed("Exécution de la commande", "Vous devez posséder un compte aventure pour exécuter cette commande!").build()).queue();
+            event.reply(this.stMaryClient.getTextManager().generateError("Exécution de la commande", "Vous devez posséder un compte aventure pour exécuter cette commande!")).setEphemeral(true).queue();
             return;
         }
 

@@ -33,8 +33,8 @@ public class SelectTitle extends AbstractCommand {
         String titleName = Objects.requireNonNull(event.getOption("title")).getAsString();
 
         if (client.getTitleManager().getTitle(titleName) == null) {
-            EmbedBuilder error = this.stMaryClient.getTextManager().generateErrorEmbed("Sélection du Titre Actuel", "Ce titre n'existe pas.");
-            event.replyEmbeds(error.build()).queue();
+            String errorText = client.getTextManager().generateError("Sélection du Titre Actuel", "Ce titre n'existe pas.");
+            event.reply(errorText).setEphemeral(true).queue();
             return;
         }
 
@@ -53,14 +53,14 @@ public class SelectTitle extends AbstractCommand {
         if (player == null) return false;
         HashMap<String, Title> titles = player.getTitles(stMaryClient);
         if (!titles.containsKey(titleName)) {
-            EmbedBuilder error = this.stMaryClient.getTextManager().generateErrorEmbed("Sélection du Titre Actuel", "Vous ne possédez pas ce titre.");
-            event.replyEmbeds(error.build()).queue();
+            String errorText = this.stMaryClient.getTextManager().generateError("Sélection du Titre Actuel", "Vous ne possédez pas ce titre.");
+            event.reply(errorText).setEphemeral(true).queue();
             return false;
         }
 
         if (player.getCurrentTitle(stMaryClient).getName().equals(titleName)) {
-            EmbedBuilder error = this.stMaryClient.getTextManager().generateErrorEmbed("Sélection du Titre Actuel", "Ce titre est déjà votre titre actuel.");
-            event.replyEmbeds(error.build()).queue();
+            String errorText = this.stMaryClient.getTextManager().generateError("Sélection du Titre Actuel", "Ce titre est déjà votre titre actuel.");
+            event.reply(errorText).setEphemeral(true).queue();
             return false;
         }
 

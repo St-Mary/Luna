@@ -35,57 +35,57 @@ public class Journey extends AbstractCommand {
 
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
-         String destination = event.getOption("destination").getAsString();
-         Player player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
-         Moves moves = client.getDatabaseManager().getMoves(player.getId());
-         Place place = client.getLocationManager().getPlace(player.getCurrentLocationPlace());
-         Place destinationPlace = client.getLocationManager().getPlace(destination);
+        String destination = event.getOption("destination").getAsString();
+        Player player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        Moves moves = client.getDatabaseManager().getMoves(player.getId());
+        Place place = client.getLocationManager().getPlace(player.getCurrentLocationPlace());
+        Place destinationPlace = client.getLocationManager().getPlace(destination);
 
-         if (moves != null) {
-             Place toPlace = client.getLocationManager().getPlace(moves.getTo());
-             String formattedText = (place.getTown() == toPlace.getTown()) ? toPlace.getIcon() + toPlace.getName() : toPlace.getTown().getIcon() + toPlace.getTown().getName();
-             String text = client.getTextManager().generateScene("Voyage en Cours", "Vous êtes déjà en voyage vers **" + formattedText + "**.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant.");
-             event.reply(text).queue();
-             return;
-         }
+        if (moves != null) {
+            Place toPlace = client.getLocationManager().getPlace(moves.getTo());
+            String formattedText = (place.getTown() == toPlace.getTown()) ? toPlace.getIcon() + toPlace.getName() : toPlace.getTown().getIcon() + toPlace.getTown().getName();
+            String text = client.getTextManager().generateScene("Voyage en Cours", "Vous êtes déjà en voyage vers **" + formattedText + "**.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant.");
+            event.reply(text).queue();
+            return;
+        }
 
-         if (place == null || destinationPlace == null) {
-             EmbedBuilder error = client.getTextManager().generateErrorEmbed("Voyage Impossible", "La destination n'existe pas.");
-             event.replyEmbeds(error.build()).queue();
-             return;
-         }
+        if (place == null || destinationPlace == null) {
+            String errorText = client.getTextManager().generateError("Voyage Impossible", "La destination n'existe pas.");
+            event.reply(errorText).setEphemeral(true).queue();
+            return;
+        }
 
-         me.aikoo.StMary.system.Move move = place.getMove(destination);
+        me.aikoo.StMary.system.Move move = place.getMove(destination);
 
-         if (!place.getAvailableMoves().contains(move)) {
-             EmbedBuilder error = client.getTextManager().generateErrorEmbed("Voyage Impossible", "Vous ne pouvez pas vous déplacer vers cette destination.");
-             event.replyEmbeds(error.build()).queue();
-             return;
-         }
+        if (!place.getAvailableMoves().contains(move)) {
+            String errorText = client.getTextManager().generateError("Voyage Impossible", "Vous ne pouvez pas vous déplacer vers cette destination.");
+            event.reply(errorText).setEphemeral(true).queue();
+            return;
+        }
 
-         ConfirmBtn confirmBtn = new ConfirmBtn(client, move, player);
-         CloseBtn closeBtn = new CloseBtn(destinationPlace);
-         this.buttons.put(confirmBtn.getId(), confirmBtn);
-         this.buttons.put(closeBtn.getId(), closeBtn);
+        ConfirmBtn confirmBtn = new ConfirmBtn(client, move, player);
+        CloseBtn closeBtn = new CloseBtn(destinationPlace);
+        this.buttons.put(confirmBtn.getId(), confirmBtn);
+        this.buttons.put(closeBtn.getId(), closeBtn);
 
-         long time = move.getTime();
+        long time = move.getTime();
 
         String formattedText = (place.getTown() == destinationPlace.getTown()) ? stMaryClient.getTextManager().formatLocation(destinationPlace.getName()) : stMaryClient.getTextManager().formatLocation(destinationPlace.getTown().getName());
         String str = client.getTextManager().generateScene("Voyage", "Êtes-vous sûr de vouloir vous déplacer vers **" + formattedText + "** en** `" + time + " minutes` **?");
-         event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
-             stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
-             new java.util.Timer().schedule(
-                     new java.util.TimerTask() {
-                         @Override
-                         public void run() {
-                             if (!isStarted) {
+        event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
+            stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            if (!isStarted) {
                                 close(res, destinationPlace);
-                             }
-                         }
-                     },
-                     20000
-             );
-         }));
+                            }
+                        }
+                    },
+                    20000
+            );
+        }));
     }
 
     private void close(Message message, Place destinationPlace) {
@@ -124,44 +124,45 @@ public class Journey extends AbstractCommand {
 
     private class ConfirmBtn extends Button {
 
-            private final me.aikoo.StMary.system.Move move;
-            private final Player player;
+        private final me.aikoo.StMary.system.Move move;
+        private final Player player;
 
-            public ConfirmBtn(StMaryClient stMaryClient, me.aikoo.StMary.system.Move move, Player player) {
-                super("confirm_move", "Confirmer", ButtonStyle.SUCCESS, Emoji.fromUnicode("\uD83D\uDDFA\uFE0F"), stMaryClient);
+        public ConfirmBtn(StMaryClient stMaryClient, me.aikoo.StMary.system.Move move, Player player) {
+            super("confirm_move", "Confirmer", ButtonStyle.SUCCESS, Emoji.fromUnicode("\uD83D\uDDFA\uFE0F"), stMaryClient);
 
-                this.move = move;
-                this.player = player;
-            }
+            this.move = move;
+            this.player = player;
+        }
 
-            @Override
-            public void onClick(ButtonInteractionEvent event) {
-                Place oldPlace = stMaryClient.getLocationManager().getPlace(player.getCurrentLocationPlace());
-                Place destinationPlace = stMaryClient.getLocationManager().getPlace(move.getTo().getName());
-                Moves moves = new Moves();
-                moves.setPlayerId(player.getId());
-                moves.setFrom(move.getFrom().getName());
-                moves.setTo(move.getTo().getName());
-                moves.setTime(move.getTime());
-                moves.setStart(System.currentTimeMillis());
+        @Override
+        public void onClick(ButtonInteractionEvent event) {
+            Place oldPlace = stMaryClient.getLocationManager().getPlace(player.getCurrentLocationPlace());
+            Place destinationPlace = stMaryClient.getLocationManager().getPlace(move.getTo().getName());
+            Moves moves = new Moves();
+            moves.setPlayerId(player.getId());
+            moves.setFrom(move.getFrom().getName());
+            moves.setTo(move.getTo().getName());
+            moves.setTime(move.getTime());
+            moves.setStart(System.currentTimeMillis());
 
-                stMaryClient.getDatabaseManager().createOrUpdate(moves);
-                isStarted = true;
+            stMaryClient.getDatabaseManager().createOrUpdate(moves);
+            isStarted = true;
 
-                String formattedText = (oldPlace.getTown() == destinationPlace.getTown()) ? stMaryClient.getTextManager().formatLocation(destinationPlace.getName()) : stMaryClient.getTextManager().formatLocation(destinationPlace.getTown().getName());
+            String formattedText = (oldPlace.getTown() == destinationPlace.getTown()) ? stMaryClient.getTextManager().formatLocation(destinationPlace.getName()) : stMaryClient.getTextManager().formatLocation(destinationPlace.getTown().getName());
 
-                String text = stMaryClient.getTextManager().generateScene("Voyage", "Vous voyagez vers **" + formattedText + "**. Ce déplacement prendra `" + move.getTime() + "` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant.");
-                List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = event.getMessage().getButtons();
-                buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
+            String text = stMaryClient.getTextManager().generateScene("Voyage", "Vous voyagez vers **" + formattedText + "**. Ce déplacement prendra `" + move.getTime() + "` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant.");
+            List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = event.getMessage().getButtons();
+            buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
 
-                event.getMessage().editMessage(text).setActionRow(buttons).queue();
-                event.deferEdit().queue();
-            }
+            event.getMessage().editMessage(text).setActionRow(buttons).queue();
+            event.deferEdit().queue();
+        }
     }
 
     private class CloseBtn extends Button {
 
         private final Place destinationPlace;
+
         public CloseBtn(Place destinationPlace) {
             super("close_btn", "Annuler", ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
             this.destinationPlace = destinationPlace;

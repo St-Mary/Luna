@@ -27,14 +27,14 @@ public class Adminaddadmin extends AbstractCommand {
     @Override
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
         if (!event.getUser().getId().equals(BotConfig.getOwnerId())) {
-            EmbedBuilder error = client.getTextManager().generateErrorEmbed("Ajout d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
-            event.replyEmbeds(error.build()).queue();
+            String errMsg = client.getTextManager().generateError("Ajout d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
+            event.reply(errMsg).queue();
         }
 
         Administrators administrators = client.getDatabaseManager().getAdministrator(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
         if (administrators != null) {
-            EmbedBuilder error = client.getTextManager().generateErrorEmbed("Ajout d'un administrateur", "Cet utilisateur est déjà administrateur !");
-            event.replyEmbeds(error.build()).queue();
+            String errMsg = client.getTextManager().generateError("Ajout d'un administrateur", "Cet utilisateur est déjà administrateur !");
+            event.reply(errMsg).queue();
             return;
         }
 

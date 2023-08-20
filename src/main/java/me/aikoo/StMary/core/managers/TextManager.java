@@ -37,12 +37,9 @@ public class TextManager {
         return "╭───────────┈ ➤ ✎ **" + title + "**\n- " + formattedText + "\n╰─────────── ·\uFEFF \uFEFF \uFEFF· \uFEFF ·\uFEFF \uFEFF \uFEFF· \uFEFF✦";
     }
 
-    public EmbedBuilder generateErrorEmbed(String title, String text) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setAuthor("❌ | Une erreur est survenue: " + title);
-        embedBuilder.setDescription(text);
-        embedBuilder.setColor(0xff0000);
-        return embedBuilder;
+
+    public String generateError(String title, String text) {
+        return generateScene("❌ Erreur: " + title, text);
     }
 
     public String formatLocation(String text) {

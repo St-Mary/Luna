@@ -40,7 +40,7 @@ public class Menu extends AbstractCommand {
         Player player = client.getDatabaseManager().getPlayer(user.getIdLong());
 
         if (player == null) {
-            event.replyEmbeds(client.getTextManager().generateErrorEmbed("Menu Joueur", "Cet utilisateur n'a pas de compte aventure!").build()).queue();
+            event.reply(client.getTextManager().generateError("Menu Joueur", "Cet utilisateur n'a pas de compte aventure!")).setEphemeral(true).queue();
         } else {
             String profil = profilEmbed(client, user.getGlobalName(), player);
 
