@@ -93,7 +93,7 @@ public class JourneyCommand extends AbstractCommand {
 
         long time = move.getTime();
 
-        String formattedText = (place.getTown() == destinationPlace.getTown()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
+        String formattedText = (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
         String str = client.getTextManager().generateScene("Voyage", "Êtes-vous sûr de vouloir vous déplacer vers **" + formattedText + "** en** `" + time + " minutes` **?");
 
         event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
@@ -165,10 +165,10 @@ public class JourneyCommand extends AbstractCommand {
 
             // Determine the display name based on the destination's town.
             String name;
-            if (place.getTown() == destination.getTown()) {
-                name = this.stMaryClient.getLocationManager().formatLocation(destinationName);
-            } else {
+            if (destination.isTownPlace() && place.isTownPlace() && place.getTown() != destination.getTown()) {
                 name = this.stMaryClient.getLocationManager().formatLocation(destination.getTown().getName());
+            } else {
+                name = this.stMaryClient.getLocationManager().formatLocation(destinationName);
             }
 
             choices.add(new Command.Choice(name, destinationName));
@@ -222,7 +222,7 @@ public class JourneyCommand extends AbstractCommand {
             isStarted = true;
 
             // Determine the formatted text based on the town of the destination.
-            String formattedText = (oldPlace.getTown() == destinationPlace.getTown()) ?
+            String formattedText = (oldPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
                     stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) :
                     stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
 
@@ -238,8 +238,9 @@ public class JourneyCommand extends AbstractCommand {
             event.getMessage().editMessage(text).setActionRow(buttons).queue();
 
             // Defer the edit of the interaction.
-            event.deferEdit().queue();
-
+            if (!event.isAcknowledged()) {
+                event.deferEdit().queue();
+            }
         }
     }
 

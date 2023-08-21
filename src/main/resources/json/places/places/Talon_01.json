@@ -19,6 +19,18 @@
       "town": "Losse",
       "region": "Oraland",
       "duration": 2
+    },
+    {
+      "name": "Mer Naia",
+      "town": "",
+      "region": "Oraland",
+      "duration": 3
+    },
+    {
+      "name": "Rivière Lucca",
+      "town": "",
+      "region": "Oraland",
+      "duration": 2
     }
   ]
 }

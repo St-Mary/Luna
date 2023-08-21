@@ -134,7 +134,7 @@ public class MenuCommand extends AbstractCommand {
     private String profilEmbed(StMaryClient client, String name, PlayerEntity player) {
         Title title = player.getCurrentTitle(client);
         String icon = title.getIcon();
-        String town = (player.getCurrentLocationTown() != null) ? player.getCurrentLocationTown() : "Aucune ville";
+        String town = (!player.getCurrentLocationTown().equals("")) ? player.getCurrentLocationTown() : "Aucune cité";
         String place = player.getCurrentLocationPlace();
         String location = "**Localisation :** " + "`%s` - `%s`\n".formatted(town, place);
         MoveEntity move = client.getDatabaseManager().getMove(player.getId());
@@ -142,11 +142,16 @@ public class MenuCommand extends AbstractCommand {
         if (move != null) {
             Place to = client.getLocationManager().getPlace(move.getTo());
             Place from = client.getLocationManager().getPlace(move.getFrom());
-            if (!to.getTown().equals(from.getTown())) {
-                location = "**Localisation :** Voyage vers `%s`\n**Départ :** `%s`\n".formatted(to.getTown().getName(), from.getTown().getName());
-            } else {
-                location = "**Localisation :** Voyage vers `%s` - `%s`\n**Départ :** `%s`\n".formatted(to.getName(), to.getTown().getName(), from.getName());
+
+            // Format the destination and departure names based on whether they are town places or not
+            String destinationName = to.isTownPlace() ? to.getTown().getName() + " - " + to.getName() : to.getName();
+            String departureName = from.getName() + (from.isTownPlace() ? " - " + from.getTown().getName() : "");
+
+            if (!to.isTownPlace()) {
+                destinationName = to.getName() + " - " + to.getRegion().getName();
             }
+
+            location = String.format("**Localisation :** Voyage vers `%s`\n**Départ :** `%s`\n", destinationName, departureName);
         }
 
         return String.format("### %s | %s | Menu Joueur\n", icon, name) +

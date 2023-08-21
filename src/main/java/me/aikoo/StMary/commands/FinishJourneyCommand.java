@@ -47,7 +47,7 @@ public class FinishJourneyCommand extends AbstractCommand {
 
         Place destinationPlace = client.getLocationManager().getPlace(moves.getTo());
         Place fromPlace = client.getLocationManager().getPlace(moves.getFrom());
-        String formatted = (fromPlace.getTown() == destinationPlace.getTown()) ?
+        String formatted = (fromPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
                 this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) :
                 this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
 
@@ -63,7 +63,7 @@ public class FinishJourneyCommand extends AbstractCommand {
         // Update the player's location and remove the journey record from the database.
         player.setCurrentLocationPlace(destinationPlace.getName());
         player.setCurrentLocationRegion(destinationPlace.getRegion().getName());
-        player.setCurrentLocationTown(destinationPlace.getTown().getName());
+        player.setCurrentLocationTown(destinationPlace.isTownPlace() ? destinationPlace.getTown().getName() : "");
 
         // Update the player's location in the database.
         client.getDatabaseManager().delete(moves);

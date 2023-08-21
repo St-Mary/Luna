@@ -19,6 +19,18 @@
       "town": "Losse",
       "region": "Oraland",
       "duration": 1
+    },
+    {
+      "name": "Rivière Lucca",
+      "town": "",
+      "region": "Oraland",
+      "duration": 1
+    },
+    {
+      "name": "Pont Ruiné",
+      "town": "",
+      "region": "Oraland",
+      "duration": 1
     }
   ]
 }

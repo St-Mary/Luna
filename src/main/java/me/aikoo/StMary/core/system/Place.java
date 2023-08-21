@@ -60,4 +60,12 @@ public class Place extends Location {
     public Journey getMove(String name) {
         return this.availableMoves.stream().filter(move -> move.getTo().getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
+
+    /**
+     * Check if it's a town place.
+     * @return true if it's a town place, false otherwise.
+     */
+    public boolean isTownPlace() {
+        return this.town != null;
+    }
 }

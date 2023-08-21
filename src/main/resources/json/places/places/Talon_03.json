@@ -25,6 +25,12 @@
       "town": "Talon",
       "region": "Oraland",
       "duration": 3
+    },
+    {
+      "name": "Mer Naia",
+      "town": "",
+      "region": "Oraland",
+      "duration": 4
     }
   ]
 }

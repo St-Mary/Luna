@@ -1,5 +1,7 @@
 package me.aikoo.StMary.core.system;
 
+import java.util.ArrayList;
+
 /**
  * Represents a location in the game world.
  */

@@ -99,10 +99,32 @@ public class InfoCommand extends AbstractCommand {
         } else if (location instanceof Region region) {
             String regionPlaces = this.formatRegionPlaceDescription(region);
             content += regionPlaces;
+        } else if (location instanceof Place place) {
+            String availableDestinations = this.formatAvailableDestination(place);
+            content += String.format("\n\n**Destinations disponibles :** %s", availableDestinations);
         }
 
         String text = client.getTextManager().generateScene("Information à propos d'un lieu", content);
         event.reply(text).queue();
+    }
+
+    /**
+     * Format the availables description from a place.
+     * @param  place The place.
+     * @return The formatted description of the place.
+     */
+    private String formatAvailableDestination(Place place) {
+        ArrayList<Journey> availableDestinationsJourney = place.getAvailableMoves();
+        StringBuilder availableDestinations = new StringBuilder();
+
+        for (Journey journey : availableDestinationsJourney) {
+            availableDestinations.append(String.format("%s `%s`", journey.getTo().getIcon(), journey.getTo().getName()));
+            if (availableDestinationsJourney.indexOf(journey) != availableDestinationsJourney.size() - 1) {
+                availableDestinations.append(", ");
+            }
+        }
+
+        return availableDestinations.toString();
     }
 
     /**
