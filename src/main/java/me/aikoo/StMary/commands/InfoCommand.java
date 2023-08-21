@@ -1,6 +1,7 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.system.Location;
 import me.aikoo.StMary.system.Object;
 import me.aikoo.StMary.system.Title;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -9,6 +10,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * A command to obtain information about a game element.
@@ -38,7 +40,7 @@ public class InfoCommand extends AbstractCommand {
     }
 
     /**
-     * Provides information about all titles.
+     * Provides information about different things in-game.
      * @param client The StMaryClient instance.
      * @param event  The interaction event.
      */
@@ -81,8 +83,36 @@ public class InfoCommand extends AbstractCommand {
      * @param name   The name of the place.
      */
     private void infoPlace(StMaryClient client, SlashCommandInteractionEvent event, String name) {
-        String text = client.getTextManager().generateScene("Information à propos d'un lieu", "Cette page n'est pas encore disponible !");
+        Location location = client.getLocationManager().getLocation(name);
+
+        if (location == null) {
+            String error = client.getTextManager().generateError("Information à propos d'un lieu", "Le lieu demandé n'existe pas.");
+            event.reply(error).queue();
+            return;
+        }
+
+        String description = this.formatDescription(location.getDescription());
+        String content = String.format("**Nom :** %s `%s`\n\n**Type :** `%s`\n\n**Description du lieu :** %s", location.getIcon(), location.getName(), location.getType(), description);
+        String text = client.getTextManager().generateScene("Information à propos d'un lieu", content);
         event.reply(text).queue();
+    }
+
+    /**
+     * Format the description of a location
+     * @param description The description of the location.
+     */
+    private String formatDescription(String description) {
+        ArrayList<String> lines = new ArrayList<>(Arrays.asList(description.split("\n\n")));
+        StringBuilder formattedDescription = new StringBuilder();
+
+        for (String line : lines) {
+            formattedDescription.append(String.format("`%s`", line));
+            if (lines.indexOf(line) != lines.size() - 1) {
+                formattedDescription.append("\n\n");
+            }
+        }
+
+        return formattedDescription.toString();
     }
 
     /**

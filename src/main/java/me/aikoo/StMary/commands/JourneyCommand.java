@@ -35,7 +35,7 @@ public class JourneyCommand extends AbstractCommand {
 
         this.name = "journey";
         this.description = "\uD83D\uDDFA\uFE0F Se déplacer vers une autre destination.";
-        this.cooldown = 15000L;
+        this.cooldown = 7000L;
 
         this.options.add(new OptionData(OptionType.STRING, "destination", "La destination où aller").setAutoComplete(true).setRequired(true));
     }
@@ -61,7 +61,7 @@ public class JourneyCommand extends AbstractCommand {
         }
 
         // Retrieve any existing journey moves for the player.
-        MoveEntity moves = client.getDatabaseManager().getMoves(player.getId());
+        MoveEntity moves = client.getDatabaseManager().getMove(player.getId());
 
         // Retrieve the journey move for the specified destination.
         me.aikoo.StMary.system.Journey move = place.getMove(destination);
@@ -214,8 +214,8 @@ public class JourneyCommand extends AbstractCommand {
             moves.setTime(move.getTime());
             moves.setStart(System.currentTimeMillis());
 
-            // Create or update the journey details in the database.
-            stMaryClient.getDatabaseManager().createOrUpdate(moves);
+            // Save the journey details in the database.
+            stMaryClient.getDatabaseManager().save(moves);
 
             // Set the journey as started.
             isStarted = true;

@@ -96,6 +96,7 @@ public class DatabaseManager {
         session.beginTransaction();
         T obj = session.find(cls, id);
         session.getTransaction().commit();
+        session.close();
         return obj;
     }
 
@@ -107,7 +108,7 @@ public class DatabaseManager {
     public void save(Object obj) {
         Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
-        session.saveOrUpdate(obj);
+        session.persist(obj);
         session.getTransaction().commit();
         session.close();
     }
@@ -134,19 +135,6 @@ public class DatabaseManager {
         Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
         session.merge(obj);
-        session.getTransaction().commit();
-        session.close();
-    }
-
-    /**
-     * Create or update an object in the database.
-     *
-     * @param object The object to create or update.
-     */
-    public void createOrUpdate(Object object) {
-        Session session = this.getSessionFactory().openSession();
-        session.beginTransaction();
-        session.saveOrUpdate(object);
         session.getTransaction().commit();
         session.close();
     }
@@ -202,7 +190,7 @@ public class DatabaseManager {
      * @param uuid The UUID of the player.
      * @return The movements of the player corresponding to the UUID, or null if not found.
      */
-    public MoveEntity getMoves(UUID uuid) {
+    public MoveEntity getMove(UUID uuid) {
         Session session = this.getSessionFactory().openSession();
         session.beginTransaction();
         MoveEntity moves = session.createQuery("from MoveEntity where playerId = :uuid", MoveEntity.class).setParameter("uuid", uuid).uniqueResult();

@@ -56,7 +56,7 @@ public class TextManager {
      * @return The generated error message.
      */
     public String generateError(String title, String text) {
-        return generateScene("❌ Error: " + title, text);
+        return generateScene("❌ Erreur : " + title, text);
     }
 
     /**

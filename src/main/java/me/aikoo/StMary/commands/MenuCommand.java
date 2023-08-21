@@ -137,7 +137,7 @@ public class MenuCommand extends AbstractCommand {
         String town = (player.getCurrentLocationTown() != null) ? player.getCurrentLocationTown() : "Aucune ville";
         String place = player.getCurrentLocationPlace();
         String location = "**Localisation :** " + "`%s` - `%s`\n".formatted(town, place);
-        MoveEntity move = client.getDatabaseManager().getMoves(player.getId());
+        MoveEntity move = client.getDatabaseManager().getMove(player.getId());
 
         if (move != null) {
             Place to = client.getLocationManager().getPlace(move.getTo());
@@ -203,7 +203,7 @@ public class MenuCommand extends AbstractCommand {
          * @param id     The user's ID.
          */
         public InventoryBtn(PlayerEntity player, String id) {
-            super("inv_btn", "Backpack", ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDF92"), stMaryClient);
+            super("inv_btn", "Sac à Dos", ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDF92"), stMaryClient);
 
             this.player = player;
             this.id = id;
@@ -215,7 +215,7 @@ public class MenuCommand extends AbstractCommand {
             Title title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
             Object magicalBook = player.getMagicalBook(stMaryClient);
-            String magicalBookName = (magicalBook != null) ? "%s `%s`\n".formatted(magicalBook.getIcon(), magicalBook.getName()) : "`Aucun`\n";
+            String magicalBookName = (magicalBook != null) ? "%s `%s`\n".formatted(magicalBook.getIcon(), magicalBook.getName()) : "`Aucun`";
 
             String stringBuilder = String.format("### %s | %s | Sac à Dos\n", icon, event.getUser().getGlobalName()) +
                     String.format("**Argent :** `%s`\n", player.getMoney()) +
@@ -289,7 +289,7 @@ public class MenuCommand extends AbstractCommand {
          * @param id The user's ID.
          */
         public CloseBtn(String id) {
-            super("close_btn", "Close", ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
+            super("close_btn", "Fermer", ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
             this.id = id;
         }
 

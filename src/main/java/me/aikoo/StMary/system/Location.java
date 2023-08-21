@@ -25,4 +25,17 @@ public abstract class Location {
      * @return The icon representing the location.
      */
     public abstract String getIcon();
+
+    public String getType() {
+        String type = "";
+        if (this instanceof Region) {
+            type = "Région";
+        } else if (this instanceof Town) {
+            type = "Ville";
+        } else if (this instanceof Place) {
+            type = "Lieu";
+        }
+
+        return type;
+    }
 }

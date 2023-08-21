@@ -40,7 +40,7 @@ public class AddAdminCommand extends AbstractCommand {
         AdministratorEntity newAdmin = new AdministratorEntity();
         newAdmin.setDiscordId(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
 
-        client.getDatabaseManager().createOrUpdate(newAdmin);
+        client.getDatabaseManager().save(newAdmin);
 
         event.reply("L'utilisateur a été ajouté en tant qu'administrateur !").queue();
     }

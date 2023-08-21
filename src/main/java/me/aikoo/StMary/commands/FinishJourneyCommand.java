@@ -32,7 +32,7 @@ public class FinishJourneyCommand extends AbstractCommand {
     public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
         PlayerEntity player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
         UUID uuid = player.getId();
-        MoveEntity moves = client.getDatabaseManager().getMoves(uuid);
+        MoveEntity moves = client.getDatabaseManager().getMove(uuid);
 
         if (moves == null) {
             String text = client.getTextManager().generateScene("Fin de Voyage Impossible", "Vous n'avez aucun voyage en cours.");

@@ -109,7 +109,7 @@ public class PlayerEntity {
     public void addTitle(String titleName, StMaryClient client) {
         TitleEntity titleEntity = new TitleEntity();
         titleEntity.setName(titleName);
-        client.getDatabaseManager().createOrUpdate(titleEntity);
+        client.getDatabaseManager().save(titleEntity);
         this.titles.add(titleEntity);
     }
 
@@ -135,7 +135,7 @@ public class PlayerEntity {
             TitleEntity titleEntity = new TitleEntity();
             titleEntity.setName(name);
             titles.add(titleEntity);
-            client.getDatabaseManager().createOrUpdate(titleEntity);
+            client.getDatabaseManager().save(titleEntity);
         }
 
         this.titles = titles;

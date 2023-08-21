@@ -62,7 +62,7 @@ public class StartCommand extends AbstractCommand {
             player.setMagicalBook("book_I");
 
             // Save the new player entity to the database
-            client.getDatabaseManager().createOrUpdate(player);
+            client.getDatabaseManager().save(player);
 
             // Send a welcome message
             String text = client.getTextManager().getText("start_adventure");
