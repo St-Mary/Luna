@@ -1,9 +1,8 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.system.Location;
+import me.aikoo.StMary.core.system.*;
 import me.aikoo.StMary.core.system.Object;
-import me.aikoo.StMary.core.system.Title;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -91,8 +90,17 @@ public class InfoCommand extends AbstractCommand {
             return;
         }
 
-        String description = this.formatDescription(location.getDescription());
+        String description = this.formatLocationDescription(location.getDescription());
         String content = String.format("**Nom :** %s `%s`\n\n**Type :** `%s`\n\n**Description du lieu :** %s", location.getIcon(), location.getName(), location.getType(), description);
+
+        if (location instanceof Town town) {
+            String townPlaces = this.formatTownPlaceDescription(town);
+            content += String.format("\n\n**Lieux de la ville :** %s", townPlaces);
+        } else if (location instanceof Region region) {
+            String regionPlaces = this.formatRegionPlaceDescription(region);
+            content += regionPlaces;
+        }
+
         String text = client.getTextManager().generateScene("Information à propos d'un lieu", content);
         event.reply(text).queue();
     }
@@ -100,8 +108,9 @@ public class InfoCommand extends AbstractCommand {
     /**
      * Format the description of a location
      * @param description The description of the location.
+     * @return The formatted description of the location.
      */
-    private String formatDescription(String description) {
+    private String formatLocationDescription(String description) {
         ArrayList<String> lines = new ArrayList<>(Arrays.asList(description.split("\n\n")));
         StringBuilder formattedDescription = new StringBuilder();
 
@@ -109,6 +118,54 @@ public class InfoCommand extends AbstractCommand {
             formattedDescription.append(String.format("`%s`", line));
             if (lines.indexOf(line) != lines.size() - 1) {
                 formattedDescription.append("\n\n");
+            }
+        }
+
+        return formattedDescription.toString();
+    }
+
+    /**
+     * Format the description of a town place
+     * @param  town The town place.
+     * @return The formatted description of the town place.
+     */
+    private String formatTownPlaceDescription(Town town) {
+        ArrayList<Place> places = town.getPlaces();
+        StringBuilder formattedDescription = new StringBuilder();
+
+        for (Place place : places) {
+            formattedDescription.append(String.format("**%s** `%s`", place.getIcon(), place.getName()));
+            if (places.indexOf(place) != places.size() - 1) {
+                formattedDescription.append(", ");
+            }
+        }
+
+        return formattedDescription.toString();
+    }
+
+    /**
+     * Format places and towns description of a region
+     * @param  region
+     * @return The formatted description of the region.
+     */
+    private String formatRegionPlaceDescription(Region region) {
+        ArrayList<Place> places = region.getPlaces();
+        ArrayList<Town> towns = region.getTowns();
+        StringBuilder formattedDescription = new StringBuilder();
+
+        formattedDescription.append("\n\n**Villages :** ");
+        for (Town town : towns) {
+            formattedDescription.append(String.format("**%s** `%s`", town.getIcon(), town.getName()));
+            if (towns.indexOf(town) != towns.size() - 1) {
+                formattedDescription.append(", ");
+            }
+        }
+
+        formattedDescription.append("\n\n**Lieux :** ");
+        for (Place place : places) {
+            formattedDescription.append(String.format("**%s** `%s`", place.getIcon(), place.getName()));
+            if (places.indexOf(place) != places.size() - 1) {
+                formattedDescription.append(", ");
             }
         }
 
