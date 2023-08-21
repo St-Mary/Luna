@@ -3,7 +3,7 @@ package me.aikoo.StMary.commands;
 import me.aikoo.StMary.core.StMaryClient;
 import me.aikoo.StMary.database.entities.MoveEntity;
 import me.aikoo.StMary.database.entities.PlayerEntity;
-import me.aikoo.StMary.system.Place;
+import me.aikoo.StMary.core.system.Place;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 

@@ -1,7 +1,7 @@
 package me.aikoo.StMary.core.managers;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.system.Button;
+import me.aikoo.StMary.core.system.Button;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;

@@ -1,4 +1,4 @@
-package me.aikoo.StMary.system;
+package me.aikoo.StMary.core.system;
 
 /**
  * Represents a location in the game world.

@@ -1,10 +1,11 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.system.Journey;
 import me.aikoo.StMary.database.entities.MoveEntity;
 import me.aikoo.StMary.database.entities.PlayerEntity;
-import me.aikoo.StMary.system.Button;
-import me.aikoo.StMary.system.Place;
+import me.aikoo.StMary.core.system.Button;
+import me.aikoo.StMary.core.system.Place;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -64,7 +65,7 @@ public class JourneyCommand extends AbstractCommand {
         MoveEntity moves = client.getDatabaseManager().getMove(player.getId());
 
         // Retrieve the journey move for the specified destination.
-        me.aikoo.StMary.system.Journey move = place.getMove(destination);
+        Journey move = place.getMove(destination);
 
         // Check if there are existing moves or if the move to the destination is not available.
         if (moves != null || !place.getAvailableMoves().contains(move)) {
@@ -157,7 +158,7 @@ public class JourneyCommand extends AbstractCommand {
         ArrayList<Command.Choice> choices = new ArrayList<>();
 
         // Iterate through available moves and generate choices.
-        for (me.aikoo.StMary.system.Journey move : place.getAvailableMoves()) {
+        for (Journey move : place.getAvailableMoves()) {
             // Retrieve the destination information.
             String destinationName = move.getTo().getName();
             Place destination = client.getLocationManager().getPlace(destinationName);
@@ -183,7 +184,7 @@ public class JourneyCommand extends AbstractCommand {
      */
     private class ConfirmBtn extends Button {
 
-        private final me.aikoo.StMary.system.Journey move;
+        private final Journey move;
         private final PlayerEntity player;
 
         /**
@@ -193,7 +194,7 @@ public class JourneyCommand extends AbstractCommand {
          * @param move         The journey move.
          * @param player       The player associated with the user.
          */
-        public ConfirmBtn(StMaryClient stMaryClient, me.aikoo.StMary.system.Journey move, PlayerEntity player) {
+        public ConfirmBtn(StMaryClient stMaryClient, Journey move, PlayerEntity player) {
             super("confirm_move", "Confirmer", ButtonStyle.SUCCESS, Emoji.fromUnicode("\uD83D\uDDFA\uFE0F"), stMaryClient);
 
             this.move = move;

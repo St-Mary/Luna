@@ -5,8 +5,8 @@ import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.system.Object;
-import me.aikoo.StMary.system.Title;
+import me.aikoo.StMary.core.system.Object;
+import me.aikoo.StMary.core.system.Title;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigInteger;

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.aikoo.StMary.BotConfig;
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.system.Button;
+import me.aikoo.StMary.core.system.Button;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;

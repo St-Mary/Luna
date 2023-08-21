@@ -2,8 +2,8 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
 import me.aikoo.StMary.core.JSONFileReader;
-import me.aikoo.StMary.system.Object;
-import me.aikoo.StMary.system.ObjectType;
+import me.aikoo.StMary.core.system.Object;
+import me.aikoo.StMary.core.system.ObjectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
