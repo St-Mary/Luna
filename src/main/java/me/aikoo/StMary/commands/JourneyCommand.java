@@ -35,8 +35,8 @@ public class JourneyCommand extends AbstractCommand {
         super(stMaryClient);
 
         this.name = "journey";
-        this.description = "\uD83D\uDDFA\uFE0F Se déplacer vers une autre destination.";
-        this.cooldown = 7000L;
+        this.description = "\uD83D\uDDFA\uFE0F Voyager vers une destination.";
+        this.cooldown = 5000L;
 
         this.options.add(new OptionData(OptionType.STRING, "destination", "La destination où aller").setAutoComplete(true).setRequired(true));
     }
@@ -263,6 +263,7 @@ public class JourneyCommand extends AbstractCommand {
         @Override
         public void onClick(ButtonInteractionEvent event) {
             close(event.getMessage(), destinationPlace);
+            isStarted = true;
             event.deferEdit().queue();
         }
     }

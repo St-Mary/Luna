@@ -13,6 +13,12 @@
       "town": "Talon",
       "region": "Oraland",
       "duration": 2
+    },
+    {
+      "name": "Fontaine Dissy",
+      "town": "Losse",
+      "region": "Oraland",
+      "duration": 1
     }
   ]
 }

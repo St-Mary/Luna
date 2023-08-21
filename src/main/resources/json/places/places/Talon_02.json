@@ -13,6 +13,18 @@
       "town": "Talon",
       "region": "Oraland",
       "duration": 1
+    },
+    {
+      "name": "Promenade de la Mer Naia",
+      "town": "Talon",
+      "region": "Oraland",
+      "duration": 1
+    },
+    {
+      "name": "Taverne des Vagues Brillantes",
+      "town": "Talon",
+      "region": "Oraland",
+      "duration": 1
     }
   ]
 }

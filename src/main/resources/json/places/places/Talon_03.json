@@ -1,0 +1,30 @@
+{
+  "name": "Promenade de la Mer Naia",
+  "description": "Un sentier pavé serpente le long de la côte, offrant une vue imprenable sur les vagues étincelantes de la mer Naia. Les bancs en pierre invitent à la contemplation, tandis que les mouettes planent dans le ciel. À différents moments de la journée, le soleil se couche dans une symphonie de couleurs, créant des reflets magiques sur l'eau et inspirant rêveurs et amoureux. Ici viennent les habitants de Talon dans le but de se détendre et se ressourcer, les voyageurs pouvant y trouver un moment de paix dans leur voyage.",
+  "region": "Oraland",
+  "town": {
+    "isTownPlace": true,
+    "name": "Talon",
+    "isEntryPoint": false
+  },
+  "availableMoves": [
+    {
+      "name": "Place du Griffon Marin",
+      "town": "Talon",
+      "region": "Oraland",
+      "duration": 1
+    },
+    {
+      "name": "Château Glacé",
+      "town": "Talon",
+      "region": "Oraland",
+      "duration": 2
+    },
+    {
+      "name": "Temple Flottant",
+      "town": "Talon",
+      "region": "Oraland",
+      "duration": 3
+    }
+  ]
+}

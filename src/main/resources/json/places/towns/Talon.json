@@ -4,7 +4,11 @@
   "region": "Oraland",
   "places": [
     "Place du Griffon Marin",
-    "Entrée de la Cité"
+    "Taverne des Vagues Brillantes",
+    "Entrée de la Cité",
+    "Promenade de la Mer Naia",
+    "Temple Flottant",
+    "Château Glacé"
   ],
   "entryPoint": "Entrée de la Cité"
 }
