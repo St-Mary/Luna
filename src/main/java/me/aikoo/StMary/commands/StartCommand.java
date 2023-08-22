@@ -1,6 +1,7 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.managers.TextManager;
 import me.aikoo.StMary.database.entities.PlayerEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -64,10 +65,8 @@ public class StartCommand extends AbstractCommand {
             // Save the new player entity to the database
             client.getDatabaseManager().save(player);
 
-            // Send a welcome message
-            String text = client.getTextManager().getText("start_adventure");
-            String title = client.getTextManager().getTitle("start_adventure");
-            event.reply(client.getTextManager().generateScene(title, text)).queue();
+            TextManager.Text text = client.getTextManager().createText("start_adventure");
+            event.reply(text.build()).queue();
         } else {
             // Player already exists, send an error message
             String error = client.getTextManager().generateError("Démarrage de l'aventure", "Vous ne pouvez pas recommencer l'aventure !");

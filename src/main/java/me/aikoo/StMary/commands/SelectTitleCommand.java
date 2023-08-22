@@ -1,6 +1,7 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.managers.TextManager;
 import me.aikoo.StMary.database.entities.PlayerEntity;
 import me.aikoo.StMary.core.system.Title;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -55,15 +56,16 @@ public class SelectTitleCommand extends AbstractCommand {
         }
 
         PlayerEntity player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
-        String title = client.getTextManager().getTitle("select_title");
-        String text = client.getTextManager().getText("select_title").replace("{{title}}", client.getTitleManager().getTitle(titleName).format());
 
-        // Perform verifications and update the current title
+        TextManager.Text text = client.getTextManager().createText("select_title");
+        text.replace("title", client.getTitleManager().getTitle(titleName).format());
+
+        // Perform verifications before update the current title
         if (!verifications(player, titleName, event)) return;
 
         player.setCurrentTitle(titleName);
         client.getDatabaseManager().update(player);
-        event.reply(client.getTextManager().generateScene(title, text)).queue();
+        event.reply(text.build()).queue();
     }
 
     /**

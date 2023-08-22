@@ -1,6 +1,7 @@
 package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
+import lombok.Getter;
 import me.aikoo.StMary.core.JSONFileReader;
 import me.aikoo.StMary.core.StMaryClient;
 
@@ -60,23 +61,32 @@ public class TextManager {
     }
 
     /**
-     * Get the text associated with a given name.
+     * Get the text associated with a given id.
      *
-     * @param name The name of the text.
+     * @param id The id of the text.
      * @return The text associated with the name, or null if it doesn't exist.
      */
-    public String getText(String name) {
-        return (this.texts.get(name) != null) ? this.texts.get(name).get("text").getAsString() : null;
+    public String getText(String id) {
+        return (this.texts.get(id) != null) ? this.texts.get(id).get("text").getAsString() : null;
     }
 
     /**
-     * Get the title associated with a given name.
+     * Get the title associated with a given id.
      *
-     * @param name The name of the title.
+     * @param id The id of the title.
      * @return The title associated with the name, or null if it doesn't exist.
      */
-    public String getTitle(String name) {
-        return (this.texts.get(name) != null) ? this.texts.get(name).get("title").getAsString() : null;
+    public String getTitle(String id) {
+        return (this.texts.get(id) != null) ? this.texts.get(id).get("title").getAsString() : null;
+    }
+
+    /**
+     * Create a new Text object with given id.
+     * @param id The id of the text.
+     * @return The created Text object.
+     */
+    public Text createText(String id) {
+        return new Text(id, this.getText(id), this.getTitle(id));
     }
 
     /**
@@ -86,8 +96,56 @@ public class TextManager {
         ArrayList<JsonObject> files = JSONFileReader.readAllFilesFrom("text");
 
         for (JsonObject file : files) {
-            String name = file.get("name").getAsString();
-            this.texts.put(name, file);
+            String id = file.get("id").getAsString();
+            this.texts.put(id, file);
+        }
+    }
+
+    public class Text {
+
+        @Getter
+        private final String id;
+        @Getter
+        private final String text;
+        @Getter
+        private final String title;
+
+        private final StringBuilder formattedText;
+        private String tmpText;
+
+        public Text(String id, String text, String title) {
+            this.id = id;
+            this.text = text;
+            this.title = title;
+
+            this.tmpText = text;
+
+            this.formattedText = new StringBuilder();
+            this.formattedText.append("╭───────────┈ ➤ ✎ **").append(title).append("**\n- ");
+        }
+
+        public void formatLocations() {
+            String regex = "\\{location:([^{}]+)\\}";
+            tmpText = tmpText.replaceAll("\n\n", "\n- ");
+
+            Pattern pattern = Pattern.compile(regex);
+            if ((pattern.matcher(tmpText).find())) {
+                while (pattern.matcher(tmpText).find()) {
+                    String name = stMaryClient.getLocationManager().extractLocationName(tmpText);
+                    tmpText = tmpText.replaceFirst(regex, stMaryClient.getLocationManager().formatLocation(name));
+                }
+            }
+        }
+
+        public void replace(String name, String replacement) {
+            Pattern pattern = Pattern.compile("\\{\\{" + name +"\\}\\}", Pattern.CASE_INSENSITIVE);
+            tmpText = pattern.matcher(tmpText).replaceAll(replacement);
+        }
+
+        public String build() {
+            this.formatLocations();
+            formattedText.append(tmpText).append("\n╰─────────── ·\uFEFF \uFEFF \uFEFF· \uFEFF ·\uFEFF \uFEFF \uFEFF· \uFEFF✦");
+            return formattedText.toString();
         }
     }
 }
