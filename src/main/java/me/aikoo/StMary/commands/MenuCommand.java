@@ -59,7 +59,7 @@ public class MenuCommand extends AbstractCommand {
 
         // Check if the user has an adventure account
         if (player == null) {
-            event.reply(client.getTextManager().generateError("Menu Joueur", "Cet utilisateur ne possède pas de compte aventure !")).setEphemeral(true).queue();
+            event.reply(client.getTextManager().createText("menu_no_account").buildError()).setEphemeral(true).queue();
         } else {
             // Generate and send the user's profile
             String profil = profilEmbed(client, user.getGlobalName(), player);
@@ -105,11 +105,10 @@ public class MenuCommand extends AbstractCommand {
      * @param id      The user's ID.
      */
     public void closeMenu(Message message, String id) {
-        String text = stMaryClient.getTextManager().generateScene("Menu Joueur fermé", "Le Menu Joueur de <@" + id + "> a été fermé.");
         List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
         buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
 
-        message.editMessage(text).setActionRow(buttons).queue();
+        message.editMessage(message.getContentRaw()).setActionRow(buttons).queue();
     }
 
     /**
@@ -134,9 +133,11 @@ public class MenuCommand extends AbstractCommand {
     private String profilEmbed(StMaryClient client, String name, PlayerEntity player) {
         Title title = player.getCurrentTitle(client);
         String icon = title.getIcon();
-        String town = (!player.getCurrentLocationTown().equals("")) ? player.getCurrentLocationTown() : "Aucune cité";
         String place = player.getCurrentLocationPlace();
-        String location = "**Localisation :** " + "`%s` - `%s`\n".formatted(town, place);
+
+        // Get the player's current location
+        String town = (!player.getCurrentLocationTown().equals("")) ? player.getCurrentLocationTown() : client.getTextManager().getText("menu_no_town");
+        String location = client.getTextManager().getText("menu_location_1").replace("{{town}}", town).replace("{{place}}", place);
         MoveEntity move = client.getDatabaseManager().getMove(player.getId());
 
         if (move != null) {
@@ -151,15 +152,16 @@ public class MenuCommand extends AbstractCommand {
                 destinationName = to.getName() + " - " + to.getRegion().getName();
             }
 
-            location = String.format("**Localisation :** Voyage vers `%s`\n**Départ :** `%s`\n", destinationName, departureName);
+            location = client.getTextManager().getText("menu_location_2").replace("{{destination}}", destinationName).replace("{{departure}}", departureName);
         }
 
-        return String.format("### %s | %s | Menu Joueur\n", icon, name) +
-                "**Niveau :** `" + player.getLevel() + "`\n" +
-                "**Expérience :** `" + player.getExperience() + " EXP`\n" +
-                "▬▬▬▬▬▬▬▬▬▬\n" +
-                location +
-                "**Région :** `%s`\n".formatted(player.getCurrentLocationRegion());
+        return client.getTextManager().getText("menu_player")
+                .replace("{{icon}}", icon)
+                .replace("{{name}}", name)
+                .replace("{{level}}", player.getLevel().toString())
+                .replace("{{exp}}", player.getExperience().toString())
+                .replace("{{location}}", location)
+                .replace("{{region}}", player.getCurrentLocationRegion());
     }
 
 
@@ -177,7 +179,7 @@ public class MenuCommand extends AbstractCommand {
          * @param id     The user's ID.
          */
         public ProfilBtn(PlayerEntity player, String id) {
-            super("profil_btn", "Profil", ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83D\uDCDD"), stMaryClient);
+            super("profil_btn", stMaryClient.getTextManager().getText("menu_btn_profil"), ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83D\uDCDD"), stMaryClient);
 
             this.player = player;
             this.id = id;
@@ -208,7 +210,7 @@ public class MenuCommand extends AbstractCommand {
          * @param id     The user's ID.
          */
         public InventoryBtn(PlayerEntity player, String id) {
-            super("inv_btn", "Sac à Dos", ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDF92"), stMaryClient);
+            super("inv_btn", stMaryClient.getTextManager().getText("menu_btn_backpack"), ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDF92"), stMaryClient);
 
             this.player = player;
             this.id = id;
@@ -220,14 +222,15 @@ public class MenuCommand extends AbstractCommand {
             Title title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
             Object magicalBook = player.getMagicalBook(stMaryClient);
-            String magicalBookName = (magicalBook != null) ? "%s `%s`\n".formatted(magicalBook.getIcon(), magicalBook.getName()) : "`Aucun`";
+            String magicalBookName = (magicalBook != null) ? "%s `%s`".formatted(magicalBook.getIcon(), magicalBook.getName()) : stMaryClient.getTextManager().getText("menu_no_magical_book");
 
-            String stringBuilder = String.format("### %s | %s | Sac à Dos\n", icon, event.getUser().getGlobalName()) +
-                    String.format("**Argent :** `%s`\n", player.getMoney()) +
-                    String.format("**Livre Magique :** %s\n", magicalBookName) +
-                    "▬▬▬▬▬▬▬▬▬▬\n";
+            String text = stMaryClient.getTextManager().getText("menu_backpack")
+                    .replace("{{icon}}", icon)
+                    .replace("{{name}}", event.getUser().getGlobalName())
+                    .replace("{{money}}", player.getMoney().toString())
+                    .replace("{{magical_book}}", magicalBookName);
 
-            event.editMessage(stringBuilder).queue();
+            event.editMessage(text).queue();
             if (!event.getInteraction().isAcknowledged()) {
                 event.deferEdit().queue();
             }
@@ -248,7 +251,7 @@ public class MenuCommand extends AbstractCommand {
          * @param id     The user's ID.
          */
         public TitlesBtn(PlayerEntity player, String id) {
-            super("titles_btn", "Titres", ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDFC5"), stMaryClient);
+            super("titles_btn", stMaryClient.getTextManager().getText("menu_btn_titles"), ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDFC5"), stMaryClient);
 
             this.player = player;
             this.id = id;
@@ -261,20 +264,26 @@ public class MenuCommand extends AbstractCommand {
             Title title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
 
-            StringBuilder stringBuilder = new StringBuilder(String.format("### %s | %s | Titres\n", icon, event.getUser().getGlobalName()));
+            // StringBuilder stringBuilder = new StringBuilder(String.format("### %s | %s | Titres\n", icon, event.getUser().getGlobalName()));
             HashMap<String, Title> titles = player.getTitles(stMaryClient);
 
+            StringBuilder stringBuilder = new StringBuilder();
             for (Title t : titles.values()) {
                 stringBuilder.append(t.getIcon()).append(" | `").append(t.getName()).append("`");
                 if (t.getName().equals(title.getName())) {
-                    stringBuilder.append("   ⬅️ **Actuel**\n");
+                    stringBuilder.append(stMaryClient.getTextManager().getText("menu_titles_actual"));
                 } else {
                     stringBuilder.append("\n");
                 }
             }
-            stringBuilder.append("▬▬▬▬▬▬▬▬▬▬\n**Nombre de Titres:** `").append(titles.size()).append("`");
 
-            event.editMessage(stringBuilder.toString()).queue();
+            String text = stMaryClient.getTextManager().getText("menu_titles")
+                    .replace("{{icon}}", icon)
+                    .replace("{{name}}", event.getUser().getGlobalName())
+                    .replace("{{titles}}", stringBuilder.toString())
+                    .replace("{{nb_titles}}", String.valueOf(titles.size()));
+
+            event.editMessage(text).queue();
             if (!event.getInteraction().isAcknowledged()) {
                 event.deferEdit().queue();
             }
@@ -294,7 +303,7 @@ public class MenuCommand extends AbstractCommand {
          * @param id The user's ID.
          */
         public CloseBtn(String id) {
-            super("close_btn", "Fermer", ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
+            super("close_btn", stMaryClient.getTextManager().getText("menu_btn_close"), ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
             this.id = id;
         }
 

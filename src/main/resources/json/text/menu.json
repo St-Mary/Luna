@@ -1,0 +1,42 @@
+{
+  "menu_no_account": {
+    "title": "Menu Joueur",
+    "text": "Cet utilisateur ne possède pas de compte aventure !"
+  },
+  "menu_no_town": {
+    "text": "Aucune Cité"
+  },
+  "menu_location_1": {
+    "text": "**Localisation :** `{{town}}` - `{{place}}`"
+  },
+  "menu_location_2": {
+    "text": "**Localisation :** Voyage vers `{{destination}}`\n**Départ :** `{{departure}}`"
+  },
+  "menu_player": {
+    "text": "### {{icon}} | {{name}} | Menu Joueur\n**Niveau :** `{{level}}`\n**Expérience :** `{{exp}} EXP`\n▬▬▬▬▬▬▬▬▬▬\n{{location}}\n**Région :** `{{region}}`"
+  },
+  "menu_no_magical_book": {
+    "text": "`Aucun`"
+  },
+  "menu_backpack": {
+    "text": "### {{icon}} | {{name}} | Sac à Dos\n**Argent :** `{{money}}`\n**Livre Magique :** {{magical_book}}\n▬▬▬▬▬▬▬▬▬▬"
+  },
+  "menu_titles": {
+    "text": "### {{icon}} | {{name}} | Titres\n{{titles}}▬▬▬▬▬▬▬▬▬▬\n**Nombre de Titres:** `{{nb_titles}}`"
+  },
+  "menu_titles_actual": {
+    "text": "   ⬅️ **Actuel**\n"
+  },
+  "menu_btn_profil": {
+    "text": "Profil"
+  },
+  "menu_btn_backpack": {
+    "text": "Sac à dos"
+  },
+  "menu_btn_titles": {
+    "text": "Titres"
+  },
+  "menu_btn_close": {
+    "text": "Fermer"
+  }
+}

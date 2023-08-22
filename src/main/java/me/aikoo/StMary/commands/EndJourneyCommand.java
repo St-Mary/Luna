@@ -13,9 +13,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * A command to finish a journey and arrive at the destination.
  */
-public class FinishJourneyCommand extends AbstractCommand {
+public class EndJourneyCommand extends AbstractCommand {
 
-    public FinishJourneyCommand(StMaryClient stMaryClient) {
+    public EndJourneyCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
         this.name = "endjourney";
