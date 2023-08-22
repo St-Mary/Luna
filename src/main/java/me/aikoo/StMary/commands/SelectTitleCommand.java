@@ -50,7 +50,7 @@ public class SelectTitleCommand extends AbstractCommand {
 
         // Check if the selected title exists
         if (client.getTitleManager().getTitle(titleName) == null) {
-            String errorText = client.getTextManager().generateError("Séléction du Titre Actuel", "Ce titre n'existe pas.");
+            String errorText = client.getTextManager().createText("select_title_error_title_not_exist").buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return;
         }
@@ -82,14 +82,14 @@ public class SelectTitleCommand extends AbstractCommand {
 
         // Check if the player owns the selected title
         if (!titles.containsKey(titleName)) {
-            String errorText = this.stMaryClient.getTextManager().generateError("Séléction du Titre Actuel", "Vous ne possédez pas ce titre.");
+            String errorText = this.stMaryClient.getTextManager().createText("select_title_error_title_not_posseded").buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return false;
         }
 
         // Check if the selected title is already the current title
         if (player.getCurrentTitle(stMaryClient).getName().equals(titleName)) {
-            String errorText = this.stMaryClient.getTextManager().generateError("Séléction du Titre Actuel", "Ce titre est déjà votre titre actuel.");
+            String errorText = this.stMaryClient.getTextManager().createText("select_title_error_title_already_active").buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return false;
         }

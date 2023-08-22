@@ -2,5 +2,17 @@
   "select_title_success": {
     "title": "Sélection du Titre Actuel",
     "text": "Votre nouveau titre actuel est: **{{title}}** !"
+  },
+  "select_title_error_title_not_exist": {
+    "title": "Sélection du Titre Actuel",
+    "text": "Cet Titre n'existe pas."
+  },
+  "select_title_error_title_not_posseded": {
+    "title": "Sélection du Titre Actuel",
+    "text": "Vous ne possédez pas ce Titre."
+  },
+  "select_title_error_title_already_active": {
+    "title": "Sélection du Titre Actuel",
+    "text": "Ce titre est déjà votre Titre Actuel."
   }
 }
