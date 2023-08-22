@@ -43,7 +43,7 @@ public class StartCommand extends AbstractCommand {
 
         // Check if the Discord account was created more than a week ago
         if (creationDate.isAfter(LocalDate.now().minusWeeks(1))) {
-            event.reply(client.getTextManager().generateError("Création du Joueur", "Vous devez avoir un compte Discord créé depuis plus d'une semaine pour pouvoir jouer.")).queue();
+            event.reply(client.getTextManager().createText("start_adventure_error_creation_date").buildError()).queue();
             return;
         }
 
@@ -69,8 +69,8 @@ public class StartCommand extends AbstractCommand {
             event.reply(text.build()).queue();
         } else {
             // Player already exists, send an error message
-            String error = client.getTextManager().generateError("Démarrage de l'aventure", "Vous ne pouvez pas recommencer l'aventure !");
-            event.reply(error).queue();
+            String error = client.getTextManager().createText("start_adventure_error_already_started").buildError();
+            event.reply(error).setEphemeral(true).queue();
         }
     }
 

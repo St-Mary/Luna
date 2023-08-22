@@ -102,6 +102,9 @@ public class TextManager {
         }
     }
 
+    /**
+     * Text class for formatting and generating texts.
+     */
     public class Text {
 
         @Getter
@@ -114,6 +117,12 @@ public class TextManager {
         private final StringBuilder formattedText;
         private String tmpText;
 
+        /**
+         * Constructor for the Text class.
+         * @param id The id of the text.
+         * @param text The text.
+         * @param title The title.
+         */
         public Text(String id, String text, String title) {
             this.id = id;
             this.text = text;
@@ -122,9 +131,11 @@ public class TextManager {
             this.tmpText = text;
 
             this.formattedText = new StringBuilder();
-            this.formattedText.append("╭───────────┈ ➤ ✎ **").append(title).append("**\n- ");
         }
 
+        /**
+         * Format locations in the text.
+         */
         public void formatLocations() {
             String regex = "\\{location:([^{}]+)\\}";
             tmpText = tmpText.replaceAll("\n\n", "\n- ");
@@ -138,12 +149,33 @@ public class TextManager {
             }
         }
 
+        /**
+         * Replace a placeholder with a given replacement.
+         * @param name The name of the placeholder.
+         * @param replacement The replacement.
+         */
         public void replace(String name, String replacement) {
             Pattern pattern = Pattern.compile("\\{\\{" + name +"\\}\\}", Pattern.CASE_INSENSITIVE);
             tmpText = pattern.matcher(tmpText).replaceAll(replacement);
         }
 
+        /**
+         * Build the text.
+         * @return The built text.
+         */
         public String build() {
+            formattedText.append("╭───────────┈ ➤ ✎ **").append(title).append("**\n- ");
+            this.formatLocations();
+            formattedText.append(tmpText).append("\n╰─────────── ·\uFEFF \uFEFF \uFEFF· \uFEFF ·\uFEFF \uFEFF \uFEFF· \uFEFF✦");
+            return formattedText.toString();
+        }
+
+        /**
+         * Build the error.
+         * @return The built error.
+         */
+        public String buildError() {
+            formattedText.append("╭───────────┈ ➤ ✎ ❌ **Erreur : ").append(title).append("**\n- ");
             this.formatLocations();
             formattedText.append(tmpText).append("\n╰─────────── ·\uFEFF \uFEFF \uFEFF· \uFEFF ·\uFEFF \uFEFF \uFEFF· \uFEFF✦");
             return formattedText.toString();
