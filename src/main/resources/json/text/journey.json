@@ -1,0 +1,32 @@
+{
+  "journey_destination_not_exist": {
+    "title": "Voyage Impossible",
+    "text": "La destination de votre voyage n'existe pas."
+  },
+  "journey_err_destination_1": {
+    "title": "Voyage Impossible",
+    "text": "Vous êtes déjà en voyage vers **{{name}}**.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant."
+  },
+  "journey_err_destination_2": {
+      "title": "Voyage Impossible",
+      "text": "Vous ne pouvez pas vous déplacer vers cette destination."
+  },
+  "journey_confirm": {
+    "title": "Voyage",
+    "text": "Êtes-vous sûr de vouloir vous déplacer vers **{{destination}}** en** `{{time}} minutes` **?"
+  },
+  "journey_cancel": {
+    "title": "Annulation du Voyage",
+    "text": "Votre voyage vers **{{destination}}** a été annulé."
+  },
+  "journey_success": {
+    "title": "Voyage",
+    "text": "Vous voyagez vers **{{destination}}**. Ce déplacement prendra `{{time}}` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant."
+  },
+  "journey_btn_confirm": {
+    "text": "Confirmer"
+  },
+  "journey_btn_cancel": {
+    "text": "Annuler"
+  }
+}

@@ -1,6 +1,7 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.managers.TextManager;
 import me.aikoo.StMary.core.system.Journey;
 import me.aikoo.StMary.database.entities.MoveEntity;
 import me.aikoo.StMary.database.entities.PlayerEntity;
@@ -56,7 +57,7 @@ public class JourneyCommand extends AbstractCommand {
 
         // Check if either the current place or destination place is null.
         if (place == null || destinationPlace == null) {
-            String errorText = client.getTextManager().generateError("Voyage Impossible", "La destination n'existe pas.");
+            String errorText = client.getTextManager().createText("journey_destination_not_exist").buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return;
         }
@@ -69,20 +70,19 @@ public class JourneyCommand extends AbstractCommand {
 
         // Check if there are existing moves or if the move to the destination is not available.
         if (moves != null || !place.getAvailableMoves().contains(move)) {
-            String errorMessage;
+            String text;
 
             // Check if the player is already on a journey.
             if (moves != null) {
                 Place toPlace = client.getLocationManager().getPlace(moves.getTo());
                 String formattedText = (place.getTown() == toPlace.getTown()) ? toPlace.getIcon() + toPlace.getName() : toPlace.getTown().getIcon() + toPlace.getTown().getName();
 
-                errorMessage = String.format("Vous êtes déjà en voyage vers **%s**.%n%nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant.", formattedText);
+                text = client.getTextManager().createText("journey_err_destination_1").replace("name", formattedText).buildError();
             } else {
-                errorMessage = "Vous ne pouvez pas vous déplacer vers cette destination.";
+                text = client.getTextManager().createText("journey_err_destination_2").buildError();
             }
 
-            String errorText = client.getTextManager().generateError("Voyage Impossible", errorMessage);
-            event.reply(errorText).setEphemeral(true).queue();
+            event.reply(text).setEphemeral(true).queue();
             return;
         }
 
@@ -94,7 +94,7 @@ public class JourneyCommand extends AbstractCommand {
         long time = move.getTime();
 
         String formattedText = (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
-        String str = client.getTextManager().generateScene("Voyage", "Êtes-vous sûr de vouloir vous déplacer vers **" + formattedText + "** en** `" + time + " minutes` **?");
+        String str = client.getTextManager().createText("journey_confirm").replace("time", String.valueOf(time)).replace("destination", formattedText).build();
 
         event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
             // Add buttons to the message for user interaction.
@@ -123,7 +123,8 @@ public class JourneyCommand extends AbstractCommand {
      * @param destinationPlace The destination place.
      */
     private void close(Message message, Place destinationPlace) {
-        String text = stMaryClient.getTextManager().generateScene("Annulation du voyage", "Le voyage vers **" + destinationPlace.getIcon() + destinationPlace.getName() + "** a été annulé.");
+        String formattedLocation = stMaryClient.getLocationManager().formatLocation(destinationPlace.getName());
+        String text = stMaryClient.getTextManager().createText("journey_cancel").replace("destination", formattedLocation).build();
         List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
         buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
 
@@ -195,7 +196,7 @@ public class JourneyCommand extends AbstractCommand {
          * @param player       The player associated with the user.
          */
         public ConfirmBtn(StMaryClient stMaryClient, Journey move, PlayerEntity player) {
-            super("confirm_move", "Confirmer", ButtonStyle.SUCCESS, Emoji.fromUnicode("\uD83D\uDDFA\uFE0F"), stMaryClient);
+            super("confirm_move", stMaryClient.getTextManager().getText("journey_btn_confirm"), ButtonStyle.SUCCESS, Emoji.fromUnicode("\uD83D\uDDFA\uFE0F"), stMaryClient);
 
             this.move = move;
             this.player = player;
@@ -227,8 +228,7 @@ public class JourneyCommand extends AbstractCommand {
                     stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
 
             // Generate a message to inform the user about the journey.
-            String text = stMaryClient.getTextManager().generateScene("Voyage",
-                    "Vous voyagez vers **" + formattedText + "**. Ce déplacement prendra `" + move.getTime() + "` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant.");
+            String text = stMaryClient.getTextManager().createText("journey_success").replace("destination", formattedText).replace("time", move.getTime().toString()).build();
 
             // Get the list of buttons from the event message and disable them.
             List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = event.getMessage().getButtons();
@@ -257,7 +257,7 @@ public class JourneyCommand extends AbstractCommand {
          * @param destinationPlace The destination place.
          */
         public CloseBtn(Place destinationPlace) {
-            super("close_btn", "Annuler", ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
+            super("close_btn", stMaryClient.getTextManager().getText("journey_btn_cancel"), ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
             this.destinationPlace = destinationPlace;
         }
 

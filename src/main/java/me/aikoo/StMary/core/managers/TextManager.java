@@ -68,7 +68,6 @@ public class TextManager {
      * @param id The id of the text.
      * @return The text associated with the name, or null if it doesn't exist.
      */
-    @Deprecated
     public String getText(String id) {
         return (this.texts.get(id) != null) ? this.texts.get(id).get("text").getAsString() : null;
     }
@@ -157,10 +156,12 @@ public class TextManager {
          * Replace a placeholder with a given replacement.
          * @param name The name of the placeholder.
          * @param replacement The replacement.
+         * @return The Text object.
          */
-        public void replace(String name, String replacement) {
+        public Text replace(String name, String replacement) {
             Pattern pattern = Pattern.compile("\\{\\{" + name +"\\}\\}", Pattern.CASE_INSENSITIVE);
             tmpText = pattern.matcher(tmpText).replaceAll(replacement);
+            return this;
         }
 
         /**
