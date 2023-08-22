@@ -57,7 +57,7 @@ public class SelectTitleCommand extends AbstractCommand {
 
         PlayerEntity player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
 
-        TextManager.Text text = client.getTextManager().createText("select_title");
+        TextManager.Text text = client.getTextManager().createText("select_title_success");
         text.replace("title", client.getTitleManager().getTitle(titleName).format());
 
         // Perform verifications before update the current title

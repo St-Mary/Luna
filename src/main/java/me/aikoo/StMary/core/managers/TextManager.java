@@ -96,8 +96,9 @@ public class TextManager {
         ArrayList<JsonObject> files = JSONFileReader.readAllFilesFrom("text");
 
         for (JsonObject file : files) {
-            String id = file.get("id").getAsString();
-            this.texts.put(id, file);
+            for (String key : file.keySet()) {
+                this.texts.put(key, file.get(key).getAsJsonObject());
+            }
         }
     }
 
