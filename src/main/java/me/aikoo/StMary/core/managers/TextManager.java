@@ -34,6 +34,7 @@ public class TextManager {
      * @param text  The scene's text.
      * @return The generated scene.
      */
+    @Deprecated
     public String generateScene(String title, String text) {
         String regex = "\\{location:([^{}]+)\\}";
         String formattedText = text.replaceAll("\n\n", "\n- ");
@@ -56,6 +57,7 @@ public class TextManager {
      * @param text  The error's text.
      * @return The generated error message.
      */
+    @Deprecated
     public String generateError(String title, String text) {
         return generateScene("❌ Erreur : " + title, text);
     }
@@ -66,6 +68,7 @@ public class TextManager {
      * @param id The id of the text.
      * @return The text associated with the name, or null if it doesn't exist.
      */
+    @Deprecated
     public String getText(String id) {
         return (this.texts.get(id) != null) ? this.texts.get(id).get("text").getAsString() : null;
     }
@@ -76,6 +79,7 @@ public class TextManager {
      * @param id The id of the title.
      * @return The title associated with the name, or null if it doesn't exist.
      */
+    @Deprecated
     public String getTitle(String id) {
         return (this.texts.get(id) != null) ? this.texts.get(id).get("title").getAsString() : null;
     }
