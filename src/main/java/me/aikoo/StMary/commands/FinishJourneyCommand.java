@@ -35,7 +35,7 @@ public class FinishJourneyCommand extends AbstractCommand {
         MoveEntity moves = client.getDatabaseManager().getMove(uuid);
 
         if (moves == null) {
-            String text = client.getTextManager().generateScene("Fin de Voyage Impossible", "Vous n'avez aucun voyage en cours.");
+            String text = client.getTextManager().createText("endjourney_no_journey").build();
             event.reply(text).queue();
             return;
         }
@@ -54,8 +54,8 @@ public class FinishJourneyCommand extends AbstractCommand {
         // Check if the player has arrived at the destination.
         if (now < end) {
             long remaining = end - now;
-            String text = client.getTextManager().generateScene("Fin de Voyage",
-                    String.format("Vous n'avez pas encore fini votre voyage vers **%s**. Veuillez attendre <t:%s:R> avant d'arriver à votre destination", formatted, TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + remaining)));
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + remaining);
+            String text = client.getTextManager().createText("endjourney_journey_not_finsh").replace("time", String.valueOf(seconds)).replace("location", formatted).build();
             event.reply(text).queue();
             return;
         }
@@ -70,7 +70,7 @@ public class FinishJourneyCommand extends AbstractCommand {
         client.getDatabaseManager().update(player);
 
         // Send the arrival message.
-        String text = client.getTextManager().generateScene("Rapport de Fin de Voyage", String.format("Vous êtes arrivé à **%s**.", formatted));
+        String text = client.getTextManager().createText("endjourney_success").replace("location", formatted).build();
         event.reply(text).queue();
     }
 

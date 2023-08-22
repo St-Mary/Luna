@@ -1,0 +1,14 @@
+{
+  "endjourney_no_journey": {
+    "title": "Fin de voyage impossible",
+    "text": "Vous n'avez aucun voyage en cours."
+  },
+  "endjourney_journey_not_finsh": {
+    "title": "Fin de voyage impossible",
+    "text": "Vous n'avez pas encore fini votre voyage vers **{{location}}**. Veuillez attendre <t:{{time}}:R> avant d'arriver à votre destination."
+  },
+  "endjourney_success": {
+    "title": "Rapport de Fin de Voyage",
+    "text": "Vous avez fini votre voyage vers **{{location}}**."
+  }
+}
