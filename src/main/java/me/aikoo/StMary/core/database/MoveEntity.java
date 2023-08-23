@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.id.uuid.UuidGenerator;
 
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public class MoveEntity {
     @Id
     @Getter
     @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(name = "uuid-hibernate-generator", type = UuidGenerator.class)
     private UUID id;
 
     private String fromValue;

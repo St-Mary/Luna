@@ -1,7 +1,7 @@
 package me.aikoo.StMary.core.managers;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.abstracts.Button;
+import me.aikoo.StMary.core.abstracts.ButtonAbstract;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class ButtonManager extends ListenerAdapter {
 
     private final StMaryClient stMaryClient;
-    private final HashMap<String, ArrayList<Button>> commands = new HashMap<>();
+    private final HashMap<String, ArrayList<ButtonAbstract>> commands = new HashMap<>();
 
     /**
      * Constructs a ButtonManager with the provided StMaryClient instance.
@@ -37,7 +37,7 @@ public class ButtonManager extends ListenerAdapter {
         if (!commands.containsKey(event.getMessageId())) return;
 
         // Find the button that was clicked based on the component ID
-        Button button = commands.get(event.getMessageId()).stream()
+        ButtonAbstract button = commands.get(event.getMessageId()).stream()
                 .filter(btn -> btn.getId().equals(event.getComponentId()))
                 .findFirst()
                 .orElse(null);
@@ -58,7 +58,7 @@ public class ButtonManager extends ListenerAdapter {
      * @param id      The ID of the message the buttons are associated with.
      * @param buttons The list of Button objects to add.
      */
-    public void addButtons(String id, ArrayList<Button> buttons) {
+    public void addButtons(String id, ArrayList<ButtonAbstract> buttons) {
         commands.put(id, buttons);
     }
 }

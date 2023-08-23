@@ -1,10 +1,10 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.abstracts.AbstractCommand;
+import me.aikoo.StMary.core.abstracts.CommandAbstract;
+import me.aikoo.StMary.core.bases.PlaceBase;
 import me.aikoo.StMary.core.database.MoveEntity;
 import me.aikoo.StMary.core.database.PlayerEntity;
-import me.aikoo.StMary.core.classes.Place;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * A command to finish a journey and arrive at the destination.
  */
-public class EndJourneyCommand extends AbstractCommand {
+public class EndJourneyCommand extends CommandAbstract {
 
     public EndJourneyCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
@@ -26,7 +26,8 @@ public class EndJourneyCommand extends AbstractCommand {
 
     /**
      * Arrives at the destination.
-     * @param event  The interaction event.
+     *
+     * @param event The interaction event.
      */
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -45,8 +46,8 @@ public class EndJourneyCommand extends AbstractCommand {
         long now = System.currentTimeMillis();
         long end = start + time;
 
-        Place destinationPlace = stMaryClient.getLocationManager().getPlace(moves.getTo());
-        Place fromPlace = stMaryClient.getLocationManager().getPlace(moves.getFrom());
+        PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlace(moves.getTo());
+        PlaceBase fromPlace = stMaryClient.getLocationManager().getPlace(moves.getFrom());
         String formatted = (fromPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
                 this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) :
                 this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());

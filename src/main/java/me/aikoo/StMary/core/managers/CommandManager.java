@@ -1,7 +1,7 @@
 package me.aikoo.StMary.core.managers;
 
-import me.aikoo.StMary.core.abstracts.AbstractCommand;
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +16,8 @@ import java.util.Set;
  */
 public class CommandManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
-    private final HashMap<String, AbstractCommand> commands = new HashMap<>();
-    private final HashMap<String, AbstractCommand> adminCommands = new HashMap<>();
+    private final HashMap<String, CommandAbstract> commands = new HashMap<>();
+    private final HashMap<String, CommandAbstract> adminCommands = new HashMap<>();
 
     /**
      * Get a command by its name.
@@ -25,7 +25,7 @@ public class CommandManager {
      * @param name The name of the command to retrieve.
      * @return The command with the specified name, or null if not found.
      */
-    public AbstractCommand getCommand(String name) {
+    public CommandAbstract getCommand(String name) {
         return this.commands.get(name);
     }
 
@@ -35,7 +35,7 @@ public class CommandManager {
      * @param name The name of the admin command to retrieve.
      * @return The admin command with the specified name, or null if not found.
      */
-    public AbstractCommand getAdminCommand(String name) {
+    public CommandAbstract getAdminCommand(String name) {
         return this.adminCommands.get(name);
     }
 
@@ -44,7 +44,7 @@ public class CommandManager {
      *
      * @return A map of all registered commands.
      */
-    public HashMap<String, AbstractCommand> getCommands() {
+    public HashMap<String, CommandAbstract> getCommands() {
         return commands;
     }
 
@@ -53,7 +53,7 @@ public class CommandManager {
      *
      * @return A map of all registered admin commands.
      */
-    public HashMap<String, AbstractCommand> getAdminCommands() {
+    public HashMap<String, CommandAbstract> getAdminCommands() {
         return adminCommands;
     }
 
@@ -64,25 +64,25 @@ public class CommandManager {
      */
     public void loadCommands(StMaryClient stMaryClient) {
         // Use Reflections library to scan for classes in the "me.aikoo.StMary.commands" package
-        Reflections reflections = new Reflections("me.aikoo.StMary.commands", new org.reflections.scanners.Scanner[0]);
+        Reflections reflections = new Reflections("me.aikoo.StMary.commands");
 
         // Get all classes that are subclasses of AbstractCommand
-        Set<Class<? extends AbstractCommand>> classes = reflections.getSubTypesOf(AbstractCommand.class);
+        Set<Class<? extends CommandAbstract>> classes = reflections.getSubTypesOf(CommandAbstract.class);
 
         // Iterate through each found command class
-        for (Class<? extends AbstractCommand> s : classes) {
+        for (Class<? extends CommandAbstract> s : classes) {
             try {
                 // Skip abstract command classes
                 if (Modifier.isAbstract(s.getModifiers()))
                     continue;
 
                 // Create an instance of the command class using its constructor
-                AbstractCommand c = s.getConstructor(StMaryClient.class).newInstance(stMaryClient);
+                CommandAbstract c = s.getConstructor(StMaryClient.class).newInstance(stMaryClient);
 
                 // Check if the command is not already loaded
                 if (!commands.containsKey(c.getName())) {
                     // Log that the command is loaded
-                    LOGGER.info("Loaded command '" + c.getName());
+                    LOGGER.info("Loaded command: " + c.getName());
 
                     // Check if the command is an admin command and add it to the appropriate map
                     if (c.isAdminCommand()) {

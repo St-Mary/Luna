@@ -1,14 +1,14 @@
-package me.aikoo.StMary.core.classes;
+package me.aikoo.StMary.core.bases;
 
 import lombok.Getter;
-import me.aikoo.StMary.core.abstracts.Location;
+import me.aikoo.StMary.core.abstracts.LocationAbstract;
 
 import java.util.ArrayList;
 
 /**
  * Represents a town in the game world.
  */
-public class Town extends Location {
+public class TownBasee extends LocationAbstract {
 
     @Getter
     private final String name;
@@ -20,13 +20,13 @@ public class Town extends Location {
     private final String icon = "\uD83C\uDFD8\uFE0F "; // A town icon, you can customize this.
 
     @Getter
-    private final Region region;
+    private final RegionBase region;
 
     @Getter
-    private final ArrayList<Place> places = new ArrayList<>();
+    private final ArrayList<PlaceBase> places = new ArrayList<>();
 
     @Getter
-    private final Place entryPoint;
+    private final PlaceBase entryPoint;
 
     /**
      * Creates a new Town instance with the specified name, description, region, and entry point.
@@ -36,7 +36,7 @@ public class Town extends Location {
      * @param region      The region to which the town belongs.
      * @param entryPoint  The entry point of the town.
      */
-    public Town(String name, String description, Region region, Place entryPoint) {
+    public TownBasee(String name, String description, RegionBase region, PlaceBase entryPoint) {
         this.name = name;
         this.description = description;
         this.region = region;
@@ -48,7 +48,7 @@ public class Town extends Location {
      *
      * @param place The place to add to the town.
      */
-    public void addPlace(Place place) {
+    public void addPlace(PlaceBase place) {
         this.places.add(place);
     }
 
@@ -58,7 +58,7 @@ public class Town extends Location {
      * @param name The name of the place to retrieve.
      * @return The Place object with the specified name, or null if not found.
      */
-    public Place getPlace(String name) {
+    public PlaceBase getPlace(String name) {
         return this.places.stream().filter(place -> place.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 }

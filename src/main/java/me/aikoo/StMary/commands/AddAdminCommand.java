@@ -1,8 +1,8 @@
 package me.aikoo.StMary.commands;
 
-import me.aikoo.StMary.BotConfig;
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.abstracts.AbstractCommand;
+import me.aikoo.StMary.core.abstracts.CommandAbstract;
+import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.database.AdministratorEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Objects;
 
-public class AddAdminCommand extends AbstractCommand {
+public class AddAdminCommand extends CommandAbstract {
     public AddAdminCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
@@ -26,7 +26,7 @@ public class AddAdminCommand extends AbstractCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        if (!event.getUser().getId().equals(BotConfig.getOwnerId())) {
+        if (!event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
             String errMsg = stMaryClient.getTextManager().generateError("Ajout d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
             event.reply(errMsg).queue();
         }

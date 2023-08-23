@@ -1,15 +1,15 @@
-package me.aikoo.StMary.core.classes;
+package me.aikoo.StMary.core.bases;
 
 import lombok.Getter;
 
 /**
  * Represents a journey from one Place to another.
  */
-public class Journey {
+public class JourneyBase {
     @Getter
-    private final Place from;
+    private final PlaceBase from;
     @Getter
-    private final Place to;
+    private final PlaceBase to;
     @Getter
     private final Long time;
 
@@ -20,7 +20,7 @@ public class Journey {
      * @param to   The destination Place of the journey.
      * @param time The time duration of the journey.
      */
-    public Journey(Place from, Place to, Long time) {
+    public JourneyBase(PlaceBase from, PlaceBase to, Long time) {
         this.from = from;
         this.to = to;
         this.time = time;

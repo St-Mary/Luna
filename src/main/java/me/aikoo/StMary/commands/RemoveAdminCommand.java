@@ -1,15 +1,15 @@
 package me.aikoo.StMary.commands;
 
-import me.aikoo.StMary.BotConfig;
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.abstracts.AbstractCommand;
+import me.aikoo.StMary.core.abstracts.CommandAbstract;
+import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.database.AdministratorEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-public class RemoveAdminCommand extends AbstractCommand {
+public class RemoveAdminCommand extends CommandAbstract {
     public RemoveAdminCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
@@ -24,7 +24,7 @@ public class RemoveAdminCommand extends AbstractCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        if (!event.getUser().getId().equals(BotConfig.getOwnerId())) {
+        if (!event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
             String errMsg = stMaryClient.getTextManager().generateError("Retrait d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
             event.reply(errMsg).queue();
         }

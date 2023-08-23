@@ -1,11 +1,11 @@
-package me.aikoo.StMary.core.classes;
+package me.aikoo.StMary.core.bases;
 
 import lombok.Getter;
 
 /**
  * Represents a title that can be assigned to a player.
  */
-public class Title {
+public class TitleBase {
 
     @Getter
     private final String name;
@@ -23,7 +23,7 @@ public class Title {
      * @param description A brief description of the title.
      * @param icon        An icon associated with the title.
      */
-    public Title(String name, String description, String icon) {
+    public TitleBase(String name, String description, String icon) {
         this.name = name;
         this.description = description;
         this.icon = icon;

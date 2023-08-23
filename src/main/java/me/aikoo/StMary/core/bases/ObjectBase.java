@@ -1,4 +1,4 @@
-package me.aikoo.StMary.core.classes;
+package me.aikoo.StMary.core.bases;
 
 import lombok.Getter;
 import me.aikoo.StMary.core.enums.ObjectType;
@@ -6,7 +6,7 @@ import me.aikoo.StMary.core.enums.ObjectType;
 /**
  * Represents an in-game object.
  */
-public class Object {
+public class ObjectBase {
     @Getter
     private final String id;
     @Getter
@@ -27,7 +27,7 @@ public class Object {
      * @param type        The type of the object.
      * @param description A brief description of the object.
      */
-    public Object(String id, String name, String icon, ObjectType type, String description) {
+    public ObjectBase(String id, String name, String icon, ObjectType type, String description) {
         this.id = id;
         this.name = name;
         this.icon = icon;

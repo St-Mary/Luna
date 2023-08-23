@@ -1,10 +1,10 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.abstracts.AbstractCommand;
-import me.aikoo.StMary.core.managers.TextManager;
+import me.aikoo.StMary.core.abstracts.CommandAbstract;
+import me.aikoo.StMary.core.bases.TitleBase;
 import me.aikoo.StMary.core.database.PlayerEntity;
-import me.aikoo.StMary.core.classes.Title;
+import me.aikoo.StMary.core.managers.TextManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command;
@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * A command to select and display a title for the user.
  */
-public class SelectTitleCommand extends AbstractCommand {
+public class SelectTitleCommand extends CommandAbstract {
 
     /**
      * Constructs a SelectTitle command.
@@ -42,7 +42,7 @@ public class SelectTitleCommand extends AbstractCommand {
     /**
      * Executes the SelectTitle command.
      *
-     * @param event  The SlashCommandInteractionEvent triggered by the command.
+     * @param event The SlashCommandInteractionEvent triggered by the command.
      */
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -78,7 +78,7 @@ public class SelectTitleCommand extends AbstractCommand {
      */
     public boolean verifications(PlayerEntity player, String titleName, SlashCommandInteractionEvent event) {
         if (player == null) return false;
-        HashMap<String, Title> titles = player.getTitles(stMaryClient);
+        HashMap<String, TitleBase> titles = player.getTitles(stMaryClient);
 
         // Check if the player owns the selected title
         if (!titles.containsKey(titleName)) {
@@ -100,18 +100,18 @@ public class SelectTitleCommand extends AbstractCommand {
     /**
      * Provides auto-complete choices for the title selection.
      *
-     * @param event  The CommandAutoCompleteInteractionEvent triggered by the auto-complete request.
+     * @param event The CommandAutoCompleteInteractionEvent triggered by the auto-complete request.
      */
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event) {
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
 
         if (player != null) {
-            Collection<Title> titles = player.getTitles(stMaryClient).values();
+            Collection<TitleBase> titles = player.getTitles(stMaryClient).values();
             ArrayList<Command.Choice> choices = new ArrayList<>();
 
             // Add title choices
-            for (Title title : titles) {
+            for (TitleBase title : titles) {
                 choices.add(new Command.Choice(title.format(), title.getName()));
 
                 if (choices.size() == 24) {

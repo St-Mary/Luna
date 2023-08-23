@@ -1,7 +1,7 @@
 package me.aikoo.StMary.core;
 
 import lombok.Getter;
-import me.aikoo.StMary.BotConfig;
+import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.managers.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -60,7 +60,7 @@ public class StMaryClient {
      */
     private void startStMaryClient() {
         LOGGER.info("Starting StMaryClient...");
-        String token = (BotConfig.getMode().equals("dev")) ? BotConfig.getDevToken() : BotConfig.getToken();
+        String token = (BotConfigConstant.getMode().equals("dev")) ? BotConfigConstant.getDevToken() : BotConfigConstant.getToken();
 
         jda = JDABuilder.createDefault(token)
                 .addEventListeners(new EventsListener(this))

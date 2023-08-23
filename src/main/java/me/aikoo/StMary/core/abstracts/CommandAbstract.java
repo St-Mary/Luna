@@ -2,8 +2,8 @@ package me.aikoo.StMary.core.abstracts;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.aikoo.StMary.BotConfig;
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.constants.BotConfigConstant;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -18,30 +18,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public abstract class AbstractCommand {
+public abstract class CommandAbstract {
     protected final StMaryClient stMaryClient;
     protected final List<OptionData> options = new ArrayList<>();
     @Getter
-    protected final HashMap<String, Button> buttons = new HashMap<>();
-
+    protected final HashMap<String, ButtonAbstract> buttons = new HashMap<>();
+    private final Logger LOGGER = LoggerFactory.getLogger(CommandAbstract.class);
     @Getter
     @Setter
     protected boolean mustBeRegistered = true;
-
     @Getter
     @Setter
     protected boolean isAdminCommand = false;
-
-    private final Logger LOGGER = LoggerFactory.getLogger(AbstractCommand.class);
     protected String name;
     protected String description;
     protected Long cooldown = 5000L;
 
     /**
      * Constructor for the AbstractCommand class
+     *
      * @param stMaryClient The client instance
      */
-    public AbstractCommand(StMaryClient stMaryClient) {
+    public CommandAbstract(StMaryClient stMaryClient) {
         this.stMaryClient = stMaryClient;
         this.name = this.getClass().getSimpleName().toLowerCase();
         this.description = "No description provided.";
@@ -54,7 +52,7 @@ public abstract class AbstractCommand {
     public void run(SlashCommandInteractionEvent event) {
 
         if (this.isAdminCommand) {
-            if (!this.stMaryClient.getDatabaseManager().isAdministrator(event.getUser().getIdLong()) && !event.getUser().getId().equals(BotConfig.getOwnerId())) {
+            if (!this.stMaryClient.getDatabaseManager().isAdministrator(event.getUser().getIdLong()) && !event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
                 event.reply(stMaryClient.getTextManager().generateError("Exécution de la commande", "Vous n'avez pas la permission d'exécuter cette commande!")).setEphemeral(true).queue();
                 return;
             }
@@ -86,7 +84,7 @@ public abstract class AbstractCommand {
         this.execute(event);
     }
 
-    protected ArrayList<Button> getArrayListButtons() {
+    protected ArrayList<ButtonAbstract> getArrayListButtons() {
         return new ArrayList<>(this.buttons.values());
     }
 

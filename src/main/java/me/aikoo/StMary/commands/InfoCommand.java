@@ -1,10 +1,9 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.abstracts.AbstractCommand;
-import me.aikoo.StMary.core.abstracts.Location;
-import me.aikoo.StMary.core.classes.*;
-import me.aikoo.StMary.core.classes.Object;
+import me.aikoo.StMary.core.abstracts.CommandAbstract;
+import me.aikoo.StMary.core.abstracts.LocationAbstract;
+import me.aikoo.StMary.core.bases.*;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -17,10 +16,11 @@ import java.util.Objects;
 /**
  * A command to obtain information about a game element.
  */
-public class InfoCommand extends AbstractCommand {
+public class InfoCommand extends CommandAbstract {
 
     /**
      * Constructor of the Info command.
+     *
      * @param stMaryClient The StMaryClient instance.
      */
     public InfoCommand(StMaryClient stMaryClient) {
@@ -43,7 +43,8 @@ public class InfoCommand extends AbstractCommand {
 
     /**
      * Provides information about different things in-game.
-     * @param event  The interaction event.
+     *
+     * @param event The interaction event.
      */
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -67,11 +68,11 @@ public class InfoCommand extends AbstractCommand {
     /**
      * Provides information about a place.
      *
-     * @param event  The interaction event.
-     * @param name   The name of the place.
+     * @param event The interaction event.
+     * @param name  The name of the place.
      */
     private void infoPlace(SlashCommandInteractionEvent event, String name) {
-        Location location = stMaryClient.getLocationManager().getLocation(name);
+        LocationAbstract location = stMaryClient.getLocationManager().getLocation(name);
 
         if (location == null) {
             String error = stMaryClient.getTextManager().createText("info_place_error_dont_exist").buildError();
@@ -82,13 +83,13 @@ public class InfoCommand extends AbstractCommand {
         String description = this.formatLocationDescription(location.getDescription());
         String content = stMaryClient.getTextManager().getText("info_place_description").replace("{{icon}}", location.getIcon()).replace("{{name}}", location.getName()).replace("{{type}}", location.getType()).replace("{{description}}", description);
 
-        if (location instanceof Town town) {
+        if (location instanceof TownBasee town) {
             String townPlaces = this.formatTownPlaceDescription(town);
             content += stMaryClient.getTextManager().getText("info_place_description_town").replace("{{town_places}}", townPlaces);
-        } else if (location instanceof Region region) {
+        } else if (location instanceof RegionBase region) {
             String regionPlaces = this.formatRegionPlaceDescription(region);
             content += regionPlaces;
-        } else if (location instanceof Place place) {
+        } else if (location instanceof PlaceBase place) {
             String availableDestinations = this.formatAvailableDestination(place);
             content += stMaryClient.getTextManager().getText("info_place_description_place").replace("{{available_destinations}}", availableDestinations);
         }
@@ -99,14 +100,15 @@ public class InfoCommand extends AbstractCommand {
 
     /**
      * Format the availables description from a place.
-     * @param  place The place.
+     *
+     * @param place The place.
      * @return The formatted description of the place.
      */
-    private String formatAvailableDestination(Place place) {
-        ArrayList<Journey> availableDestinationsJourney = place.getAvailableMoves();
+    private String formatAvailableDestination(PlaceBase place) {
+        ArrayList<JourneyBase> availableDestinationsJourney = place.getAvailableMoves();
         StringBuilder availableDestinations = new StringBuilder();
 
-        for (Journey journey : availableDestinationsJourney) {
+        for (JourneyBase journey : availableDestinationsJourney) {
             availableDestinations.append(String.format("%s `%s`", journey.getTo().getIcon(), journey.getTo().getName()));
             if (availableDestinationsJourney.indexOf(journey) != availableDestinationsJourney.size() - 1) {
                 availableDestinations.append(", ");
@@ -118,6 +120,7 @@ public class InfoCommand extends AbstractCommand {
 
     /**
      * Format the description of a location
+     *
      * @param description The description of the location.
      * @return The formatted description of the location.
      */
@@ -137,14 +140,15 @@ public class InfoCommand extends AbstractCommand {
 
     /**
      * Format the description of a town place
-     * @param  town The town place.
+     *
+     * @param town The town place.
      * @return The formatted description of the town place.
      */
-    private String formatTownPlaceDescription(Town town) {
-        ArrayList<Place> places = town.getPlaces();
+    private String formatTownPlaceDescription(TownBasee town) {
+        ArrayList<PlaceBase> places = town.getPlaces();
         StringBuilder formattedDescription = new StringBuilder();
 
-        for (Place place : places) {
+        for (PlaceBase place : places) {
             formattedDescription.append(String.format("**%s** `%s`", place.getIcon(), place.getName()));
             if (places.indexOf(place) != places.size() - 1) {
                 formattedDescription.append(", ");
@@ -156,16 +160,17 @@ public class InfoCommand extends AbstractCommand {
 
     /**
      * Format places and towns description of a region
-     * @param  region The region.
-     * @return        The formatted description of the region.
+     *
+     * @param region The region.
+     * @return The formatted description of the region.
      */
-    private String formatRegionPlaceDescription(Region region) {
-        ArrayList<Place> places = region.getPlaces();
-        ArrayList<Town> towns = region.getTowns();
+    private String formatRegionPlaceDescription(RegionBase region) {
+        ArrayList<PlaceBase> places = region.getPlaces();
+        ArrayList<TownBasee> towns = region.getTowns();
         StringBuilder formattedDescription = new StringBuilder();
 
         formattedDescription.append(stMaryClient.getTextManager().getText("info_place_region_towns"));
-        for (Town town : towns) {
+        for (TownBasee town : towns) {
             formattedDescription.append(String.format("**%s** `%s`", town.getIcon(), town.getName()));
             if (towns.indexOf(town) != towns.size() - 1) {
                 formattedDescription.append(", ");
@@ -173,7 +178,7 @@ public class InfoCommand extends AbstractCommand {
         }
 
         formattedDescription.append(stMaryClient.getTextManager().getText("info_place_region_places"));
-        for (Place place : places) {
+        for (PlaceBase place : places) {
             formattedDescription.append(String.format("**%s** `%s`", place.getIcon(), place.getName()));
             if (places.indexOf(place) != places.size() - 1) {
                 formattedDescription.append(", ");
@@ -186,8 +191,8 @@ public class InfoCommand extends AbstractCommand {
     /**
      * Provides information about an object.
      *
-     * @param event  The interaction event.
-     * @param name   The name of the object.
+     * @param event The interaction event.
+     * @param name  The name of the object.
      */
     private void infoObject(SlashCommandInteractionEvent event, String name) {
         if (name == null) {
@@ -196,7 +201,7 @@ public class InfoCommand extends AbstractCommand {
             return;
         }
 
-        Object object = stMaryClient.getObjectManager().getObjectByName(name);
+        ObjectBase object = stMaryClient.getObjectManager().getObjectByName(name);
 
         if (object == null) {
             String error = stMaryClient.getTextManager().generateError("Information à propos d'un objet", "L'objet demandé n'existe pas.");
@@ -213,8 +218,8 @@ public class InfoCommand extends AbstractCommand {
     /**
      * Provides information about a title or all titles.
      *
-     * @param event  The interaction event.
-     * @param name   The name of the title or null for all titles.
+     * @param event The interaction event.
+     * @param name  The name of the title or null for all titles.
      */
     private void infoTitle(SlashCommandInteractionEvent event, String name) {
         String text = (name == null) ? infoAllTitles() : infoOneTitle(name);
@@ -224,8 +229,8 @@ public class InfoCommand extends AbstractCommand {
     /**
      * Provides information about a character.
      *
-     * @param event  The interaction event.
-     * @param name   The name of the character.
+     * @param event The interaction event.
+     * @param name  The name of the character.
      */
     private void infoCharacter(SlashCommandInteractionEvent event, String name) {
         String text = stMaryClient.getTextManager().generateScene("Information à propos d'un personnage", "Cette page n'est pas encore disponible !");
@@ -235,8 +240,8 @@ public class InfoCommand extends AbstractCommand {
     /**
      * Provides information about a monster.
      *
-     * @param event  The interaction event.
-     * @param name   The name of the monster.
+     * @param event The interaction event.
+     * @param name  The name of the monster.
      */
     private void infoMonster(SlashCommandInteractionEvent event, String name) {
         String text = stMaryClient.getTextManager().generateScene("Information à propos d'un monstre", "Cette page n'est pas encore disponible !");
@@ -246,8 +251,8 @@ public class InfoCommand extends AbstractCommand {
     /**
      * Provides information about a quest.
      *
-     * @param event  The interaction event.
-     * @param name   The name of the quest.
+     * @param event The interaction event.
+     * @param name  The name of the quest.
      */
     private void infoQuest(SlashCommandInteractionEvent event, String name) {
         String text = stMaryClient.getTextManager().generateScene("Information à propos d'une quête", "Cette page n'est pas encore disponible !");
@@ -260,10 +265,10 @@ public class InfoCommand extends AbstractCommand {
      * @return A formatted string with information about all titles.
      */
     private String infoAllTitles() {
-        ArrayList<Title> titles = new ArrayList<>(stMaryClient.getTitleManager().getTitles().values());
+        ArrayList<TitleBase> titles = new ArrayList<>(stMaryClient.getTitleManager().getTitles().values());
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (Title title : titles) {
+        for (TitleBase title : titles) {
             stringBuilder.append(String.format("%s | **%s** - `%s`", title.getIcon(), title.getName(), title.getDescription()));
 
             if (titles.indexOf(title) != titles.size() - 1) {
@@ -277,11 +282,11 @@ public class InfoCommand extends AbstractCommand {
     /**
      * Generates information about a specific title.
      *
-     * @param name   The name of the title.
+     * @param name The name of the title.
      * @return A formatted string with information about the title.
      */
     private String infoOneTitle(String name) {
-        Title title = stMaryClient.getTitleManager().getTitle(name);
+        TitleBase title = stMaryClient.getTitleManager().getTitle(name);
 
         if (title == null) {
             return stMaryClient.getTextManager().generateError("Titre", "Le titre demandé n'existe pas.");

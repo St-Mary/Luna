@@ -1,12 +1,12 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.abstracts.AbstractCommand;
-import me.aikoo.StMary.core.classes.Journey;
+import me.aikoo.StMary.core.abstracts.ButtonAbstract;
+import me.aikoo.StMary.core.abstracts.CommandAbstract;
+import me.aikoo.StMary.core.bases.JourneyBase;
+import me.aikoo.StMary.core.bases.PlaceBase;
 import me.aikoo.StMary.core.database.MoveEntity;
 import me.aikoo.StMary.core.database.PlayerEntity;
-import me.aikoo.StMary.core.abstracts.Button;
-import me.aikoo.StMary.core.classes.Place;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * A command to initiate a journey to a destination.
  */
-public class JourneyCommand extends AbstractCommand {
+public class JourneyCommand extends CommandAbstract {
 
     private boolean isStarted = false;
 
@@ -45,14 +45,14 @@ public class JourneyCommand extends AbstractCommand {
     /**
      * Executes the "journey" command, allowing a player to initiate a journey to a specified destination.
      *
-     * @param event  The SlashCommandInteractionEvent representing the command interaction.
+     * @param event The SlashCommandInteractionEvent representing the command interaction.
      */
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         String destination = event.getOption("destination").getAsString();
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
-        Place place = stMaryClient.getLocationManager().getPlace(player.getCurrentLocationPlace());
-        Place destinationPlace = stMaryClient.getLocationManager().getPlace(destination);
+        PlaceBase place = stMaryClient.getLocationManager().getPlace(player.getCurrentLocationPlace());
+        PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlace(destination);
 
         // Check if either the current place or destination place is null.
         if (place == null || destinationPlace == null) {
@@ -65,7 +65,7 @@ public class JourneyCommand extends AbstractCommand {
         MoveEntity moves = stMaryClient.getDatabaseManager().getMove(player.getId());
 
         // Retrieve the journey move for the specified destination.
-        Journey move = place.getMove(destination);
+        JourneyBase move = place.getMove(destination);
 
         // Check if there are existing moves or if the move to the destination is not available.
         if (moves != null || !place.getAvailableMoves().contains(move)) {
@@ -73,7 +73,7 @@ public class JourneyCommand extends AbstractCommand {
 
             // Check if the player is already on a journey.
             if (moves != null) {
-                Place toPlace = stMaryClient.getLocationManager().getPlace(moves.getTo());
+                PlaceBase toPlace = stMaryClient.getLocationManager().getPlace(moves.getTo());
                 String formattedText = (place.getTown() == toPlace.getTown()) ? toPlace.getIcon() + toPlace.getName() : toPlace.getTown().getIcon() + toPlace.getTown().getName();
 
                 text = stMaryClient.getTextManager().createText("journey_err_destination_1").replace("name", formattedText).buildError();
@@ -121,7 +121,7 @@ public class JourneyCommand extends AbstractCommand {
      * @param message          The message to edit.
      * @param destinationPlace The destination place.
      */
-    private void close(Message message, Place destinationPlace) {
+    private void close(Message message, PlaceBase destinationPlace) {
         String formattedLocation = stMaryClient.getLocationManager().formatLocation(destinationPlace.getName());
         String text = stMaryClient.getTextManager().createText("journey_cancel").replace("destination", formattedLocation).build();
         List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
@@ -133,7 +133,7 @@ public class JourneyCommand extends AbstractCommand {
     /**
      * Handles auto-completion of a command based on the user's current location.
      *
-     * @param event  The CommandAutoCompleteInteractionEvent triggered by the user.
+     * @param event The CommandAutoCompleteInteractionEvent triggered by the user.
      */
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event) {
@@ -143,7 +143,7 @@ public class JourneyCommand extends AbstractCommand {
             return;
         }
 
-        Place place = stMaryClient.getLocationManager().getPlace(player.getCurrentLocationPlace());
+        PlaceBase place = stMaryClient.getLocationManager().getPlace(player.getCurrentLocationPlace());
 
         if (place == null) {
             return;
@@ -157,10 +157,10 @@ public class JourneyCommand extends AbstractCommand {
         ArrayList<Command.Choice> choices = new ArrayList<>();
 
         // Iterate through available moves and generate choices.
-        for (Journey move : place.getAvailableMoves()) {
+        for (JourneyBase move : place.getAvailableMoves()) {
             // Retrieve the destination information.
             String destinationName = move.getTo().getName();
-            Place destination = stMaryClient.getLocationManager().getPlace(destinationName);
+            PlaceBase destination = stMaryClient.getLocationManager().getPlace(destinationName);
 
             // Determine the display name based on the destination's town.
             String name;
@@ -181,18 +181,18 @@ public class JourneyCommand extends AbstractCommand {
     /**
      * Represents a confirm button for journey.
      */
-    private class ConfirmBtn extends Button {
+    private class ConfirmBtn extends ButtonAbstract {
 
-        private final Journey move;
+        private final JourneyBase move;
         private final PlayerEntity player;
 
         /**
          * Constructs a ConfirmBtn instance.
          *
-         * @param move         The journey move.
-         * @param player       The player associated with the user.
+         * @param move   The journey move.
+         * @param player The player associated with the user.
          */
-        public ConfirmBtn( Journey move, PlayerEntity player) {
+        public ConfirmBtn(JourneyBase move, PlayerEntity player) {
             super("confirm_move", stMaryClient.getTextManager().getText("journey_btn_confirm"), ButtonStyle.SUCCESS, Emoji.fromUnicode("\uD83D\uDDFA\uFE0F"), stMaryClient);
 
             this.move = move;
@@ -202,8 +202,8 @@ public class JourneyCommand extends AbstractCommand {
         @Override
         public void onClick(ButtonInteractionEvent event) {
             // Get the old place and destination place based on the player's current location and destination.
-            Place oldPlace = stMaryClient.getLocationManager().getPlace(player.getCurrentLocationPlace());
-            Place destinationPlace = stMaryClient.getLocationManager().getPlace(move.getTo().getName());
+            PlaceBase oldPlace = stMaryClient.getLocationManager().getPlace(player.getCurrentLocationPlace());
+            PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlace(move.getTo().getName());
 
             // Create a new MoveEntity to track the journey details.
             MoveEntity moves = new MoveEntity();
@@ -244,16 +244,16 @@ public class JourneyCommand extends AbstractCommand {
     /**
      * Represents a close button for journey.
      */
-    private class CloseBtn extends Button {
+    private class CloseBtn extends ButtonAbstract {
 
-        private final Place destinationPlace;
+        private final PlaceBase destinationPlace;
 
         /**
          * Constructs a CloseBtn instance.
          *
          * @param destinationPlace The destination place.
          */
-        public CloseBtn(Place destinationPlace) {
+        public CloseBtn(PlaceBase destinationPlace) {
             super("close_btn", stMaryClient.getTextManager().getText("journey_btn_cancel"), ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
             this.destinationPlace = destinationPlace;
         }

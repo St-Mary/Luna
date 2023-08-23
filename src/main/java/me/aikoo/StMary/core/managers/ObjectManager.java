@@ -2,7 +2,7 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
 import me.aikoo.StMary.core.JSONFileReader;
-import me.aikoo.StMary.core.classes.Object;
+import me.aikoo.StMary.core.bases.ObjectBase;
 import me.aikoo.StMary.core.enums.ObjectType;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 public class ObjectManager {
     // Stores objects using their ID as the key
-    private final HashMap<String, Object> objects = new HashMap<>();
+    private final HashMap<String, ObjectBase> objects = new HashMap<>();
 
     /**
      * Constructor for the ObjectManager class. Loads objects from JSON files at startup.
@@ -28,7 +28,7 @@ public class ObjectManager {
      * @param id The ID of the object to retrieve.
      * @return The object corresponding to the ID or null if not found.
      */
-    public Object getObject(String id) {
+    public ObjectBase getObject(String id) {
         return objects.get(id);
     }
 
@@ -38,9 +38,9 @@ public class ObjectManager {
      * @param name The name of the object to retrieve.
      * @return The object corresponding to the name or null if not found.
      */
-    public Object getObjectByName(String name) {
+    public ObjectBase getObjectByName(String name) {
         name = name.toLowerCase();
-        for (Object object : objects.values()) {
+        for (ObjectBase object : objects.values()) {
             if (object.getName().toLowerCase().equalsIgnoreCase(name)) {
                 return object;
             }
@@ -63,7 +63,7 @@ public class ObjectManager {
             ObjectType type = ObjectType.valueOf(object.get("type").getAsString().toUpperCase());
             String description = object.get("description").getAsString();
 
-            this.objects.put(id, new Object(id, name, icon, type, description));
+            this.objects.put(id, new ObjectBase(id, name, icon, type, description));
         }
     }
 }

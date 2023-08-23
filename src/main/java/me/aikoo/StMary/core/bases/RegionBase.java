@@ -1,14 +1,14 @@
-package me.aikoo.StMary.core.classes;
+package me.aikoo.StMary.core.bases;
 
 import lombok.Getter;
-import me.aikoo.StMary.core.abstracts.Location;
+import me.aikoo.StMary.core.abstracts.LocationAbstract;
 
 import java.util.ArrayList;
 
 /**
  * Represents a region in the game world.
  */
-public class Region extends Location {
+public class RegionBase extends LocationAbstract {
 
     @Getter
     private final String name;
@@ -20,10 +20,10 @@ public class Region extends Location {
     private final String icon = "\uD83C\uDF0D "; // A region icon, you can customize this.
 
     @Getter
-    private final ArrayList<Town> towns = new ArrayList<>();
+    private final ArrayList<TownBasee> towns = new ArrayList<>();
 
     @Getter
-    private final ArrayList<Place> places = new ArrayList<>();
+    private final ArrayList<PlaceBase> places = new ArrayList<>();
 
     /**
      * Creates a new Region instance with the specified name and description.
@@ -31,7 +31,7 @@ public class Region extends Location {
      * @param name        The name of the region.
      * @param description A brief description of the region.
      */
-    public Region(String name, String description) {
+    public RegionBase(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -41,7 +41,7 @@ public class Region extends Location {
      *
      * @param town The town to add to the region.
      */
-    public void addTown(Town town) {
+    public void addTown(TownBasee town) {
         this.towns.add(town);
     }
 
@@ -50,7 +50,7 @@ public class Region extends Location {
      *
      * @param place The place to add to the region.
      */
-    public void addPlace(Place place) {
+    public void addPlace(PlaceBase place) {
         this.places.add(place);
     }
 }

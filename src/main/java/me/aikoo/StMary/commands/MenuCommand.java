@@ -1,13 +1,13 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.abstracts.AbstractCommand;
+import me.aikoo.StMary.core.abstracts.ButtonAbstract;
+import me.aikoo.StMary.core.abstracts.CommandAbstract;
+import me.aikoo.StMary.core.bases.ObjectBase;
+import me.aikoo.StMary.core.bases.PlaceBase;
+import me.aikoo.StMary.core.bases.TitleBase;
 import me.aikoo.StMary.core.database.MoveEntity;
 import me.aikoo.StMary.core.database.PlayerEntity;
-import me.aikoo.StMary.core.abstracts.Button;
-import me.aikoo.StMary.core.classes.Object;
-import me.aikoo.StMary.core.classes.Place;
-import me.aikoo.StMary.core.classes.Title;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
@@ -25,7 +25,7 @@ import java.util.Objects;
 /**
  * A command to display a user's menu, including their profile, inventory, and titles.
  */
-public class MenuCommand extends AbstractCommand {
+public class MenuCommand extends CommandAbstract {
 
     // Indicates if the menu is closed
     private boolean isClosed = false;
@@ -49,7 +49,7 @@ public class MenuCommand extends AbstractCommand {
     /**
      * Executes the Menu command.
      *
-     * @param event  The SlashCommandInteractionEvent triggered by the command.
+     * @param event The SlashCommandInteractionEvent triggered by the command.
      */
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -114,7 +114,7 @@ public class MenuCommand extends AbstractCommand {
     /**
      * Auto-complete handler for the Menu command.
      *
-     * @param event  The CommandAutoCompleteInteractionEvent triggered by auto-complete.
+     * @param event The CommandAutoCompleteInteractionEvent triggered by auto-complete.
      */
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event) {
@@ -129,7 +129,7 @@ public class MenuCommand extends AbstractCommand {
      * @return The formatted profile as a string.
      */
     private String profilEmbed(String name, PlayerEntity player) {
-        Title title = player.getCurrentTitle(stMaryClient);
+        TitleBase title = player.getCurrentTitle(stMaryClient);
         String icon = title.getIcon();
         String place = player.getCurrentLocationPlace();
 
@@ -139,8 +139,8 @@ public class MenuCommand extends AbstractCommand {
         MoveEntity move = stMaryClient.getDatabaseManager().getMove(player.getId());
 
         if (move != null) {
-            Place to = stMaryClient.getLocationManager().getPlace(move.getTo());
-            Place from = stMaryClient.getLocationManager().getPlace(move.getFrom());
+            PlaceBase to = stMaryClient.getLocationManager().getPlace(move.getTo());
+            PlaceBase from = stMaryClient.getLocationManager().getPlace(move.getFrom());
 
             // Format the destination and departure names based on whether they are town places or not
             String destinationName = to.isTownPlace() ? to.getTown().getName() + " - " + to.getName() : to.getName();
@@ -167,7 +167,7 @@ public class MenuCommand extends AbstractCommand {
     /**
      * Represents a profile button.
      */
-    private class ProfilBtn extends Button {
+    private class ProfilBtn extends ButtonAbstract {
         private final PlayerEntity player;
         private final String id;
 
@@ -198,7 +198,7 @@ public class MenuCommand extends AbstractCommand {
     /**
      * Represents an inventory button.
      */
-    private class InventoryBtn extends Button {
+    private class InventoryBtn extends ButtonAbstract {
         private final PlayerEntity player;
         private final String id;
 
@@ -218,9 +218,9 @@ public class MenuCommand extends AbstractCommand {
         @Override
         public void onClick(ButtonInteractionEvent event) {
             if (!event.getUser().getId().equals(id)) return;
-            Title title = player.getCurrentTitle(stMaryClient);
+            TitleBase title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
-            Object magicalBook = player.getMagicalBook(stMaryClient);
+            ObjectBase magicalBook = player.getMagicalBook(stMaryClient);
             String magicalBookName = (magicalBook != null) ? "%s `%s`".formatted(magicalBook.getIcon(), magicalBook.getName()) : stMaryClient.getTextManager().getText("menu_no_magical_book");
 
             // Generate the inventory text
@@ -240,7 +240,7 @@ public class MenuCommand extends AbstractCommand {
     /**
      * Represents a titles button.
      */
-    private class TitlesBtn extends Button {
+    private class TitlesBtn extends ButtonAbstract {
         private final PlayerEntity player;
         private final String id;
 
@@ -261,13 +261,13 @@ public class MenuCommand extends AbstractCommand {
         public void onClick(ButtonInteractionEvent event) {
             if (!event.getUser().getId().equals(id)) return;
 
-            Title title = player.getCurrentTitle(stMaryClient);
+            TitleBase title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
 
-            HashMap<String, Title> titles = player.getTitles(stMaryClient);
+            HashMap<String, TitleBase> titles = player.getTitles(stMaryClient);
 
             StringBuilder stringBuilder = new StringBuilder();
-            for (Title t : titles.values()) {
+            for (TitleBase t : titles.values()) {
                 stringBuilder.append(t.getIcon()).append(" | `").append(t.getName()).append("`");
                 if (t.getName().equals(title.getName())) {
                     stringBuilder.append(stMaryClient.getTextManager().getText("menu_titles_actual"));
@@ -294,7 +294,7 @@ public class MenuCommand extends AbstractCommand {
     /**
      * Represents a close button.
      */
-    private class CloseBtn extends Button {
+    private class CloseBtn extends ButtonAbstract {
         String id;
 
         /**

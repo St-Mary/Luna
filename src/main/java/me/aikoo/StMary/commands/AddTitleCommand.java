@@ -1,7 +1,7 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.abstracts.AbstractCommand;
+import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import me.aikoo.StMary.core.database.PlayerEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Objects;
 
-public class AddTitleCommand extends AbstractCommand {
+public class AddTitleCommand extends CommandAbstract {
     public AddTitleCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
@@ -55,5 +55,6 @@ public class AddTitleCommand extends AbstractCommand {
     }
 
     @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event) {}
+    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+    }
 }

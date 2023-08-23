@@ -85,6 +85,7 @@ public class TextManager {
 
     /**
      * Create a new Text object with given id.
+     *
      * @param id The id of the text.
      * @return The created Text object.
      */
@@ -122,8 +123,9 @@ public class TextManager {
 
         /**
          * Constructor for the Text class.
-         * @param id The id of the text.
-         * @param text The text.
+         *
+         * @param id    The id of the text.
+         * @param text  The text.
          * @param title The title.
          */
         public Text(String id, String text, String title) {
@@ -154,18 +156,20 @@ public class TextManager {
 
         /**
          * Replace a placeholder with a given replacement.
-         * @param name The name of the placeholder.
+         *
+         * @param name        The name of the placeholder.
          * @param replacement The replacement.
          * @return The Text object.
          */
         public Text replace(String name, String replacement) {
-            Pattern pattern = Pattern.compile("\\{\\{" + name +"\\}\\}", Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile("\\{\\{" + name + "\\}\\}", Pattern.CASE_INSENSITIVE);
             tmpText = pattern.matcher(tmpText).replaceAll(replacement);
             return this;
         }
 
         /**
          * Build the text.
+         *
          * @return The built text.
          */
         public String build() {
@@ -177,6 +181,7 @@ public class TextManager {
 
         /**
          * Build the error.
+         *
          * @return The built error.
          */
         public String buildError() {

@@ -5,9 +5,10 @@ import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.classes.Object;
-import me.aikoo.StMary.core.classes.Title;
+import me.aikoo.StMary.core.bases.ObjectBase;
+import me.aikoo.StMary.core.bases.TitleBase;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.id.uuid.UuidGenerator;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -19,7 +20,7 @@ public class PlayerEntity {
     @Id
     @Getter
     @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(name = "uuid-hibernate-generator", type = UuidGenerator.class)
     private UUID id;
 
     @Getter
@@ -81,7 +82,7 @@ public class PlayerEntity {
      * @param client The StMaryClient instance.
      * @return The current title of the player.
      */
-    public Title getCurrentTitle(StMaryClient client) {
+    public TitleBase getCurrentTitle(StMaryClient client) {
         return client.getTitleManager().getTitle(this.currentTitle);
     }
 
@@ -92,8 +93,8 @@ public class PlayerEntity {
      * @return A HashMap of title names and Title objects.
      */
     @Transactional
-    public HashMap<String, Title> getTitles(StMaryClient client) {
-        HashMap<String, Title> titles = new HashMap<>();
+    public HashMap<String, TitleBase> getTitles(StMaryClient client) {
+        HashMap<String, TitleBase> titles = new HashMap<>();
         for (TitleEntity title : this.titles) {
             titles.put(title.getName(), client.getTitleManager().getTitle(title.getName()));
         }
@@ -119,7 +120,7 @@ public class PlayerEntity {
      * @param client The StMaryClient instance.
      * @return The magical book owned by the player.
      */
-    public Object getMagicalBook(StMaryClient client) {
+    public ObjectBase getMagicalBook(StMaryClient client) {
         return client.getObjectManager().getObject(this.magicalBook);
     }
 

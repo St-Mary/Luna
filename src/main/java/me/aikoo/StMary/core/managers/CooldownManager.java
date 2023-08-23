@@ -12,9 +12,9 @@ public class CooldownManager {
     /**
      * Adds a cooldown for a user and command.
      *
-     * @param user   The user for whom to add the cooldown.
+     * @param user    The user for whom to add the cooldown.
      * @param command The command for which to add the cooldown.
-     * @param time   The time (in milliseconds) for the cooldown.
+     * @param time    The time (in milliseconds) for the cooldown.
      */
     public void addCooldown(String user, String command, Long time) {
         HashMap<String, HashMap<Long, Long>> cooldown = new HashMap<>();

@@ -1,13 +1,13 @@
 package me.aikoo.StMary.core.abstracts;
 
-import me.aikoo.StMary.core.classes.Place;
-import me.aikoo.StMary.core.classes.Region;
-import me.aikoo.StMary.core.classes.Town;
+import me.aikoo.StMary.core.bases.PlaceBase;
+import me.aikoo.StMary.core.bases.RegionBase;
+import me.aikoo.StMary.core.bases.TownBasee;
 
 /**
  * Represents a location in the game world.
  */
-public abstract class Location {
+public abstract class LocationAbstract {
 
     /**
      * Get the name of the location.
@@ -32,11 +32,11 @@ public abstract class Location {
 
     public String getType() {
         String type = "";
-        if (this instanceof Region) {
+        if (this instanceof RegionBase) {
             type = "Région";
-        } else if (this instanceof Town) {
+        } else if (this instanceof TownBasee) {
             type = "Ville";
-        } else if (this instanceof Place) {
+        } else if (this instanceof PlaceBase) {
             type = "Lieu";
         }
 

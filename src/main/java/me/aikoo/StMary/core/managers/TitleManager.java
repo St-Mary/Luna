@@ -3,7 +3,7 @@ package me.aikoo.StMary.core.managers;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import me.aikoo.StMary.core.JSONFileReader;
-import me.aikoo.StMary.core.classes.Title;
+import me.aikoo.StMary.core.bases.TitleBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class TitleManager {
 
     @Getter
-    public HashMap<String, Title> titles = new HashMap<>();
+    public HashMap<String, TitleBase> titles = new HashMap<>();
 
     /**
      * Constructor for the TitleManager class.
@@ -35,7 +35,7 @@ public class TitleManager {
             String description = jsonObject.get("description").getAsString();
             String icon = jsonObject.get("icon").getAsString();
 
-            this.titles.put(name, new Title(name, description, icon));
+            this.titles.put(name, new TitleBase(name, description, icon));
         }
     }
 
@@ -45,7 +45,7 @@ public class TitleManager {
      * @param name The name of the title to retrieve.
      * @return The title corresponding to the name, or null if it doesn't exist.
      */
-    public Title getTitle(String name) {
+    public TitleBase getTitle(String name) {
         return this.titles.get(name);
     }
 }

@@ -1,7 +1,7 @@
 package me.aikoo.StMary.core.managers;
 
 import jakarta.persistence.Entity;
-import me.aikoo.StMary.BotConfig;
+import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.database.AdministratorEntity;
 import me.aikoo.StMary.core.database.MoveEntity;
 import me.aikoo.StMary.core.database.PlayerEntity;
@@ -37,9 +37,9 @@ public class DatabaseManager {
 
                 Map<String, Object> settings = new HashMap<>();
                 settings.put(Environment.DRIVER, "org.mariadb.jdbc.Driver");
-                settings.put(Environment.URL, "jdbc:mariadb" + "://" + BotConfig.getDatabaseHost() + ":" + BotConfig.getDatabasePort() + "/" + BotConfig.getDatabaseName());
-                settings.put(Environment.USER, BotConfig.getDatabaseUsername());
-                settings.put(Environment.PASS, BotConfig.getDatabasePassword());
+                settings.put(Environment.URL, "jdbc:mariadb" + "://" + BotConfigConstant.getDatabaseHost() + ":" + BotConfigConstant.getDatabasePort() + "/" + BotConfigConstant.getDatabaseName());
+                settings.put(Environment.USER, BotConfigConstant.getDatabaseUsername());
+                settings.put(Environment.PASS, BotConfigConstant.getDatabasePassword());
                 settings.put(Environment.HBM2DDL_AUTO, "update");
                 settings.put(Environment.SHOW_SQL, false);
                 settings.put(Environment.FORMAT_SQL, true);

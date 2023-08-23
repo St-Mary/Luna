@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 /**
  * Represents an abstract button that can be interacted with in a Discord message.
  */
-public abstract class Button {
+public abstract class ButtonAbstract {
 
     /**
      * Get the name of the button.
@@ -48,13 +48,13 @@ public abstract class Button {
     /**
      * Creates a new Button instance.
      *
-     * @param id            The unique identifier of the button.
-     * @param name          The name of the button.
-     * @param style         The style (color) of the button.
-     * @param emoji         The emoji associated with the button.
-     * @param stMaryClient  The StMaryClient instance.
+     * @param id           The unique identifier of the button.
+     * @param name         The name of the button.
+     * @param style        The style (color) of the button.
+     * @param emoji        The emoji associated with the button.
+     * @param stMaryClient The StMaryClient instance.
      */
-    public Button(String id, String name, ButtonStyle style, Emoji emoji, StMaryClient stMaryClient) {
+    public ButtonAbstract(String id, String name, ButtonStyle style, Emoji emoji, StMaryClient stMaryClient) {
         this.id = id;
         this.name = name;
         this.style = style;
