@@ -2,9 +2,9 @@ package me.aikoo.StMary.core.managers;
 
 import jakarta.persistence.Entity;
 import me.aikoo.StMary.BotConfig;
-import me.aikoo.StMary.database.entities.AdministratorEntity;
-import me.aikoo.StMary.database.entities.MoveEntity;
-import me.aikoo.StMary.database.entities.PlayerEntity;
+import me.aikoo.StMary.core.database.AdministratorEntity;
+import me.aikoo.StMary.core.database.MoveEntity;
+import me.aikoo.StMary.core.database.PlayerEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;

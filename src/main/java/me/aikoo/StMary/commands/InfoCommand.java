@@ -1,8 +1,10 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.system.*;
-import me.aikoo.StMary.core.system.Object;
+import me.aikoo.StMary.core.abstracts.AbstractCommand;
+import me.aikoo.StMary.core.abstracts.Location;
+import me.aikoo.StMary.core.classes.*;
+import me.aikoo.StMary.core.classes.Object;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;

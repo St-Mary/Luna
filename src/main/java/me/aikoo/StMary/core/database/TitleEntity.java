@@ -1,4 +1,4 @@
-package me.aikoo.StMary.database.entities;
+package me.aikoo.StMary.core.database;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

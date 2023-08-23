@@ -1,7 +1,8 @@
-package me.aikoo.StMary.core.system;
+package me.aikoo.StMary.core.classes;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.aikoo.StMary.core.abstracts.Location;
 
 import java.util.ArrayList;
 

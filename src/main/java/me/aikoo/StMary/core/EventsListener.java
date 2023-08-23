@@ -1,7 +1,7 @@
 package me.aikoo.StMary.core;
 
 import me.aikoo.StMary.BotConfig;
-import me.aikoo.StMary.commands.AbstractCommand;
+import me.aikoo.StMary.core.abstracts.AbstractCommand;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -30,6 +30,10 @@ public class EventsListener extends ListenerAdapter {
         this.stMaryClient = client;
     }
 
+    /**
+     * Called when the bot is ready.
+     * @param event The ReadyEvent.
+     */
     @Override
     public void onReady(@NotNull ReadyEvent event) {
         LOGGER.info("StMary is logged as {}", event.getJDA().getSelfUser().getName());
@@ -59,6 +63,10 @@ public class EventsListener extends ListenerAdapter {
         }
     }
 
+    /**
+     * Called when a slash command is executed.
+     * @param event The SlashCommandInteractionEvent.
+     */
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         AbstractCommand command = this.stMaryClient.getCommandManager().getCommand(event.getName());
@@ -67,6 +75,10 @@ public class EventsListener extends ListenerAdapter {
         command.run(event);
     }
 
+    /**
+     * Called when a slash command auto-complete request is received.
+     * @param event The CommandAutoCompleteInteractionEvent.
+     */
     @Override
     public void onCommandAutoCompleteInteraction(CommandAutoCompleteInteractionEvent event) {
         AbstractCommand command = this.stMaryClient.getCommandManager().getCommand(event.getInteraction().getName());

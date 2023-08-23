@@ -3,7 +3,7 @@ package me.aikoo.StMary.core.managers;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import me.aikoo.StMary.core.JSONFileReader;
-import me.aikoo.StMary.core.system.Title;
+import me.aikoo.StMary.core.classes.Title;
 
 import java.util.ArrayList;
 import java.util.HashMap;

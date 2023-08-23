@@ -1,6 +1,8 @@
-package me.aikoo.StMary.core.system;
+package me.aikoo.StMary.core.abstracts;
 
-import java.util.ArrayList;
+import me.aikoo.StMary.core.classes.Place;
+import me.aikoo.StMary.core.classes.Region;
+import me.aikoo.StMary.core.classes.Town;
 
 /**
  * Represents a location in the game world.

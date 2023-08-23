@@ -1,8 +1,9 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.abstracts.AbstractCommand;
 import me.aikoo.StMary.core.managers.TextManager;
-import me.aikoo.StMary.database.entities.PlayerEntity;
+import me.aikoo.StMary.core.database.PlayerEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -18,7 +19,6 @@ public class StartCommand extends AbstractCommand {
 
     /**
      * Creates a new Start command.
-     *
      * @param stMaryClient The StMaryClient instance.
      */
     public StartCommand(StMaryClient stMaryClient) {
@@ -32,7 +32,6 @@ public class StartCommand extends AbstractCommand {
 
     /**
      * Executes the Start command.
-     *
      * @param event  The SlashCommandInteractionEvent.
      */
     @Override
@@ -75,7 +74,6 @@ public class StartCommand extends AbstractCommand {
 
     /**
      * Auto-complete method for the Start command.
-     *
      * @param event  The CommandAutoCompleteInteractionEvent.
      */
     @Override

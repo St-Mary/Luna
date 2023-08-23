@@ -1,12 +1,13 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.database.entities.MoveEntity;
-import me.aikoo.StMary.database.entities.PlayerEntity;
-import me.aikoo.StMary.core.system.Button;
-import me.aikoo.StMary.core.system.Object;
-import me.aikoo.StMary.core.system.Place;
-import me.aikoo.StMary.core.system.Title;
+import me.aikoo.StMary.core.abstracts.AbstractCommand;
+import me.aikoo.StMary.core.database.MoveEntity;
+import me.aikoo.StMary.core.database.PlayerEntity;
+import me.aikoo.StMary.core.abstracts.Button;
+import me.aikoo.StMary.core.classes.Object;
+import me.aikoo.StMary.core.classes.Place;
+import me.aikoo.StMary.core.classes.Title;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;

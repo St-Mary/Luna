@@ -4,7 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import me.aikoo.StMary.core.JSONFileReader;
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.core.system.*;
+import me.aikoo.StMary.core.abstracts.Location;
+import me.aikoo.StMary.core.classes.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

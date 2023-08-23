@@ -1,4 +1,4 @@
-package me.aikoo.StMary.core.system;
+package me.aikoo.StMary.core.enums;
 
 import lombok.Getter;
 

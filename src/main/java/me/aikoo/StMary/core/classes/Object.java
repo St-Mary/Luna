@@ -1,6 +1,7 @@
-package me.aikoo.StMary.core.system;
+package me.aikoo.StMary.core.classes;
 
 import lombok.Getter;
+import me.aikoo.StMary.core.enums.ObjectType;
 
 /**
  * Represents an in-game object.

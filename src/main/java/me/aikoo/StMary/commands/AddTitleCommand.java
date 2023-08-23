@@ -1,11 +1,14 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.database.entities.PlayerEntity;
+import me.aikoo.StMary.core.abstracts.AbstractCommand;
+import me.aikoo.StMary.core.database.PlayerEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+
+import java.util.Objects;
 
 public class AddTitleCommand extends AbstractCommand {
     public AddTitleCommand(StMaryClient stMaryClient) {
@@ -26,15 +29,15 @@ public class AddTitleCommand extends AbstractCommand {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         if (!event.getUser().getId().equals("985986599995187270")) return;
-        String titleName = event.getOption("title").getAsString();
-        String userId = event.getOption("userid").getAsString();
+        String titleName = Objects.requireNonNull(event.getOption("title")).getAsString();
+        String userId = Objects.requireNonNull(event.getOption("userid")).getAsString();
 
         if (!userId.matches("[0-9]+")) {
             event.reply("This user doesn't exist").queue();
             return;
         }
 
-        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getOption("userid").getAsLong());
+        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(Objects.requireNonNull(event.getOption("userid")).getAsLong());
 
         if (player == null) {
             event.reply("This user doesn't exist").queue();

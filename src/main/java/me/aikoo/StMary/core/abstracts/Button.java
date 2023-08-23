@@ -1,4 +1,4 @@
-package me.aikoo.StMary.core.system;
+package me.aikoo.StMary.core.abstracts;
 
 import lombok.Getter;
 import me.aikoo.StMary.core.StMaryClient;

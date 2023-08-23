@@ -2,7 +2,8 @@ package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.BotConfig;
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.database.entities.AdministratorEntity;
+import me.aikoo.StMary.core.abstracts.AbstractCommand;
+import me.aikoo.StMary.core.database.AdministratorEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;

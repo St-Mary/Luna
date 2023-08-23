@@ -1,9 +1,10 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.abstracts.AbstractCommand;
 import me.aikoo.StMary.core.managers.TextManager;
-import me.aikoo.StMary.database.entities.PlayerEntity;
-import me.aikoo.StMary.core.system.Title;
+import me.aikoo.StMary.core.database.PlayerEntity;
+import me.aikoo.StMary.core.classes.Title;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command;

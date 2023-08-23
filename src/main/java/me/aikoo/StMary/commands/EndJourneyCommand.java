@@ -1,9 +1,10 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.StMaryClient;
-import me.aikoo.StMary.database.entities.MoveEntity;
-import me.aikoo.StMary.database.entities.PlayerEntity;
-import me.aikoo.StMary.core.system.Place;
+import me.aikoo.StMary.core.abstracts.AbstractCommand;
+import me.aikoo.StMary.core.database.MoveEntity;
+import me.aikoo.StMary.core.database.PlayerEntity;
+import me.aikoo.StMary.core.classes.Place;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -25,7 +26,6 @@ public class EndJourneyCommand extends AbstractCommand {
 
     /**
      * Arrives at the destination.
-     * @param client The StMaryClient instance.
      * @param event  The interaction event.
      */
     @Override
