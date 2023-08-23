@@ -48,21 +48,20 @@ public class MenuCommand extends AbstractCommand {
     /**
      * Executes the Menu command.
      *
-     * @param client The StMaryClient instance.
      * @param event  The SlashCommandInteractionEvent triggered by the command.
      */
     @Override
-    public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event) {
         // Determine the user to display the menu for
         User user = event.getOption("user") == null ? event.getUser() : Objects.requireNonNull(event.getOption("user")).getAsUser();
-        PlayerEntity player = client.getDatabaseManager().getPlayer(user.getIdLong());
+        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(user.getIdLong());
 
         // Check if the user has an adventure account
         if (player == null) {
-            event.reply(client.getTextManager().createText("menu_no_account").buildError()).setEphemeral(true).queue();
+            event.reply(stMaryClient.getTextManager().createText("menu_no_account").buildError()).setEphemeral(true).queue();
         } else {
             // Generate and send the user's profile
-            String profil = profilEmbed(client, user.getGlobalName(), player);
+            String profil = profilEmbed(user.getGlobalName(), player);
 
             // Create buttons for inventory, profile, titles, and close
             InventoryBtn inventoryBtn = new InventoryBtn(player, user.getId());
@@ -114,35 +113,33 @@ public class MenuCommand extends AbstractCommand {
     /**
      * Auto-complete handler for the Menu command.
      *
-     * @param client The StMaryClient instance.
      * @param event  The CommandAutoCompleteInteractionEvent triggered by auto-complete.
      */
     @Override
-    public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
         // This command doesn't support auto-complete, so this method is left empty.
     }
 
     /**
      * Generates a formatted profile embed for a user.
      *
-     * @param client The StMaryClient instance.
      * @param name   The user's name.
      * @param player The PlayerEntity associated with the user.
-     * @return The formatted profile embed as a string.
+     * @return The formatted profile as a string.
      */
-    private String profilEmbed(StMaryClient client, String name, PlayerEntity player) {
-        Title title = player.getCurrentTitle(client);
+    private String profilEmbed(String name, PlayerEntity player) {
+        Title title = player.getCurrentTitle(stMaryClient);
         String icon = title.getIcon();
         String place = player.getCurrentLocationPlace();
 
         // Get the player's current location
-        String town = (!player.getCurrentLocationTown().equals("")) ? player.getCurrentLocationTown() : client.getTextManager().getText("menu_no_town");
-        String location = client.getTextManager().getText("menu_location_1").replace("{{town}}", town).replace("{{place}}", place);
-        MoveEntity move = client.getDatabaseManager().getMove(player.getId());
+        String town = (!player.getCurrentLocationTown().equals("")) ? player.getCurrentLocationTown() : stMaryClient.getTextManager().getText("menu_no_town");
+        String location = stMaryClient.getTextManager().getText("menu_location_1").replace("{{town}}", town).replace("{{place}}", place);
+        MoveEntity move = stMaryClient.getDatabaseManager().getMove(player.getId());
 
         if (move != null) {
-            Place to = client.getLocationManager().getPlace(move.getTo());
-            Place from = client.getLocationManager().getPlace(move.getFrom());
+            Place to = stMaryClient.getLocationManager().getPlace(move.getTo());
+            Place from = stMaryClient.getLocationManager().getPlace(move.getFrom());
 
             // Format the destination and departure names based on whether they are town places or not
             String destinationName = to.isTownPlace() ? to.getTown().getName() + " - " + to.getName() : to.getName();
@@ -152,10 +149,11 @@ public class MenuCommand extends AbstractCommand {
                 destinationName = to.getName() + " - " + to.getRegion().getName();
             }
 
-            location = client.getTextManager().getText("menu_location_2").replace("{{destination}}", destinationName).replace("{{departure}}", departureName);
+            location = stMaryClient.getTextManager().getText("menu_location_2").replace("{{destination}}", destinationName).replace("{{departure}}", departureName);
         }
 
-        return client.getTextManager().getText("menu_player")
+        // return the text to send
+        return stMaryClient.getTextManager().getText("menu_player")
                 .replace("{{icon}}", icon)
                 .replace("{{name}}", name)
                 .replace("{{level}}", player.getLevel().toString())
@@ -188,7 +186,7 @@ public class MenuCommand extends AbstractCommand {
         @Override
         public void onClick(ButtonInteractionEvent event) {
             if (!event.getUser().getId().equals(id)) return;
-            event.editMessage(profilEmbed(stMaryClient, event.getUser().getGlobalName(), player)).queue();
+            event.editMessage(profilEmbed(event.getUser().getGlobalName(), player)).queue();
             if (!event.getInteraction().isAcknowledged()) {
                 event.deferEdit().queue();
             }
@@ -224,6 +222,7 @@ public class MenuCommand extends AbstractCommand {
             Object magicalBook = player.getMagicalBook(stMaryClient);
             String magicalBookName = (magicalBook != null) ? "%s `%s`".formatted(magicalBook.getIcon(), magicalBook.getName()) : stMaryClient.getTextManager().getText("menu_no_magical_book");
 
+            // Generate the inventory text
             String text = stMaryClient.getTextManager().getText("menu_backpack")
                     .replace("{{icon}}", icon)
                     .replace("{{name}}", event.getUser().getGlobalName())
@@ -264,7 +263,6 @@ public class MenuCommand extends AbstractCommand {
             Title title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
 
-            // StringBuilder stringBuilder = new StringBuilder(String.format("### %s | %s | Titres\n", icon, event.getUser().getGlobalName()));
             HashMap<String, Title> titles = player.getTitles(stMaryClient);
 
             StringBuilder stringBuilder = new StringBuilder();
@@ -277,6 +275,7 @@ public class MenuCommand extends AbstractCommand {
                 }
             }
 
+            // Generate the text to send
             String text = stMaryClient.getTextManager().getText("menu_titles")
                     .replace("{{icon}}", icon)
                     .replace("{{name}}", event.getUser().getGlobalName())
@@ -316,5 +315,4 @@ public class MenuCommand extends AbstractCommand {
             }
         }
     }
-
 }

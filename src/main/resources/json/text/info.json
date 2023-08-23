@@ -1,0 +1,47 @@
+{
+  "info_choice_object": {
+    "text": "\uD83D\uDDE1\uFE0F Objet"
+  },
+  "info_choice_place": {
+    "text": "\uD83C\uDF32 Lieu"
+  },
+  "info_choice_character": {
+    "text": "\uD83E\uDDD9 Personnage"
+  },
+  "info_choice_monster": {
+    "text": "\uD83D\uDC17 Monstre"
+  },
+  "info_choice_quest": {
+    "text": "\uD83D\uDCDD Quête"
+  },
+  "info_choice_title": {
+    "text": "\uD83C\uDFC5 Titre"
+  },
+  "info_error_not_found": {
+    "title": "Informations",
+    "text": "L'élément demandé n'existe pas."
+  },
+  "info_place_error_dont_exist": {
+    "title": "Informations à propos d'un lieu",
+    "text": "Le lieu demandé n'existe pas."
+  },
+  "info_place_description": {
+    "text": "**Nom :** {{icon}} `{{name}}`\n\n**Type :** `{{type}}`\n\n**Description du lieu :** {{description}}"
+  },
+  "info_place_description_town": {
+    "text": "\n\n**Lieux du village :** {{town_places}}"
+  },
+  "info_place_description_place": {
+    "text": "\n\n**Destinations disponibles :** {{available_destinations}}"
+  },
+  "info_place_formatted": {
+    "title": "Informations à propos d'un lieu",
+    "text": "{{place_description}}"
+  },
+  "info_place_region_towns": {
+    "text": "\n\n**Villages :** "
+  },
+  "info_place_region_places": {
+    "text": "\n\n**Lieux :** "
+  }
+}

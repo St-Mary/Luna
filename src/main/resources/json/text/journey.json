@@ -8,8 +8,8 @@
     "text": "Vous êtes déjà en voyage vers **{{name}}**.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant."
   },
   "journey_err_destination_2": {
-      "title": "Voyage Impossible",
-      "text": "Vous ne pouvez pas vous déplacer vers cette destination."
+    "title": "Voyage Impossible",
+    "text": "Vous ne pouvez pas vous déplacer vers cette destination."
   },
   "journey_confirm": {
     "title": "Voyage",

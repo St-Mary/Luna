@@ -64,13 +64,13 @@ public class EventsListener extends ListenerAdapter {
         AbstractCommand command = this.stMaryClient.getCommandManager().getCommand(event.getName());
         command = (command == null) ? this.stMaryClient.getCommandManager().getAdminCommand(event.getName()) : command;
         if (command == null) return;
-        command.run(stMaryClient, event);
+        command.run(event);
     }
 
     @Override
     public void onCommandAutoCompleteInteraction(CommandAutoCompleteInteractionEvent event) {
         AbstractCommand command = this.stMaryClient.getCommandManager().getCommand(event.getInteraction().getName());
         if (command == null) return;
-        command.autoComplete(stMaryClient, event);
+        command.autoComplete(event);
     }
 }

@@ -22,9 +22,9 @@ public class RemoveAdminCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event) {
         if (!event.getUser().getId().equals(BotConfig.getOwnerId())) {
-            String errMsg = client.getTextManager().generateError("Retrait d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
+            String errMsg = stMaryClient.getTextManager().generateError("Retrait d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
             event.reply(errMsg).queue();
         }
 
@@ -35,20 +35,20 @@ public class RemoveAdminCommand extends AbstractCommand {
             return;
         }
 
-        AdministratorEntity administrator = client.getDatabaseManager().getAdministrator(Long.parseLong(userId));
+        AdministratorEntity administrator = stMaryClient.getDatabaseManager().getAdministrator(Long.parseLong(userId));
         if (administrator == null) {
-            String errMsg = client.getTextManager().generateError("Retrait d'un administrateur", "Cet utilisateur n'est pas administrateur !");
+            String errMsg = stMaryClient.getTextManager().generateError("Retrait d'un administrateur", "Cet utilisateur n'est pas administrateur !");
             event.reply(errMsg).queue();
             return;
         }
 
-        client.getDatabaseManager().delete(administrator);
+        stMaryClient.getDatabaseManager().delete(administrator);
 
         event.reply("L'utilisateur a été déstitué de son rôle d'administrateur !").queue();
     }
 
     @Override
-    public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
 
     }
 }

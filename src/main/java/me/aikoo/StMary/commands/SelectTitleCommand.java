@@ -41,30 +41,29 @@ public class SelectTitleCommand extends AbstractCommand {
     /**
      * Executes the SelectTitle command.
      *
-     * @param client The StMaryClient instance.
      * @param event  The SlashCommandInteractionEvent triggered by the command.
      */
     @Override
-    public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event) {
         String titleName = Objects.requireNonNull(event.getOption("title")).getAsString();
 
         // Check if the selected title exists
-        if (client.getTitleManager().getTitle(titleName) == null) {
-            String errorText = client.getTextManager().createText("select_title_error_title_not_exist").buildError();
+        if (stMaryClient.getTitleManager().getTitle(titleName) == null) {
+            String errorText = stMaryClient.getTextManager().createText("select_title_error_title_not_exist").buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return;
         }
 
-        PlayerEntity player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
 
-        TextManager.Text text = client.getTextManager().createText("select_title_success");
-        text.replace("title", client.getTitleManager().getTitle(titleName).format());
+        TextManager.Text text = stMaryClient.getTextManager().createText("select_title_success");
+        text.replace("title", stMaryClient.getTitleManager().getTitle(titleName).format());
 
         // Perform verifications before update the current title
         if (!verifications(player, titleName, event)) return;
 
         player.setCurrentTitle(titleName);
-        client.getDatabaseManager().update(player);
+        stMaryClient.getDatabaseManager().update(player);
         event.reply(text.build()).queue();
     }
 
@@ -100,12 +99,11 @@ public class SelectTitleCommand extends AbstractCommand {
     /**
      * Provides auto-complete choices for the title selection.
      *
-     * @param client The StMaryClient instance.
      * @param event  The CommandAutoCompleteInteractionEvent triggered by the auto-complete request.
      */
     @Override
-    public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {
-        PlayerEntity player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
 
         if (player != null) {
             Collection<Title> titles = player.getTitles(stMaryClient).values();

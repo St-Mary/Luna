@@ -33,17 +33,16 @@ public class StartCommand extends AbstractCommand {
     /**
      * Executes the Start command.
      *
-     * @param client The StMaryClient instance.
      * @param event  The SlashCommandInteractionEvent.
      */
     @Override
-    public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
-        PlayerEntity player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+    public void execute(SlashCommandInteractionEvent event) {
+        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
         LocalDate creationDate = event.getUser().getTimeCreated().toLocalDateTime().toLocalDate();
 
         // Check if the Discord account was created more than a week ago
         if (creationDate.isAfter(LocalDate.now().minusWeeks(1))) {
-            event.reply(client.getTextManager().createText("start_adventure_error_creation_date").buildError()).queue();
+            event.reply(stMaryClient.getTextManager().createText("start_adventure_error_creation_date").buildError()).queue();
             return;
         }
 
@@ -54,7 +53,7 @@ public class StartCommand extends AbstractCommand {
             player.setExperience(BigInteger.valueOf(0));
             player.setMoney(BigInteger.valueOf(0));
             player.setDiscordId(event.getUser().getIdLong());
-            player.setTitles(List.of(new String[]{"Néophyte"}), client);
+            player.setTitles(List.of(new String[]{"Néophyte"}), stMaryClient);
             player.setCreationTimestamp(new Date());
             player.setCurrentLocationRegion("Oraland");
             player.setCurrentLocationTown("Talon");
@@ -63,13 +62,13 @@ public class StartCommand extends AbstractCommand {
             player.setMagicalBook("book_I");
 
             // Save the new player entity to the database
-            client.getDatabaseManager().save(player);
+            stMaryClient.getDatabaseManager().save(player);
 
-            TextManager.Text text = client.getTextManager().createText("start_adventure");
+            TextManager.Text text = stMaryClient.getTextManager().createText("start_adventure");
             event.reply(text.build()).queue();
         } else {
             // Player already exists, send an error message
-            String error = client.getTextManager().createText("start_adventure_error_already_started").buildError();
+            String error = stMaryClient.getTextManager().createText("start_adventure_error_already_started").buildError();
             event.reply(error).setEphemeral(true).queue();
         }
     }
@@ -77,9 +76,8 @@ public class StartCommand extends AbstractCommand {
     /**
      * Auto-complete method for the Start command.
      *
-     * @param client The StMaryClient instance.
      * @param event  The CommandAutoCompleteInteractionEvent.
      */
     @Override
-    public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {}
+    public void autoComplete(CommandAutoCompleteInteractionEvent event) {}
 }

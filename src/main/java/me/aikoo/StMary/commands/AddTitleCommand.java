@@ -24,7 +24,7 @@ public class AddTitleCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event) {
         if (!event.getUser().getId().equals("985986599995187270")) return;
         String titleName = event.getOption("title").getAsString();
         String userId = event.getOption("userid").getAsString();
@@ -34,23 +34,23 @@ public class AddTitleCommand extends AbstractCommand {
             return;
         }
 
-        PlayerEntity player = client.getDatabaseManager().getPlayer(event.getOption("userid").getAsLong());
+        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getOption("userid").getAsLong());
 
         if (player == null) {
             event.reply("This user doesn't exist").queue();
             return;
         }
 
-        if (client.getTitleManager().getTitle(titleName) == null) {
+        if (stMaryClient.getTitleManager().getTitle(titleName) == null) {
             event.reply("This title doesn't exist").queue();
             return;
         }
-        player.addTitle(titleName, client);
-        client.getDatabaseManager().update(player);
+        player.addTitle(titleName, stMaryClient);
+        stMaryClient.getDatabaseManager().update(player);
 
         event.reply("The title has been added to the user").queue();
     }
 
     @Override
-    public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {}
+    public void autoComplete(CommandAutoCompleteInteractionEvent event) {}
 }

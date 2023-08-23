@@ -20,11 +20,11 @@ public class TestCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event) {
         event.reply("Test <:book_1:1142570454834499724>").queue();
     }
 
     @Override
-    public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
     }
 }

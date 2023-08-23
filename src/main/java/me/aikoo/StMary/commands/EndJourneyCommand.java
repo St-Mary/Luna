@@ -29,13 +29,13 @@ public class EndJourneyCommand extends AbstractCommand {
      * @param event  The interaction event.
      */
     @Override
-    public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
-        PlayerEntity player = client.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+    public void execute(SlashCommandInteractionEvent event) {
+        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
         UUID uuid = player.getId();
-        MoveEntity moves = client.getDatabaseManager().getMove(uuid);
+        MoveEntity moves = stMaryClient.getDatabaseManager().getMove(uuid);
 
         if (moves == null) {
-            String text = client.getTextManager().createText("endjourney_no_journey").build();
+            String text = stMaryClient.getTextManager().createText("endjourney_no_journey").build();
             event.reply(text).queue();
             return;
         }
@@ -45,8 +45,8 @@ public class EndJourneyCommand extends AbstractCommand {
         long now = System.currentTimeMillis();
         long end = start + time;
 
-        Place destinationPlace = client.getLocationManager().getPlace(moves.getTo());
-        Place fromPlace = client.getLocationManager().getPlace(moves.getFrom());
+        Place destinationPlace = stMaryClient.getLocationManager().getPlace(moves.getTo());
+        Place fromPlace = stMaryClient.getLocationManager().getPlace(moves.getFrom());
         String formatted = (fromPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
                 this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) :
                 this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
@@ -55,7 +55,7 @@ public class EndJourneyCommand extends AbstractCommand {
         if (now < end) {
             long remaining = end - now;
             long seconds = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + remaining);
-            String text = client.getTextManager().createText("endjourney_journey_not_finsh").replace("time", String.valueOf(seconds)).replace("location", formatted).build();
+            String text = stMaryClient.getTextManager().createText("endjourney_journey_not_finsh").replace("time", String.valueOf(seconds)).replace("location", formatted).build();
             event.reply(text).queue();
             return;
         }
@@ -66,16 +66,16 @@ public class EndJourneyCommand extends AbstractCommand {
         player.setCurrentLocationTown(destinationPlace.isTownPlace() ? destinationPlace.getTown().getName() : "");
 
         // Update the player's location in the database.
-        client.getDatabaseManager().delete(moves);
-        client.getDatabaseManager().update(player);
+        stMaryClient.getDatabaseManager().delete(moves);
+        stMaryClient.getDatabaseManager().update(player);
 
         // Send the arrival message.
-        String text = client.getTextManager().createText("endjourney_success").replace("location", formatted).build();
+        String text = stMaryClient.getTextManager().createText("endjourney_success").replace("location", formatted).build();
         event.reply(text).queue();
     }
 
     @Override
-    public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
         // Auto-complete logic can be added here if needed.
     }
 }

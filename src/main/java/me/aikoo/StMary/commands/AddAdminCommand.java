@@ -24,15 +24,15 @@ public class AddAdminCommand extends AbstractCommand {
     }
 
     @Override
-    public void execute(StMaryClient client, SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event) {
         if (!event.getUser().getId().equals(BotConfig.getOwnerId())) {
-            String errMsg = client.getTextManager().generateError("Ajout d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
+            String errMsg = stMaryClient.getTextManager().generateError("Ajout d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
             event.reply(errMsg).queue();
         }
 
-        AdministratorEntity administrators = client.getDatabaseManager().getAdministrator(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
+        AdministratorEntity administrators = stMaryClient.getDatabaseManager().getAdministrator(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
         if (administrators != null) {
-            String errMsg = client.getTextManager().generateError("Ajout d'un administrateur", "Cet utilisateur est déjà administrateur !");
+            String errMsg = stMaryClient.getTextManager().generateError("Ajout d'un administrateur", "Cet utilisateur est déjà administrateur !");
             event.reply(errMsg).queue();
             return;
         }
@@ -40,13 +40,13 @@ public class AddAdminCommand extends AbstractCommand {
         AdministratorEntity newAdmin = new AdministratorEntity();
         newAdmin.setDiscordId(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
 
-        client.getDatabaseManager().save(newAdmin);
+        stMaryClient.getDatabaseManager().save(newAdmin);
 
         event.reply("L'utilisateur a été ajouté en tant qu'administrateur !").queue();
     }
 
     @Override
-    public void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
 
     }
 }

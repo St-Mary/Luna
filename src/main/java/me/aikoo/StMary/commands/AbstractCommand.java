@@ -48,15 +48,15 @@ public abstract class AbstractCommand {
         this.description = "No description provided.";
     }
 
-    public abstract void execute(StMaryClient client, SlashCommandInteractionEvent event);
+    public abstract void execute(SlashCommandInteractionEvent event);
 
-    public abstract void autoComplete(StMaryClient client, CommandAutoCompleteInteractionEvent event);
+    public abstract void autoComplete(CommandAutoCompleteInteractionEvent event);
 
-    public void run(StMaryClient client, SlashCommandInteractionEvent event) {
+    public void run(SlashCommandInteractionEvent event) {
 
         if (this.isAdminCommand) {
             if (!this.stMaryClient.getDatabaseManager().isAdministrator(event.getUser().getIdLong()) && !event.getUser().getId().equals(BotConfig.getOwnerId())) {
-                event.reply(client.getTextManager().generateError("Exécution de la commande", "Vous n'avez pas la permission d'exécuter cette commande!")).setEphemeral(true).queue();
+                event.reply(stMaryClient.getTextManager().generateError("Exécution de la commande", "Vous n'avez pas la permission d'exécuter cette commande!")).setEphemeral(true).queue();
                 return;
             }
         }
@@ -68,7 +68,7 @@ public abstract class AbstractCommand {
                 long timeRemaining = this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name);
                 long timestampRemaining = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + timeRemaining);
 
-                String text = client.getTextManager().generateError("Doucement, jeune aventurier!", String.format("Patiente <t:%s:R> avant de pouvoir repartir au galop.", timestampRemaining));
+                String text = stMaryClient.getTextManager().generateError("Doucement, jeune aventurier!", String.format("Patiente <t:%s:R> avant de pouvoir repartir au galop.", timestampRemaining));
                 event.reply(text).setEphemeral(true).queue();
                 return;
             }
@@ -84,7 +84,7 @@ public abstract class AbstractCommand {
         }
 
         // Execute the command
-        this.execute(client, event);
+        this.execute(event);
     }
 
     protected ArrayList<Button> getArrayListButtons() {
