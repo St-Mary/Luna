@@ -56,7 +56,7 @@ public class JourneyCommand extends CommandAbstract {
 
         // Check if either the current place or destination place is null.
         if (place == null || destinationPlace == null) {
-            String errorText = stMaryClient.getTextManager().createText("journey_destination_not_exist").buildError();
+            String errorText = stMaryClient.getTextManager().createText("journey_destination_not_exist", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return;
         }
@@ -73,28 +73,27 @@ public class JourneyCommand extends CommandAbstract {
 
             // Check if the player is already on a journey.
             if (moves != null) {
-                System.out.println(moves.getTo());
                 PlaceBase toPlace = stMaryClient.getLocationManager().getPlaceById(moves.getTo());
-                String formattedText = (place.getTown() == toPlace.getTown()) ? toPlace.getIcon() + toPlace.getName(language) : toPlace.getTown().getIcon() + toPlace.getTown().getName(language);
+                String formattedText = (place.getTown() == toPlace.getTown()) ? stMaryClient.getLocationManager().formatLocation(toPlace.getId(), language) : stMaryClient.getLocationManager().formatLocation(toPlace.getTown().getId(), language);
 
-                text = stMaryClient.getTextManager().createText("journey_err_destination_1").replace("name", formattedText).buildError();
+                text = stMaryClient.getTextManager().createText("journey_err_destination_1", language).replace("name", formattedText).buildError();
             } else {
-                text = stMaryClient.getTextManager().createText("journey_err_destination_2").buildError();
+                text = stMaryClient.getTextManager().createText("journey_err_destination_2", language).buildError();
             }
 
             event.reply(text).setEphemeral(true).queue();
             return;
         }
 
-        ConfirmBtn confirmBtn = new ConfirmBtn(move, player);
-        CloseBtn closeBtn = new CloseBtn(destinationPlace);
+        ConfirmBtn confirmBtn = new ConfirmBtn(move, player, language);
+        CloseBtn closeBtn = new CloseBtn(destinationPlace, language);
         this.buttons.put(confirmBtn.getId(), confirmBtn);
         this.buttons.put(closeBtn.getId(), closeBtn);
 
         long time = move.getTime();
 
         String formattedText = (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getId(), language);
-        String str = stMaryClient.getTextManager().createText("journey_confirm").replace("time", String.valueOf(time)).replace("destination", formattedText).build();
+        String str = stMaryClient.getTextManager().createText("journey_confirm", language).replace("time", String.valueOf(time)).replace("destination", formattedText).build();
 
         event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
             // Add buttons to the message for user interaction.
@@ -124,7 +123,7 @@ public class JourneyCommand extends CommandAbstract {
      */
     private void close(Message message, PlaceBase destinationPlace, String language) {
         String formattedLocation = stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language);
-        String text = stMaryClient.getTextManager().createText("journey_cancel").replace("destination", formattedLocation).build();
+        String text = stMaryClient.getTextManager().createText("journey_cancel", language).replace("destination", formattedLocation).build();
         List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
         buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
 
@@ -193,8 +192,8 @@ public class JourneyCommand extends CommandAbstract {
          * @param move   The journey move.
          * @param player The player associated with the user.
          */
-        public ConfirmBtn(JourneyBase move, PlayerEntity player) {
-            super("confirm_move", stMaryClient.getTextManager().getText("journey_btn_confirm"), ButtonStyle.SUCCESS, Emoji.fromUnicode("\uD83D\uDDFA\uFE0F"), stMaryClient);
+        public ConfirmBtn(JourneyBase move, PlayerEntity player, String language) {
+            super("confirm_move", stMaryClient.getTextManager().getText("journey_btn_confirm", language), ButtonStyle.SUCCESS, Emoji.fromUnicode("\uD83D\uDDFA\uFE0F"), stMaryClient);
 
             this.move = move;
             this.player = player;
@@ -226,7 +225,7 @@ public class JourneyCommand extends CommandAbstract {
                     stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getId(), language);
 
             // Generate a message to inform the user about the journey.
-            String text = stMaryClient.getTextManager().createText("journey_success").replace("destination", formattedText).replace("time", move.getTime().toString()).build();
+            String text = stMaryClient.getTextManager().createText("journey_success", language).replace("destination", formattedText).replace("time", move.getTime().toString()).build();
 
             // Get the list of buttons from the event message and disable them.
             List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = event.getMessage().getButtons();
@@ -254,8 +253,8 @@ public class JourneyCommand extends CommandAbstract {
          *
          * @param destinationPlace The destination place.
          */
-        public CloseBtn(PlaceBase destinationPlace) {
-            super("close_btn", stMaryClient.getTextManager().getText("journey_btn_cancel"), ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
+        public CloseBtn(PlaceBase destinationPlace, String language) {
+            super("close_btn", stMaryClient.getTextManager().getText("journey_btn_cancel", language), ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
             this.destinationPlace = destinationPlace;
         }
 

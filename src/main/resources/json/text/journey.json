@@ -1,32 +1,78 @@
 {
   "journey_destination_not_exist": {
-    "title": "Voyage Impossible",
-    "text": "La destination de votre voyage n'existe pas."
+    "fr": {
+      "title": "Voyage Impossible",
+      "text": "La destination de votre voyage n'existe pas."
+    },
+    "en": {
+      "title": "Impossible Journey",
+      "text": "The destination of your journey does not exist."
+    }
   },
   "journey_err_destination_1": {
-    "title": "Voyage Impossible",
-    "text": "Vous êtes déjà en voyage vers **{{name}}**.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant."
+    "fr": {
+      "title": "Voyage Impossible",
+      "text": "Vous êtes déjà en voyage vers **{{name}}**.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage, ou voir le temps restant."
+    },
+    "en": {
+      "title": "Impossible Journey",
+      "text": "You are already traveling to **{{name}}**.\n\nUse the `/endjourney` command to end your journey, or see the remaining time."
+    }
   },
   "journey_err_destination_2": {
-    "title": "Voyage Impossible",
-    "text": "Vous ne pouvez pas vous déplacer vers cette destination."
+    "fr": {
+      "title": "Voyage Impossible",
+      "text": "Vous ne pouvez pas vous déplacer vers cette destination."
+    },
+    "en": {
+      "title": "Impossible Journey",
+      "text": "You cannot move to this destination."
+    }
   },
   "journey_confirm": {
-    "title": "Voyage",
-    "text": "Êtes-vous sûr de vouloir vous déplacer vers **{{destination}}** en** `{{time}} minutes` **?"
+    "fr": {
+      "title": "Confirmation de Voyage",
+      "text": "Êtes-vous sûr de vouloir vous déplacer vers **{{destination}}** en** `{{time}} minutes` **?"
+    },
+    "en": {
+      "title": "Journey Confirmation",
+      "text": "Are you sure you want to move to **{{destination}}** in **`{{time}} minutes`**?"
+    }
   },
   "journey_cancel": {
-    "title": "Annulation du Voyage",
-    "text": "Votre voyage vers **{{destination}}** a été annulé."
+    "fr": {
+      "title": "Annulation du Voyage",
+      "text": "Votre voyage vers **{{destination}}** a été annulé."
+    },
+    "en": {
+      "title": "Journey Cancellation",
+      "text": "Your journey to **{{destination}}** has been canceled."
+    }
   },
   "journey_success": {
-    "title": "Voyage",
-    "text": "Vous voyagez vers **{{destination}}**. Ce déplacement prendra `{{time}}` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant."
+    "fr": {
+      "title": "Voyage",
+      "text": "Vous voyagez vers **{{destination}}**. Ce déplacement prendra `{{time}}` minutes.\n\nUtilisez la commande `/endjourney` pour terminer votre voyage ou voir le temps restant."
+    },
+    "en": {
+      "title": "Journey",
+      "text": "You are traveling to **{{destination}}**. This move will take `{{time}}` minutes.\n\nUse the `/endjourney` command to end your journey or see the remaining time."
+    }
   },
   "journey_btn_confirm": {
-    "text": "Confirmer"
+    "fr": {
+      "text": "Confirmer"
+    },
+    "en": {
+      "text": "Confirm"
+    }
   },
   "journey_btn_cancel": {
-    "text": "Annuler"
+    "fr": {
+      "text": "Annuler"
+    },
+    "en": {
+      "text": "Cancel"
+    }
   }
 }

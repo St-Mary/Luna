@@ -6,6 +6,8 @@ import me.aikoo.StMary.core.abstracts.LocationAbstract;
 import me.aikoo.StMary.core.bases.*;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.DiscordLocale;
+import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
@@ -30,14 +32,23 @@ public class InfoCommand extends CommandAbstract {
         this.description = "\uD83D\uDDDE️ Obtenir des informations sur un élément du jeu.";
         this.cooldown = 3000L;
 
+        Command.Choice objectChoice = new Command.Choice(stMaryClient.getTextManager().getText("info_choice_object", "en"), "object")
+                .setNameLocalization(DiscordLocale.FRENCH, stMaryClient.getTextManager().getText("info_choice_object", "fr"));
+        Command.Choice placeChoice = new Command.Choice(stMaryClient.getTextManager().getText("info_choice_place", "en"), "place")
+                .setNameLocalization(DiscordLocale.FRENCH, stMaryClient.getTextManager().getText("info_choice_place", "fr"));
+        Command.Choice characterChoice = new Command.Choice(stMaryClient.getTextManager().getText("info_choice_character", "en"), "character")
+                .setNameLocalization(DiscordLocale.FRENCH, stMaryClient.getTextManager().getText("info_choice_character", "fr"));
+        Command.Choice monsterChoice = new Command.Choice(stMaryClient.getTextManager().getText("info_choice_monster", "en"), "monster")
+                .setNameLocalization(DiscordLocale.FRENCH, stMaryClient.getTextManager().getText("info_choice_monster", "fr"));
+        Command.Choice questChoice = new Command.Choice(stMaryClient.getTextManager().getText("info_choice_quest", "en"), "quest")
+                .setNameLocalization(DiscordLocale.FRENCH, stMaryClient.getTextManager().getText("info_choice_quest", "fr"));
+        Command.Choice titleChoice = new Command.Choice(stMaryClient.getTextManager().getText("info_choice_title", "en"), "title")
+                .setNameLocalization(DiscordLocale.FRENCH, stMaryClient.getTextManager().getText("info_choice_title", "fr"));
+
         this.options.add(new OptionData(OptionType.STRING, "element", "L'élément sur lequel vous souhaitez obtenir des informations.", true)
-                .addChoice(stMaryClient.getTextManager().getText("info_choice_object"), "object")
-                .addChoice(stMaryClient.getTextManager().getText("info_choice_place"), "place")
-                .addChoice(stMaryClient.getTextManager().getText("info_choice_character"), "character")
-                .addChoice(stMaryClient.getTextManager().getText("info_choice_monster"), "monster")
-                .addChoice(stMaryClient.getTextManager().getText("info_choice_quest"), "quest")
-                .addChoice(stMaryClient.getTextManager().getText("info_choice_title"), "title")
+                .addChoices(objectChoice, placeChoice, characterChoice, monsterChoice, questChoice, titleChoice)
         );
+
         this.options.add(new OptionData(OptionType.STRING, "name", "Le nom de l'élément sur lequel vous souhaitez obtenir des informations.", false));
     }
 
@@ -52,14 +63,14 @@ public class InfoCommand extends CommandAbstract {
         String name = (event.getOption("name") != null) ? Objects.requireNonNull(event.getOption("name")).getAsString() : null;
 
         switch (Objects.requireNonNull(element)) {
-            case "object" -> infoObject(event, name);
+            case "object" -> infoObject(event, name, language);
             case "place" -> infoPlace(event, name, language);
-            case "character" -> infoCharacter(event, name);
-            case "monster" -> infoMonster(event, name);
-            case "quest" -> infoQuest(event, name);
-            case "title" -> infoTitle(event, name);
+            case "character" -> infoCharacter(event, name, language);
+            case "monster" -> infoMonster(event, name, language);
+            case "quest" -> infoQuest(event, name, language);
+            case "title" -> infoTitle(event, name, language);
             default -> {
-                String error = stMaryClient.getTextManager().createText("info_error_not_found").buildError();
+                String error = stMaryClient.getTextManager().createText("info_error_not_found", language).buildError();
                 event.reply(error).setEphemeral(true).queue();
             }
         }
@@ -72,29 +83,29 @@ public class InfoCommand extends CommandAbstract {
      * @param name  The name of the place.
      */
     private void infoPlace(SlashCommandInteractionEvent event, String name, String language) {
-        LocationAbstract location = stMaryClient.getLocationManager().getLocationByName(name);
+        LocationAbstract location = stMaryClient.getLocationManager().getLocationByName(name, language);
 
         if (location == null) {
-            String error = stMaryClient.getTextManager().createText("info_place_error_dont_exist").buildError();
+            String error = stMaryClient.getTextManager().createText("info_place_error_dont_exist", language).buildError();
             event.reply(error).setEphemeral(true).queue();
             return;
         }
 
-        String description = this.formatLocationDescription(location.getDescription());
-        String content = stMaryClient.getTextManager().getText("info_place_description").replace("{{icon}}", location.getIcon()).replace("{{name}}", location.getName(language)).replace("{{type}}", location.getType()).replace("{{description}}", description);
+        String description = this.formatLocationDescription(location.getDescription(language));
+        String content = stMaryClient.getTextManager().getText("info_place_description", language).replace("{{icon}}", location.getIcon()).replace("{{name}}", location.getName(language)).replace("{{type}}", location.getType()).replace("{{description}}", description);
 
         if (location instanceof TownBase town) {
             String townPlaces = this.formatTownPlaceDescription(town, language);
-            content += stMaryClient.getTextManager().getText("info_place_description_town").replace("{{town_places}}", townPlaces);
+            content += stMaryClient.getTextManager().getText("info_place_description_town", language).replace("{{town_places}}", townPlaces);
         } else if (location instanceof RegionBase region) {
             String regionPlaces = this.formatRegionPlaceDescription(region, language);
             content += regionPlaces;
         } else if (location instanceof PlaceBase place) {
             String availableDestinations = this.formatAvailableDestination(place, language);
-            content += stMaryClient.getTextManager().getText("info_place_description_place").replace("{{available_destinations}}", availableDestinations);
+            content += stMaryClient.getTextManager().getText("info_place_description_place", language).replace("{{available_destinations}}", availableDestinations);
         }
 
-        String text = stMaryClient.getTextManager().createText("info_place_formatted").replace("place_description", content).build();
+        String text = stMaryClient.getTextManager().createText("info_place_formatted", language).replace("place_description", content).build();
         event.reply(text).queue();
     }
 
@@ -169,7 +180,7 @@ public class InfoCommand extends CommandAbstract {
         ArrayList<TownBase> towns = region.getTowns();
         StringBuilder formattedDescription = new StringBuilder();
 
-        formattedDescription.append(stMaryClient.getTextManager().getText("info_place_region_towns"));
+        formattedDescription.append(stMaryClient.getTextManager().getText("info_place_region_towns", language));
         for (TownBase town : towns) {
             formattedDescription.append(String.format("**%s** `%s`", town.getIcon(), town.getName(language)));
             if (towns.indexOf(town) != towns.size() - 1) {
@@ -177,7 +188,7 @@ public class InfoCommand extends CommandAbstract {
             }
         }
 
-        formattedDescription.append(stMaryClient.getTextManager().getText("info_place_region_places"));
+        formattedDescription.append(stMaryClient.getTextManager().getText("info_place_region_places", language));
         for (PlaceBase place : places) {
             formattedDescription.append(String.format("**%s** `%s`", place.getIcon(), place.getName(language)));
             if (places.indexOf(place) != places.size() - 1) {
@@ -194,9 +205,9 @@ public class InfoCommand extends CommandAbstract {
      * @param event The interaction event.
      * @param name  The name of the object.
      */
-    private void infoObject(SlashCommandInteractionEvent event, String name) {
+    private void infoObject(SlashCommandInteractionEvent event, String name, String language) {
         if (name == null) {
-            String text = stMaryClient.getTextManager().createText("info_object_error_no_object").buildError();
+            String text = stMaryClient.getTextManager().createText("info_object_error_no_object", language).buildError();
             event.reply(text).setEphemeral(true).queue();
             return;
         }
@@ -204,12 +215,12 @@ public class InfoCommand extends CommandAbstract {
         ObjectBase object = stMaryClient.getObjectManager().getObjectByName(name);
 
         if (object == null) {
-            String error = stMaryClient.getTextManager().createText("info_object_error_not_found").buildError();
+            String error = stMaryClient.getTextManager().createText("info_object_error_not_found", language).buildError();
             event.reply(error).setEphemeral(true).queue();
             return;
         }
 
-        String text = stMaryClient.getTextManager().createText("info_object_description")
+        String text = stMaryClient.getTextManager().createText("info_object_description", language)
                 .replace("icon", object.getIcon())
                 .replace("name", object.getName())
                 .replace("description", object.getDescription())
@@ -224,8 +235,8 @@ public class InfoCommand extends CommandAbstract {
      * @param event The interaction event.
      * @param name  The name of the title or null for all titles.
      */
-    private void infoTitle(SlashCommandInteractionEvent event, String name) {
-        String text = (name == null) ? infoAllTitles() : infoOneTitle(name);
+    private void infoTitle(SlashCommandInteractionEvent event, String name, String language) {
+        String text = (name == null) ? infoAllTitles(language) : infoOneTitle(name, language);
         event.reply(text).queue();
     }
 
@@ -235,8 +246,8 @@ public class InfoCommand extends CommandAbstract {
      * @param event The interaction event.
      * @param name  The name of the character.
      */
-    private void infoCharacter(SlashCommandInteractionEvent event, String name) {
-        String text = stMaryClient.getTextManager().createText("info_character_not_available").buildError();
+    private void infoCharacter(SlashCommandInteractionEvent event, String name, String language) {
+        String text = stMaryClient.getTextManager().createText("info_character_not_available", language).buildError();
         event.reply(text).queue();
     }
 
@@ -246,8 +257,8 @@ public class InfoCommand extends CommandAbstract {
      * @param event The interaction event.
      * @param name  The name of the monster.
      */
-    private void infoMonster(SlashCommandInteractionEvent event, String name) {
-        String text = stMaryClient.getTextManager().createText("info_monster_not_available").buildError();
+    private void infoMonster(SlashCommandInteractionEvent event, String name, String language) {
+        String text = stMaryClient.getTextManager().createText("info_monster_not_available", language).buildError();
         event.reply(text).queue();
     }
 
@@ -257,8 +268,8 @@ public class InfoCommand extends CommandAbstract {
      * @param event The interaction event.
      * @param name  The name of the quest.
      */
-    private void infoQuest(SlashCommandInteractionEvent event, String name) {
-        String text = stMaryClient.getTextManager().createText("info_quest_not_available").buildError();
+    private void infoQuest(SlashCommandInteractionEvent event, String name, String language) {
+        String text = stMaryClient.getTextManager().createText("info_quest_not_available", language).buildError();
         event.reply(text).queue();
     }
 
@@ -267,7 +278,7 @@ public class InfoCommand extends CommandAbstract {
      *
      * @return A formatted string with information about all titles.
      */
-    private String infoAllTitles() {
+    private String infoAllTitles(String language) {
         ArrayList<TitleBase> titles = new ArrayList<>(stMaryClient.getTitleManager().getTitles().values());
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -279,7 +290,7 @@ public class InfoCommand extends CommandAbstract {
             }
         }
 
-        return stMaryClient.getTextManager().createText("info_title_titles").replace("titles", stringBuilder.toString()).build();
+        return stMaryClient.getTextManager().createText("info_title_titles", language).replace("titles", stringBuilder.toString()).build();
     }
 
     /**
@@ -288,14 +299,14 @@ public class InfoCommand extends CommandAbstract {
      * @param name The name of the title.
      * @return A formatted string with information about the title.
      */
-    private String infoOneTitle(String name) {
+    private String infoOneTitle(String name, String language) {
         TitleBase title = stMaryClient.getTitleManager().getTitle(name);
 
         if (title == null) {
-            return stMaryClient.getTextManager().createText("info_title_error_not_exist").buildError();
+            return stMaryClient.getTextManager().createText("info_title_error_not_exist", language).buildError();
         }
 
-        return stMaryClient.getTextManager().createText("info_title_title").replace("icon", title.getIcon()).replace("name", title.getName()).replace("description", title.getDescription()).build();
+        return stMaryClient.getTextManager().createText("info_title_title", language).replace("icon", title.getIcon()).replace("name", title.getName()).replace("description", title.getDescription()).build();
     }
 
     @Override

@@ -36,7 +36,7 @@ public class EndJourneyCommand extends CommandAbstract {
         MoveEntity moves = stMaryClient.getDatabaseManager().getMove(uuid);
 
         if (moves == null) {
-            String text = stMaryClient.getTextManager().createText("endjourney_no_journey").build();
+            String text = stMaryClient.getTextManager().createText("endjourney_no_journey", language).build();
             event.reply(text).queue();
             return;
         }
@@ -56,7 +56,7 @@ public class EndJourneyCommand extends CommandAbstract {
         if (now < end) {
             long remaining = end - now;
             long seconds = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + remaining);
-            String text = stMaryClient.getTextManager().createText("endjourney_journey_not_finsh").replace("time", String.valueOf(seconds)).replace("location", formatted).build();
+            String text = stMaryClient.getTextManager().createText("endjourney_journey_not_finsh", language).replace("time", String.valueOf(seconds)).replace("location", formatted).build();
             event.reply(text).queue();
             return;
         }
@@ -71,7 +71,7 @@ public class EndJourneyCommand extends CommandAbstract {
         stMaryClient.getDatabaseManager().update(player);
 
         // Send the arrival message.
-        String text = stMaryClient.getTextManager().createText("endjourney_success").replace("location", formatted).build();
+        String text = stMaryClient.getTextManager().createText("endjourney_success", language).replace("location", formatted).build();
         event.reply(text).queue();
     }
 

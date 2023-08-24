@@ -28,23 +28,13 @@ public abstract class LocationAbstract {
     }
 
     /**
-     * Get the name of the location.
-     *
-     * @return The name of the location.
-     */
-    @Deprecated
-    public String getName() {
-        return names.get("en");
-    }
-
-    /**
      * Get the name of the location in the specified language.
      *
      * @param language The language to get the name in.
      * @return The name of the location in the specified language.
      */
     public String getName(String language) {
-        return names.getOrDefault(language, getName());
+        return names.getOrDefault(language, "No name available.");
     }
 
     /**
@@ -55,15 +45,6 @@ public abstract class LocationAbstract {
      */
     public void setName(String language, String name) {
         names.put(language, name);
-    }
-
-    /**
-     * Get the description of the location.
-     *
-     * @return The description of the location.
-     */
-    public String getDescription() {
-        return getDescription("en");
     }
 
     /**
@@ -84,7 +65,7 @@ public abstract class LocationAbstract {
      * @return The description of the location in the specified language.
      */
     public String getDescription(String language) {
-        return descriptions.getOrDefault(language, getDescription());
+        return descriptions.getOrDefault(language, "No description available.");
     }
 
     /**

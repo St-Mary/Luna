@@ -46,10 +46,10 @@ public class LocationManager {
      * @param name The name of the location to retrieve.
      * @return The corresponding location or null if not found.
      */
-    public LocationAbstract getLocationByName(String name) {
+    public LocationAbstract getLocationByName(String name, String language) {
         LocationAbstract location = this.getRegionByName(name);
-        location = (location != null) ? location : this.getTownByName(name);
-        location = (location != null) ? location : this.getPlaceByName(name);
+        location = (location != null) ? location : this.getTownByName(name, language);
+        location = (location != null) ? location : this.getPlaceByName(name, language);
 
         return location;
     }
@@ -84,8 +84,8 @@ public class LocationManager {
      * @param name The name of the town to retrieve.
      * @return The town object or null if not found.
      */
-    public TownBase getTownByName(String name) {
-        return this.towns.stream().filter(town -> town.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    public TownBase getTownByName(String name, String language) {
+        return this.towns.stream().filter(town -> town.getName(language).equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     /**
@@ -105,8 +105,8 @@ public class LocationManager {
      * @return The place object or null if not found.
      */
     @Deprecated
-    public PlaceBase getPlaceByName(String name) {
-        return this.places.stream().filter(place -> place.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    public PlaceBase getPlaceByName(String name, String language) {
+        return this.places.stream().filter(place -> place.getName(language).equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     /**
@@ -170,7 +170,7 @@ public class LocationManager {
     private void loadTowns(RegionBase region, JsonObject regionObject) {
         regionObject.get("towns").getAsJsonArray().forEach(townObj -> {
             String townId = townObj.getAsString();
-            JsonObject townObject = findTownObject(townId, region.getName());
+            JsonObject townObject = findTownObject(townId, region.getId());
 
             if (townObject == null) {
                 LOGGER.error("Town " + townId + " not found!");
