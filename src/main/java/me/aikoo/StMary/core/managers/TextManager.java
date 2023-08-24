@@ -2,8 +2,8 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
 import lombok.Getter;
-import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 import me.aikoo.StMary.core.bot.StMaryClient;
+import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class TextManager {
     /**
      * Get the text associated with a given id and language.
      *
-     * @param id The id of the text.
+     * @param id       The id of the text.
      * @param language The language of the text.
      * @return The text associated with the name, or null if it doesn't exist.
      */
@@ -43,9 +43,10 @@ public class TextManager {
 
     /**
      * Get the title associated with a given id and language.
-     * @param id        The id of the title.
-     * @param language  The language of the title.
-     * @return          The title associated with the name, or null if it doesn't exist.
+     *
+     * @param id       The id of the title.
+     * @param language The language of the title.
+     * @return The title associated with the name, or null if it doesn't exist.
      */
     public String getTitle(String id, String language) {
         return (this.texts.get(id) != null) ? this.texts.get(id).get(language).getAsJsonObject().get("title").getAsString() : null;
@@ -54,7 +55,7 @@ public class TextManager {
     /**
      * Create a new Text object with given id and language.
      *
-     * @param id The id of the text.
+     * @param id       The id of the text.
      * @param language The language of the text.
      * @return The created Text object.
      */
@@ -70,7 +71,7 @@ public class TextManager {
 
         for (JsonObject file : files) {
             for (String key : file.keySet()) {
-                if (file.get(key).getAsJsonObject().get("text") == null && (file.get(key).getAsJsonObject().get("en").getAsJsonObject().get("text") == null && file.get(key).getAsJsonObject().get("fr").getAsJsonObject().get("en") == null)) {
+                if (file.get(key).getAsJsonObject().get("en").getAsJsonObject().get("text") == null || file.get(key).getAsJsonObject().get("fr").getAsJsonObject().get("text") == null) {
                     LOGGER.error("JSON Object {} is invalid. Please check the syntax.", key);
                     System.exit(1);
                 }

@@ -41,7 +41,7 @@ public abstract class LocationAbstract {
      * Set the name of the location in the specified language.
      *
      * @param language The language to set the name in.
-     * @param name The name of the location in the specified language.
+     * @param name     The name of the location in the specified language.
      */
     public void setName(String language, String name) {
         names.put(language, name);
@@ -50,9 +50,8 @@ public abstract class LocationAbstract {
     /**
      * Set the description of the location in the specified language.
      *
-     * @param language The language to set the description in.
+     * @param language    The language to set the description in.
      * @param description The description of the location in the specified language.
-     *
      */
     public void setDescription(String language, String description) {
         descriptions.put(language, description);

@@ -26,8 +26,8 @@ public class PlaceBase extends LocationAbstract {
     /**
      * Creates a new Place instance with the specified name, description, and region.
      *
-     * @param id          The id of the place.
-     * @param region      The region to which the place belongs.
+     * @param id     The id of the place.
+     * @param region The region to which the place belongs.
      */
     public PlaceBase(String id, RegionBase region) {
         super(id);

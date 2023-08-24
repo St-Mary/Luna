@@ -25,9 +25,9 @@ public class TownBase extends LocationAbstract {
     /**
      * Creates a new Town instance with the specified name, description, region, and entry point.
      *
-     * @param id          The id of the town.
-     * @param region      The region to which the town belongs.
-     * @param entryPoint  The entry point of the town.
+     * @param id         The id of the town.
+     * @param region     The region to which the town belongs.
+     * @param entryPoint The entry point of the town.
      */
     public TownBase(String id, RegionBase region, PlaceBase entryPoint) {
         super(id);

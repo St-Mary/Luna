@@ -1,7 +1,7 @@
 package me.aikoo.StMary.core.managers;
 
-import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.abstracts.CommandAbstract;
+import me.aikoo.StMary.core.bot.StMaryClient;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

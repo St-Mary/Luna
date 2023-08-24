@@ -1,7 +1,7 @@
 package me.aikoo.StMary.core.managers;
 
-import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.abstracts.ButtonAbstract;
+import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.database.PlayerEntity;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

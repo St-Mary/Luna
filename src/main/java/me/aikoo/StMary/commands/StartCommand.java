@@ -1,7 +1,7 @@
 package me.aikoo.StMary.commands;
 
-import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.abstracts.CommandAbstract;
+import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.constants.PlayerConstant;
 import me.aikoo.StMary.core.database.PlayerEntity;
 import me.aikoo.StMary.core.managers.TextManager;

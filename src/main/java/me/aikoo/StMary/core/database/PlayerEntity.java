@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
-import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.bases.ObjectBase;
 import me.aikoo.StMary.core.bases.TitleBase;
-import org.hibernate.annotations.GenericGenerator;
+import me.aikoo.StMary.core.bot.StMaryClient;
 import org.hibernate.annotations.UuidGenerator;
-import org.hibernate.id.UUIDGenerator;
 
 import java.math.BigInteger;
 import java.util.*;

@@ -2,13 +2,13 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
-import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.abstracts.LocationAbstract;
 import me.aikoo.StMary.core.bases.JourneyBase;
 import me.aikoo.StMary.core.bases.PlaceBase;
 import me.aikoo.StMary.core.bases.RegionBase;
 import me.aikoo.StMary.core.bases.TownBase;
+import me.aikoo.StMary.core.bot.StMaryClient;
+import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -246,8 +246,8 @@ public class LocationManager {
     /**
      * Find the JSON object corresponding to the town name in a specific region.
      *
-     * @param townId   The id of the town to search for.
-     * @param region   The name of the region in which to search for the town.
+     * @param townId The id of the town to search for.
+     * @param region The name of the region in which to search for the town.
      * @return The corresponding JSON object or null if not found.
      */
     private JsonObject findTownObject(String townId, String region) {
