@@ -13,24 +13,18 @@ public abstract class ButtonAbstract {
 
     /**
      * Get the name of the button.
-     *
-     * @return The name of the button.
      */
     @Getter
     private final String name;
 
     /**
      * Get the unique identifier of the button.
-     *
-     * @return The unique identifier of the button.
      */
     @Getter
     private final String id;
 
     /**
      * Get the style (color) of the button.
-     *
-     * @return The style of the button.
      */
     @Getter
     private final ButtonStyle style;
@@ -67,7 +61,7 @@ public abstract class ButtonAbstract {
      *
      * @param event The ButtonInteractionEvent triggered when the button is clicked.
      */
-    public abstract void onClick(ButtonInteractionEvent event);
+    public abstract void onClick(ButtonInteractionEvent event, String language);
 
     /**
      * Get a JDA button representation of this custom button.

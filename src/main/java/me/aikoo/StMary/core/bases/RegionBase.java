@@ -11,12 +11,6 @@ import java.util.ArrayList;
 public class RegionBase extends LocationAbstract {
 
     @Getter
-    private final String name;
-
-    @Getter
-    private final String description;
-
-    @Getter
     private final String icon = "\uD83C\uDF0D "; // A region icon, you can customize this.
 
     @Getter
@@ -28,13 +22,10 @@ public class RegionBase extends LocationAbstract {
     /**
      * Creates a new Region instance with the specified name and description.
      *
-     * @param name        The name of the region.
-     * @param description A brief description of the region.
+     * @param id The id of the region.
      */
-    public RegionBase(String id, String name, String description) {
+    public RegionBase(String id) {
         super(id);
-        this.name = name;
-        this.description = description;
     }
 
     /**

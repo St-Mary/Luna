@@ -11,12 +11,6 @@ import java.util.ArrayList;
 public class TownBase extends LocationAbstract {
 
     @Getter
-    private final String name;
-
-    @Getter
-    private final String description;
-
-    @Getter
     private final String icon = "\uD83C\uDFD8\uFE0F "; // A town icon, you can customize this.
 
     @Getter
@@ -31,15 +25,12 @@ public class TownBase extends LocationAbstract {
     /**
      * Creates a new Town instance with the specified name, description, region, and entry point.
      *
-     * @param name        The name of the town.
-     * @param description A brief description of the town.
+     * @param id          The id of the town.
      * @param region      The region to which the town belongs.
      * @param entryPoint  The entry point of the town.
      */
-    public TownBase(String id, String name, String description, RegionBase region, PlaceBase entryPoint) {
+    public TownBase(String id, RegionBase region, PlaceBase entryPoint) {
         super(id);
-        this.name = name;
-        this.description = description;
         this.region = region;
         this.entryPoint = entryPoint;
     }
@@ -59,7 +50,7 @@ public class TownBase extends LocationAbstract {
      * @param name The name of the place to retrieve.
      * @return The Place object with the specified name, or null if not found.
      */
-    public PlaceBase getPlace(String name) {
-        return this.places.stream().filter(place -> place.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    public PlaceBase getPlace(String name, String language) {
+        return this.places.stream().filter(place -> place.getName(language).equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 }

@@ -47,13 +47,13 @@ public class InfoCommand extends CommandAbstract {
      * @param event The interaction event.
      */
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event, String language) {
         String element = (event.getOption("element") != null) ? Objects.requireNonNull(event.getOption("element")).getAsString() : null;
         String name = (event.getOption("name") != null) ? Objects.requireNonNull(event.getOption("name")).getAsString() : null;
 
         switch (Objects.requireNonNull(element)) {
             case "object" -> infoObject(event, name);
-            case "place" -> infoPlace(event, name);
+            case "place" -> infoPlace(event, name, language);
             case "character" -> infoCharacter(event, name);
             case "monster" -> infoMonster(event, name);
             case "quest" -> infoQuest(event, name);
@@ -71,7 +71,7 @@ public class InfoCommand extends CommandAbstract {
      * @param event The interaction event.
      * @param name  The name of the place.
      */
-    private void infoPlace(SlashCommandInteractionEvent event, String name) {
+    private void infoPlace(SlashCommandInteractionEvent event, String name, String language) {
         LocationAbstract location = stMaryClient.getLocationManager().getLocationByName(name);
 
         if (location == null) {
@@ -81,16 +81,16 @@ public class InfoCommand extends CommandAbstract {
         }
 
         String description = this.formatLocationDescription(location.getDescription());
-        String content = stMaryClient.getTextManager().getText("info_place_description").replace("{{icon}}", location.getIcon()).replace("{{name}}", location.getName()).replace("{{type}}", location.getType()).replace("{{description}}", description);
+        String content = stMaryClient.getTextManager().getText("info_place_description").replace("{{icon}}", location.getIcon()).replace("{{name}}", location.getName(language)).replace("{{type}}", location.getType()).replace("{{description}}", description);
 
         if (location instanceof TownBase town) {
-            String townPlaces = this.formatTownPlaceDescription(town);
+            String townPlaces = this.formatTownPlaceDescription(town, language);
             content += stMaryClient.getTextManager().getText("info_place_description_town").replace("{{town_places}}", townPlaces);
         } else if (location instanceof RegionBase region) {
-            String regionPlaces = this.formatRegionPlaceDescription(region);
+            String regionPlaces = this.formatRegionPlaceDescription(region, language);
             content += regionPlaces;
         } else if (location instanceof PlaceBase place) {
-            String availableDestinations = this.formatAvailableDestination(place);
+            String availableDestinations = this.formatAvailableDestination(place, language);
             content += stMaryClient.getTextManager().getText("info_place_description_place").replace("{{available_destinations}}", availableDestinations);
         }
 
@@ -104,12 +104,12 @@ public class InfoCommand extends CommandAbstract {
      * @param place The place.
      * @return The formatted description of the place.
      */
-    private String formatAvailableDestination(PlaceBase place) {
+    private String formatAvailableDestination(PlaceBase place, String language) {
         ArrayList<JourneyBase> availableDestinationsJourney = place.getAvailableMoves();
         StringBuilder availableDestinations = new StringBuilder();
 
         for (JourneyBase journey : availableDestinationsJourney) {
-            availableDestinations.append(String.format("%s `%s`", journey.getTo().getIcon(), journey.getTo().getName()));
+            availableDestinations.append(String.format("%s `%s`", journey.getTo().getIcon(), journey.getTo().getName(language)));
             if (availableDestinationsJourney.indexOf(journey) != availableDestinationsJourney.size() - 1) {
                 availableDestinations.append(", ");
             }
@@ -144,12 +144,12 @@ public class InfoCommand extends CommandAbstract {
      * @param town The town place.
      * @return The formatted description of the town place.
      */
-    private String formatTownPlaceDescription(TownBase town) {
+    private String formatTownPlaceDescription(TownBase town, String language) {
         ArrayList<PlaceBase> places = town.getPlaces();
         StringBuilder formattedDescription = new StringBuilder();
 
         for (PlaceBase place : places) {
-            formattedDescription.append(String.format("**%s** `%s`", place.getIcon(), place.getName()));
+            formattedDescription.append(String.format("**%s** `%s`", place.getIcon(), place.getName(language)));
             if (places.indexOf(place) != places.size() - 1) {
                 formattedDescription.append(", ");
             }
@@ -164,14 +164,14 @@ public class InfoCommand extends CommandAbstract {
      * @param region The region.
      * @return The formatted description of the region.
      */
-    private String formatRegionPlaceDescription(RegionBase region) {
+    private String formatRegionPlaceDescription(RegionBase region, String language) {
         ArrayList<PlaceBase> places = region.getPlaces();
         ArrayList<TownBase> towns = region.getTowns();
         StringBuilder formattedDescription = new StringBuilder();
 
         formattedDescription.append(stMaryClient.getTextManager().getText("info_place_region_towns"));
         for (TownBase town : towns) {
-            formattedDescription.append(String.format("**%s** `%s`", town.getIcon(), town.getName()));
+            formattedDescription.append(String.format("**%s** `%s`", town.getIcon(), town.getName(language)));
             if (towns.indexOf(town) != towns.size() - 1) {
                 formattedDescription.append(", ");
             }
@@ -179,7 +179,7 @@ public class InfoCommand extends CommandAbstract {
 
         formattedDescription.append(stMaryClient.getTextManager().getText("info_place_region_places"));
         for (PlaceBase place : places) {
-            formattedDescription.append(String.format("**%s** `%s`", place.getIcon(), place.getName()));
+            formattedDescription.append(String.format("**%s** `%s`", place.getIcon(), place.getName(language)));
             if (places.indexOf(place) != places.size() - 1) {
                 formattedDescription.append(", ");
             }
@@ -299,7 +299,7 @@ public class InfoCommand extends CommandAbstract {
     }
 
     @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
         // Auto-complete logic can be added here if needed.
     }
 }

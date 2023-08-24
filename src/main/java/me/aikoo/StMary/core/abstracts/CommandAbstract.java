@@ -4,8 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.constants.BotConfigConstant;
+import me.aikoo.StMary.core.database.PlayerEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -45,15 +47,18 @@ public abstract class CommandAbstract {
         this.description = "No description provided.";
     }
 
-    public abstract void execute(SlashCommandInteractionEvent event);
+    public abstract void execute(SlashCommandInteractionEvent event, String language);
 
-    public abstract void autoComplete(CommandAutoCompleteInteractionEvent event);
+    public abstract void autoComplete(CommandAutoCompleteInteractionEvent event, String language);
 
     public void run(SlashCommandInteractionEvent event) {
+        PlayerEntity player = this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        String language = (event.getGuild().getLocale() == DiscordLocale.FRENCH) ? "fr" : "en";
+        language = (player != null) ? player.getLanguage() : language;
 
         if (this.isAdminCommand) {
             if (!this.stMaryClient.getDatabaseManager().isAdministrator(event.getUser().getIdLong()) && !event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
-                event.reply(stMaryClient.getTextManager().createText("command_error_not_allowed").buildError()).setEphemeral(true).queue();
+                event.reply(stMaryClient.getTextManager().createText("command_error_not_allowed", language).buildError()).setEphemeral(true).queue();
                 return;
             }
         }
@@ -66,7 +71,7 @@ public abstract class CommandAbstract {
                 long timestampRemaining = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + timeRemaining);
 
                 String timestamp = "<t:" + timestampRemaining + ":R>";
-                String text = stMaryClient.getTextManager().createText("command_error_cooldown").replace("cooldown", timestamp).buildError();
+                String text = stMaryClient.getTextManager().createText("command_error_cooldown", language).replace("cooldown", timestamp).buildError();
                 event.reply(text).setEphemeral(true).queue();
                 return;
             }
@@ -77,11 +82,18 @@ public abstract class CommandAbstract {
 
         // If the command requires the user to be registered in-game, we check if he is. If not, we send an error message.
         if (this.mustBeRegistered && this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong()) == null) {
-            event.reply(this.stMaryClient.getTextManager().createText("command_error_must_be_player").buildError()).setEphemeral(true).queue();
+            event.reply(this.stMaryClient.getTextManager().createText("command_error_must_be_player", language).buildError()).setEphemeral(true).queue();
             return;
         }
 
-        this.execute(event);
+        this.execute(event, language);
+    }
+
+    public void runAutoComplete(CommandAutoCompleteInteractionEvent event) {
+        String language = (event.getGuild().getLocale() == DiscordLocale.FRENCH) ? "fr" : "en";
+        PlayerEntity player = this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        language = (player != null) ? player.getLanguage() : language;
+        this.autoComplete(event, language);
     }
 
     protected ArrayList<ButtonAbstract> getArrayListButtons() {

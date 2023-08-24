@@ -48,7 +48,7 @@ public class JourneyCommand extends CommandAbstract {
      * @param event The SlashCommandInteractionEvent representing the command interaction.
      */
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event, String language) {
         String destination = event.getOption("destination").getAsString();
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
         PlaceBase place = stMaryClient.getLocationManager().getPlaceByName(player.getCurrentLocationPlace());
@@ -74,7 +74,7 @@ public class JourneyCommand extends CommandAbstract {
             // Check if the player is already on a journey.
             if (moves != null) {
                 PlaceBase toPlace = stMaryClient.getLocationManager().getPlaceByName(moves.getTo());
-                String formattedText = (place.getTown() == toPlace.getTown()) ? toPlace.getIcon() + toPlace.getName() : toPlace.getTown().getIcon() + toPlace.getTown().getName();
+                String formattedText = (place.getTown() == toPlace.getTown()) ? toPlace.getIcon() + toPlace.getName(language) : toPlace.getTown().getIcon() + toPlace.getTown().getName(language);
 
                 text = stMaryClient.getTextManager().createText("journey_err_destination_1").replace("name", formattedText).buildError();
             } else {
@@ -92,7 +92,7 @@ public class JourneyCommand extends CommandAbstract {
 
         long time = move.getTime();
 
-        String formattedText = (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
+        String formattedText = (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getName(language), language) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName(language), language);
         String str = stMaryClient.getTextManager().createText("journey_confirm").replace("time", String.valueOf(time)).replace("destination", formattedText).build();
 
         event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
@@ -105,7 +105,7 @@ public class JourneyCommand extends CommandAbstract {
                         @Override
                         public void run() {
                             if (!isStarted) {
-                                close(res, destinationPlace);
+                                close(res, destinationPlace, language);
                             }
                         }
                     },
@@ -121,8 +121,8 @@ public class JourneyCommand extends CommandAbstract {
      * @param message          The message to edit.
      * @param destinationPlace The destination place.
      */
-    private void close(Message message, PlaceBase destinationPlace) {
-        String formattedLocation = stMaryClient.getLocationManager().formatLocation(destinationPlace.getName());
+    private void close(Message message, PlaceBase destinationPlace, String language) {
+        String formattedLocation = stMaryClient.getLocationManager().formatLocation(destinationPlace.getName(language), language);
         String text = stMaryClient.getTextManager().createText("journey_cancel").replace("destination", formattedLocation).build();
         List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
         buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
@@ -136,7 +136,7 @@ public class JourneyCommand extends CommandAbstract {
      * @param event The CommandAutoCompleteInteractionEvent triggered by the user.
      */
     @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
 
         if (player == null) {
@@ -159,15 +159,15 @@ public class JourneyCommand extends CommandAbstract {
         // Iterate through available moves and generate choices.
         for (JourneyBase move : place.getAvailableMoves()) {
             // Retrieve the destination information.
-            String destinationName = move.getTo().getName();
+            String destinationName = move.getTo().getName(language);
             PlaceBase destination = stMaryClient.getLocationManager().getPlaceByName(destinationName);
 
             // Determine the display name based on the destination's town.
             String name;
             if (destination.isTownPlace() && place.isTownPlace() && place.getTown() != destination.getTown()) {
-                name = this.stMaryClient.getLocationManager().formatLocation(destination.getTown().getName());
+                name = this.stMaryClient.getLocationManager().formatLocation(destination.getTown().getName(language), language);
             } else {
-                name = this.stMaryClient.getLocationManager().formatLocation(destinationName);
+                name = this.stMaryClient.getLocationManager().formatLocation(destinationName, language);
             }
 
             choices.add(new Command.Choice(name, destinationName));
@@ -200,16 +200,16 @@ public class JourneyCommand extends CommandAbstract {
         }
 
         @Override
-        public void onClick(ButtonInteractionEvent event) {
+        public void onClick(ButtonInteractionEvent event, String language) {
             // Get the old place and destination place based on the player's current location and destination.
             PlaceBase oldPlace = stMaryClient.getLocationManager().getPlaceByName(player.getCurrentLocationPlace());
-            PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceByName(move.getTo().getName());
+            PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceByName(move.getTo().getName(language));
 
             // Create a new MoveEntity to track the journey details.
             MoveEntity moves = new MoveEntity();
             moves.setPlayerId(player.getId());
-            moves.setFrom(move.getFrom().getName());
-            moves.setTo(move.getTo().getName());
+            moves.setFrom(move.getFrom().getName(language));
+            moves.setTo(move.getTo().getName(language));
             moves.setTime(move.getTime());
             moves.setStart(System.currentTimeMillis());
 
@@ -221,8 +221,8 @@ public class JourneyCommand extends CommandAbstract {
 
             // Determine the formatted text based on the town of the destination.
             String formattedText = (oldPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
-                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) :
-                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
+                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getName(language), language) :
+                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName(language), language);
 
             // Generate a message to inform the user about the journey.
             String text = stMaryClient.getTextManager().createText("journey_success").replace("destination", formattedText).replace("time", move.getTime().toString()).build();
@@ -259,8 +259,8 @@ public class JourneyCommand extends CommandAbstract {
         }
 
         @Override
-        public void onClick(ButtonInteractionEvent event) {
-            close(event.getMessage(), destinationPlace);
+        public void onClick(ButtonInteractionEvent event, String language) {
+            close(event.getMessage(), destinationPlace, language);
             isStarted = true;
             event.deferEdit().queue();
         }

@@ -1,11 +1,17 @@
 {
   "id": "talon_04",
-  "name": "Château Glacé",
-  "description": "Une forteresse majestueuse aux tours élancées, le Château Glacé domine l'horizon de Talon. Les motifs sculptés de coquillages et d'algues ornent ses murs de glace, tandis que les vagues de la mer Naia chantent une mélodie apaisante contre ses fondations. À l'intérieur, les couloirs labyrinthiques et les chambres richement décorées racontent l'histoire des familles Talon à travers les âges, leurs succès maritimes et leurs luttes.",
+  "name": {
+    "en": "The Frozen Castle",
+    "fr": "Le Château Glacé"
+  },
+  "description": {
+    "fr": "Une forteresse majestueuse aux tours élancées, le Château Glacé domine l'horizon de Talon. Les motifs sculptés de coquillages et d'algues ornent ses murs de glace, tandis que les vagues de la mer Naia chantent une mélodie apaisante contre ses fondations. À l'intérieur, les couloirs labyrinthiques et les chambres richement décorées racontent l'histoire des familles Talon à travers les âges, leurs succès maritimes et leurs luttes.",
+    "en": "A majestic fortress with soaring towers, the Frozen Castle dominates the horizon of Talon. Carved motifs of shells and seaweed adorn its walls of ice, while the waves of the Naia Sea sing a soothing melody against its foundations. Inside, the labyrinthine corridors and richly decorated rooms tell the story of the Talon families through the ages, their maritime successes and struggles."
+  },
   "region": "oraland",
   "town": {
     "isTownPlace": true,
-    "name": "Talon",
+    "id": "talon",
     "isEntryPoint": false
   },
   "availableMoves": [

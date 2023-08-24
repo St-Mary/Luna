@@ -11,7 +11,7 @@
   "region": "oraland",
   "town": {
     "isTownPlace": true,
-    "name": "Talon",
+    "id": "talon",
     "isEntryPoint": true
   },
   "availableMoves": [

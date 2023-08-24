@@ -45,7 +45,7 @@ public class SelectTitleCommand extends CommandAbstract {
      * @param event The SlashCommandInteractionEvent triggered by the command.
      */
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event, String language) {
         String titleName = Objects.requireNonNull(event.getOption("title")).getAsString();
 
         // Check if the selected title exists
@@ -103,7 +103,7 @@ public class SelectTitleCommand extends CommandAbstract {
      * @param event The CommandAutoCompleteInteractionEvent triggered by the auto-complete request.
      */
     @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
 
         if (player != null) {

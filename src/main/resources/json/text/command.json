@@ -1,14 +1,32 @@
 {
   "command_error_not_allowed": {
-    "title": "Éxecution de la commande",
-    "text": "Vous n'êtes pas autorisé à éxecuter cette commande."
+    "fr": {
+      "title": "Exécution de la commande",
+      "text": "Vous n'avez pas la permission d'exécuter cette commande."
+    },
+    "en": {
+      "title": "Command execution",
+      "text": "You don't have the permission to execute this command."
+    }
   },
   "command_error_cooldown": {
-    "title": "Oh là, oh là, jeune aventurier !",
-    "text": "Patientez {{cooldown}} avant de pouvoir repartir sur les routes."
+    "fr": {
+      "title": "Oh là, oh là, jeune aventurier !",
+      "text": "Patientez {{cooldown}} avant de pouvoir repartir sur les routes."
+    },
+    "en": {
+      "title": "Oh là, oh là, young adventurer !",
+      "text": "Wait {{cooldown}} before you can go back on the roads."
+    }
   },
   "command_error_must_be_player": {
-    "title": "Éxecution de la commande",
-    "text": "Vous devez posséder un compte aventure pour exécuter cette commande !"
+    "fr": {
+      "title": "Exécution de la commande",
+      "text": "Vous devez posséder un compte aventure pour exécuter cette commande !"
+    },
+    "en": {
+      "title": "Command execution",
+      "text": "You must have an adventure account to execute this command !"
+    }
   }
 }

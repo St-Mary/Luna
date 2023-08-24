@@ -52,7 +52,7 @@ public class MenuCommand extends CommandAbstract {
      * @param event The SlashCommandInteractionEvent triggered by the command.
      */
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event, String language) {
         // Determine the user to display the menu for
         User user = event.getOption("user") == null ? event.getUser() : Objects.requireNonNull(event.getOption("user")).getAsUser();
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(user.getIdLong());
@@ -117,7 +117,7 @@ public class MenuCommand extends CommandAbstract {
      * @param event The CommandAutoCompleteInteractionEvent triggered by auto-complete.
      */
     @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
         // This command doesn't support auto-complete, so this method is left empty.
     }
 
@@ -131,23 +131,23 @@ public class MenuCommand extends CommandAbstract {
     private String profilEmbed(String name, PlayerEntity player) {
         TitleBase title = player.getCurrentTitle(stMaryClient);
         String icon = title.getIcon();
-        String place = player.getCurrentLocationPlace();
+        String place = stMaryClient.getLocationManager().getPlaceById(player.getCurrentLocationPlace()).getName(player.getLanguage());
 
         // Get the player's current location
-        String town = (!player.getCurrentLocationTown().equals("")) ? player.getCurrentLocationTown() : stMaryClient.getTextManager().getText("menu_no_town");
+        String town = (!player.getCurrentLocationTown().equals("")) ? stMaryClient.getLocationManager().getTownById(player.getCurrentLocationTown()).getName(player.getLanguage()) : stMaryClient.getTextManager().getText("menu_no_town", player.getLanguage());
         String location = stMaryClient.getTextManager().getText("menu_location_1").replace("{{town}}", town).replace("{{place}}", place);
         MoveEntity move = stMaryClient.getDatabaseManager().getMove(player.getId());
 
         if (move != null) {
-            PlaceBase to = stMaryClient.getLocationManager().getPlaceByName(move.getTo());
-            PlaceBase from = stMaryClient.getLocationManager().getPlaceByName(move.getFrom());
+            PlaceBase to = stMaryClient.getLocationManager().getPlaceById(move.getTo());
+            PlaceBase from = stMaryClient.getLocationManager().getPlaceById(move.getFrom());
 
             // Format the destination and departure names based on whether they are town places or not
-            String destinationName = to.isTownPlace() ? to.getTown().getName() + " - " + to.getName() : to.getName();
-            String departureName = from.getName() + (from.isTownPlace() ? " - " + from.getTown().getName() : "");
+            String destinationName = to.isTownPlace() ? to.getTown().getName(player.getLanguage()) + " - " + to.getName(player.getLanguage()) : to.getName(player.getLanguage());
+            String departureName = from.getName(player.getLanguage()) + (from.isTownPlace() ? " - " + from.getTown().getName(player.getLanguage()) : "");
 
             if (!to.isTownPlace()) {
-                destinationName = to.getName() + " - " + to.getRegion().getName();
+                destinationName = to.getName(player.getLanguage()) + " - " + to.getRegion().getName(player.getLanguage());
             }
 
             location = stMaryClient.getTextManager().getText("menu_location_2").replace("{{destination}}", destinationName).replace("{{departure}}", departureName);
@@ -160,7 +160,7 @@ public class MenuCommand extends CommandAbstract {
                 .replace("{{level}}", player.getLevel().toString())
                 .replace("{{exp}}", player.getExperience().toString())
                 .replace("{{location}}", location)
-                .replace("{{region}}", player.getCurrentLocationRegion());
+                .replace("{{region}}", stMaryClient.getLocationManager().getRegionById(player.getCurrentLocationRegion()).getName(player.getLanguage()));
     }
 
 
@@ -185,7 +185,7 @@ public class MenuCommand extends CommandAbstract {
         }
 
         @Override
-        public void onClick(ButtonInteractionEvent event) {
+        public void onClick(ButtonInteractionEvent event, String language) {
             if (!event.getUser().getId().equals(id)) return;
             event.editMessage(profilEmbed(event.getUser().getGlobalName(), player)).queue();
             if (!event.getInteraction().isAcknowledged()) {
@@ -216,7 +216,7 @@ public class MenuCommand extends CommandAbstract {
         }
 
         @Override
-        public void onClick(ButtonInteractionEvent event) {
+        public void onClick(ButtonInteractionEvent event, String language) {
             if (!event.getUser().getId().equals(id)) return;
             TitleBase title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
@@ -258,7 +258,7 @@ public class MenuCommand extends CommandAbstract {
         }
 
         @Override
-        public void onClick(ButtonInteractionEvent event) {
+        public void onClick(ButtonInteractionEvent event, String language) {
             if (!event.getUser().getId().equals(id)) return;
 
             TitleBase title = player.getCurrentTitle(stMaryClient);
@@ -308,7 +308,7 @@ public class MenuCommand extends CommandAbstract {
         }
 
         @Override
-        public void onClick(ButtonInteractionEvent event) {
+        public void onClick(ButtonInteractionEvent event, String language) {
             closeMenu(event.getMessage(), id);
             isClosed = true;
             if (!event.getInteraction().isAcknowledged()) {

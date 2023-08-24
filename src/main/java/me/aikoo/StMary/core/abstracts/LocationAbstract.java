@@ -5,6 +5,8 @@ import me.aikoo.StMary.core.bases.PlaceBase;
 import me.aikoo.StMary.core.bases.RegionBase;
 import me.aikoo.StMary.core.bases.TownBase;
 
+import java.util.HashMap;
+
 /**
  * Represents a location in the game world.
  */
@@ -12,6 +14,9 @@ public abstract class LocationAbstract {
 
     @Getter
     private final String id;
+
+    private final HashMap<String, String> names = new HashMap<>();
+    private final HashMap<String, String> descriptions = new HashMap<>();
 
     /**
      * Creates a new Location instance with the specified name, description, and icon.
@@ -27,14 +32,60 @@ public abstract class LocationAbstract {
      *
      * @return The name of the location.
      */
-    public abstract String getName();
+    @Deprecated
+    public String getName() {
+        return names.get("en");
+    }
+
+    /**
+     * Get the name of the location in the specified language.
+     *
+     * @param language The language to get the name in.
+     * @return The name of the location in the specified language.
+     */
+    public String getName(String language) {
+        return names.getOrDefault(language, getName());
+    }
+
+    /**
+     * Set the name of the location in the specified language.
+     *
+     * @param language The language to set the name in.
+     * @param name The name of the location in the specified language.
+     */
+    public void setName(String language, String name) {
+        names.put(language, name);
+    }
 
     /**
      * Get the description of the location.
      *
      * @return The description of the location.
      */
-    public abstract String getDescription();
+    public String getDescription() {
+        return getDescription("en");
+    }
+
+    /**
+     * Set the description of the location in the specified language.
+     *
+     * @param language The language to set the description in.
+     * @param description The description of the location in the specified language.
+     *
+     */
+    public void setDescription(String language, String description) {
+        descriptions.put(language, description);
+    }
+
+    /**
+     * Get the description of the location in the specified language.
+     *
+     * @param language The language to get the description in.
+     * @return The description of the location in the specified language.
+     */
+    public String getDescription(String language) {
+        return descriptions.getOrDefault(language, getDescription());
+    }
 
     /**
      * Get the icon representing the location.

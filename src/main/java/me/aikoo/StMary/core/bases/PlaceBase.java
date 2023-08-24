@@ -11,11 +11,6 @@ import java.util.ArrayList;
  */
 public class PlaceBase extends LocationAbstract {
 
-    @Getter
-    private final String name;
-
-    @Getter
-    private final String description;
 
     @Getter
     private final String icon = "\uD83D\uDCCD"; // You can customize this icon.
@@ -31,14 +26,11 @@ public class PlaceBase extends LocationAbstract {
     /**
      * Creates a new Place instance with the specified name, description, and region.
      *
-     * @param name        The name of the place.
-     * @param description A brief description of the place.
+     * @param id          The id of the place.
      * @param region      The region to which the place belongs.
      */
-    public PlaceBase(String id, String name, String description, RegionBase region) {
+    public PlaceBase(String id, RegionBase region) {
         super(id);
-        this.name = name;
-        this.description = description;
         this.region = region;
     }
 

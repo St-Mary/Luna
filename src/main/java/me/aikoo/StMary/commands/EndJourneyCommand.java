@@ -30,7 +30,7 @@ public class EndJourneyCommand extends CommandAbstract {
      * @param event The interaction event.
      */
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event, String language) {
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
         UUID uuid = player.getId();
         MoveEntity moves = stMaryClient.getDatabaseManager().getMove(uuid);
@@ -49,8 +49,8 @@ public class EndJourneyCommand extends CommandAbstract {
         PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceByName(moves.getTo());
         PlaceBase fromPlace = stMaryClient.getLocationManager().getPlaceByName(moves.getFrom());
         String formatted = (fromPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
-                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) :
-                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());
+                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getName(language), language) :
+                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName(language), language);
 
         // Check if the player has arrived at the destination.
         if (now < end) {
@@ -62,9 +62,9 @@ public class EndJourneyCommand extends CommandAbstract {
         }
 
         // Update the player's location and remove the journey record from the database.
-        player.setCurrentLocationPlace(destinationPlace.getName());
-        player.setCurrentLocationRegion(destinationPlace.getRegion().getName());
-        player.setCurrentLocationTown(destinationPlace.isTownPlace() ? destinationPlace.getTown().getName() : "");
+        player.setCurrentLocationPlace(destinationPlace.getName(language));
+        player.setCurrentLocationRegion(destinationPlace.getRegion().getName(language));
+        player.setCurrentLocationTown(destinationPlace.isTownPlace() ? destinationPlace.getTown().getName(language) : "");
 
         // Update the player's location in the database.
         stMaryClient.getDatabaseManager().delete(moves);
@@ -76,7 +76,7 @@ public class EndJourneyCommand extends CommandAbstract {
     }
 
     @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
         // Auto-complete logic can be added here if needed.
     }
 }

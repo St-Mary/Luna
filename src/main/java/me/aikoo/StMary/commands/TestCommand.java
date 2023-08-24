@@ -21,11 +21,11 @@ public class TestCommand extends CommandAbstract {
     }
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event, String language) {
         event.reply("Test <:book_1:1142570454834499724>").queue();
     }
 
     @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
     }
 }

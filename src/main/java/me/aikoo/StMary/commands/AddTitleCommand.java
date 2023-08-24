@@ -27,7 +27,7 @@ public class AddTitleCommand extends CommandAbstract {
     }
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event, String language) {
         if (!event.getUser().getId().equals("985986599995187270")) return;
         String titleName = Objects.requireNonNull(event.getOption("title")).getAsString();
         String userId = Objects.requireNonNull(event.getOption("userid")).getAsString();
@@ -55,6 +55,6 @@ public class AddTitleCommand extends CommandAbstract {
     }
 
     @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
     }
 }

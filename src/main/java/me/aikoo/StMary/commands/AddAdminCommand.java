@@ -25,7 +25,7 @@ public class AddAdminCommand extends CommandAbstract {
     }
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(SlashCommandInteractionEvent event, String language) {
         if (!event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
             String errMsg = "Seul le propriétaire du bot peut exécuter cette commande !";
             event.reply(errMsg).queue();
@@ -47,7 +47,7 @@ public class AddAdminCommand extends CommandAbstract {
     }
 
     @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event) {
+    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
 
     }
 }

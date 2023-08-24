@@ -9,9 +9,9 @@ public class PlayerConstant {
     public static final BigInteger EXPERIENCE = BigInteger.valueOf(0);
     public static final BigInteger MONEY = BigInteger.valueOf(0);
     public static final List<String> TITLES = List.of(new String[]{"Néophyte"});
-    public static final String CURRENT_LOCATION_REGION = "Oraland";
-    public static final String CURRENT_LOCATION_TOWN = "Talon";
-    public static final String CURRENT_LOCATION_PLACE = "Place du Griffon Marin";
+    public static final String CURRENT_LOCATION_REGION = "oraland";
+    public static final String CURRENT_LOCATION_TOWN = "talon";
+    public static final String CURRENT_LOCATION_PLACE = "talon_02";
     public static final String CURRENT_TITLE = "Néophyte";
     public static final String MAGICAL_BOOK = "book_I";
 }

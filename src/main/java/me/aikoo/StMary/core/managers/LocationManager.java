@@ -55,6 +55,30 @@ public class LocationManager {
     }
 
     /**
+     * Gets a location by its id, which can be a region, town, or place.
+     *
+     * @param id The id of the location to retrieve.
+     * @return The corresponding location or null if not found.
+     */
+    public LocationAbstract getLocationById(String id) {
+        LocationAbstract location = this.getRegionById(id);
+        location = (location != null) ? location : this.getTownById(id);
+        location = (location != null) ? location : this.getPlaceById(id);
+
+        return location;
+    }
+
+    /**
+     * Gets a region by its id.
+     *
+     * @param id The id of the region to retrieve.
+     * @return The region object or null if not found.
+     */
+    public LocationAbstract getRegionById(String id) {
+        return this.regions.get(id);
+    }
+
+    /**
      * Gets a town by its name.
      *
      * @param name The name of the town to retrieve.
@@ -80,8 +104,29 @@ public class LocationManager {
      * @param name The name of the place to retrieve.
      * @return The place object or null if not found.
      */
+    @Deprecated
     public PlaceBase getPlaceByName(String name) {
         return this.places.stream().filter(place -> place.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    /**
+     * Gets a place by its id.
+     *
+     * @param id The id of the place to retrieve.
+     * @return The place object or null if not found.
+     */
+    public PlaceBase getPlaceById(String id) {
+        return this.places.stream().filter(place -> place.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    /**
+     * Gets a town by its id.
+     *
+     * @param id The id of the town to retrieve.
+     * @return The town object or null if not found.
+     */
+    public TownBase getTownById(String id) {
+        return this.towns.stream().filter(town -> town.getId().equals(id)).findFirst().orElse(null);
     }
 
     /**
@@ -95,11 +140,13 @@ public class LocationManager {
 
         for (JsonObject regionObject : regions) {
             String id = regionObject.get("id").getAsString();
-            String name = regionObject.get("name").getAsString();
-            String description = regionObject.get("description").getAsString();
 
             // Create the region object
-            RegionBase region = new RegionBase(id, name, description);
+            RegionBase region = new RegionBase(id);
+            region.setName("en", regionObject.get("name").getAsJsonObject().get("en").getAsString());
+            region.setName("fr", regionObject.get("name").getAsJsonObject().get("fr").getAsString());
+            region.setDescription("en", regionObject.get("description").getAsJsonObject().get("en").getAsString());
+            region.setDescription("fr", regionObject.get("description").getAsJsonObject().get("fr").getAsString());
 
             // Load towns for the region
             loadTowns(region, regionObject);
@@ -108,7 +155,7 @@ public class LocationManager {
             loadPlaces(region, regionObject);
 
             // Add the region to the map of regions
-            regionHashMap.put(name, region);
+            regionHashMap.put(id, region);
         }
 
         return regionHashMap;
@@ -122,11 +169,11 @@ public class LocationManager {
      */
     private void loadTowns(RegionBase region, JsonObject regionObject) {
         regionObject.get("towns").getAsJsonArray().forEach(townObj -> {
-            String townName = townObj.getAsString();
-            JsonObject townObject = findTownObject(townName, region.getName());
+            String townId = townObj.getAsString();
+            JsonObject townObject = findTownObject(townId, region.getName());
 
             if (townObject == null) {
-                LOGGER.error("Town " + townName + " not found!");
+                LOGGER.error("Town " + townId + " not found!");
                 System.exit(1);
             }
 
@@ -138,10 +185,18 @@ public class LocationManager {
             }
 
             // Create the entry point object
-            PlaceBase entryPoint = new PlaceBase(entryPointObject.get("id").getAsString(), entryPointObject.get("name").getAsString(), entryPointObject.get("description").getAsString(), region);
+            PlaceBase entryPoint = new PlaceBase(entryPointObject.get("id").getAsString(), region);
+            entryPoint.setName("en", entryPointObject.get("name").getAsJsonObject().get("en").getAsString());
+            entryPoint.setName("fr", entryPointObject.get("name").getAsJsonObject().get("fr").getAsString());
+            entryPoint.setDescription("en", entryPointObject.get("description").getAsJsonObject().get("en").getAsString());
+            entryPoint.setDescription("fr", entryPointObject.get("description").getAsJsonObject().get("fr").getAsString());
 
             // Create the town object
-            TownBase town = new TownBase(townObject.get("id").getAsString(), townObject.get("name").getAsString(), townObject.get("description").getAsString(), region, entryPoint);
+            TownBase town = new TownBase(townObject.get("id").getAsString(), region, entryPoint);
+            town.setName("en", townObject.get("name").getAsJsonObject().get("en").getAsString());
+            town.setName("fr", townObject.get("name").getAsJsonObject().get("fr").getAsString());
+            town.setDescription("en", townObject.get("description").getAsJsonObject().get("en").getAsString());
+            town.setDescription("fr", townObject.get("description").getAsJsonObject().get("fr").getAsString());
 
             // Load places for the town
             loadPlaces(town, townObject);
@@ -160,17 +215,21 @@ public class LocationManager {
      */
     private void loadPlaces(LocationAbstract location, JsonObject json) {
         json.get("places").getAsJsonArray().forEach(place -> {
-            String placeName = place.getAsString();
-            JsonObject placeObject = findPlaceObject(placeName);
+            String placeId = place.getAsString();
+            JsonObject placeObject = findPlaceObject(placeId);
 
             if (placeObject == null) {
-                LOGGER.error("Place " + placeName + " not found!");
+                LOGGER.error("Place " + placeId + " not found!");
                 System.exit(1);
             }
 
             // Create the place object
             RegionBase region = (location instanceof RegionBase) ? (RegionBase) location : ((TownBase) location).getRegion();
-            PlaceBase p = new PlaceBase(placeObject.get("id").getAsString(),placeObject.get("name").getAsString(), placeObject.get("description").getAsString(), region);
+            PlaceBase p = new PlaceBase(placeObject.get("id").getAsString(), region);
+            p.setName("en", placeObject.get("name").getAsJsonObject().get("en").getAsString());
+            p.setName("fr", placeObject.get("name").getAsJsonObject().get("fr").getAsString());
+            p.setDescription("en", placeObject.get("description").getAsJsonObject().get("en").getAsString());
+            p.setDescription("fr", placeObject.get("description").getAsJsonObject().get("fr").getAsString());
 
             // Add the place to the region or town
             if (location instanceof RegionBase) {
@@ -187,13 +246,14 @@ public class LocationManager {
     /**
      * Find the JSON object corresponding to the town name in a specific region.
      *
-     * @param townName The name of the town to search for.
+     * @param townId   The id of the town to search for.
      * @param region   The name of the region in which to search for the town.
      * @return The corresponding JSON object or null if not found.
      */
-    private JsonObject findTownObject(String townName, String region) {
+    private JsonObject findTownObject(String townId, String region) {
+        System.out.println(townId + " " + region);
         return this.townsObjects.stream()
-                .filter(t -> t.get("name").getAsString().equalsIgnoreCase(townName))
+                .filter(t -> t.get("id").getAsString().equals(townId))
                 .filter(t -> t.get("region").getAsString().equalsIgnoreCase(region))
                 .findFirst()
                 .orElse(null);
@@ -202,12 +262,12 @@ public class LocationManager {
     /**
      * Find the JSON object corresponding to the place name.
      *
-     * @param placeName The name of the place to search for.
+     * @param placeId The id of the place to search for.
      * @return The corresponding JSON object or null if not found.
      */
-    private JsonObject findPlaceObject(String placeName) {
+    private JsonObject findPlaceObject(String placeId) {
         return this.placesObject.stream()
-                .filter(p -> p.get("name").getAsString().equalsIgnoreCase(placeName))
+                .filter(p -> p.get("id").getAsString().equalsIgnoreCase(placeId))
                 .findFirst()
                 .orElse(null);
     }
@@ -221,7 +281,7 @@ public class LocationManager {
     private JsonObject findEntryPointObject(JsonObject townObject) {
         String entryPointName = townObject.get("entryPoint").getAsString();
         return this.placesObject.stream()
-                .filter(p -> p.get("name").getAsString().equalsIgnoreCase(entryPointName))
+                .filter(p -> p.get("id").getAsString().equalsIgnoreCase(entryPointName))
                 .findFirst()
                 .orElse(null);
     }
@@ -232,11 +292,11 @@ public class LocationManager {
     private void loadMoves() {
         for (PlaceBase place : this.places) {
             // Find the JSON object corresponding to the current place
-            JsonObject placeObject = findPlaceObject(place.getName());
+            JsonObject placeObject = findPlaceObject(place.getId());
 
             // Check if the current place is found
             if (placeObject == null) {
-                LOGGER.error("Place " + place.getName() + " not found!");
+                LOGGER.error("Place " + place.getId() + " not foundd!");
                 System.exit(1);
             }
 
@@ -246,14 +306,15 @@ public class LocationManager {
             // Iterate through the list of movements and add them to the current place
             availableMoves.forEach(move -> {
                 JsonObject moveObject = move.getAsJsonObject();
-                String moveName = moveObject.get("name").getAsString();
+                String moveId = moveObject.get("id").getAsString();
                 Long duration = moveObject.get("duration").getAsLong();
 
-                PlaceBase destination = getPlaceByName(moveName);
+                PlaceBase destination = getPlaceById(moveId);
 
                 // Check if the destination of the movement is found
                 if (destination == null) {
-                    LOGGER.error("Place " + moveName + " not found!");
+
+                    LOGGER.error("Place " + moveId + " not found!");
                     System.exit(1);
                 }
 
@@ -266,15 +327,15 @@ public class LocationManager {
     /**
      * Format a location by replacing its name with its icon if available.
      *
-     * @param text The name of the location to format.
+     * @param id The id of the location to format.
      * @return The location name with its icon or "Unknown location" if not found.
      */
-    public String formatLocation(String text) {
+    public String formatLocation(String id, String language) {
         // Get the location object corresponding to the name
-        LocationAbstract location = this.stMaryClient.getLocationManager().getLocationByName(text);
+        LocationAbstract location = this.stMaryClient.getLocationManager().getLocationById(id);
 
         // If the location is found, return its icon followed by its name; otherwise, return "Unknown location"
-        return (location != null) ? location.getIcon() + location.getName() : "Localisation inconnue";
+        return (location != null) ? location.getIcon() + location.getName(language) : "Unknown Location";
     }
 
     /**

@@ -2,8 +2,10 @@ package me.aikoo.StMary.core.managers;
 
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.abstracts.ButtonAbstract;
+import me.aikoo.StMary.core.database.PlayerEntity;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.DiscordLocale;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -35,6 +37,10 @@ public class ButtonManager extends ListenerAdapter {
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         // Check if the message ID is associated with any registered buttons
         if (!commands.containsKey(event.getMessageId())) return;
+        String authorId = event.getUser().getId();
+        String language = (event.getGuild().getLocale() == DiscordLocale.FRENCH) ? "fr" : "en";
+        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(Long.parseLong(authorId));
+        language = (player != null) ? player.getLanguage() : language;
 
         // Find the button that was clicked based on the component ID
         ButtonAbstract button = commands.get(event.getMessageId()).stream()
@@ -46,7 +52,7 @@ public class ButtonManager extends ListenerAdapter {
         if (button == null) return;
 
         // Execute the onClick action of the button
-        button.onClick(event);
+        button.onClick(event, language);
 
         // Remove the executed button from the commands
         commands.remove(event.getId());

@@ -29,6 +29,11 @@ public class PlayerEntity {
     @Column(name = "discord_id", nullable = false)
     private Long discordId;
 
+    @Getter
+    @Setter
+    @Column(name = "language", nullable = false)
+    private String language;
+
     @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "player_titles", joinColumns = @JoinColumn(name = "player_id"))
     @Column(name = "title")

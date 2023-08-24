@@ -83,6 +83,6 @@ public class EventsListener extends ListenerAdapter {
     public void onCommandAutoCompleteInteraction(CommandAutoCompleteInteractionEvent event) {
         CommandAbstract command = this.stMaryClient.getCommandManager().getCommand(event.getInteraction().getName());
         if (command == null) return;
-        command.autoComplete(event);
+        command.runAutoComplete(event);
     }
 }
