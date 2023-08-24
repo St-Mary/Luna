@@ -55,5 +55,29 @@
   "info_object_description": {
     "title": "Informations à propos d'un objet",
     "text": "**Nom :** {{icon}} `{{name}}`\n\n**Type :** `{{type}}`\n\n**Description de l'objet :** `{{description}}`"
+  },
+  "info_character_not_available": {
+    "title": "Informations à propos d'un personnage",
+    "text": "Cette page n'est pas disponible pour le moment."
+  },
+  "info_quest_not_available": {
+    "title": "Informations à propos d'une quête",
+    "text": "Cette page n'est pas disponible pour le moment."
+  },
+  "info_monster_not_available": {
+    "title": "Informations à propos d'un monstre",
+    "text": "Cette page n'est pas disponible pour le moment."
+  },
+  "info_title_titles": {
+    "title": "Titres",
+    "text": "{{titles}}"
+  },
+  "info_title_error_not_exist": {
+    "title": "Informations à propos d'un titre",
+    "text": "Le titre demandé n'existe pas."
+  },
+  "info_title_title": {
+    "title": "Informations à propos d'un titre",
+    "text": "{{icon}} | **{{name}}** - `{{description}}`"
   }
 }

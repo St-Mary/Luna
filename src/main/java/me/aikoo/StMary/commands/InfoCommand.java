@@ -236,7 +236,7 @@ public class InfoCommand extends CommandAbstract {
      * @param name  The name of the character.
      */
     private void infoCharacter(SlashCommandInteractionEvent event, String name) {
-        String text = stMaryClient.getTextManager().generateScene("Information à propos d'un personnage", "Cette page n'est pas encore disponible !");
+        String text = stMaryClient.getTextManager().createText("info_character_not_available").buildError();
         event.reply(text).queue();
     }
 
@@ -247,7 +247,7 @@ public class InfoCommand extends CommandAbstract {
      * @param name  The name of the monster.
      */
     private void infoMonster(SlashCommandInteractionEvent event, String name) {
-        String text = stMaryClient.getTextManager().generateScene("Information à propos d'un monstre", "Cette page n'est pas encore disponible !");
+        String text = stMaryClient.getTextManager().createText("info_monster_not_available").buildError();
         event.reply(text).queue();
     }
 
@@ -258,7 +258,7 @@ public class InfoCommand extends CommandAbstract {
      * @param name  The name of the quest.
      */
     private void infoQuest(SlashCommandInteractionEvent event, String name) {
-        String text = stMaryClient.getTextManager().generateScene("Information à propos d'une quête", "Cette page n'est pas encore disponible !");
+        String text = stMaryClient.getTextManager().createText("info_quest_not_available").buildError();
         event.reply(text).queue();
     }
 
@@ -279,7 +279,7 @@ public class InfoCommand extends CommandAbstract {
             }
         }
 
-        return stMaryClient.getTextManager().generateScene("Titres", stringBuilder.toString());
+        return stMaryClient.getTextManager().createText("info_title_titles").replace("titles", stringBuilder.toString()).build();
     }
 
     /**
@@ -292,10 +292,10 @@ public class InfoCommand extends CommandAbstract {
         TitleBase title = stMaryClient.getTitleManager().getTitle(name);
 
         if (title == null) {
-            return stMaryClient.getTextManager().generateError("Titre", "Le titre demandé n'existe pas.");
+            return stMaryClient.getTextManager().createText("info_title_error_not_exist").buildError();
         }
 
-        return stMaryClient.getTextManager().generateScene("Titre", String.format("%s | **%s** - `%s`", title.getIcon(), title.getName(), title.getDescription()));
+        return stMaryClient.getTextManager().createText("info_title_title").replace("icon", title.getIcon()).replace("name", title.getName()).replace("description", title.getDescription()).build();
     }
 
     @Override
