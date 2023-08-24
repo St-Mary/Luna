@@ -1,0 +1,14 @@
+{
+  "command_error_not_allowed": {
+    "title": "Éxecution de la commande",
+    "text": "Vous n'êtes pas autorisé à éxecuter cette commande."
+  },
+  "command_error_cooldown": {
+    "title": "Oh là, oh là, jeune aventurier !",
+    "text": "Patientez {{cooldown}} avant de pouvoir repartir sur les routes."
+  },
+  "command_error_must_be_player": {
+    "title": "Éxecution de la commande",
+    "text": "Vous devez posséder un compte aventure pour exécuter cette commande !"
+  }
+}

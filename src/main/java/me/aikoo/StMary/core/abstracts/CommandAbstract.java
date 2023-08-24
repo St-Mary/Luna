@@ -53,7 +53,7 @@ public abstract class CommandAbstract {
 
         if (this.isAdminCommand) {
             if (!this.stMaryClient.getDatabaseManager().isAdministrator(event.getUser().getIdLong()) && !event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
-                event.reply(stMaryClient.getTextManager().generateError("Exécution de la commande", "Vous n'avez pas la permission d'exécuter cette commande!")).setEphemeral(true).queue();
+                event.reply(stMaryClient.getTextManager().createText("command_error_not_allowed").buildError()).setEphemeral(true).queue();
                 return;
             }
         }
@@ -65,7 +65,8 @@ public abstract class CommandAbstract {
                 long timeRemaining = this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name);
                 long timestampRemaining = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + timeRemaining);
 
-                String text = stMaryClient.getTextManager().generateError("Doucement, jeune aventurier!", String.format("Patiente <t:%s:R> avant de pouvoir repartir au galop.", timestampRemaining));
+                String timestamp = "<t:" + timestampRemaining + ":R>";
+                String text = stMaryClient.getTextManager().createText("command_error_cooldown").replace("cooldown", timestamp).buildError();
                 event.reply(text).setEphemeral(true).queue();
                 return;
             }
@@ -76,11 +77,10 @@ public abstract class CommandAbstract {
 
         // If the command requires the user to be registered in-game, we check if he is. If not, we send an error message.
         if (this.mustBeRegistered && this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong()) == null) {
-            event.reply(this.stMaryClient.getTextManager().generateError("Exécution de la commande", "Vous devez posséder un compte aventure pour exécuter cette commande!")).setEphemeral(true).queue();
+            event.reply(this.stMaryClient.getTextManager().createText("command_error_must_be_player").buildError()).setEphemeral(true).queue();
             return;
         }
 
-        // Execute the command
         this.execute(event);
     }
 
