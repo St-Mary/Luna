@@ -50,7 +50,7 @@ public class PlaceBase extends LocationAbstract {
      * @return The Move instance with the specified name, or null if not found.
      */
     public JourneyBase getMove(String name) {
-        return this.availableMoves.stream().filter(move -> move.getTo().getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        return this.availableMoves.stream().filter(move -> move.getTo().getId().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     /**

@@ -46,11 +46,11 @@ public class EndJourneyCommand extends CommandAbstract {
         long now = System.currentTimeMillis();
         long end = start + time;
 
-        PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceByName(moves.getTo());
-        PlaceBase fromPlace = stMaryClient.getLocationManager().getPlaceByName(moves.getFrom());
+        PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceById(moves.getTo());
+        PlaceBase fromPlace = stMaryClient.getLocationManager().getPlaceById(moves.getFrom());
         String formatted = (fromPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
-                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getName(language), language) :
-                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName(language), language);
+                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language) :
+                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getId(), language);
 
         // Check if the player has arrived at the destination.
         if (now < end) {
@@ -62,9 +62,9 @@ public class EndJourneyCommand extends CommandAbstract {
         }
 
         // Update the player's location and remove the journey record from the database.
-        player.setCurrentLocationPlace(destinationPlace.getName(language));
-        player.setCurrentLocationRegion(destinationPlace.getRegion().getName(language));
-        player.setCurrentLocationTown(destinationPlace.isTownPlace() ? destinationPlace.getTown().getName(language) : "");
+        player.setCurrentLocationPlace(destinationPlace.getId());
+        player.setCurrentLocationRegion(destinationPlace.getRegion().getId());
+        player.setCurrentLocationTown(destinationPlace.isTownPlace() ? destinationPlace.getTown().getId() : "");
 
         // Update the player's location in the database.
         stMaryClient.getDatabaseManager().delete(moves);

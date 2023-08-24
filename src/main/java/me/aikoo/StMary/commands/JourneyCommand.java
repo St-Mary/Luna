@@ -51,8 +51,8 @@ public class JourneyCommand extends CommandAbstract {
     public void execute(SlashCommandInteractionEvent event, String language) {
         String destination = event.getOption("destination").getAsString();
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
-        PlaceBase place = stMaryClient.getLocationManager().getPlaceByName(player.getCurrentLocationPlace());
-        PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceByName(destination);
+        PlaceBase place = stMaryClient.getLocationManager().getPlaceById(player.getCurrentLocationPlace());
+        PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceById(destination);
 
         // Check if either the current place or destination place is null.
         if (place == null || destinationPlace == null) {
@@ -73,7 +73,8 @@ public class JourneyCommand extends CommandAbstract {
 
             // Check if the player is already on a journey.
             if (moves != null) {
-                PlaceBase toPlace = stMaryClient.getLocationManager().getPlaceByName(moves.getTo());
+                System.out.println(moves.getTo());
+                PlaceBase toPlace = stMaryClient.getLocationManager().getPlaceById(moves.getTo());
                 String formattedText = (place.getTown() == toPlace.getTown()) ? toPlace.getIcon() + toPlace.getName(language) : toPlace.getTown().getIcon() + toPlace.getTown().getName(language);
 
                 text = stMaryClient.getTextManager().createText("journey_err_destination_1").replace("name", formattedText).buildError();
@@ -92,7 +93,7 @@ public class JourneyCommand extends CommandAbstract {
 
         long time = move.getTime();
 
-        String formattedText = (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getName(language), language) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName(language), language);
+        String formattedText = (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getId(), language);
         String str = stMaryClient.getTextManager().createText("journey_confirm").replace("time", String.valueOf(time)).replace("destination", formattedText).build();
 
         event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
@@ -122,7 +123,7 @@ public class JourneyCommand extends CommandAbstract {
      * @param destinationPlace The destination place.
      */
     private void close(Message message, PlaceBase destinationPlace, String language) {
-        String formattedLocation = stMaryClient.getLocationManager().formatLocation(destinationPlace.getName(language), language);
+        String formattedLocation = stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language);
         String text = stMaryClient.getTextManager().createText("journey_cancel").replace("destination", formattedLocation).build();
         List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
         buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
@@ -143,7 +144,7 @@ public class JourneyCommand extends CommandAbstract {
             return;
         }
 
-        PlaceBase place = stMaryClient.getLocationManager().getPlaceByName(player.getCurrentLocationPlace());
+        PlaceBase place = stMaryClient.getLocationManager().getPlaceById(player.getCurrentLocationPlace());
 
         if (place == null) {
             return;
@@ -159,18 +160,18 @@ public class JourneyCommand extends CommandAbstract {
         // Iterate through available moves and generate choices.
         for (JourneyBase move : place.getAvailableMoves()) {
             // Retrieve the destination information.
-            String destinationName = move.getTo().getName(language);
-            PlaceBase destination = stMaryClient.getLocationManager().getPlaceByName(destinationName);
+            String destinationId = move.getTo().getId();
+            PlaceBase destination = stMaryClient.getLocationManager().getPlaceById(destinationId);
 
             // Determine the display name based on the destination's town.
             String name;
             if (destination.isTownPlace() && place.isTownPlace() && place.getTown() != destination.getTown()) {
-                name = this.stMaryClient.getLocationManager().formatLocation(destination.getTown().getName(language), language);
+                name = this.stMaryClient.getLocationManager().formatLocation(destination.getTown().getId(), language);
             } else {
-                name = this.stMaryClient.getLocationManager().formatLocation(destinationName, language);
+                name = this.stMaryClient.getLocationManager().formatLocation(destinationId, language);
             }
 
-            choices.add(new Command.Choice(name, destinationName));
+            choices.add(new Command.Choice(name, destinationId));
         }
 
         // Reply with the auto-completion choices.
@@ -202,14 +203,14 @@ public class JourneyCommand extends CommandAbstract {
         @Override
         public void onClick(ButtonInteractionEvent event, String language) {
             // Get the old place and destination place based on the player's current location and destination.
-            PlaceBase oldPlace = stMaryClient.getLocationManager().getPlaceByName(player.getCurrentLocationPlace());
-            PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceByName(move.getTo().getName(language));
+            PlaceBase oldPlace = stMaryClient.getLocationManager().getPlaceById(player.getCurrentLocationPlace());
+            PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceById(move.getTo().getId());
 
             // Create a new MoveEntity to track the journey details.
             MoveEntity moves = new MoveEntity();
             moves.setPlayerId(player.getId());
-            moves.setFrom(move.getFrom().getName(language));
-            moves.setTo(move.getTo().getName(language));
+            moves.setFrom(move.getFrom().getId());
+            moves.setTo(move.getTo().getId());
             moves.setTime(move.getTime());
             moves.setStart(System.currentTimeMillis());
 
@@ -221,8 +222,8 @@ public class JourneyCommand extends CommandAbstract {
 
             // Determine the formatted text based on the town of the destination.
             String formattedText = (oldPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
-                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getName(language), language) :
-                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName(language), language);
+                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language) :
+                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getId(), language);
 
             // Generate a message to inform the user about the journey.
             String text = stMaryClient.getTextManager().createText("journey_success").replace("destination", formattedText).replace("time", move.getTime().toString()).build();
