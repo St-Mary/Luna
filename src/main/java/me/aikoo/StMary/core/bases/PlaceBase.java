@@ -35,7 +35,8 @@ public class PlaceBase extends LocationAbstract {
      * @param description A brief description of the place.
      * @param region      The region to which the place belongs.
      */
-    public PlaceBase(String name, String description, RegionBase region) {
+    public PlaceBase(String id, String name, String description, RegionBase region) {
+        super(id);
         this.name = name;
         this.description = description;
         this.region = region;

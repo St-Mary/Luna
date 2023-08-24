@@ -31,7 +31,8 @@ public class RegionBase extends LocationAbstract {
      * @param name        The name of the region.
      * @param description A brief description of the region.
      */
-    public RegionBase(String name, String description) {
+    public RegionBase(String id, String name, String description) {
+        super(id);
         this.name = name;
         this.description = description;
     }

@@ -46,10 +46,10 @@ public class LocationManager {
      * @param name The name of the location to retrieve.
      * @return The corresponding location or null if not found.
      */
-    public LocationAbstract getLocation(String name) {
-        LocationAbstract location = this.getRegion(name);
-        location = (location != null) ? location : this.getTown(name);
-        location = (location != null) ? location : this.getPlace(name);
+    public LocationAbstract getLocationByName(String name) {
+        LocationAbstract location = this.getRegionByName(name);
+        location = (location != null) ? location : this.getTownByName(name);
+        location = (location != null) ? location : this.getPlaceByName(name);
 
         return location;
     }
@@ -60,7 +60,7 @@ public class LocationManager {
      * @param name The name of the town to retrieve.
      * @return The town object or null if not found.
      */
-    public TownBase getTown(String name) {
+    public TownBase getTownByName(String name) {
         return this.towns.stream().filter(town -> town.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
@@ -70,7 +70,7 @@ public class LocationManager {
      * @param name The name of the region to retrieve.
      * @return The region object or null if not found.
      */
-    public RegionBase getRegion(String name) {
+    public RegionBase getRegionByName(String name) {
         return this.regions.get(name);
     }
 
@@ -80,7 +80,7 @@ public class LocationManager {
      * @param name The name of the place to retrieve.
      * @return The place object or null if not found.
      */
-    public PlaceBase getPlace(String name) {
+    public PlaceBase getPlaceByName(String name) {
         return this.places.stream().filter(place -> place.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
@@ -94,11 +94,12 @@ public class LocationManager {
         HashMap<String, RegionBase> regionHashMap = new HashMap<>();
 
         for (JsonObject regionObject : regions) {
+            String id = regionObject.get("id").getAsString();
             String name = regionObject.get("name").getAsString();
             String description = regionObject.get("description").getAsString();
 
             // Create the region object
-            RegionBase region = new RegionBase(name, description);
+            RegionBase region = new RegionBase(id, name, description);
 
             // Load towns for the region
             loadTowns(region, regionObject);
@@ -137,10 +138,10 @@ public class LocationManager {
             }
 
             // Create the entry point object
-            PlaceBase entryPoint = new PlaceBase(entryPointObject.get("name").getAsString(), entryPointObject.get("description").getAsString(), region);
+            PlaceBase entryPoint = new PlaceBase(entryPointObject.get("id").getAsString(), entryPointObject.get("name").getAsString(), entryPointObject.get("description").getAsString(), region);
 
             // Create the town object
-            TownBase town = new TownBase(townObject.get("name").getAsString(), townObject.get("description").getAsString(), region, entryPoint);
+            TownBase town = new TownBase(townObject.get("id").getAsString(), townObject.get("name").getAsString(), townObject.get("description").getAsString(), region, entryPoint);
 
             // Load places for the town
             loadPlaces(town, townObject);
@@ -169,7 +170,7 @@ public class LocationManager {
 
             // Create the place object
             RegionBase region = (location instanceof RegionBase) ? (RegionBase) location : ((TownBase) location).getRegion();
-            PlaceBase p = new PlaceBase(placeObject.get("name").getAsString(), placeObject.get("description").getAsString(), region);
+            PlaceBase p = new PlaceBase(placeObject.get("id").getAsString(),placeObject.get("name").getAsString(), placeObject.get("description").getAsString(), region);
 
             // Add the place to the region or town
             if (location instanceof RegionBase) {
@@ -248,7 +249,7 @@ public class LocationManager {
                 String moveName = moveObject.get("name").getAsString();
                 Long duration = moveObject.get("duration").getAsLong();
 
-                PlaceBase destination = getPlace(moveName);
+                PlaceBase destination = getPlaceByName(moveName);
 
                 // Check if the destination of the movement is found
                 if (destination == null) {
@@ -270,7 +271,7 @@ public class LocationManager {
      */
     public String formatLocation(String text) {
         // Get the location object corresponding to the name
-        LocationAbstract location = this.stMaryClient.getLocationManager().getLocation(text);
+        LocationAbstract location = this.stMaryClient.getLocationManager().getLocationByName(text);
 
         // If the location is found, return its icon followed by its name; otherwise, return "Unknown location"
         return (location != null) ? location.getIcon() + location.getName() : "Localisation inconnue";

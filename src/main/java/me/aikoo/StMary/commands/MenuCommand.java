@@ -139,8 +139,8 @@ public class MenuCommand extends CommandAbstract {
         MoveEntity move = stMaryClient.getDatabaseManager().getMove(player.getId());
 
         if (move != null) {
-            PlaceBase to = stMaryClient.getLocationManager().getPlace(move.getTo());
-            PlaceBase from = stMaryClient.getLocationManager().getPlace(move.getFrom());
+            PlaceBase to = stMaryClient.getLocationManager().getPlaceByName(move.getTo());
+            PlaceBase from = stMaryClient.getLocationManager().getPlaceByName(move.getFrom());
 
             // Format the destination and departure names based on whether they are town places or not
             String destinationName = to.isTownPlace() ? to.getTown().getName() + " - " + to.getName() : to.getName();

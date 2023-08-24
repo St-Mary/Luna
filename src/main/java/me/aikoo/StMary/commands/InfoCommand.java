@@ -72,7 +72,7 @@ public class InfoCommand extends CommandAbstract {
      * @param name  The name of the place.
      */
     private void infoPlace(SlashCommandInteractionEvent event, String name) {
-        LocationAbstract location = stMaryClient.getLocationManager().getLocation(name);
+        LocationAbstract location = stMaryClient.getLocationManager().getLocationByName(name);
 
         if (location == null) {
             String error = stMaryClient.getTextManager().createText("info_place_error_dont_exist").buildError();

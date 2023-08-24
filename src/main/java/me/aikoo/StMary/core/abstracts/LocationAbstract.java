@@ -1,5 +1,6 @@
 package me.aikoo.StMary.core.abstracts;
 
+import lombok.Getter;
 import me.aikoo.StMary.core.bases.PlaceBase;
 import me.aikoo.StMary.core.bases.RegionBase;
 import me.aikoo.StMary.core.bases.TownBase;
@@ -8,6 +9,18 @@ import me.aikoo.StMary.core.bases.TownBase;
  * Represents a location in the game world.
  */
 public abstract class LocationAbstract {
+
+    @Getter
+    private final String id;
+
+    /**
+     * Creates a new Location instance with the specified name, description, and icon.
+     *
+     * @param id The id of the location.
+     */
+    public LocationAbstract(String id) {
+        this.id = id;
+    }
 
     /**
      * Get the name of the location.

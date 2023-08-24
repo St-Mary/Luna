@@ -46,8 +46,8 @@ public class EndJourneyCommand extends CommandAbstract {
         long now = System.currentTimeMillis();
         long end = start + time;
 
-        PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlace(moves.getTo());
-        PlaceBase fromPlace = stMaryClient.getLocationManager().getPlace(moves.getFrom());
+        PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceByName(moves.getTo());
+        PlaceBase fromPlace = stMaryClient.getLocationManager().getPlaceByName(moves.getFrom());
         String formatted = (fromPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
                 this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getName()) :
                 this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getName());

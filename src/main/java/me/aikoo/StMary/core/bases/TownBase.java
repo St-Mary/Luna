@@ -36,7 +36,8 @@ public class TownBase extends LocationAbstract {
      * @param region      The region to which the town belongs.
      * @param entryPoint  The entry point of the town.
      */
-    public TownBase(String name, String description, RegionBase region, PlaceBase entryPoint) {
+    public TownBase(String id, String name, String description, RegionBase region, PlaceBase entryPoint) {
+        super(id);
         this.name = name;
         this.description = description;
         this.region = region;
