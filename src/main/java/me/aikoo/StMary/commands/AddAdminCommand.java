@@ -27,13 +27,13 @@ public class AddAdminCommand extends CommandAbstract {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         if (!event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
-            String errMsg = stMaryClient.getTextManager().generateError("Ajout d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
+            String errMsg = "Seul le propriétaire du bot peut exécuter cette commande !";
             event.reply(errMsg).queue();
         }
 
         AdministratorEntity administrators = stMaryClient.getDatabaseManager().getAdministrator(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
         if (administrators != null) {
-            String errMsg = stMaryClient.getTextManager().generateError("Ajout d'un administrateur", "Cet utilisateur est déjà administrateur !");
+            String errMsg = "Cet utilisateur est déjà administrateur !";
             event.reply(errMsg).queue();
             return;
         }

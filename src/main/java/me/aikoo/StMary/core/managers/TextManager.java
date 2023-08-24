@@ -28,41 +28,6 @@ public class TextManager {
     }
 
     /**
-     * Generate a scene with given title and text, replacing location placeholders with their corresponding format.
-     *
-     * @param title The scene's title.
-     * @param text  The scene's text.
-     * @return The generated scene.
-     */
-    @Deprecated
-    public String generateScene(String title, String text) {
-        String regex = "\\{location:([^{}]+)\\}";
-        String formattedText = text.replaceAll("\n\n", "\n- ");
-
-        Pattern pattern = Pattern.compile(regex);
-        if ((pattern.matcher(formattedText).find())) {
-            while (pattern.matcher(formattedText).find()) {
-                String name = stMaryClient.getLocationManager().extractLocationName(formattedText);
-                formattedText = formattedText.replaceFirst(regex, stMaryClient.getLocationManager().formatLocation(name));
-            }
-        }
-
-        return "╭───────────┈ ➤ ✎ **" + title + "**\n- " + formattedText + "\n╰─────────── ·\uFEFF \uFEFF \uFEFF· \uFEFF ·\uFEFF \uFEFF \uFEFF· \uFEFF✦";
-    }
-
-    /**
-     * Generate an error message with given title and text using the generateScene method.
-     *
-     * @param title The error's title.
-     * @param text  The error's text.
-     * @return The generated error message.
-     */
-    @Deprecated
-    public String generateError(String title, String text) {
-        return generateScene("❌ Erreur : " + title, text);
-    }
-
-    /**
      * Get the text associated with a given id.
      *
      * @param id The id of the text.

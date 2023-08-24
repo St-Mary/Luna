@@ -25,7 +25,7 @@ public class RemoveAdminCommand extends CommandAbstract {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         if (!event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
-            String errMsg = stMaryClient.getTextManager().generateError("Retrait d'un administrateur", "Seul le propriétaire du bot peut exécuter cette commande !");
+            String errMsg = "Seul le propriétaire du bot peut exécuter cette commande !";
             event.reply(errMsg).queue();
         }
 
@@ -38,7 +38,7 @@ public class RemoveAdminCommand extends CommandAbstract {
 
         AdministratorEntity administrator = stMaryClient.getDatabaseManager().getAdministrator(Long.parseLong(userId));
         if (administrator == null) {
-            String errMsg = stMaryClient.getTextManager().generateError("Retrait d'un administrateur", "Cet utilisateur n'est pas administrateur !");
+            String errMsg = "Cet utilisateur n'est pas administrateur !";
             event.reply(errMsg).queue();
             return;
         }
