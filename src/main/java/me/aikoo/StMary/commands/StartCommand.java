@@ -32,9 +32,9 @@ public class StartCommand extends CommandAbstract {
         this.setMustBeRegistered(false);
 
         this.options.add(new OptionData(OptionType.STRING, "language", "The language to use")
-                        .addChoice("\uD83C\uDDEB\uD83C\uDDF7 Français", "fr")
-                        .addChoice("\uD83C\uDDEC\uD83C\uDDE7 English", "en")
-                        .setRequired(true)
+                .addChoice("\uD83C\uDDEB\uD83C\uDDF7 Français", "fr")
+                .addChoice("\uD83C\uDDEC\uD83C\uDDE7 English", "en")
+                .setRequired(true)
         );
     }
 
