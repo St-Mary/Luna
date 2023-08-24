@@ -1,30 +1,36 @@
 {
   "id": "losse_02",
-  "name": "Fontaine Dissy",
-  "description": "Le cœur vibrant de Losse, cette place animée est un kaléidoscope de couleurs et de sons. Les étales regorgent d'éclats argentés de poissons fraîchement pêchés, de montagnes d'épices odorantes et de trésors venus des profondeurs marines. Les enchères résonnent, mêlées aux discussions animées des marchands et des acheteurs. Le parfum marin s'entremêle avec les senteurs épicées, créant une symphonie sensorielle qui captive chaque visiteur.",
-  "region": "Oraland",
+  "name": {
+    "fr": "Fontaine Dissy",
+    "en": "Dissy Fountain"
+  },
+  "description": {
+    "fr": "Le cœur vibrant de Losse, cette place animée est un kaléidoscope de couleurs et de sons. Les étales regorgent d'éclats argentés de poissons fraîchement pêchés, de montagnes d'épices odorantes et de trésors venus des profondeurs marines. Les enchères résonnent, mêlées aux discussions animées des marchands et des acheteurs. Le parfum marin s'entremêle avec les senteurs épicées, créant une symphonie sensorielle qui captive chaque visiteur.",
+    "en": "The vibrant heart of Losse, this lively square is a kaleidoscope of colours and sounds. The stalls are full of silver flashes of freshly caught fish, mountains of fragrant spices and treasures from the depths of the sea. The auctions resound, mingled with the lively discussions of merchants and buyers. The sea scent is intertwined with the spicy scents, creating a sensory symphony that captivates every visitor."
+  },
+  "region": "oraland",
   "town": {
     "isTownPlace": true,
-    "name": "Losse",
+    "id": "losse",
     "isEntryPoint": false
   },
   "availableMoves": [
     {
-      "name": "Entrée de Losse",
-      "town": "Losse",
-      "region": "Oraland",
+      "id": "losse_01",
+      "town": "losse",
+      "region": "oraland",
       "duration": 1
     },
     {
-      "name": "Auberge de l'Écume d'Argent",
-      "town": "Losse",
-      "region": "Oraland",
+      "id": "losse_03",
+      "town": "losse",
+      "region": "oraland",
       "duration": 1
     },
     {
-      "name": "Ruelle des Souvenirs Enfouis",
-      "town": "Losse",
-      "region": "Oraland",
+      "id": "losse_04",
+      "town": "losse",
+      "region": "oraland",
       "duration": 1
     }
   ]

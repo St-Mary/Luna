@@ -1,8 +1,14 @@
 {
   "id": "oraland_03",
-  "name": "Pont Ruiné",
-  "description": "Autrefois un lien solide entre les cités, le Pont Ruiné se dresse désormais comme un témoin silencieux des temps passés. Les planches usées par les pas des visiteurs racontent des histoires oubliées, tandis que la rivière Lucca murmure des récits d'une époque révolue. La vue panoramique sur les eaux tranquilles rappelle les moments où les deux cités partageaient plus que des biens matériels, et invite à la réflexion sur ce qui a été perdu.",
-  "region": "Oraland",
+  "name": {
+    "en": "The Ruined Bridge",
+    "fr": "Le Pont Ruiné"
+  },
+  "description": {
+    "fr": "Autrefois un lien solide entre les cités, le Pont Ruiné se dresse désormais comme un témoin silencieux des temps passés. Les planches usées par les pas des visiteurs racontent des histoires oubliées, tandis que la rivière Lucca murmure des récits d'une époque révolue. La vue panoramique sur les eaux tranquilles rappelle les moments où les deux cités partageaient plus que des biens matériels, et invite à la réflexion sur ce qui a été perdu.",
+    "en": "Once a solid link between the cities, the Ruined Bridge now stands as a silent witness of times past. The planks worn by the steps of visitors tell forgotten stories, while the Lucca river murmurs tales of a bygone era. The panoramic view of the tranquil waters recalls the moments when the two cities shared more than material goods, and invites reflection on what has been lost."
+  },
+  "region": "oraland",
   "town": {
     "isTownPlace": false,
     "name": "",
@@ -10,15 +16,15 @@
   },
   "availableMoves": [
     {
-      "name": "Rivière Lucca",
+      "id": "oraland_02",
       "town": "",
-      "region": "Oraland",
+      "region": "oraland",
       "duration": 1
     },
     {
-      "name": "Entrée de Losse",
-      "town": "Losse",
-      "region": "Oraland",
+      "id": "losse_01",
+      "town": "losse",
+      "region": "oraland",
       "duration": 1
     }
   ]

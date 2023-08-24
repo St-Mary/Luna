@@ -1,8 +1,14 @@
 {
   "id": "talon_01",
-  "name": "Entrée de la Cité",
-  "description": "Entrée de la Cité de Talon, capitale du royaume d'Oraland, elle est marquée par une imposante porte en bois.",
-  "region": "Oraland",
+  "name": {
+    "fr": "Entrée de la Cité",
+    "en": "City Entrance"
+  },
+  "description": {
+    "fr": "Entrée de la Cité de Talon, capitale du royaume d'Oraland, elle est marquée par une imposante porte en bois.",
+    "en": "Entrance of the City of Talon, capital of the kingdom of Oraland, it is marked by an imposing wooden door."
+  },
+  "region": "oraland",
   "town": {
     "isTownPlace": true,
     "name": "Talon",
@@ -10,27 +16,27 @@
   },
   "availableMoves": [
     {
-      "name": "Place du Griffon Marin",
-      "town": "Talon",
-      "region": "Oraland",
+      "id": "talon_02",
+      "town": "talon",
+      "region": "oraland",
       "duration": 1
     },
     {
-      "name": "Entrée de Losse",
-      "town": "Losse",
-      "region": "Oraland",
+      "id": "losse_01",
+      "town": "losse",
+      "region": "oraland",
       "duration": 2
     },
     {
-      "name": "Mer Naia",
+      "id": "oraland_01",
       "town": "",
-      "region": "Oraland",
+      "region": "oraland",
       "duration": 3
     },
     {
-      "name": "Rivière Lucca",
+      "id": "oraland_02",
       "town": "",
-      "region": "Oraland",
+      "region": "oraland",
       "duration": 2
     }
   ]

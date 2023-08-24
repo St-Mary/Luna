@@ -1,36 +1,42 @@
 {
   "id": "losse_01",
-  "name": "Entrée de Losse",
-  "description": "Entrée de Losse, une ville de la région d'Oraland",
-  "region": "Oraland",
+  "name": {
+    "en": "Losse entry",
+    "fr": "Entrée de Losse"
+  },
+  "description": {
+    "en": "Losse entry",
+    "fr": "Entrée de Losse"
+  },
+  "region": "oraland",
   "town": {
     "isTownPlace": true,
-    "name": "Losse",
+    "id": "losse",
     "isEntryPoint": true
   },
   "availableMoves": [
     {
-      "name": "Entrée de la Cité",
-      "town": "Talon",
-      "region": "Oraland",
+      "id": "talon_01",
+      "town": "talon",
+      "region": "oraland",
       "duration": 2
     },
     {
-      "name": "Fontaine Dissy",
-      "town": "Losse",
-      "region": "Oraland",
+      "id": "losse_02",
+      "town": "losse",
+      "region": "oraland",
       "duration": 1
     },
     {
-      "name": "Rivière Lucca",
+      "id": "oraland_02",
       "town": "",
-      "region": "Oraland",
+      "region": "oraland",
       "duration": 1
     },
     {
-      "name": "Pont Ruiné",
+      "id": "oraland_03",
       "town": "",
-      "region": "Oraland",
+      "region": "oraland",
       "duration": 1
     }
   ]
