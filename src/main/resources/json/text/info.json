@@ -43,5 +43,17 @@
   },
   "info_place_region_places": {
     "text": "\n\n**Lieux :** "
+  },
+  "info_object_error_not_found": {
+    "title": "Informations à propos d'un objet",
+    "text": "L'objet demandé n'existe pas."
+  },
+  "info_object_error_no_object": {
+    "title": "Informations à propos d'un objet",
+    "text": "Veuillez entrer le nom de l'objet."
+  },
+  "info_object_description": {
+    "title": "Informations à propos d'un objet",
+    "text": "**Nom :** {{icon}} `{{name}}`\n\n**Type :** `{{type}}`\n\n**Description de l'objet :** `{{description}}`"
   }
 }

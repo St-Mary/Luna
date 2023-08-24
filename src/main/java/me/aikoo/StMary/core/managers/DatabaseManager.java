@@ -57,7 +57,7 @@ public class DatabaseManager {
                 registry = registryBuilder.build();
 
                 MetadataSources sources = new MetadataSources(registry);
-                Reflections reflections = new Reflections("me.aikoo.StMary.database.entities");
+                Reflections reflections = new Reflections("me.aikoo.StMary.core.database");
                 for (Class<?> cls : reflections.getTypesAnnotatedWith(Entity.class)) {
                     sources.addAnnotatedClass(cls);
                 }

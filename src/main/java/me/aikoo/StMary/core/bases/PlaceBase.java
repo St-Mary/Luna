@@ -26,7 +26,7 @@ public class PlaceBase extends LocationAbstract {
     private final ArrayList<JourneyBase> availableMoves = new ArrayList<>();
     @Getter
     @Setter
-    private TownBasee town = null;
+    private TownBase town = null;
 
     /**
      * Creates a new Place instance with the specified name, description, and region.

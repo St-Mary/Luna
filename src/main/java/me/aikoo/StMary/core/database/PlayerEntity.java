@@ -4,23 +4,24 @@ import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
-import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.bases.ObjectBase;
 import me.aikoo.StMary.core.bases.TitleBase;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.id.uuid.UuidGenerator;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.id.UUIDGenerator;
 
 import java.math.BigInteger;
 import java.util.*;
 
-@Entity
+@Entity()
 @Table(name = "players")
 public class PlayerEntity {
 
     @Id
     @Getter
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", type = UuidGenerator.class)
+    @GeneratedValue
+    @UuidGenerator
     private UUID id;
 
     @Getter

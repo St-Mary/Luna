@@ -1,6 +1,6 @@
 package me.aikoo.StMary.commands;
 
-import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import me.aikoo.StMary.core.abstracts.LocationAbstract;
 import me.aikoo.StMary.core.bases.*;
@@ -83,7 +83,7 @@ public class InfoCommand extends CommandAbstract {
         String description = this.formatLocationDescription(location.getDescription());
         String content = stMaryClient.getTextManager().getText("info_place_description").replace("{{icon}}", location.getIcon()).replace("{{name}}", location.getName()).replace("{{type}}", location.getType()).replace("{{description}}", description);
 
-        if (location instanceof TownBasee town) {
+        if (location instanceof TownBase town) {
             String townPlaces = this.formatTownPlaceDescription(town);
             content += stMaryClient.getTextManager().getText("info_place_description_town").replace("{{town_places}}", townPlaces);
         } else if (location instanceof RegionBase region) {
@@ -144,7 +144,7 @@ public class InfoCommand extends CommandAbstract {
      * @param town The town place.
      * @return The formatted description of the town place.
      */
-    private String formatTownPlaceDescription(TownBasee town) {
+    private String formatTownPlaceDescription(TownBase town) {
         ArrayList<PlaceBase> places = town.getPlaces();
         StringBuilder formattedDescription = new StringBuilder();
 
@@ -166,11 +166,11 @@ public class InfoCommand extends CommandAbstract {
      */
     private String formatRegionPlaceDescription(RegionBase region) {
         ArrayList<PlaceBase> places = region.getPlaces();
-        ArrayList<TownBasee> towns = region.getTowns();
+        ArrayList<TownBase> towns = region.getTowns();
         StringBuilder formattedDescription = new StringBuilder();
 
         formattedDescription.append(stMaryClient.getTextManager().getText("info_place_region_towns"));
-        for (TownBasee town : towns) {
+        for (TownBase town : towns) {
             formattedDescription.append(String.format("**%s** `%s`", town.getIcon(), town.getName()));
             if (towns.indexOf(town) != towns.size() - 1) {
                 formattedDescription.append(", ");
@@ -196,21 +196,24 @@ public class InfoCommand extends CommandAbstract {
      */
     private void infoObject(SlashCommandInteractionEvent event, String name) {
         if (name == null) {
-            String text = stMaryClient.getTextManager().generateError("Information à propos d'un objet", "Veuillez entrer le nom de l'objet que vous souhaitez consulter.");
-            event.reply(text).queue();
+            String text = stMaryClient.getTextManager().createText("info_object_error_no_object").buildError();
+            event.reply(text).setEphemeral(true).queue();
             return;
         }
 
         ObjectBase object = stMaryClient.getObjectManager().getObjectByName(name);
 
         if (object == null) {
-            String error = stMaryClient.getTextManager().generateError("Information à propos d'un objet", "L'objet demandé n'existe pas.");
-            event.reply(error).queue();
+            String error = stMaryClient.getTextManager().createText("info_object_error_not_found").buildError();
+            event.reply(error).setEphemeral(true).queue();
             return;
         }
 
-        String description = String.format("**Nom :** %s `%s`\n\n**Type :** `%s`\n\n**Description de l'objet:** `%s`", object.getIcon(), object.getName(), object.getType().getId(), object.getDescription());
-        String text = stMaryClient.getTextManager().generateScene("Information à propos d'un objet", description);
+        String text = stMaryClient.getTextManager().createText("info_object_description")
+                .replace("icon", object.getIcon())
+                .replace("name", object.getName())
+                .replace("description", object.getDescription())
+                .replace("type", object.getType().getId()).build();
 
         event.reply(text).queue();
     }

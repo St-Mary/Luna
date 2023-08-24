@@ -1,8 +1,7 @@
 package me.aikoo.StMary.commands;
 
-import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.abstracts.CommandAbstract;
-import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.constants.PlayerConstant;
 import me.aikoo.StMary.core.database.PlayerEntity;
 import me.aikoo.StMary.core.managers.TextManager;
@@ -42,7 +41,7 @@ public class StartCommand extends CommandAbstract {
         LocalDate creationDate = event.getUser().getTimeCreated().toLocalDateTime().toLocalDate();
 
         // Check if the Discord account was created more than a week ago
-        if (creationDate.isAfter(LocalDate.now().minusWeeks(BotConfigConstant.CREATION_TIME_WEEK_LIMIT))) {
+        if (creationDate.isAfter(LocalDate.now().minusWeeks(PlayerConstant.CREATION_TIME_WEEK_LIMIT))) {
             event.reply(stMaryClient.getTextManager().createText("start_adventure_error_creation_date").buildError()).queue();
             return;
         }

@@ -1,6 +1,6 @@
 package me.aikoo.StMary.commands;
 
-import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.database.AdministratorEntity;

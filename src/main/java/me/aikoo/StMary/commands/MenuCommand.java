@@ -1,6 +1,6 @@
 package me.aikoo.StMary.commands;
 
-import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.abstracts.ButtonAbstract;
 import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import me.aikoo.StMary.core.bases.ObjectBase;
@@ -153,7 +153,7 @@ public class MenuCommand extends CommandAbstract {
             location = stMaryClient.getTextManager().getText("menu_location_2").replace("{{destination}}", destinationName).replace("{{departure}}", departureName);
         }
 
-        // return the text to send
+        // Return the text to send
         return stMaryClient.getTextManager().getText("menu_player")
                 .replace("{{icon}}", icon)
                 .replace("{{name}}", name)

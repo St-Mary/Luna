@@ -2,8 +2,8 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
 import lombok.Getter;
-import me.aikoo.StMary.core.JSONFileReader;
-import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
+import me.aikoo.StMary.core.bot.StMaryClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,7 +97,7 @@ public class TextManager {
      * Load texts from JSON files.
      */
     private void load() {
-        ArrayList<JsonObject> files = JSONFileReader.readAllFilesFrom("text");
+        ArrayList<JsonObject> files = JSONFileReaderUtils.readAllFilesFrom("text");
 
         for (JsonObject file : files) {
             for (String key : file.keySet()) {

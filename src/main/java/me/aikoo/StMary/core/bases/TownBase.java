@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Represents a town in the game world.
  */
-public class TownBasee extends LocationAbstract {
+public class TownBase extends LocationAbstract {
 
     @Getter
     private final String name;
@@ -36,7 +36,7 @@ public class TownBasee extends LocationAbstract {
      * @param region      The region to which the town belongs.
      * @param entryPoint  The entry point of the town.
      */
-    public TownBasee(String name, String description, RegionBase region, PlaceBase entryPoint) {
+    public TownBase(String name, String description, RegionBase region, PlaceBase entryPoint) {
         this.name = name;
         this.description = description;
         this.region = region;

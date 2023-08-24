@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.id.uuid.UuidGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
@@ -13,8 +13,8 @@ import java.util.UUID;
 public class AdministratorEntity {
     @Id
     @Getter
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", type = UuidGenerator.class)
+    @GeneratedValue
+    @UuidGenerator
     private UUID id;
 
     @Getter

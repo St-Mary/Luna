@@ -2,13 +2,13 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import me.aikoo.StMary.core.JSONFileReader;
-import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
+import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.abstracts.LocationAbstract;
 import me.aikoo.StMary.core.bases.JourneyBase;
 import me.aikoo.StMary.core.bases.PlaceBase;
 import me.aikoo.StMary.core.bases.RegionBase;
-import me.aikoo.StMary.core.bases.TownBasee;
+import me.aikoo.StMary.core.bases.TownBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  */
 public class LocationManager {
 
-    private final ArrayList<TownBasee> towns = new ArrayList<>();
+    private final ArrayList<TownBase> towns = new ArrayList<>();
     private final StMaryClient stMaryClient;
     private final ArrayList<PlaceBase> places = new ArrayList<>();
     private final ArrayList<JsonObject> placesObject = new ArrayList<>();
@@ -60,7 +60,7 @@ public class LocationManager {
      * @param name The name of the town to retrieve.
      * @return The town object or null if not found.
      */
-    public TownBasee getTown(String name) {
+    public TownBase getTown(String name) {
         return this.towns.stream().filter(town -> town.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
@@ -90,7 +90,7 @@ public class LocationManager {
      * @return A map of regions with their names as keys and corresponding region objects as values.
      */
     private HashMap<String, RegionBase> loadRegions() {
-        ArrayList<JsonObject> regions = JSONFileReader.readAllFilesFrom("places", "regions");
+        ArrayList<JsonObject> regions = JSONFileReaderUtils.readAllFilesFrom("places", "regions");
         HashMap<String, RegionBase> regionHashMap = new HashMap<>();
 
         for (JsonObject regionObject : regions) {
@@ -140,7 +140,7 @@ public class LocationManager {
             PlaceBase entryPoint = new PlaceBase(entryPointObject.get("name").getAsString(), entryPointObject.get("description").getAsString(), region);
 
             // Create the town object
-            TownBasee town = new TownBasee(townObject.get("name").getAsString(), townObject.get("description").getAsString(), region, entryPoint);
+            TownBase town = new TownBase(townObject.get("name").getAsString(), townObject.get("description").getAsString(), region, entryPoint);
 
             // Load places for the town
             loadPlaces(town, townObject);
@@ -168,15 +168,15 @@ public class LocationManager {
             }
 
             // Create the place object
-            RegionBase region = (location instanceof RegionBase) ? (RegionBase) location : ((TownBasee) location).getRegion();
+            RegionBase region = (location instanceof RegionBase) ? (RegionBase) location : ((TownBase) location).getRegion();
             PlaceBase p = new PlaceBase(placeObject.get("name").getAsString(), placeObject.get("description").getAsString(), region);
 
             // Add the place to the region or town
             if (location instanceof RegionBase) {
                 ((RegionBase) location).addPlace(p);
             } else {
-                ((TownBasee) location).addPlace(p);
-                p.setTown((TownBasee) location);
+                ((TownBase) location).addPlace(p);
+                p.setTown((TownBase) location);
             }
 
             this.places.add(p);
@@ -305,10 +305,10 @@ public class LocationManager {
      */
     private void load() {
         // Load JSON objects of places from JSON files
-        this.placesObject.addAll(JSONFileReader.readAllFilesFrom("places", "places"));
+        this.placesObject.addAll(JSONFileReaderUtils.readAllFilesFrom("places", "places"));
 
         // Load JSON objects of towns from JSON files
-        this.townsObjects.addAll(JSONFileReader.readAllFilesFrom("places", "towns"));
+        this.townsObjects.addAll(JSONFileReaderUtils.readAllFilesFrom("places", "towns"));
 
         // Load regions
         this.regions = this.loadRegions();

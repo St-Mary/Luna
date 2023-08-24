@@ -1,4 +1,4 @@
-package me.aikoo.StMary.core;
+package me.aikoo.StMary.core.bot;
 
 import lombok.Getter;
 import me.aikoo.StMary.core.constants.BotConfigConstant;

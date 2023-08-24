@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public class BotConfigConstant {
-    public static final Integer CREATION_TIME_WEEK_LIMIT = 1; // The number of weeks that a Discord account must be old to be able to create a character.
     private static final Dotenv dotenv = Dotenv.load();
     private static final Logger LOGGER = LoggerFactory.getLogger(BotConfigConstant.class);
 

@@ -2,7 +2,7 @@ package me.aikoo.StMary.core.abstracts;
 
 import me.aikoo.StMary.core.bases.PlaceBase;
 import me.aikoo.StMary.core.bases.RegionBase;
-import me.aikoo.StMary.core.bases.TownBasee;
+import me.aikoo.StMary.core.bases.TownBase;
 
 /**
  * Represents a location in the game world.
@@ -34,7 +34,7 @@ public abstract class LocationAbstract {
         String type = "";
         if (this instanceof RegionBase) {
             type = "Région";
-        } else if (this instanceof TownBasee) {
+        } else if (this instanceof TownBase) {
             type = "Ville";
         } else if (this instanceof PlaceBase) {
             type = "Lieu";

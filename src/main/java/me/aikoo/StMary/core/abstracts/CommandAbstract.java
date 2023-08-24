@@ -2,7 +2,7 @@ package me.aikoo.StMary.core.abstracts;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.aikoo.StMary.core.StMaryClient;
+import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.constants.BotConfigConstant;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

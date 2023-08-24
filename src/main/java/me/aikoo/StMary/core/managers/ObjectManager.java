@@ -1,7 +1,7 @@
 package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
-import me.aikoo.StMary.core.JSONFileReader;
+import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 import me.aikoo.StMary.core.bases.ObjectBase;
 import me.aikoo.StMary.core.enums.ObjectType;
 
@@ -53,7 +53,7 @@ public class ObjectManager {
      */
     private void load() {
         // Load objects from JSON files
-        ArrayList<JsonObject> objects = JSONFileReader.readAllFilesFrom("objects");
+        ArrayList<JsonObject> objects = JSONFileReaderUtils.readAllFilesFrom("objects");
 
         // Iterate through each JSON object and add them to the manager
         for (JsonObject object : objects) {

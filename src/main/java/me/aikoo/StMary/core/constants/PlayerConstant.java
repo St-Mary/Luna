@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 public class PlayerConstant {
+    public static final Integer CREATION_TIME_WEEK_LIMIT = 1; // The number of weeks that a Discord account must be old to be able to create a character.
     public static final Integer LEVEL = 1;
     public static final BigInteger EXPERIENCE = BigInteger.valueOf(0);
     public static final BigInteger MONEY = BigInteger.valueOf(0);

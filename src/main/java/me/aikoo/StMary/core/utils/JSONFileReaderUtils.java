@@ -1,4 +1,4 @@
-package me.aikoo.StMary.core;
+package me.aikoo.StMary.core.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * This class provides utility methods for reading JSON files.
  */
-public class JSONFileReader {
+public class JSONFileReaderUtils {
 
     /**
      * Reads all JSON files from the specified directory and subdirectory.

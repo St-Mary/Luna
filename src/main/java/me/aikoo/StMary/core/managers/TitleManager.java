@@ -2,7 +2,7 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
 import lombok.Getter;
-import me.aikoo.StMary.core.JSONFileReader;
+import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 import me.aikoo.StMary.core.bases.TitleBase;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class TitleManager {
      * Load titles from JSON files and add them to the list of titles.
      */
     public void load() {
-        ArrayList<JsonObject> jsonObjects = JSONFileReader.readAllFilesFrom("titles");
+        ArrayList<JsonObject> jsonObjects = JSONFileReaderUtils.readAllFilesFrom("titles");
 
         for (JsonObject jsonObject : jsonObjects) {
             String name = jsonObject.get("name").getAsString();

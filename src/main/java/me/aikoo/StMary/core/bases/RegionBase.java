@@ -20,7 +20,7 @@ public class RegionBase extends LocationAbstract {
     private final String icon = "\uD83C\uDF0D "; // A region icon, you can customize this.
 
     @Getter
-    private final ArrayList<TownBasee> towns = new ArrayList<>();
+    private final ArrayList<TownBase> towns = new ArrayList<>();
 
     @Getter
     private final ArrayList<PlaceBase> places = new ArrayList<>();
@@ -41,7 +41,7 @@ public class RegionBase extends LocationAbstract {
      *
      * @param town The town to add to the region.
      */
-    public void addTown(TownBasee town) {
+    public void addTown(TownBase town) {
         this.towns.add(town);
     }
 
