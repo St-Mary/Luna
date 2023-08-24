@@ -1,15 +1,20 @@
 {
   "id": "talon",
-  "name":  "Talon",
-  "description": "Tel un joyau en bordure de l'horizon maritime, Talon, capitale de la région d'Oraland, s'étend fièrement à l'embouchure majestueuse de la rivière Lucca, où ses rues pavées rencontrent le sable doré des rivages de la mer Naia. Baignée dans la richesse des eaux, la ville respire au rythme des marées, son identité gravée par ses pêcheurs et marins intrépides.\n\nLes terres environnantes abritent des champs verdoyants et des fermes fertiles qui fournissent la cité en vivres et ressources. La brise marine, mélange subtil d'embruns et de fleurs des champs, danse dans les ruelles animées tandis que les bateaux colorés amarrés au port dévoilent les voyages tumultueux qui ont forgé le caractère des habitants.\n\nLe seigneur Gyr Talon, maître de la ville et chef de la prestigieuse famille Talon, veille sur Talon avec autorité et bienveillance. La renommée de la famille réside dans sa longue histoire de marins et de commerçants prospères, une histoire qui s'entremêle avec celle de la ville.\n\nTalon, aux confins des terres et des mers, est une cité où les liens entre la mer et la terre sont tissés dans chaque pierre et chaque vague. Tout aventurier est invité à explorer son histoire complexe et à naviguer entre les courants de richesse et de rivalités qui l'animent.",
+  "name":  {
+    "en": "Talon",
+    "fr": "Talon"
+  },
+  "description": {
+    "fr": "Tel un joyau en bordure de l'horizon maritime, Talon, capitale de la région d'Oraland, s'étend fièrement à l'embouchure majestueuse de la rivière Lucca, où ses rues pavées rencontrent le sable doré des rivages de la mer Naia. Baignée dans la richesse des eaux, la ville respire au rythme des marées, son identité gravée par ses pêcheurs et marins intrépides.\n\nLes terres environnantes abritent des champs verdoyants et des fermes fertiles qui fournissent la cité en vivres et ressources. La brise marine, mélange subtil d'embruns et de fleurs des champs, danse dans les ruelles animées tandis que les bateaux colorés amarrés au port dévoilent les voyages tumultueux qui ont forgé le caractère des habitants.\n\nLe seigneur Gyr Talon, maître de la ville et chef de la prestigieuse famille Talon, veille sur Talon avec autorité et bienveillance. La renommée de la famille réside dans sa longue histoire de marins et de commerçants prospères, une histoire qui s'entremêle avec celle de la ville.\n\nTalon, aux confins des terres et des mers, est une cité où les liens entre la mer et la terre sont tissés dans chaque pierre et chaque vague. Tout aventurier est invité à explorer son histoire complexe et à naviguer entre les courants de richesse et de rivalités qui l'animent.",
+    "en": "Like a jewel on the edge of the maritime horizon, Talon, capital of the Oraland region, stretches proudly at the majestic mouth of the Lucca River, where its cobbled streets meet the golden sands of the shores of the Naia Sea. Bathed in the richness of the waters, the city breathes to the rhythm of the tides, its identity engraved by its intrepid fishermen and sailors.\n\nThe surrounding land is home to verdant fields and fertile farms that provide the city with food and resources. sea breeze, a subtle mix of sea spray and wild flowers, dances in the lively streets while the colorful boats moored in the port reveal the tumultuous journeys that have forged the character of the inhabitants.\n\nLord Gyr Talon, master of the city and head of the prestigious Talon family, watches over Talon with authority and benevolence.The family's fame lies in its long history as successful sailors and traders, a history that intertwines with that of the city.\n\nTalon , at the borders of land and sea, is a city where the links between sea and land are woven into every stone and every wave. All adventurers are invited to explore its complex history and to navigate between the currents of wealth and rivalries that drive it."
+  },
   "region": "Oraland",
   "places": [
-    "Place du Griffon Marin",
-    "Taverne des Vagues Brillantes",
-    "Entrée de la Cité",
-    "Promenade de la Mer Naia",
-    "Temple Flottant",
-    "Château Glacé"
+    "talon_01",
+    "talon_02",
+    "talon_03",
+    "talon_04",
+    "talon_05"
   ],
-  "entryPoint": "Entrée de la Cité"
+  "entryPoint": "talon_01"
 }
