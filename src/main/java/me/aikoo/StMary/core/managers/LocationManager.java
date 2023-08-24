@@ -126,14 +126,14 @@ public class LocationManager {
 
             if (townObject == null) {
                 LOGGER.error("Town " + townName + " not found!");
-                return;
+                System.exit(1);
             }
 
             JsonObject entryPointObject = findEntryPointObject(townObject);
 
             if (entryPointObject == null) {
                 LOGGER.error("Entry point " + townObject.get("entryPoint").getAsString() + " not found!");
-                return;
+                System.exit(1);
             }
 
             // Create the entry point object
@@ -164,7 +164,7 @@ public class LocationManager {
 
             if (placeObject == null) {
                 LOGGER.error("Place " + placeName + " not found!");
-                return;
+                System.exit(1);
             }
 
             // Create the place object
@@ -236,7 +236,7 @@ public class LocationManager {
             // Check if the current place is found
             if (placeObject == null) {
                 LOGGER.error("Place " + place.getName() + " not found!");
-                continue; // Move on to the next place
+                System.exit(1);
             }
 
             // Get the list of available movements for this place
@@ -253,7 +253,7 @@ public class LocationManager {
                 // Check if the destination of the movement is found
                 if (destination == null) {
                     LOGGER.error("Place " + moveName + " not found!");
-                    return; // Move on to the next movement
+                    System.exit(1);
                 }
 
                 // Add the movement to the current place

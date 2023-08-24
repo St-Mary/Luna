@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import lombok.Getter;
 import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 import me.aikoo.StMary.core.bot.StMaryClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import java.util.regex.Pattern;
  */
 public class TextManager {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(TextManager.class);
     private final HashMap<String, JsonObject> texts = new HashMap<>();
     private final StMaryClient stMaryClient;
 
@@ -66,6 +69,10 @@ public class TextManager {
 
         for (JsonObject file : files) {
             for (String key : file.keySet()) {
+                if (file.get(key).getAsJsonObject().get("text") == null) {
+                    LOGGER.error("JSON Object {} is invalid. Please check the syntax.", key);
+                    System.exit(1);
+                }
                 this.texts.put(key, file.get(key).getAsJsonObject());
             }
         }
