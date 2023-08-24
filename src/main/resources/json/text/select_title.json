@@ -1,18 +1,42 @@
 {
   "select_title_success": {
-    "title": "Sélection du Titre Actuel",
-    "text": "Votre nouveau titre actuel est: **{{title}}** !"
+    "fr": {
+      "title": "Sélection du Titre Actuel",
+      "text": "Votre nouveau titre actuel est: **{{title}}** !"
+    },
+    "en": {
+      "title": "Current Title Selection",
+      "text": "Your new current title is: **{{title}}** !"
+    }
   },
   "select_title_error_title_not_exist": {
-    "title": "Sélection du Titre Actuel",
-    "text": "Cet Titre n'existe pas."
+    "fr": {
+      "title": "Sélection du Titre Actuel",
+      "text": "Cet Titre n'existe pas."
+    },
+    "en": {
+      "title": "Current Title Selection",
+      "text": "This Title doesn't exist."
+    }
   },
   "select_title_error_title_not_posseded": {
-    "title": "Sélection du Titre Actuel",
-    "text": "Vous ne possédez pas ce Titre."
+    "fr": {
+      "title": "Sélection du Titre Actuel",
+      "text": "Vous ne possédez pas ce Titre."
+    },
+    "en": {
+      "title": "Current Title Selection",
+      "text": "You don't own this Title."
+    }
   },
   "select_title_error_title_already_active": {
-    "title": "Sélection du Titre Actuel",
-    "text": "Ce titre est déjà votre Titre Actuel."
+    "fr": {
+      "title": "Sélection du Titre Actuel",
+      "text": "Ce titre est déjà votre Titre Actuel."
+    },
+    "en": {
+      "title": "Current Title Selection",
+      "text": "This title is already your Current Title."
+    }
   }
 }

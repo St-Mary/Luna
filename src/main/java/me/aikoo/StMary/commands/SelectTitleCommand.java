@@ -50,18 +50,18 @@ public class SelectTitleCommand extends CommandAbstract {
 
         // Check if the selected title exists
         if (stMaryClient.getTitleManager().getTitle(titleName) == null) {
-            String errorText = stMaryClient.getTextManager().createText("select_title_error_title_not_exist").buildError();
+            String errorText = stMaryClient.getTextManager().createText("select_title_error_title_not_exist", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return;
         }
 
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
 
-        TextManager.Text text = stMaryClient.getTextManager().createText("select_title_success");
+        TextManager.Text text = stMaryClient.getTextManager().createText("select_title_success", language);
         text.replace("title", stMaryClient.getTitleManager().getTitle(titleName).format());
 
         // Perform verifications before update the current title
-        if (!verifications(player, titleName, event)) return;
+        if (!verifications(player, titleName, event, language)) return;
 
         player.setCurrentTitle(titleName);
         stMaryClient.getDatabaseManager().update(player);
@@ -76,20 +76,20 @@ public class SelectTitleCommand extends CommandAbstract {
      * @param event     The SlashCommandInteractionEvent.
      * @return True if verifications pass, false otherwise.
      */
-    public boolean verifications(PlayerEntity player, String titleName, SlashCommandInteractionEvent event) {
+    public boolean verifications(PlayerEntity player, String titleName, SlashCommandInteractionEvent event, String language) {
         if (player == null) return false;
         HashMap<String, TitleBase> titles = player.getTitles(stMaryClient);
 
         // Check if the player owns the selected title
         if (!titles.containsKey(titleName)) {
-            String errorText = this.stMaryClient.getTextManager().createText("select_title_error_title_not_posseded").buildError();
+            String errorText = this.stMaryClient.getTextManager().createText("select_title_error_title_not_posseded", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return false;
         }
 
         // Check if the selected title is already the current title
         if (player.getCurrentTitle(stMaryClient).getName().equals(titleName)) {
-            String errorText = this.stMaryClient.getTextManager().createText("select_title_error_title_already_active").buildError();
+            String errorText = this.stMaryClient.getTextManager().createText("select_title_error_title_already_active", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return false;
         }

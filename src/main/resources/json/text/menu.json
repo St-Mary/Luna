@@ -1,42 +1,108 @@
 {
   "menu_no_account": {
-    "title": "Menu Joueur",
-    "text": "Cet utilisateur ne possède pas de compte aventure !"
+    "fr": {
+      "title": "Menu Joueur",
+      "text": "Cet utilisateur ne possède pas de compte aventure !"
+    },
+    "en": {
+      "title": "Player Menu",
+      "text": "This user doesn't have an adventure account !"
+    }
   },
   "menu_no_town": {
-    "text": "Aucune Cité"
+    "fr": {
+      "text": "Aucune Cité"
+    },
+    "en": {
+      "text": "No Town"
+    }
   },
   "menu_location_1": {
-    "text": "**Localisation :** `{{town}}` - `{{place}}`"
+    "fr": {
+      "text": "**Localisation :** `{{town}}` - `{{place}}`"
+    },
+    "en": {
+      "text": "**Location:** `{{town}}` - `{{place}}`"
+    }
   },
   "menu_location_2": {
-    "text": "**Localisation :** Voyage vers `{{destination}}`\n**Départ :** `{{departure}}`"
+    "fr": {
+      "text": "**Localisation :** Voyage vers `{{destination}}`\n**Départ :** `{{departure}}`"
+    },
+    "en": {
+      "text": "**Location:** Travel to `{{destination}}`\n**Departure :** `{{departure}}`"
+    }
   },
   "menu_player": {
-    "text": "### {{icon}} | {{name}} | Menu Joueur\n**Niveau :** `{{level}}`\n**Expérience :** `{{exp}} EXP`\n▬▬▬▬▬▬▬▬▬▬\n{{location}}\n**Région :** `{{region}}`"
+    "fr": {
+      "text": "### {{icon}} | {{name}} | Menu Joueur\n**Niveau :** `{{level}}`\n**Expérience :** `{{exp}} EXP`\n▬▬▬▬▬▬▬▬▬▬\n{{location}}\n**Région :** `{{region}}`"
+    },
+    "en": {
+      "text": "### {{icon}} | {{name}} | Player Menu\n**Level:** `{{level}}`\n**Experience:** `{{exp}} EXP`\n▬▬▬▬▬▬▬▬▬▬\n{{location}}\n**Region:** `{{region}}`"
+    }
   },
   "menu_no_magical_book": {
-    "text": "`Aucun`"
+    "fr": {
+      "text": "`Aucun`"
+    },
+    "en": {
+      "text": "`None`"
+    }
   },
   "menu_backpack": {
-    "text": "### {{icon}} | {{name}} | Sac à Dos\n**Argent :** `{{money}}`\n**Livre Magique :** {{magical_book}}\n▬▬▬▬▬▬▬▬▬▬"
+    "fr": {
+      "text": "### {{icon}} | {{name}} | Sac à Dos\n**Argent :** `{{money}}`\n**Livre Magique :** {{magical_book}}\n▬▬▬▬▬▬▬▬▬▬"
+    },
+    "en": {
+      "text": "### {{icon}} | {{name}} | Backpack\n**Money:** `{{money}}`\n**Magical Book:** {{magical_book}}\n▬▬▬▬▬▬▬▬▬▬"
+    }
   },
   "menu_titles": {
-    "text": "### {{icon}} | {{name}} | Titres\n{{titles}}▬▬▬▬▬▬▬▬▬▬\n**Nombre de Titres:** `{{nb_titles}}`"
+    "fr": {
+      "text": "### {{icon}} | {{name}} | Titres\n{{titles}}▬▬▬▬▬▬▬▬▬▬\n**Nombre de Titres:** `{{nb_titles}}`"
+    },
+    "en": {
+      "text": "### {{icon}} | {{name}} | Titles\n{{titles}}▬▬▬▬▬▬▬▬▬▬\n**Total Titles:** `{{nb_titles}}`"
+    }
   },
   "menu_titles_actual": {
-    "text": "   ⬅️ **Actuel**\n"
+    "fr": {
+      "text": "   ⬅️ **Actuel**\n"
+    },
+    "en": {
+      "text": "   ⬅️ **Actual**\n"
+    }
   },
   "menu_btn_profil": {
-    "text": "Profil"
+    "fr": {
+      "text": "Profil"
+    },
+    "en": {
+      "text": "Profile"
+    }
   },
   "menu_btn_backpack": {
-    "text": "Sac à dos"
+    "fr": {
+      "text": "Sac à dos"
+    },
+    "en": {
+      "text": "Backpack"
+    }
   },
   "menu_btn_titles": {
-    "text": "Titres"
+    "fr": {
+      "text": "Titres"
+    },
+    "en": {
+      "text": "Titles"
+    }
   },
   "menu_btn_close": {
-    "text": "Fermer"
+    "fr": {
+      "text": "Fermer"
+    },
+    "en": {
+      "text": "Close"
+    }
   }
 }

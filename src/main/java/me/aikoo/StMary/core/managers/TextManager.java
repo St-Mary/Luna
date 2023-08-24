@@ -31,16 +31,6 @@ public class TextManager {
     }
 
     /**
-     * Get the text associated with a given id.
-     *
-     * @param id The id of the text.
-     * @return The text associated with the name, or null if it doesn't exist.
-     */
-    public String getText(String id) {
-        return (this.texts.get(id) != null) ? this.texts.get(id).get("text").getAsString() : null;
-    }
-
-    /**
      * Get the text associated with a given id and language.
      *
      * @param id The id of the text.
@@ -52,17 +42,6 @@ public class TextManager {
     }
 
     /**
-     * Get the title associated with a given id.
-     *
-     * @param id The id of the title.
-     * @return   The title associated with the name, or null if it doesn't exist.
-     */
-    @Deprecated
-    public String getTitle(String id) {
-        return (this.texts.get(id) != null) ? this.texts.get(id).get("title").getAsString() : null;
-    }
-
-    /**
      * Get the title associated with a given id and language.
      * @param id        The id of the title.
      * @param language  The language of the title.
@@ -70,16 +49,6 @@ public class TextManager {
      */
     public String getTitle(String id, String language) {
         return (this.texts.get(id) != null) ? this.texts.get(id).get(language).getAsJsonObject().get("title").getAsString() : null;
-    }
-
-    /**
-     * Create a new Text object with given id.
-     *
-     * @param id The id of the text.
-     * @return The created Text object.
-     */
-    public Text createText(String id) {
-        return new Text(id, "fr", this.getText(id), this.getTitle(id));
     }
 
     /**
