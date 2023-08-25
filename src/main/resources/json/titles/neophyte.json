@@ -1,5 +1,12 @@
 {
-  "name": "Néophyte",
-  "description": "Titre desservi aux nouveaux joueurs.",
+  "id": "neophyte",
+  "name": {
+    "fr": "Néophyte",
+    "en": "Neophyte"
+  },
+  "description": {
+    "fr": "Titre desservi aux nouveaux joueurs.",
+    "en": "Title given to new players."
+  },
   "icon": "👶"
 }

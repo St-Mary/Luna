@@ -46,10 +46,10 @@ public class SelectTitleCommand extends CommandAbstract {
      */
     @Override
     public void execute(SlashCommandInteractionEvent event, String language) {
-        String titleName = Objects.requireNonNull(event.getOption("title")).getAsString();
+        String titleId = Objects.requireNonNull(event.getOption("title")).getAsString();
 
         // Check if the selected title exists
-        if (stMaryClient.getTitleManager().getTitle(titleName) == null) {
+        if (stMaryClient.getTitleManager().getTitle(titleId) == null) {
             String errorText = stMaryClient.getTextManager().createText("select_title_error_title_not_exist", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return;
@@ -58,12 +58,12 @@ public class SelectTitleCommand extends CommandAbstract {
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
 
         TextManager.Text text = stMaryClient.getTextManager().createText("select_title_success", language);
-        text.replace("title", stMaryClient.getTitleManager().getTitle(titleName).format());
+        text.replace("title", stMaryClient.getTitleManager().getTitle(titleId).format(language));
 
         // Perform verifications before update the current title
-        if (!verifications(player, titleName, event, language)) return;
+        if (!verifications(player, titleId, event, language)) return;
 
-        player.setCurrentTitle(titleName);
+        player.setCurrentTitle(titleId);
         stMaryClient.getDatabaseManager().update(player);
         event.reply(text.build()).queue();
     }
@@ -72,23 +72,23 @@ public class SelectTitleCommand extends CommandAbstract {
      * Perform verifications before updating the current title.
      *
      * @param player    The player entity.
-     * @param titleName The name of the selected title.
+     * @param titleId The name of the selected title.
      * @param event     The SlashCommandInteractionEvent.
      * @return True if verifications pass, false otherwise.
      */
-    public boolean verifications(PlayerEntity player, String titleName, SlashCommandInteractionEvent event, String language) {
+    public boolean verifications(PlayerEntity player, String titleId, SlashCommandInteractionEvent event, String language) {
         if (player == null) return false;
         HashMap<String, TitleBase> titles = player.getTitles(stMaryClient);
 
         // Check if the player owns the selected title
-        if (!titles.containsKey(titleName)) {
+        if (!titles.containsKey(titleId)) {
             String errorText = this.stMaryClient.getTextManager().createText("select_title_error_title_not_posseded", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return false;
         }
 
         // Check if the selected title is already the current title
-        if (player.getCurrentTitle(stMaryClient).getName().equals(titleName)) {
+        if (player.getCurrentTitle(stMaryClient).getId().equals(titleId)) {
             String errorText = this.stMaryClient.getTextManager().createText("select_title_error_title_already_active", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return false;
@@ -112,7 +112,7 @@ public class SelectTitleCommand extends CommandAbstract {
 
             // Add title choices
             for (TitleBase title : titles) {
-                choices.add(new Command.Choice(title.format(), title.getName()));
+                choices.add(new Command.Choice(title.format(language), title.getId()));
 
                 if (choices.size() == 24) {
                     choices.add(new Command.Choice("Autre", "Autre"));

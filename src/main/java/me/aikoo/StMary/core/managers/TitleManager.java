@@ -31,21 +31,43 @@ public class TitleManager {
         ArrayList<JsonObject> jsonObjects = JSONFileReaderUtils.readAllFilesFrom("titles");
 
         for (JsonObject jsonObject : jsonObjects) {
-            String name = jsonObject.get("name").getAsString();
-            String description = jsonObject.get("description").getAsString();
+            String id = jsonObject.get("id").getAsString();
             String icon = jsonObject.get("icon").getAsString();
 
-            this.titles.put(name, new TitleBase(name, description, icon));
+            TitleBase title = new TitleBase(id, icon);
+            title.setName("en", jsonObject.get("name").getAsJsonObject().get("en").getAsString());
+            title.setDescription("en", jsonObject.get("description").getAsJsonObject().get("en").getAsString());
+            title.setName("fr", jsonObject.get("name").getAsJsonObject().get("fr").getAsString());
+            title.setDescription("fr", jsonObject.get("description").getAsJsonObject().get("fr").getAsString());
+
+            this.titles.put(id, title);
         }
+    }
+
+    /**
+     * Get a title by its id.
+     *
+     * @param id The id of the title to retrieve.
+     * @return The title corresponding to the id, or null if it doesn't exist.
+     */
+    public TitleBase getTitle(String id) {
+        return this.titles.get(id);
     }
 
     /**
      * Get a title by its name.
      *
      * @param name The name of the title to retrieve.
+     * @param language The language to get the title in.
      * @return The title corresponding to the name, or null if it doesn't exist.
      */
-    public TitleBase getTitle(String name) {
-        return this.titles.get(name);
+    public TitleBase getTitleByName(String name, String language) {
+        for (TitleBase title : this.titles.values()) {
+            if (title.getName(language).equalsIgnoreCase(name)) {
+                return title;
+            }
+        }
+
+        return null;
     }
 }

@@ -87,6 +87,7 @@ public class PlayerEntity {
      * @return The current title of the player.
      */
     public TitleBase getCurrentTitle(StMaryClient client) {
+        System.out.println(this.currentTitle);
         return client.getTitleManager().getTitle(this.currentTitle);
     }
 
@@ -100,7 +101,7 @@ public class PlayerEntity {
     public HashMap<String, TitleBase> getTitles(StMaryClient client) {
         HashMap<String, TitleBase> titles = new HashMap<>();
         for (TitleEntity title : this.titles) {
-            titles.put(title.getName(), client.getTitleManager().getTitle(title.getName()));
+            titles.put(title.getId(), client.getTitleManager().getTitle(title.getId()));
         }
         return titles;
     }
@@ -108,12 +109,12 @@ public class PlayerEntity {
     /**
      * Add a title to the player's collection of titles.
      *
-     * @param titleName The name of the title to add.
+     * @param titleId The id of the title to add.
      * @param client    The StMaryClient instance.
      */
-    public void addTitle(String titleName, StMaryClient client) {
+    public void addTitle(String titleId, StMaryClient client) {
         TitleEntity titleEntity = new TitleEntity();
-        titleEntity.setName(titleName);
+        titleEntity.setTitleId(titleId);
         client.getDatabaseManager().save(titleEntity);
         this.titles.add(titleEntity);
     }
@@ -136,9 +137,9 @@ public class PlayerEntity {
      */
     public void setTitles(List<String> strings, StMaryClient client) {
         ArrayList<TitleEntity> titles = new ArrayList<>();
-        for (String name : strings) {
+        for (String id : strings) {
             TitleEntity titleEntity = new TitleEntity();
-            titleEntity.setName(name);
+            titleEntity.setTitleId(id);
             titles.add(titleEntity);
             client.getDatabaseManager().save(titleEntity);
         }

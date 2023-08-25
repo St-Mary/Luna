@@ -268,8 +268,8 @@ public class MenuCommand extends CommandAbstract {
 
             StringBuilder stringBuilder = new StringBuilder();
             for (TitleBase t : titles.values()) {
-                stringBuilder.append(t.getIcon()).append(" | `").append(t.getName()).append("`");
-                if (t.getName().equals(title.getName())) {
+                stringBuilder.append(t.getIcon()).append(" | `").append(t.getName(language)).append("`");
+                if (t.getId().equals(title.getId())) {
                     stringBuilder.append(stMaryClient.getTextManager().getText("menu_titles_actual", language));
                 } else {
                     stringBuilder.append("\n");

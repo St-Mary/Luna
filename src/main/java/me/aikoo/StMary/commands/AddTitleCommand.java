@@ -20,7 +20,7 @@ public class AddTitleCommand extends CommandAbstract {
         this.setMustBeRegistered(false);
         this.setAdminCommand(true);
 
-        this.options.add(new OptionData(OptionType.STRING, "title", "The title")
+        this.options.add(new OptionData(OptionType.STRING, "title", "The title id")
                 .setRequired(true));
         this.options.add(new OptionData(OptionType.STRING, "userid", "The user to add title")
                 .setRequired(true));
@@ -29,7 +29,7 @@ public class AddTitleCommand extends CommandAbstract {
     @Override
     public void execute(SlashCommandInteractionEvent event, String language) {
         if (!event.getUser().getId().equals("985986599995187270")) return;
-        String titleName = Objects.requireNonNull(event.getOption("title")).getAsString();
+        String titleId = Objects.requireNonNull(event.getOption("title")).getAsString();
         String userId = Objects.requireNonNull(event.getOption("userid")).getAsString();
 
         if (!userId.matches("[0-9]+")) {
@@ -44,11 +44,11 @@ public class AddTitleCommand extends CommandAbstract {
             return;
         }
 
-        if (stMaryClient.getTitleManager().getTitle(titleName) == null) {
+        if (stMaryClient.getTitleManager().getTitle(titleId) == null) {
             event.reply("This title doesn't exist").queue();
             return;
         }
-        player.addTitle(titleName, stMaryClient);
+        player.addTitle(titleId, stMaryClient);
         stMaryClient.getDatabaseManager().update(player);
 
         event.reply("The title has been added to the user").queue();

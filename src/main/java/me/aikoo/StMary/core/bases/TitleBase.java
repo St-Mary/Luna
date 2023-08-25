@@ -2,16 +2,18 @@ package me.aikoo.StMary.core.bases;
 
 import lombok.Getter;
 
+import java.util.HashMap;
+
 /**
  * Represents a title that can be assigned to a player.
  */
 public class TitleBase {
 
     @Getter
-    private final String name;
+    private final String id;
 
-    @Getter
-    private final String description;
+    private final HashMap<String, String> names = new HashMap<>();
+    private final HashMap<String, String> descriptions = new HashMap<>();
 
     @Getter
     private final String icon;
@@ -19,14 +21,51 @@ public class TitleBase {
     /**
      * Creates a new Title instance with the specified name, description, and icon.
      *
-     * @param name        The name of the title.
-     * @param description A brief description of the title.
      * @param icon        An icon associated with the title.
      */
-    public TitleBase(String name, String description, String icon) {
-        this.name = name;
-        this.description = description;
+    public TitleBase(String id, String icon) {
+        this.id = id;
         this.icon = icon;
+    }
+
+    /**
+     * Get the name of the location in the specified language.
+     *
+     * @param language The language to get the name in.
+     * @return The name of the location in the specified language.
+     */
+    public String getName(String language) {
+        return names.getOrDefault(language, "No name available.");
+    }
+
+    /**
+     * Set the name of the location in the specified language.
+     *
+     * @param language The language to set the name in.
+     * @param name     The name of the location in the specified language.
+     */
+    public void setName(String language, String name) {
+        names.put(language, name);
+    }
+
+    /**
+     * Set the description of the location in the specified language.
+     *
+     * @param language    The language to set the description in.
+     * @param description The description of the location in the specified language.
+     */
+    public void setDescription(String language, String description) {
+        descriptions.put(language, description);
+    }
+
+    /**
+     * Get the description of the location in the specified language.
+     *
+     * @param language The language to get the description in.
+     * @return The description of the location in the specified language.
+     */
+    public String getDescription(String language) {
+        return descriptions.getOrDefault(language, "No description available.");
     }
 
     /**
@@ -34,7 +73,7 @@ public class TitleBase {
      *
      * @return A formatted string representation of the title.
      */
-    public String format() {
-        return this.icon + " " + this.name;
+    public String format(String language) {
+        return this.icon + " " + this.getName(language);
     }
 }

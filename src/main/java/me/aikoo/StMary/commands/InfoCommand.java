@@ -283,7 +283,7 @@ public class InfoCommand extends CommandAbstract {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (TitleBase title : titles) {
-            stringBuilder.append(String.format("%s | **%s** - `%s`", title.getIcon(), title.getName(), title.getDescription()));
+            stringBuilder.append(String.format("%s | **%s** - `%s`", title.getIcon(), title.getName(language), title.getDescription(language)));
 
             if (titles.indexOf(title) != titles.size() - 1) {
                 stringBuilder.append("\n\n");
@@ -296,17 +296,17 @@ public class InfoCommand extends CommandAbstract {
     /**
      * Generates information about a specific title.
      *
-     * @param name The name of the title.
+     * @param id The id of the title.
      * @return A formatted string with information about the title.
      */
-    private String infoOneTitle(String name, String language) {
-        TitleBase title = stMaryClient.getTitleManager().getTitle(name);
+    private String infoOneTitle(String id, String language) {
+        TitleBase title = stMaryClient.getTitleManager().getTitleByName(id, language);
 
         if (title == null) {
             return stMaryClient.getTextManager().createText("info_title_error_not_exist", language).buildError();
         }
 
-        return stMaryClient.getTextManager().createText("info_title_title", language).replace("icon", title.getIcon()).replace("name", title.getName()).replace("description", title.getDescription()).build();
+        return stMaryClient.getTextManager().createText("info_title_title", language).replace("icon", title.getIcon()).replace("name", title.getName(language)).replace("description", title.getDescription(language)).build();
     }
 
     @Override

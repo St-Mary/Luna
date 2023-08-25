@@ -1,29 +1,30 @@
 package me.aikoo.StMary.core.database;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents a title entity.
  */
 @Entity
+@Table(name = "titles")
 public class TitleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Getter
-    private String name;
+    @Setter
+    @Column(name = "title_id", nullable = false)
+    private String titleId;
 
     /**
-     * Sets the name of the title entity.
+     * Get the id of the title entity.
      *
-     * @param name The name of the title.
+     * @return The id of the title.
      */
-    public void setName(String name) {
-        this.name = name;
+    public String getId() {
+        return titleId;
     }
+
 }
