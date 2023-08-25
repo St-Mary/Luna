@@ -1,7 +1,13 @@
 {
   "id": "book_III",
-  "name": "Codex des Arcanes",
+  "name": {
+    "fr": "Codex des Arcanes",
+    "en": "Codex of Arcanes"
+  },
   "icon": "\uD83D\uDD16",
   "type": "magical_book",
-  "description": "Ce précieux codex appartenait à un mage itinérant qui a voyagé à travers des terres lointaines pour recueillir des sorts plus puissants. Il est couvert de runes mystiques."
+  "description": {
+    "fr": "Ce précieux codex appartenait à un mage itinérant qui a voyagé à travers des terres lointaines pour recueillir des sorts plus puissants. Il est couvert de runes mystiques.",
+    "en": "This precious codex belonged to a wandering mage who traveled through distant lands to collect more powerful spells. It is covered with mystical runes."
+  }
 }

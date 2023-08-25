@@ -1,7 +1,13 @@
 {
   "id": "book_IV",
-  "name": "Tome de l'Élémentaliste",
+  "name": {
+    "fr": "Tome de l'Élémentaliste",
+    "en": "Elementalist's Tome"
+  },
   "icon": "\uD83D\uDD16",
   "type": "magical_book",
-  "description": "Un tome décrivant les secrets de la manipulation des éléments. Il a été transmis de génération en génération dans une lignée d'élémentalistes."
+  "description": {
+    "fr": "Un tome décrivant les secrets de la manipulation des éléments. Il a été transmis de génération en génération dans une lignée d'élémentalistes.",
+    "en": "A tome describing the secrets of manipulating the elements. It has been passed down from generation to generation in a line of elementalists."
+  }
 }

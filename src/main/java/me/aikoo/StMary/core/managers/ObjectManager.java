@@ -38,10 +38,10 @@ public class ObjectManager {
      * @param name The name of the object to retrieve.
      * @return The object corresponding to the name or null if not found.
      */
-    public ObjectBase getObjectByName(String name) {
+    public ObjectBase getObjectByName(String name, String language) {
         name = name.toLowerCase();
         for (ObjectBase object : objects.values()) {
-            if (object.getName().toLowerCase().equalsIgnoreCase(name)) {
+            if (object.getName(language).toLowerCase().equalsIgnoreCase(name)) {
                 return object;
             }
         }
@@ -58,12 +58,16 @@ public class ObjectManager {
         // Iterate through each JSON object and add them to the manager
         for (JsonObject object : objects) {
             String id = object.get("id").getAsString();
-            String name = object.get("name").getAsString();
             String icon = object.get("icon").getAsString();
             ObjectType type = ObjectType.valueOf(object.get("type").getAsString().toUpperCase());
-            String description = object.get("description").getAsString();
 
-            this.objects.put(id, new ObjectBase(id, name, icon, type, description));
+            ObjectBase objectBase = new ObjectBase(id, icon, type);
+            objectBase.setName("en", object.get("name").getAsJsonObject().get("en").getAsString());
+            objectBase.setDescription("en", object.get("description").getAsJsonObject().get("en").getAsString());
+            objectBase.setName("fr", object.get("name").getAsJsonObject().get("fr").getAsString());
+            objectBase.setDescription("fr", object.get("description").getAsJsonObject().get("fr").getAsString());
+
+            this.objects.put(id, objectBase);
         }
     }
 }

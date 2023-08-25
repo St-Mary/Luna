@@ -212,7 +212,7 @@ public class InfoCommand extends CommandAbstract {
             return;
         }
 
-        ObjectBase object = stMaryClient.getObjectManager().getObjectByName(name);
+        ObjectBase object = stMaryClient.getObjectManager().getObjectByName(name, language);
 
         if (object == null) {
             String error = stMaryClient.getTextManager().createText("info_object_error_not_found", language).buildError();
@@ -222,9 +222,9 @@ public class InfoCommand extends CommandAbstract {
 
         String text = stMaryClient.getTextManager().createText("info_object_description", language)
                 .replace("icon", object.getIcon())
-                .replace("name", object.getName())
-                .replace("description", object.getDescription())
-                .replace("type", object.getType().getId()).build();
+                .replace("name", object.getName(language))
+                .replace("description", object.getDescription(language))
+                .replace("type", object.getType().getName(language)).build();
 
         event.reply(text).queue();
     }

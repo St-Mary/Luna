@@ -1,7 +1,13 @@
 {
   "id": "book_II",
-  "name": "Grimoire de l'Initié",
+  "name": {
+    "fr": "Grimoire de l'Initié",
+    "en": "Initiate's Grimoire"
+  },
   "icon": "\uD83D\uDD16",
   "type": "magical_book",
-  "description": "Un grimoire aux pages jaunies qui appartint à un étudiant passionné. Il contient des sorts de base, appris lors de sa première année à l'académie de magie."
+  "description": {
+    "fr": "Un grimoire aux pages jaunies qui appartint à un étudiant passionné. Il contient des sorts de base, appris lors de sa première année à l'académie de magie.",
+    "en": "A grimoire with yellowed pages that belonged to a passionate student. It contains basic spells, learned during his first year at the magic academy."
+  }
 }

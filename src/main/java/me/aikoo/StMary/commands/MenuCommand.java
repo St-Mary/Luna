@@ -221,7 +221,7 @@ public class MenuCommand extends CommandAbstract {
             TitleBase title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
             ObjectBase magicalBook = player.getMagicalBook(stMaryClient);
-            String magicalBookName = (magicalBook != null) ? "%s `%s`".formatted(magicalBook.getIcon(), magicalBook.getName()) : stMaryClient.getTextManager().getText("menu_no_magical_book", language);
+            String magicalBookName = (magicalBook != null) ? "%s `%s`".formatted(magicalBook.getIcon(), magicalBook.getName(language)) : stMaryClient.getTextManager().getText("menu_no_magical_book", language);
 
             // Generate the inventory text
             String text = stMaryClient.getTextManager().getText("menu_backpack", language)
