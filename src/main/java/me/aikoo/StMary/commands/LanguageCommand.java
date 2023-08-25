@@ -33,6 +33,12 @@ public class LanguageCommand extends CommandAbstract {
         );
     }
 
+    /**
+     * Execute the command
+     *
+     * @param event    The event
+     * @param language The language of the user
+     */
     @Override
     public void execute(SlashCommandInteractionEvent event, String language) {
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
@@ -54,6 +60,12 @@ public class LanguageCommand extends CommandAbstract {
         event.reply(stMaryClient.getTextManager().createText("language_cmd_success", newLanguage).build()).queue();
     }
 
+    /**
+     * Auto complete the command
+     *
+     * @param event    The event
+     * @param language The language of the user
+     */
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
 
