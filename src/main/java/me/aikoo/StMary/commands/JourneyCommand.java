@@ -36,10 +36,10 @@ public class JourneyCommand extends CommandAbstract {
         super(stMaryClient);
 
         this.name = "journey";
-        this.description = "\uD83D\uDDFA\uFE0F Voyager vers une destination.";
+        this.description = "\uD83D\uDDFA\uFE0F Travel to a destination.";
         this.cooldown = 5000L;
 
-        this.options.add(new OptionData(OptionType.STRING, "destination", "La destination où aller").setAutoComplete(true).setRequired(true));
+        this.options.add(new OptionData(OptionType.STRING, "destination", "The destination where to go").setAutoComplete(true).setRequired(true));
     }
 
     /**

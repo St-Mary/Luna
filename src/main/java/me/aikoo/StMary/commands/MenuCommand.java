@@ -39,11 +39,11 @@ public class MenuCommand extends CommandAbstract {
         super(stMaryClient);
 
         this.name = "menu";
-        this.description = "\uD83C\uDF32 Menu Principal";
+        this.description = "\uD83C\uDF32 Principal menu";
         this.cooldown = 10000L;
 
         // Define the command options
-        this.options.add(new OptionData(OptionType.USER, "user", "L'utilisateur dont voir le menu"));
+        this.options.add(new OptionData(OptionType.USER, "user", "The user to display the menu from."));
     }
 
     /**

@@ -13,7 +13,7 @@ public class RemoveAdminCommand extends CommandAbstract {
     public RemoveAdminCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
-        this.name = "adminremoveadmin";
+        this.name = "removeadmin";
         this.description = "Remove an admin";
         this.cooldown = 10000L;
         this.setAdminCommand(true);

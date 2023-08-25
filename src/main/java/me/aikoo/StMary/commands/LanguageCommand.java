@@ -10,6 +10,9 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
+import java.util.Objects;
+import java.util.ResourceBundle;
+
 public class LanguageCommand extends CommandAbstract {
     /**
      * Constructor for the AbstractCommand class
@@ -20,14 +23,13 @@ public class LanguageCommand extends CommandAbstract {
         super(stMaryClient);
 
         this.name = "language";
-        this.description = "Change the language of the bot";
+        this.description = "\uD83D\uDDE3\uFE0F Change the bot language";
         this.cooldown = 10000L;
 
         Command.Choice fr = new Command.Choice("\uD83C\uDDEB\uD83C\uDDF7 Français", "fr");
         Command.Choice en = new Command.Choice("\uD83C\uDDEC\uD83C\uDDE7 English", "en");
 
-        this.options.add(new OptionData(OptionType.STRING, "language", stMaryClient.getTextManager().getText("language_cmd_desc", "en"))
-                .setDescriptionLocalization(DiscordLocale.FRENCH, stMaryClient.getTextManager().getText("language_cmd_desc", "fr"))
+        this.options.add(new OptionData(OptionType.STRING, "language", "The new language")
                 .addChoices(fr, en)
                 .setRequired(true)
         );
@@ -42,7 +44,7 @@ public class LanguageCommand extends CommandAbstract {
     @Override
     public void execute(SlashCommandInteractionEvent event, String language) {
         PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
-        String newLanguage = event.getOption("language").getAsString();
+        String newLanguage = Objects.requireNonNull(event.getOption("language")).getAsString();
 
         if (player == null) {
             event.reply(stMaryClient.getTextManager().createText("language_cmd_error_not_started", language).buildError()).setEphemeral(true).queue();

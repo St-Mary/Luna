@@ -20,7 +20,7 @@ public class EndJourneyCommand extends CommandAbstract {
         super(stMaryClient);
 
         this.name = "endjourney";
-        this.description = "\uD83D\uDDFA\uFE0F Arriver à destination.";
+        this.description = "\uD83D\uDDFA\uFE0F Finish your journey and arrive at the destination.";
         this.cooldown = 15000L;
     }
 

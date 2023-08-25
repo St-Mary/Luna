@@ -30,11 +30,11 @@ public class SelectTitleCommand extends CommandAbstract {
         super(stMaryClient);
 
         this.name = "selecttitle";
-        this.description = "\uD83C\uDFC5 Sélectionnez votre titre actuel à afficher.";
+        this.description = "\uD83C\uDF96\uFE0F Select your current title to show";
         this.cooldown = 15000L;
 
         // Define the command options
-        this.options.add(new OptionData(OptionType.STRING, "title", "Le titre à afficher.")
+        this.options.add(new OptionData(OptionType.STRING, "title", "The title to show")
                 .setAutoComplete(true)
                 .setRequired(true));
     }

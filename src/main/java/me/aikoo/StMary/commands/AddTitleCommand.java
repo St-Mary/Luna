@@ -14,15 +14,15 @@ public class AddTitleCommand extends CommandAbstract {
     public AddTitleCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
-        this.name = "adminaddtitle";
+        this.name = "addtitle";
         this.description = "Add a title to a user";
         this.cooldown = 10000L;
         this.setMustBeRegistered(false);
         this.setAdminCommand(true);
 
-        this.options.add(new OptionData(OptionType.STRING, "title", "Add a title to a user")
+        this.options.add(new OptionData(OptionType.STRING, "title", "The title")
                 .setRequired(true));
-        this.options.add(new OptionData(OptionType.STRING, "userid", "Add a title to a user")
+        this.options.add(new OptionData(OptionType.STRING, "userid", "The user to add title")
                 .setRequired(true));
     }
 

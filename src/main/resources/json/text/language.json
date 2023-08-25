@@ -7,6 +7,14 @@
       "text": "Change the bot language"
     }
   },
+  "language_opt_desc": {
+    "fr": {
+      "text": "La langue du bot"
+    },
+    "en": {
+      "text": "The bot language"
+    }
+  },
   "language_cmd_error_not_started": {
     "fr": {
       "title": "Changement de langue",

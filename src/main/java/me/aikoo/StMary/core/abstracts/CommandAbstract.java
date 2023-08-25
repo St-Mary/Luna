@@ -12,6 +12,8 @@ import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
+import net.dv8tion.jda.api.interactions.commands.localization.LocalizationFunction;
+import net.dv8tion.jda.api.interactions.commands.localization.ResourceBundleLocalizationFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,9 +114,14 @@ public abstract class CommandAbstract {
         return cooldown;
     }
 
-    public CommandData buildCommandData() {
-        SlashCommandData data = Commands.slash(this.name, this.description);
-        if (!this.options.isEmpty()) data.addOptions(this.options);
+    public SlashCommandData buildCommandData() {
+        //
+        LocalizationFunction localizationFunction = ResourceBundleLocalizationFunction.fromBundles( "bundles/Commands", DiscordLocale.FRENCH).build();
+        SlashCommandData data = Commands.slash(this.name, this.description).setLocalizationFunction(localizationFunction);
+
+        if (!this.options.isEmpty()) {
+            data.addOptions(this.options);
+        }
         return data;
     }
 }

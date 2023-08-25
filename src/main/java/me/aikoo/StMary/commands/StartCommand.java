@@ -27,7 +27,7 @@ public class StartCommand extends CommandAbstract {
         super(stMaryClient);
 
         this.name = "start";
-        this.description = "\uD83C\uDF32 Démarrer l'aventure !";
+        this.description = "\uD83D\uDE80 Démarrer l'aventure !";
         this.cooldown = 10000L;
         this.setMustBeRegistered(false);
 

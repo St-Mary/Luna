@@ -29,7 +29,7 @@ public class InfoCommand extends CommandAbstract {
         super(stMaryClient);
 
         this.name = "info";
-        this.description = "\uD83D\uDDDE️ Obtenir des informations sur un élément du jeu.";
+        this.description = "\uD83D\uDDDE️ Get information about an in-game element.";
         this.cooldown = 3000L;
 
         Command.Choice objectChoice = new Command.Choice(stMaryClient.getTextManager().getText("info_choice_object", "en"), "object")
@@ -45,11 +45,11 @@ public class InfoCommand extends CommandAbstract {
         Command.Choice titleChoice = new Command.Choice(stMaryClient.getTextManager().getText("info_choice_title", "en"), "title")
                 .setNameLocalization(DiscordLocale.FRENCH, stMaryClient.getTextManager().getText("info_choice_title", "fr"));
 
-        this.options.add(new OptionData(OptionType.STRING, "element", "L'élément sur lequel vous souhaitez obtenir des informations.", true)
+        this.options.add(new OptionData(OptionType.STRING, "element", "The element to get informations about", true)
                 .addChoices(objectChoice, placeChoice, characterChoice, monsterChoice, questChoice, titleChoice)
         );
 
-        this.options.add(new OptionData(OptionType.STRING, "name", "Le nom de l'élément sur lequel vous souhaitez obtenir des informations.", false));
+        this.options.add(new OptionData(OptionType.STRING, "name", "The element name", false));
     }
 
     /**

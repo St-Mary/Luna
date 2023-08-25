@@ -15,13 +15,12 @@ public class AddAdminCommand extends CommandAbstract {
     public AddAdminCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
-        this.name = "adminaddadmin";
+        this.name = "addadmin";
         this.description = "Add an admin";
         this.cooldown = 10000L;
         this.setAdminCommand(true);
 
-        this.options.add(new OptionData(OptionType.USER, "user", "The new administrator")
-                .setRequired(true));
+        this.options.add(new OptionData(OptionType.USER, "user", "The new administrator").setRequired(true));
     }
 
     @Override
