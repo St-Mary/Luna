@@ -115,7 +115,6 @@ public abstract class CommandAbstract {
     }
 
     public SlashCommandData buildCommandData() {
-        //
         LocalizationFunction localizationFunction = ResourceBundleLocalizationFunction.fromBundles( "bundles/Commands", DiscordLocale.FRENCH).build();
         SlashCommandData data = Commands.slash(this.name, this.description).setLocalizationFunction(localizationFunction);
 
