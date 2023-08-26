@@ -28,5 +28,15 @@
       "title": "Command execution",
       "text": "You must have an adventure account to execute this command !"
     }
+  },
+  "command_error_button_only_author": {
+    "fr": {
+      "title": "Exécution du bouton",
+      "text": "Vous devez être l'auteur du message pour cliquer sur ce bouton !"
+    },
+    "en": {
+      "title": "Button execution",
+      "text": "You must be the author of the message to click on this button!"
+    }
   }
 }

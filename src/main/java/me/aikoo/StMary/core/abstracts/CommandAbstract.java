@@ -8,7 +8,6 @@ import me.aikoo.StMary.core.database.PlayerEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
@@ -115,7 +114,7 @@ public abstract class CommandAbstract {
     }
 
     public SlashCommandData buildCommandData() {
-        LocalizationFunction localizationFunction = ResourceBundleLocalizationFunction.fromBundles( "bundles/Commands", DiscordLocale.FRENCH).build();
+        LocalizationFunction localizationFunction = ResourceBundleLocalizationFunction.fromBundles("bundles/Commands", DiscordLocale.FRENCH).build();
         SlashCommandData data = Commands.slash(this.name, this.description).setLocalizationFunction(localizationFunction);
 
         if (!this.options.isEmpty()) {

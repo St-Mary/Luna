@@ -5,13 +5,11 @@ import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.database.PlayerEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class LanguageCommand extends CommandAbstract {
     /**

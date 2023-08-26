@@ -21,7 +21,7 @@ public class TitleBase {
     /**
      * Creates a new Title instance with the specified name, description, and icon.
      *
-     * @param icon        An icon associated with the title.
+     * @param icon An icon associated with the title.
      */
     public TitleBase(String id, String icon) {
         this.id = id;

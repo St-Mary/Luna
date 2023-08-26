@@ -33,7 +33,7 @@ public enum ObjectType {
         private final String id;
         private final HashMap<String, String> names = new HashMap<>();
 
-        public Name(String id, String ...names) {
+        public Name(String id) {
             this.id = id;
         }
 

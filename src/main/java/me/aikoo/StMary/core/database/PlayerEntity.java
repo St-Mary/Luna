@@ -87,7 +87,6 @@ public class PlayerEntity {
      * @return The current title of the player.
      */
     public TitleBase getCurrentTitle(StMaryClient client) {
-        System.out.println(this.currentTitle);
         return client.getTitleManager().getTitle(this.currentTitle);
     }
 
@@ -110,7 +109,7 @@ public class PlayerEntity {
      * Add a title to the player's collection of titles.
      *
      * @param titleId The id of the title to add.
-     * @param client    The StMaryClient instance.
+     * @param client  The StMaryClient instance.
      */
     public void addTitle(String titleId, StMaryClient client) {
         TitleEntity titleEntity = new TitleEntity();

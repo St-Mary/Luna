@@ -21,9 +21,9 @@ public class ObjectBase {
     /**
      * Creates a new Object with the specified attributes.
      *
-     * @param id          The unique identifier for the object.
-     * @param icon        The icon associated with the object.
-     * @param type        The type of the object.
+     * @param id   The unique identifier for the object.
+     * @param icon The icon associated with the object.
+     * @param type The type of the object.
      */
     public ObjectBase(String id, String icon, ObjectType type) {
         this.id = id;

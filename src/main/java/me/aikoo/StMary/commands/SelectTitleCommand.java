@@ -71,9 +71,9 @@ public class SelectTitleCommand extends CommandAbstract {
     /**
      * Perform verifications before updating the current title.
      *
-     * @param player    The player entity.
+     * @param player  The player entity.
      * @param titleId The name of the selected title.
-     * @param event     The SlashCommandInteractionEvent.
+     * @param event   The SlashCommandInteractionEvent.
      * @return True if verifications pass, false otherwise.
      */
     public boolean verifications(PlayerEntity player, String titleId, SlashCommandInteractionEvent event, String language) {

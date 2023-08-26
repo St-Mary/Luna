@@ -57,7 +57,7 @@ public class TitleManager {
     /**
      * Get a title by its name.
      *
-     * @param name The name of the title to retrieve.
+     * @param name     The name of the title to retrieve.
      * @param language The language to get the title in.
      * @return The title corresponding to the name, or null if it doesn't exist.
      */

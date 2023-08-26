@@ -104,7 +104,6 @@ public class LocationManager {
      * @param name The name of the place to retrieve.
      * @return The place object or null if not found.
      */
-    @Deprecated
     public PlaceBase getPlaceByName(String name, String language) {
         return this.places.stream().filter(place -> place.getName(language).equalsIgnoreCase(name)).findFirst().orElse(null);
     }

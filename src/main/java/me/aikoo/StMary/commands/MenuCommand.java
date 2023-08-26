@@ -186,7 +186,11 @@ public class MenuCommand extends CommandAbstract {
 
         @Override
         public void onClick(ButtonInteractionEvent event, String language) {
-            if (!event.getUser().getId().equals(id)) return;
+            if (!event.getUser().getId().equals(id)) {
+                event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
+                return;
+            }
+
             event.editMessage(profilEmbed(event.getUser().getGlobalName(), player, language)).queue();
             if (!event.getInteraction().isAcknowledged()) {
                 event.deferEdit().queue();
@@ -217,7 +221,11 @@ public class MenuCommand extends CommandAbstract {
 
         @Override
         public void onClick(ButtonInteractionEvent event, String language) {
-            if (!event.getUser().getId().equals(id)) return;
+            if (!event.getUser().getId().equals(id)) {
+                event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
+                return;
+            }
+
             TitleBase title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
             ObjectBase magicalBook = player.getMagicalBook(stMaryClient);
@@ -259,7 +267,10 @@ public class MenuCommand extends CommandAbstract {
 
         @Override
         public void onClick(ButtonInteractionEvent event, String language) {
-            if (!event.getUser().getId().equals(id)) return;
+            if (!event.getUser().getId().equals(id)) {
+                event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
+                return;
+            }
 
             TitleBase title = player.getCurrentTitle(stMaryClient);
             String icon = title.getIcon();
@@ -309,6 +320,11 @@ public class MenuCommand extends CommandAbstract {
 
         @Override
         public void onClick(ButtonInteractionEvent event, String language) {
+            if (!event.getUser().getId().equals(id)) {
+                event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
+                return;
+            }
+
             closeMenu(event.getMessage(), id);
             isClosed = true;
             if (!event.getInteraction().isAcknowledged()) {
