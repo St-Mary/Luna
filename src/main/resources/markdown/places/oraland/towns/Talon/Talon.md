@@ -8,11 +8,16 @@ Les terres environnantes abritent des champs verdoyants et des fermes fertiles q
 
 Le seigneur Gyr Talon, maître de la ville et chef de la prestigieuse famille Talon, veille sur Talon avec autorité et bienveillance. La renommée de la famille réside dans sa longue histoire de marins et de commerçants prospères, une histoire qui s'entremêle avec celle de la ville.
 
-Lieux visitables pour les joueurs :
-1. **Place du Griffon Marin** : Le cœur de la ville, où les marchands dévoilent leurs trésors venant des mers lointaines et où se croisent habitants et voyageurs.
-2. **Château Glacé** : La résidence imposante de la famille Talon, ornée d'emblèmes maritimes et renfermant des secrets familiaux profonds.
-3. **Taverne des Vagues Brillantes** : Un refuge pour les marins et aventuriers, où les histoires de mers agitées et de créatures mystérieuses sont partagées autour d'une chope.
-4. **Promenade de la Mer Naia** : Une esplanade qui longe la côte, offrant des vues spectaculaires sur la mer scintillante et permettant aux habitants de méditer face à l'horizon.
-5. **Temple Flottant** : Un sanctuaire dédié aux divinités marines, où les pêcheurs prient pour des voyages sûrs et des prises abondantes.
-
 Talon, aux confins des terres et des mers, est une cité où les liens entre la mer et la terre sont tissés dans chaque pierre et chaque vague. Les joueurs seront invités à explorer son histoire complexe et à naviguer entre les courants de richesse et de rivalités qui l'animent. 
+
+## 🏠Talon : The Beating Heart of the Tides of Naia
+
+### Description
+
+Like a jewel on the edge of the sea horizon, Talon, capital of the Oraland region, proudly extends itself at the majestic mouth of the Lucca River, where its paved streets meet the golden sand of the shores of the Naia Sea. Bathed in the wealth of the waters, the city breathes to the rhythm of the tides, its identity engraved by its intrepid fishermen and sailors.
+
+The surrounding lands are home to green fields and fertile farms that provide the city with food and resources. The sea breeze, a subtle blend of sea spray and field flowers, dances through the bustling streets as the colorful boats moored in the harbor reveal the tumultuous journeys that have shaped the character of the inhabitants.
+
+Lord Gyr Talon, master of the city and head of the prestigious Talon family, watches over Talon with authority and benevolence. The family's reputation lies in its long history of sailors and prosperous merchants, a history that is intertwined with that of the city.
+
+Talon, at the edge of land and sea, is a city where the ties between sea and land are woven into every stone and every wave. Players will be invited to explore its complex history and navigate the currents of wealth and rivalry that animate it.

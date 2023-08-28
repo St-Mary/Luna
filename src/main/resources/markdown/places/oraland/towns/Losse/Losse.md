@@ -8,10 +8,16 @@ Les rues pavées de Losse débordent d'activité, les étals colorés des pêche
 
 Parmi ces allées escarpées et les maisons aux toits de chaume, se cache une histoire particulière : celle de deux amoureux des clans rivaux, dont l'affection interdite a été le déclencheur du conflit actuel. Leurs noms sont gravés sur un vieux banc près du quai, symbole des liaisons impossibles qui persistent à Losse.
 
-Lieux visitables pour les joueurs :
-1. **Fontaine Dissy** : Le marché principal, où les pêcheurs vendent leurs prises. Le brouhaha des enchères résonne et le parfum salin embaume l'air.
-2. **Auberge de l'Écume d'Argent** : Un lieu de rencontre pour les voyageurs. Des rumeurs et des informations se partagent ici, entre deux chopes de bière.
-4. **Ruelles des Souvenirs Perdus** : Un dédale de ruelles étroites, où les habitants partagent leurs anecdotes du passé et murmurent les légendes locales.
-5. **Sanctuaire Bézieu** : Un sanctuaire dédié aux divinités de la rivière, où les pêcheurs prient pour des prises abondantes et la réconciliation des cités.
-
 À Losse, la rivière Lucca porte les reflets de la beauté et des conflits, et les joueurs devront naviguer avec sagesse dans ses eaux troubles pour trouver des solutions et éclaircir les mystères qui assombrissent son histoire.
+
+## 🏠 Losse : The River Reflections and the Forgotten Conflicts
+
+### Description
+
+Nestled on the edge of the shimmering waters of the Lucca River, the city of Losse emerges like a pearl between the tender arms of the wave. This picturesque city, once peaceful, is now the scene of a fierce commercial conflict with its neighbor Hiriel, whose waters of the Lucca are the point of delivery of the coveted wealth.
+
+The paved streets of Losse are overflowing with activity, the colorful stalls of the fishermen adorn the lively docks, each catch is a step towards survival. The inhabitants go about their tasks, while remaining on their guard against the prevailing tension. An old tale circulates: there was a time when Losse and Hiriel, united by bonds stronger than trade, exchanged their goods and feasted together. But greed has tarnished friendship, and now the water that united the two cities separates them in an incessant conflict.
+
+Among these steep alleys and thatched roof houses, there is a particular story: that of two lovers from rival clans, whose forbidden affection was the trigger for the current conflict. Their names are engraved on an old bench near the quay, a symbol of the impossible liaisons that persist in Losse.
+
+In Losse, the Lucca River bears the reflections of beauty and conflict, and players will have to navigate wisely in its troubled waters to find solutions and shed light on the mysteries that darken its history.
