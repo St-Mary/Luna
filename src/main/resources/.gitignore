@@ -1,0 +1,4 @@
+.gitattributes
+logback.xml
+bundles
+.DS_Store

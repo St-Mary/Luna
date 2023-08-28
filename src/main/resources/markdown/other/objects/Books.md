@@ -1,4 +1,4 @@
-## Livres de Magie
+## 🔥 Livres de Magie
 
 1. **Livre des Sombres Secrets (Grade I)** : Ce livre, simple et usé, renferme les premières notions de magie. Il était autrefois entre les mains d'un apprenti magicien qui découvrit son pouvoir latent dans une forêt enchantée.
 
@@ -20,7 +20,8 @@
 
 10. **La Bible de l'Archimage (Grade X)** : Le livre ultime de la magie, créer un archimage légendaire. Il contient des sorts d'une puissance incommensurable et ne peut être utilisé que par les plus sages et les plus dignes de sa grande puissance.
 
-## Magic Books
+## 🔥Magic Books
+
 1. **Book of Dark Secrets (Grade I)**: This simple and worn book holds the first notions of magic. It was once in the hands of an apprentice magician who discovered his latent power in an enchanted forest.
 
 2. **Initiate's Grimoire (Grade II)**: A grimoire with yellowed pages that belonged to a passionate student. It contains basic spells learned during his first year at the magic academy.
