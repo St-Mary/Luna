@@ -53,7 +53,7 @@ public class ObjectManager {
      */
     private void load() {
         // Load objects from JSON files
-        ArrayList<JsonObject> objects = JSONFileReaderUtils.readAllFilesFrom("objects");
+        ArrayList<JsonObject> objects = JSONFileReaderUtils.readAllFilesFrom("items");
 
         // Iterate through each JSON object and add them to the manager
         for (JsonObject object : objects) {
