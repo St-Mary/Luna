@@ -6,4 +6,4 @@
 
 ### Characters
 
-- `ID: 1` | [Marshal Thorne](../characters/Thorne_Marshal.md)
+- `ID: 1` | [Marshal Thorne](../characters/Marshal_Thorne.md)

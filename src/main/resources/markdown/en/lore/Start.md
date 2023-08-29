@@ -4,4 +4,4 @@
 
 - `Nowadays, Talon | Griffon Marin Place.` - The Gates have still not been closed. The inhabitants have become accustomed to this permanent danger of monsters roaming the lands of Oraland, but also of Deryn, and have learned for many the Art of War. The **King, Gyr Talon**, of the region of Oraland and the capital of it, **Talon**, has been working for a few years on a secret project: To dive into the Gates to understand their origin, and to close them once and for all, and forever. On the **Griffon Marin Place**, his faithful general in chief of the armies, the **Marshal Thorne**, recruits at an advantageous price soldiers, with a bold character, and nerves of steel, motivated for this dangerous expedition into the unknown, when he sees you demonstrating the sword to a child, and immediately sees your potential.
 
-`Dialogue ID 1` - [Thorne Marshal](../characters/Thorne_Marshal.md#dialog-11)
+`Dialogue ID 1` - [Marshal Thorne](../characters/Marshal_Thorne.md#dialog-11)
