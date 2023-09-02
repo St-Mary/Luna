@@ -23,7 +23,8 @@
             "name": {
               "fr": "Oui",
               "en": "Yes",
-              "icon": "✅"
+              "icon": "✅",
+              "style": "success"
             },
             "answer": {
               "fr": "Bien ! Vous êtes maintenant un soldat de l'armée du Roi !",
@@ -34,7 +35,8 @@
             "name": {
               "fr": "Non",
               "en": "No",
-              "icon": "❌"
+              "icon": "❌",
+              "style": "danger"
             },
             "answer": {
               "fr": "Je comprends ton choix, soldat.e, le choix t'appartient. Bonne journée à toi !",

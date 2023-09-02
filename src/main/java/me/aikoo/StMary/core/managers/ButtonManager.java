@@ -36,6 +36,7 @@ public class ButtonManager extends ListenerAdapter {
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         // Check if the message ID is associated with any registered buttons
+        System.out.println("Button clicked: " + event.getComponentId());
         if (!commands.containsKey(event.getMessageId())) return;
         String authorId = event.getUser().getId();
         String language = (event.getGuild().getLocale() == DiscordLocale.FRENCH) ? "fr" : "en";

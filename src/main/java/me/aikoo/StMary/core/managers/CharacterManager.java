@@ -3,6 +3,7 @@ package me.aikoo.StMary.core.managers;
 import com.google.gson.JsonObject;
 import me.aikoo.StMary.core.bases.CharacterBase;
 import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +22,22 @@ public class CharacterManager {
 
     public CharacterBase getCharacterByName(String characterName, String language) {
         return this.characters.values().stream().filter(character -> character.getCharacterInformation(language).getName().equalsIgnoreCase(characterName)).findFirst().orElse(null);
+    }
+
+    public String formatCharacterDialog(CharacterBase.Information characterInformation, CharacterBase.Dialog dialog) {
+        String text = "\uD83D\uDDE3\uFE0F **" + characterInformation.getName() + "** - " + dialog.getText();
+
+        if (dialog.isQuestion()) {
+            text += "\n\n➡\uFE0F **" + dialog.getQuestion() + "**\n";
+
+            ArrayList<String> options = new ArrayList<>();
+
+            dialog.getOptions().forEach((key, option) -> options.add(option.getName()));
+
+            text += String.join(", ", options);
+        }
+
+        return text;
     }
 
     private void loadCharacters() {
@@ -79,7 +96,8 @@ public class CharacterManager {
         String name = option.get("name").getAsJsonObject().get(language).getAsString();
         String answer = option.get("answer").getAsJsonObject().get(language).getAsString();
         String icon = option.get("name").getAsJsonObject().get("icon").getAsString();
+        ButtonStyle style = ButtonStyle.valueOf(option.get("name").getAsJsonObject().get("style").getAsString().toUpperCase());
 
-        return new CharacterBase.Option(name, icon, new CharacterBase.Dialog(answer, false, null,null));
+        return new CharacterBase.Option(name, icon, style, new CharacterBase.Dialog(answer, false, null,null));
     }
 }
