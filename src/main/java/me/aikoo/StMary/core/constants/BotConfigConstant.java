@@ -1,56 +1,76 @@
 package me.aikoo.StMary.core.constants;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.*;
 import java.util.List;
+import java.util.Properties;
 
 public class BotConfigConstant {
-    private static final Dotenv dotenv = Dotenv.load();
+
+    private static final Properties prop = new Properties();
     private static final Logger LOGGER = LoggerFactory.getLogger(BotConfigConstant.class);
 
+    static {
+        try (InputStream input = new FileInputStream("config/config.properties")) {
+            prop.load(input);
+
+            List<String> keys = List.of("token", "devToken", "devGuildId", "ownerId", "mode", "databaseHost", "databasePort", "databaseUsername", "databasePassword", "databaseDevDB", "databaseProdDB");
+
+            for (String key : keys) {
+                if (prop.getProperty(key) == null) {
+                    LOGGER.error("Missing key in properties file: " + key);
+                    System.exit(1);
+                }
+            }
+        } catch (IOException io) {
+            io.printStackTrace();
+            System.exit(1);
+        }
+    }
+
     public static String getToken() {
-        return dotenv.get("TOKEN");
+        return prop.getProperty("token");
     }
 
     public static String getDevToken() {
-        return dotenv.get("DEV_TOKEN");
+        return prop.getProperty("devToken");
     }
 
     public static String getDevGuildId() {
-        return dotenv.get("DEV_GUILD_ID");
+        return prop.getProperty("devGuildId");
     }
 
     public static String getOwnerId() {
-        return dotenv.get("OWNER_ID");
+        return prop.getProperty("ownerId");
     }
 
     public static String getMode() {
-        if (!List.of(new String[]{"dev", "prod"}).contains(dotenv.get("MODE"))) {
-            LOGGER.error("Invalid mode specified in .env file. Valid modes are 'dev' and 'prod'.");
+        if (!List.of("dev", "prod").contains(prop.getProperty("mode"))) {
+            LOGGER.error("Invalid mode specified in properties file. Valid modes are 'dev' and 'prod'.");
             System.exit(1);
         }
-        return dotenv.get("MODE");
+        return prop.getProperty("mode");
     }
 
     public static String getDatabaseHost() {
-        return dotenv.get("DATABASE_HOST");
+        return prop.getProperty("databaseHost");
     }
 
     public static String getDatabasePort() {
-        return dotenv.get("DATABASE_PORT");
+        return prop.getProperty("databasePort");
     }
 
     public static String getDatabaseUsername() {
-        return dotenv.get("DATABASE_USERNAME");
+        return prop.getProperty("databaseUsername");
     }
 
     public static String getDatabasePassword() {
-        return dotenv.get("DATABASE_PASSWORD");
+        return prop.getProperty("databasePassword");
     }
 
     public static String getDatabaseName() {
-        return (getMode().equals("dev")) ? dotenv.get("DATABASE_DEV_DB") : dotenv.get("DATABASE_PROD_DB");
+        return (getMode().equals("dev")) ? prop.getProperty("databaseDevDB") : prop.getProperty("databaseProdDB");
     }
 }

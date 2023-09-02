@@ -4,4 +4,4 @@
 
 - `De nos jours, Talon | Place du Griffon Marin.` - Les Portes n'ont toujours pas été refermées. Les habitants se sont habitués à ce danger permanent des monstres rodant dans les terres d'Oraland, mais également de Deryn, et ont appris pour beaucoup l'Art de la Guerre. Le **Roi, Gyr Talon**, de la région d'Oraland et de la capitale de celle-ci, **Talon**, travaille depuis quelques années sur un projet secret : Plonger dans les Portes pour comprendre leur origine, et les refermer une fois pour toute, et à jamais. Sur la **Place du Griffon Marin**, son fidèle général en chef des armées, le **Maréchal Thorne**, recrute à un prix avantageux des soldats, au caractère téméraire, et aux nerfs d'aciers, motivés pour cette dangereuse expédition dans l'inconnu, quand il vous vois entrain de faire une démonstration de l'épée à un enfant, et voir immédiatement votre potentiel.
   
-`Dialogue` - [Maréchal Thorne](../characters/Marechal_Thorne.md#dialogue-11)
+`Dialogue 1` - [Maréchal Thorne](../characters/Marechal_Thorne.md#dialogue-1)
