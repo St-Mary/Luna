@@ -3,7 +3,9 @@ package me.aikoo.StMary.core.constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
@@ -72,5 +74,10 @@ public class BotConfigConstant {
 
     public static String getDatabaseName() {
         return (getMode().equals("dev")) ? prop.getProperty("databaseDevDB") : prop.getProperty("databaseProdDB");
+    }
+
+    public static String getEmote(String emoteName) {
+        emoteName = emoteName.substring(0, 1).toUpperCase() + emoteName.substring(1);
+        return prop.getProperty("emote" + emoteName);
     }
 }

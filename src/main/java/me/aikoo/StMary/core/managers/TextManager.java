@@ -3,6 +3,7 @@ package me.aikoo.StMary.core.managers;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import me.aikoo.StMary.core.bot.StMaryClient;
+import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,7 +163,7 @@ public class TextManager {
          * @return The built error.
          */
         public String buildError() {
-            formattedText.append("╭───────────┈ ➤ ✎ ❌ **").append(title).append("**\n- ");
+            formattedText.append("╭───────────┈ ➤ ✎ %s **".formatted(BotConfigConstant.getEmote("no"))).append(title).append("**\n- ");
             this.formatLocations();
             formattedText.append(tmpText).append("\n╰─────────── ·\uFEFF \uFEFF \uFEFF· \uFEFF ·\uFEFF \uFEFF \uFEFF· \uFEFF✦");
             return formattedText.toString();

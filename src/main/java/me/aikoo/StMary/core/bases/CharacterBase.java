@@ -5,11 +5,9 @@ import me.aikoo.StMary.core.abstracts.ButtonAbstract;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CharacterBase {
@@ -109,7 +107,7 @@ public class CharacterBase {
         private final Object classMethod;
 
         public OptionBtn(String id, String name, String icon, ButtonStyle style, StMaryClient stMaryClient, Object classMethod, Method method) {
-            super(id, name, style, Emoji.fromUnicode(icon), stMaryClient);
+            super(id, name, style, Emoji.fromFormatted(icon), stMaryClient);
             this.id = id;
             this.name = name;
             this.icon = icon;

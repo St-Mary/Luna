@@ -11,28 +11,28 @@
   "dialogs": {
     "1.1": {
       "fr": "Eh, vous ! Vous semblez bien savoir vous battre, non ? Je reconnais un bon guerrier quand j'en vois un !! Que diriez-vous de rejoindre les rangs du Roi pour sauver le Royaume contre l'invasion de ces monstres ?!",
-      "en": "Hey, you! You seem to know how to fight, right? I recognize a good warrior when I see one !! How about joining the King's ranks to save the Kingdom against the invasion of these monsters ?!",
+      "en": "Hey, you! You seem to know how to fight, right? I recognize a good warrior when I see one!! How about joining the King's ranks to save the Kingdom against the invasion of these monsters?!",
       "choice": {
         "question": {
-          "fr": "Acceptez-vous de rejoindre l'armée du Roi Talon ? Oui/Non",
-          "en": "Do you agree to join King Talon's army? Yes/No"
+          "fr": "Acceptez-vous de rejoindre l'armée du Roi Talon ?",
+          "en": "Do you agree to join King Talon's army?"
         },
         "choices": {
           "1.1.1": {
             "name": {
               "fr": "Oui",
               "en": "Yes",
-              "icon": "✅",
+              "icon": "<:yes:1147622381997801494>",
               "style": "success"
             },
-            "fr": "Bien ! Vous êtes maintenant un soldat de l'armée du Roi !",
-            "en": "Good! You are now a soldier in the King's army!"
+            "fr": "Ravi de l'entendre, soldat.e ! Bienvenu.e dans l'armée du Roi ! Je serais ton guide le temps que tu sois assez fort pour plonger dans ces abysses ! Tiens, voici un petit quelque chose pour t'aider à progresser ! Va voir Sir Alden, l'Amiral de l'Étoile d'Or, au Port de Talon pour qu'il t'apprenne à la manier",
+            "en": "Glad to hear it, soldier! Welcome to the King's army! I'll be your guide until you're strong enough to dive into these abysses! Here, have a little something to help you progress! Go see Sir Alden, the Admiral of the Golden Star, at Talon Port to learn how to handle it!"
           },
           "1.1.2": {
             "name": {
               "fr": "Non",
               "en": "No",
-              "icon": "❌",
+              "icon": "<:no:1147632813441560578>",
               "style": "danger"
             },
             "fr": "Je comprends ton refus, soldat.e, le choix t'appartient. Bonne journée à toi !",

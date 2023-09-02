@@ -6,9 +6,9 @@ import me.aikoo.StMary.core.bases.ObjectBase;
 import me.aikoo.StMary.core.bases.PlaceBase;
 import me.aikoo.StMary.core.bases.TitleBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
+import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.database.MoveEntity;
 import me.aikoo.StMary.core.database.PlayerEntity;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
@@ -19,7 +19,6 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -300,7 +299,7 @@ public class MenuCommand extends CommandAbstract {
          * @param id The user's ID.
          */
         public CloseBtn(String id, String language) {
-            super("close_btn", stMaryClient.getTextManager().getText("menu_btn_close", language), ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
+            super("close_btn", stMaryClient.getTextManager().getText("menu_btn_close", language), ButtonStyle.DANGER, Emoji.fromFormatted(BotConfigConstant.getEmote("no")), stMaryClient);
             this.id = id;
         }
 

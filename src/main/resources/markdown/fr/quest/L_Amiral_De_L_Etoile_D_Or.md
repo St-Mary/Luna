@@ -2,7 +2,8 @@
 
 ### Description
 
-Après avoir accepté de rejoindre l'armée du Roi Talon, le Maréchal Thorne vous envoie voir l'Amiral de l'Étoile d'Or, Sir Alden, au Port de Talon, pour qu'il vous donne votre première arme.
+Après avoir accepté de rejoindre l'armée du Roi Talon, le Maréchal Thorne vous envoie voir l'Amiral de l'Étoile d'Or,
+Sir Alden, au Port de Talon, pour qu'il vous donne votre première arme.
 
 ### Objectifs
 

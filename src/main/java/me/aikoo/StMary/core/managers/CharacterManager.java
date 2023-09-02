@@ -25,7 +25,7 @@ public class CharacterManager {
     }
 
     public String formatCharacterDialog(CharacterBase.Information characterInformation, CharacterBase.Dialog dialog) {
-        String text = "\uD83D\uDDE3\uFE0F **" + characterInformation.getName() + "** - " + dialog.getText();
+        String text = "\uD83D\uDDE3\uFE0F  **" + characterInformation.getName() + "** - " + dialog.getText();
 
         if (dialog.isQuestion()) {
             text += "\n\n➡\uFE0F **" + dialog.getQuestion() + "**\n";
@@ -94,6 +94,6 @@ public class CharacterManager {
         String icon = option.get("name").getAsJsonObject().get("icon").getAsString();
         ButtonStyle style = ButtonStyle.valueOf(option.get("name").getAsJsonObject().get("style").getAsString().toUpperCase());
 
-        return new CharacterBase.Option(optionId, name, icon, style, new CharacterBase.Dialog(dialogId, answer, false, null,null));
+        return new CharacterBase.Option(optionId, name, icon, style, new CharacterBase.Dialog(dialogId, answer, false, null, null));
     }
 }
