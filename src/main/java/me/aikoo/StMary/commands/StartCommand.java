@@ -15,13 +15,12 @@ import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * The Start command allows users to begin their adventure.
  */
 public class StartCommand extends CommandAbstract {
-
-    private final HashMap<String, String> languageCache = new HashMap<>();
 
     /**
      * Creates a new Start command.
@@ -81,7 +80,7 @@ public class StartCommand extends CommandAbstract {
             this.buttons.put(optionBtn1.getId(), optionBtn1);
             this.buttons.put(optionBtn2.getId(), optionBtn2);
 
-            languageCache.put(event.getUser().getId(), language);
+            stMaryClient.getCache().put("startCmdLanguage_" + event.getUser().getId(), language);
 
             String introduction = stMaryClient.getTextManager().createText("start_adventure_introduction", language).build();
             String text = introduction + "\n\n" + stMaryClient.getCharacterManager().formatCharacterDialog(character, dialog);
@@ -98,7 +97,7 @@ public class StartCommand extends CommandAbstract {
 
                                     CharacterBase.Dialog noDialog = character.getDialog("1.1.2");
                                     String text = stMaryClient.getCharacterManager().formatCharacterDialog(character, noDialog);
-                                    languageCache.remove(event.getUser().getId());
+                                    stMaryClient.getCache().delete("startCmdLanguage_" + event.getUser().getId());
                                     res.editMessage(text).setComponents().queue();
                                 }
                             }
@@ -121,7 +120,9 @@ public class StartCommand extends CommandAbstract {
     }
 
     public void onClickYesBtn(ButtonInteractionEvent event, String language) {
-        language = languageCache.get(event.getUser().getId()) != null ? languageCache.get(event.getUser().getId()) : language;
+        Optional<String> cacheLanguage = stMaryClient.getCache().get("startCmdLanguage_" + event.getUser().getId());
+        language = cacheLanguage.orElse(language);
+
         CharacterBase.Information character = this.stMaryClient.getCharacterManager().getCharacter("1").getCharacterInformation(language);
         String dialog = stMaryClient.getCharacterManager().formatCharacterDialog(character, character.getDialog("1.1.1"));
 
@@ -145,16 +146,18 @@ public class StartCommand extends CommandAbstract {
 
         event.editMessage(dialog).setComponents().queue();
         stMaryClient.getButtonManager().removeButtons(event.getMessageId());
-        languageCache.remove(event.getUser().getId());
+        stMaryClient.getCache().delete("startCmdLanguage_" + event.getUser().getId());
     }
 
     public void onClickNoBtn(ButtonInteractionEvent event, String language) {
-        language = languageCache.get(event.getUser().getId()) != null ? languageCache.get(event.getUser().getId()) : language;
+        Optional<String> cacheLanguage = stMaryClient.getCache().get("startCmdLanguage_" + event.getUser().getId());
+        language = cacheLanguage.orElse(language);
+
         CharacterBase.Information character = this.stMaryClient.getCharacterManager().getCharacter("1").getCharacterInformation(language);
         String dialog = stMaryClient.getCharacterManager().formatCharacterDialog(character, character.getDialog("1.1.2"));
 
         event.editMessage(dialog).setComponents().queue();
         stMaryClient.getButtonManager().removeButtons(event.getMessageId());
-        languageCache.remove(event.getUser().getId());
+        stMaryClient.getCache().delete("startCmdLanguage_" + event.getUser().getId());
     }
 }

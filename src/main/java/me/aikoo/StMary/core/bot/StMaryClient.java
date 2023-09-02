@@ -1,6 +1,7 @@
 package me.aikoo.StMary.core.bot;
 
 import lombok.Getter;
+import me.aikoo.StMary.core.cache.Cache;
 import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.managers.*;
 import net.dv8tion.jda.api.JDA;
@@ -15,7 +16,6 @@ public class StMaryClient {
     // Logger
     private final Logger LOGGER = LoggerFactory.getLogger(StMaryClient.class);
 
-    // Principal managers of the bot
     @Getter
     private final CooldownManager cooldownManager = new CooldownManager();
     @Getter
@@ -34,6 +34,8 @@ public class StMaryClient {
     private final CharacterManager characterManager = new CharacterManager();
     @Getter
     private final ButtonManager buttonManager;
+    @Getter
+    private final Cache<String, String> cache = new Cache<>(10000);
 
     // JDA instance to interact with Discord
     @Getter
@@ -43,6 +45,7 @@ public class StMaryClient {
      * StMaryClient constructor. It initialize all managers and start the bot.
      */
     public StMaryClient() {
+
         // Initialize the command manager
         this.commandManager = new CommandManager();
         this.commandManager.loadCommands(this);
