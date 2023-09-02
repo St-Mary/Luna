@@ -8,9 +8,8 @@
     "fr": "Maréchal Thorne est le général de l'armée du Roi.",
     "en": "Marshal Thorne is the King army's General."
   },
-  "icon": "marshal-thorne",
   "dialogs": {
-    "1": {
+    "1.1": {
       "fr": "Eh, vous ! Vous semblez bien savoir vous battre, non ? Je reconnais un bon guerrier quand j'en vois un !! Que diriez-vous de rejoindre les rangs du Roi pour sauver le Royaume contre l'invasion de ces monstres ?!",
       "en": "Hey, you! You seem to know how to fight, right? I recognize a good warrior when I see one !! How about joining the King's ranks to save the Kingdom against the invasion of these monsters ?!",
       "choice": {
@@ -19,29 +18,25 @@
           "en": "Do you agree to join King Talon's army? Yes/No"
         },
         "choices": {
-          "1": {
+          "1.1.1": {
             "name": {
               "fr": "Oui",
               "en": "Yes",
               "icon": "✅",
               "style": "success"
             },
-            "answer": {
-              "fr": "Bien ! Vous êtes maintenant un soldat de l'armée du Roi !",
-              "en": "Good! You are now a soldier in the King's army!"
-            }
+            "fr": "Bien ! Vous êtes maintenant un soldat de l'armée du Roi !",
+            "en": "Good! You are now a soldier in the King's army!"
           },
-          "2": {
+          "1.1.2": {
             "name": {
               "fr": "Non",
               "en": "No",
               "icon": "❌",
               "style": "danger"
             },
-            "answer": {
-              "fr": "Je comprends ton choix, soldat.e, le choix t'appartient. Bonne journée à toi !",
-              "en": "I understand your choice, soldier, the choice is yours. Have a nice day!"
-            }
+            "fr": "Je comprends ton refus, soldat.e, le choix t'appartient. Bonne journée à toi !",
+            "en": "I understand your rejection, soldier, the choice is yours. Have a nice day!"
           }
         }
       }

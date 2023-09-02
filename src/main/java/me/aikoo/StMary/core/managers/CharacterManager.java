@@ -29,12 +29,6 @@ public class CharacterManager {
 
         if (dialog.isQuestion()) {
             text += "\n\n➡\uFE0F **" + dialog.getQuestion() + "**\n";
-
-            ArrayList<String> options = new ArrayList<>();
-
-            dialog.getOptions().forEach((key, option) -> options.add(option.getName()));
-
-            text += String.join(", ", options);
         }
 
         return text;
@@ -48,32 +42,34 @@ public class CharacterManager {
 
     private void loadCharacter(JsonObject characterObject) {
         HashMap<String, CharacterBase.Information> informations = new HashMap<>();
-        informations.put("en", this.loadCharacterByLanguage(characterObject, "en"));
-        informations.put("fr", this.loadCharacterByLanguage(characterObject, "fr"));
+        String id = characterObject.get("id").getAsString();
+        informations.put("en", this.loadCharacterByLanguage(id, characterObject, "en"));
+        informations.put("fr", this.loadCharacterByLanguage(id, characterObject, "fr"));
 
-        this.characters.put(characterObject.get("id").getAsString(), new CharacterBase(informations));
+        this.characters.put(id, new CharacterBase(informations));
     }
 
-    private CharacterBase.Information loadCharacterByLanguage(JsonObject characterObject, String language) {
+    private CharacterBase.Information loadCharacterByLanguage(String id, JsonObject characterObject, String language) {
         String characterName = characterObject.get("name").getAsJsonObject().get(language).getAsString();
         String characterDescription = characterObject.get("description").getAsJsonObject().get(language).getAsString();
 
         HashMap<String, CharacterBase.Dialog> dialogs = this.loadDialogs(characterObject, language);
 
-        return new CharacterBase.Information(characterName, characterDescription, dialogs);
+        return new CharacterBase.Information(id, characterName, characterDescription, dialogs);
     }
 
     private HashMap<String, CharacterBase.Dialog> loadDialogs(JsonObject characterObject, String language) {
         HashMap<String, CharacterBase.Dialog> dialogs = new HashMap<>();
 
-        characterObject.get("dialogs").getAsJsonObject().keySet().forEach(key ->
-                dialogs.put(key, this.loadDialog(characterObject.get("dialogs").getAsJsonObject().get(key).getAsJsonObject(), language))
-        );
+        characterObject.get("dialogs").getAsJsonObject().keySet().forEach(key -> {
+            CharacterBase.Dialog dialog = this.loadDialog(key, characterObject.get("dialogs").getAsJsonObject().get(key).getAsJsonObject(), language);
+            dialogs.put(dialog.getId(), dialog);
+        });
 
         return dialogs;
     }
 
-    private CharacterBase.Dialog loadDialog(JsonObject dialogObject, String language) {
+    private CharacterBase.Dialog loadDialog(String id, JsonObject dialogObject, String language) {
         String dialog = dialogObject.get(language).getAsString();
         boolean isQuestion = dialogObject.get("choice").getAsJsonObject() != null;
 
@@ -83,21 +79,21 @@ public class CharacterManager {
             HashMap<String, CharacterBase.Option> options = new HashMap<>();
 
             choice.get("choices").getAsJsonObject().keySet().forEach(key ->
-                    options.put(key, this.loadOption(choice.get("choices").getAsJsonObject().get(key).getAsJsonObject(), language))
+                    options.put(key, this.loadOption(id, key, choice.get("choices").getAsJsonObject().get(key).getAsJsonObject(), language))
             );
 
-            return new CharacterBase.Dialog(dialog, true, question, options);
+            return new CharacterBase.Dialog(id, dialog, true, question, options);
         } else {
-            return new CharacterBase.Dialog(dialog, false, null, null);
+            return new CharacterBase.Dialog(id, dialog, false, null, null);
         }
     }
 
-    private CharacterBase.Option loadOption(JsonObject option, String language) {
+    private CharacterBase.Option loadOption(String dialogId, String optionId, JsonObject option, String language) {
         String name = option.get("name").getAsJsonObject().get(language).getAsString();
-        String answer = option.get("answer").getAsJsonObject().get(language).getAsString();
+        String answer = option.get(language).getAsString();
         String icon = option.get("name").getAsJsonObject().get("icon").getAsString();
         ButtonStyle style = ButtonStyle.valueOf(option.get("name").getAsJsonObject().get("style").getAsString().toUpperCase());
 
-        return new CharacterBase.Option(name, icon, style, new CharacterBase.Dialog(answer, false, null,null));
+        return new CharacterBase.Option(optionId, name, icon, style, new CharacterBase.Dialog(dialogId, answer, false, null,null));
     }
 }

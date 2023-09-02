@@ -87,28 +87,14 @@ public class MenuCommand extends CommandAbstract {
                                 new java.util.TimerTask() {
                                     @Override
                                     public void run() {
-                                        if (!isClosed) {
-                                            closeMenu(res, user.getId());
-                                        }
+                                        res.editMessage(res.getContentRaw()).setComponents().queue();
+                                        stMaryClient.getButtonManager().removeButtons(res.getId());
                                     }
                                 },
                                 60000
                         );
                     }));
         }
-    }
-
-    /**
-     * Closes the user's menu by disabling buttons and updating the message.
-     *
-     * @param message The message to close.
-     * @param id      The user's ID.
-     */
-    public void closeMenu(Message message, String id) {
-        List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
-        buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
-
-        message.editMessage(message.getContentRaw()).setActionRow(buttons).queue();
     }
 
     /**
@@ -325,7 +311,8 @@ public class MenuCommand extends CommandAbstract {
                 return;
             }
 
-            closeMenu(event.getMessage(), id);
+            event.getMessage().editMessage(event.getMessage().getContentRaw()).setComponents().queue();
+            stMaryClient.getButtonManager().removeButtons(event.getMessageId());
             isClosed = true;
             if (!event.getInteraction().isAcknowledged()) {
                 event.deferEdit().queue();

@@ -36,7 +36,6 @@ public class ButtonManager extends ListenerAdapter {
     @Override
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
         // Check if the message ID is associated with any registered buttons
-        System.out.println("Button clicked: " + event.getComponentId());
         if (!commands.containsKey(event.getMessageId())) return;
         String authorId = event.getUser().getId();
         String language = (event.getGuild().getLocale() == DiscordLocale.FRENCH) ? "fr" : "en";
@@ -67,5 +66,13 @@ public class ButtonManager extends ListenerAdapter {
      */
     public void addButtons(String id, ArrayList<ButtonAbstract> buttons) {
         commands.put(id, buttons);
+    }
+
+    public void removeButtons(String id) {
+        commands.remove(id);
+    }
+
+    public boolean isButtons(String id) {
+        return commands.containsKey(id);
     }
 }
