@@ -31,6 +31,8 @@ public class StMaryClient {
     @Getter
     private final ObjectManager objectManager = new ObjectManager();
     @Getter
+    private final CharacterManager characterManager = new CharacterManager();
+    @Getter
     private final ButtonManager buttonManager;
 
     // JDA instance to interact with Discord

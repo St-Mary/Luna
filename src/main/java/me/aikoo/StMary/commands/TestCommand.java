@@ -1,6 +1,7 @@
 package me.aikoo.StMary.commands;
 
 import me.aikoo.StMary.core.abstracts.CommandAbstract;
+import me.aikoo.StMary.core.bases.CharacterBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -16,13 +17,14 @@ public class TestCommand extends CommandAbstract {
         this.cooldown = 10000L;
 
         this.setAdminCommand(true);
-
-        this.options.add(new OptionData(OptionType.STRING, "destination", "Test option").setAutoComplete(true).setRequired(true));
     }
 
     @Override
     public void execute(SlashCommandInteractionEvent event, String language) {
-        event.reply("Test <:book_1:1142570454834499724>").queue();
+        CharacterBase.Information character = this.stMaryClient.getCharacterManager().getCharacterByName("Maréchal Thorne", language).getCharacterInformation(language);
+        CharacterBase.Dialog dialog = character.getDialog("1");
+
+        event.reply("**" + character.getName() + "** - " + dialog.getText()).queue();
     }
 
     @Override
