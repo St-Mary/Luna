@@ -106,15 +106,14 @@ public class Cache<K, V> implements ICache<K, V> {
     }
 
 
-    private boolean evictElement() {
+    private void evictElement() {
         this.lock.writeLock().lock();
         try {
             LinkedListNode<CacheElement<K, V>> linkedListNode = doublyLinkedList.removeTail();
             if (linkedListNode.isEmpty()) {
-                return false;
+                return;
             }
             linkedListNodeMap.remove(linkedListNode.getElement().getKey());
-            return true;
         } finally {
             this.lock.writeLock().unlock();
         }
