@@ -87,7 +87,7 @@ public class StartCommand extends CommandAbstract {
             Method closeMethod = StartCommand.class.getMethod("closeBtnMenuEvent", Message.class, String.class, SlashCommandInteractionEvent.class);
             ArrayList<ButtonAbstract> buttons = new ArrayList<>(List.of(optionBtn1, optionBtn2));
 
-            this.sendMsgWithButtons(event, text, language, buttons, 5000, closeMethod, this);
+            this.sendMsgWithButtons(event, text, language, buttons, 120000, closeMethod, this);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }

@@ -16,8 +16,10 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +31,6 @@ import java.util.Objects;
 public class MenuCommand extends CommandAbstract {
 
     // Indicates if the menu is closed
-    private boolean isClosed = false;
 
     /**
      * Constructs a Menu command.
@@ -62,33 +63,28 @@ public class MenuCommand extends CommandAbstract {
         if (player == null) {
             event.reply(stMaryClient.getTextManager().createText("menu_no_account", language).buildError()).setEphemeral(true).queue();
         } else {
-            // Generate and send the user's profile
-            String profil = profilEmbed(user.getGlobalName(), player, language);
+            try {
+                // Generate and send the user's profile
+                String profil = profilEmbed(user.getGlobalName(), player, language);
 
-            // Create buttons for inventory, profile, titles, and close
-            InventoryBtn inventoryBtn = new InventoryBtn(player, user.getId(), language);
-            ProfilBtn profilBtn = new ProfilBtn(player, user.getId(), language);
-            TitlesBtn titlesBtn = new TitlesBtn(player, user.getId(), language);
-            CloseBtn closeBtn = new CloseBtn(user.getId(), language);
+                Method profilMethod = MenuCommand.class.getMethod("profilBtn", ButtonInteractionEvent.class, String.class, String.class, PlayerEntity.class);
+                ButtonAbstract profilBtn = new ButtonAbstract("profil_btn", stMaryClient.getTextManager().getText("menu_btn_profil", language), ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83D\uDCDD"), stMaryClient, this, profilMethod, event.getUser().getId(), player);
 
-            // Send the profile with buttons
-            event.reply(profil)
-                    .addActionRow(profilBtn.getButton(), inventoryBtn.getButton(), titlesBtn.getButton(), closeBtn.getButton())
-                    .queue(msg -> msg.retrieveOriginal().queue(res -> {
-                        stMaryClient.getButtonManager().addButtons(res.getId(), new ArrayList<>(List.of(inventoryBtn, profilBtn, titlesBtn, closeBtn)));
+                Method inventoryMethod = MenuCommand.class.getMethod("inventoryBtn", ButtonInteractionEvent.class, String.class, String.class, PlayerEntity.class);
+                ButtonAbstract inventoryBtn = new ButtonAbstract("inventory_btn", stMaryClient.getTextManager().getText("menu_btn_backpack", language), ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDF92"), stMaryClient, this, inventoryMethod, event.getUser().getId(), player);
 
-                        // Schedule the menu to close after 60 seconds
-                        new java.util.Timer().schedule(
-                                new java.util.TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        res.editMessage(res.getContentRaw()).setComponents().queue();
-                                        stMaryClient.getButtonManager().removeButtons(res.getId());
-                                    }
-                                },
-                                60000
-                        );
-                    }));
+                Method titlesMethod = MenuCommand.class.getMethod("titlesBtn", ButtonInteractionEvent.class, String.class, String.class, PlayerEntity.class);
+                ButtonAbstract titlesBtn = new ButtonAbstract("titles_btn", stMaryClient.getTextManager().getText("menu_btn_titles", language), ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDFC5"), stMaryClient, this, titlesMethod, event.getUser().getId(), player);
+
+                Method closeMethod = MenuCommand.class.getMethod("closeBtn", ButtonInteractionEvent.class, String.class, String.class, PlayerEntity.class);
+                ButtonAbstract closeBtn = new ButtonAbstract("close_btn", stMaryClient.getTextManager().getText("menu_btn_close", language), ButtonStyle.DANGER, Emoji.fromFormatted(BotConfigConstant.getEmote("no")), stMaryClient, this, closeMethod, event.getUser().getId(), player);
+
+                // Send the profile menu
+                this.sendMsgWithButtons(event, profil, language, new ArrayList<>(List.of(inventoryBtn, profilBtn, titlesBtn, closeBtn)),60000, null, null);
+
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -144,174 +140,86 @@ public class MenuCommand extends CommandAbstract {
                 .replace("{{region}}", stMaryClient.getLocationManager().getRegionById(player.getCurrentLocationRegion()).getName(player.getLanguage()));
     }
 
-
-    /**
-     * Represents a profile button.
-     */
-    private class ProfilBtn extends ButtonAbstract {
-        private final PlayerEntity player;
-        private final String id;
-
-        /**
-         * Constructs a ProfilBtn instance.
-         *
-         * @param player The PlayerEntity associated with the user.
-         * @param id     The user's ID.
-         */
-        public ProfilBtn(PlayerEntity player, String id, String language) {
-            super("profil_btn", stMaryClient.getTextManager().getText("menu_btn_profil", language), ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83D\uDCDD"), stMaryClient);
-
-            this.player = player;
-            this.id = id;
+    public void profilBtn(ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
+        if (!event.getUser().getId().equals(id)) {
+            event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
+            return;
         }
 
-        @Override
-        public void onClick(ButtonInteractionEvent event, String language) {
-            if (!event.getUser().getId().equals(id)) {
-                event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
-                return;
-            }
-
-            event.editMessage(profilEmbed(event.getUser().getGlobalName(), player, language)).queue();
-            if (!event.getInteraction().isAcknowledged()) {
-                event.deferEdit().queue();
-            }
+        event.editMessage(profilEmbed(event.getUser().getGlobalName(), player, language)).queue();
+        if (!event.getInteraction().isAcknowledged()) {
+            event.deferEdit().queue();
         }
     }
 
-
-    /**
-     * Represents an inventory button.
-     */
-    private class InventoryBtn extends ButtonAbstract {
-        private final PlayerEntity player;
-        private final String id;
-
-        /**
-         * Constructs an InventoryBtn instance.
-         *
-         * @param player The PlayerEntity associated with the user.
-         * @param id     The user's ID.
-         */
-        public InventoryBtn(PlayerEntity player, String id, String language) {
-            super("inv_btn", stMaryClient.getTextManager().getText("menu_btn_backpack", language), ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDF92"), stMaryClient);
-
-            this.player = player;
-            this.id = id;
+    public void inventoryBtn(ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
+        if (!event.getUser().getId().equals(id)) {
+            event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
+            return;
         }
 
-        @Override
-        public void onClick(ButtonInteractionEvent event, String language) {
-            if (!event.getUser().getId().equals(id)) {
-                event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
-                return;
-            }
+        TitleBase title = player.getCurrentTitle(stMaryClient);
+        String icon = title.getIcon();
+        ObjectBase magicalBook = player.getMagicalBook(stMaryClient);
+        String magicalBookName = (magicalBook != null) ? "%s `%s`".formatted(magicalBook.getIcon(), magicalBook.getName(language)) : stMaryClient.getTextManager().getText("menu_no_magical_book", language);
 
-            TitleBase title = player.getCurrentTitle(stMaryClient);
-            String icon = title.getIcon();
-            ObjectBase magicalBook = player.getMagicalBook(stMaryClient);
-            String magicalBookName = (magicalBook != null) ? "%s `%s`".formatted(magicalBook.getIcon(), magicalBook.getName(language)) : stMaryClient.getTextManager().getText("menu_no_magical_book", language);
+        // Generate the inventory text
+        String text = stMaryClient.getTextManager().getText("menu_backpack", language)
+                .replace("{{icon}}", icon)
+                .replace("{{name}}", event.getUser().getGlobalName())
+                .replace("{{money}}", player.getMoney().toString())
+                .replace("{{magical_book}}", magicalBookName);
 
-            // Generate the inventory text
-            String text = stMaryClient.getTextManager().getText("menu_backpack", language)
-                    .replace("{{icon}}", icon)
-                    .replace("{{name}}", event.getUser().getGlobalName())
-                    .replace("{{money}}", player.getMoney().toString())
-                    .replace("{{magical_book}}", magicalBookName);
-
-            event.editMessage(text).queue();
-            if (!event.getInteraction().isAcknowledged()) {
-                event.deferEdit().queue();
-            }
+        event.editMessage(text).queue();
+        if (!event.getInteraction().isAcknowledged()) {
+            event.deferEdit().queue();
         }
     }
 
-    /**
-     * Represents a titles button.
-     */
-    private class TitlesBtn extends ButtonAbstract {
-        private final PlayerEntity player;
-        private final String id;
-
-        /**
-         * Constructs a TitlesBtn instance.
-         *
-         * @param player The PlayerEntity associated with the user.
-         * @param id     The user's ID.
-         */
-        public TitlesBtn(PlayerEntity player, String id, String language) {
-            super("titles_btn", stMaryClient.getTextManager().getText("menu_btn_titles", language), ButtonStyle.PRIMARY, Emoji.fromUnicode("\uD83C\uDFC5"), stMaryClient);
-
-            this.player = player;
-            this.id = id;
+    public void titlesBtn(ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
+        if (!event.getUser().getId().equals(id)) {
+            event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
+            return;
         }
 
-        @Override
-        public void onClick(ButtonInteractionEvent event, String language) {
-            if (!event.getUser().getId().equals(id)) {
-                event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
-                return;
+        TitleBase title = player.getCurrentTitle(stMaryClient);
+        String icon = title.getIcon();
+
+        HashMap<String, TitleBase> titles = player.getTitles(stMaryClient);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (TitleBase t : titles.values()) {
+            stringBuilder.append(t.getIcon()).append(" | `").append(t.getName(language)).append("`");
+            if (t.getId().equals(title.getId())) {
+                stringBuilder.append(stMaryClient.getTextManager().getText("menu_titles_actual", language));
+            } else {
+                stringBuilder.append("\n");
             }
+        }
 
-            TitleBase title = player.getCurrentTitle(stMaryClient);
-            String icon = title.getIcon();
+        // Generate the text to send
+        String text = stMaryClient.getTextManager().getText("menu_titles", language)
+                .replace("{{icon}}", icon)
+                .replace("{{name}}", event.getUser().getGlobalName())
+                .replace("{{titles}}", stringBuilder.toString())
+                .replace("{{nb_titles}}", String.valueOf(titles.size()));
 
-            HashMap<String, TitleBase> titles = player.getTitles(stMaryClient);
-
-            StringBuilder stringBuilder = new StringBuilder();
-            for (TitleBase t : titles.values()) {
-                stringBuilder.append(t.getIcon()).append(" | `").append(t.getName(language)).append("`");
-                if (t.getId().equals(title.getId())) {
-                    stringBuilder.append(stMaryClient.getTextManager().getText("menu_titles_actual", language));
-                } else {
-                    stringBuilder.append("\n");
-                }
-            }
-
-            // Generate the text to send
-            String text = stMaryClient.getTextManager().getText("menu_titles", language)
-                    .replace("{{icon}}", icon)
-                    .replace("{{name}}", event.getUser().getGlobalName())
-                    .replace("{{titles}}", stringBuilder.toString())
-                    .replace("{{nb_titles}}", String.valueOf(titles.size()));
-
-            event.editMessage(text).queue();
-            if (!event.getInteraction().isAcknowledged()) {
-                event.deferEdit().queue();
-            }
+        event.editMessage(text).queue();
+        if (!event.getInteraction().isAcknowledged()) {
+            event.deferEdit().queue();
         }
     }
 
-
-    /**
-     * Represents a close button.
-     */
-    private class CloseBtn extends ButtonAbstract {
-        String id;
-
-        /**
-         * Constructs a CloseBtn instance.
-         *
-         * @param id The user's ID.
-         */
-        public CloseBtn(String id, String language) {
-            super("close_btn", stMaryClient.getTextManager().getText("menu_btn_close", language), ButtonStyle.DANGER, Emoji.fromFormatted(BotConfigConstant.getEmote("no")), stMaryClient);
-            this.id = id;
+    public void closeBtn(ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
+        if (!event.getUser().getId().equals(id)) {
+            event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
+            return;
         }
 
-        @Override
-        public void onClick(ButtonInteractionEvent event, String language) {
-            if (!event.getUser().getId().equals(id)) {
-                event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
-                return;
-            }
-
-            event.getMessage().editMessage(event.getMessage().getContentRaw()).setComponents().queue();
-            stMaryClient.getButtonManager().removeButtons(event.getMessageId());
-            isClosed = true;
-            if (!event.getInteraction().isAcknowledged()) {
-                event.deferEdit().queue();
-            }
+        event.getMessage().editMessage(event.getMessage().getContentRaw()).setComponents().queue();
+        stMaryClient.getButtonManager().removeButtons(event.getMessageId());
+        if (!event.getInteraction().isAcknowledged()) {
+            event.deferEdit().queue();
         }
     }
 }

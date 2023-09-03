@@ -99,7 +99,7 @@ public abstract class CommandAbstract {
         this.autoComplete(event, language);
     }
 
-    public void sendMsgWithButtons(SlashCommandInteractionEvent event, String text, String language, ArrayList<ButtonAbstract> buttons, int time, Method closeMethod, Object methodClass) {
+    public void sendMsgWithButtons(SlashCommandInteractionEvent event, String text, String language, ArrayList<ButtonAbstract> buttons, int time, Method closeMethod, Object methodClass, Object ...parameters) {
         ArrayList<Button> buttonList = new ArrayList<>();
         buttons.forEach(button -> buttonList.add(button.getButton()));
         event.reply(text).addActionRow(buttonList).queue(msg -> msg.retrieveOriginal().queue(res -> {
@@ -112,10 +112,19 @@ public abstract class CommandAbstract {
                             if (stMaryClient.getButtonManager().isButtons(res.getId())) {
                                 stMaryClient.getButtonManager().removeButtons(res.getId());
 
-                                try {
-                                    closeMethod.invoke(methodClass, res, language, event);
-                                } catch (Exception e) {
-                                    LOGGER.error("Error while executing closeMethod: " + e.getMessage());
+                                if (closeMethod != null) {
+                                    try {
+                                        Object[] params = new Object[parameters.length + 2];
+                                        params[0] = res;
+                                        params[1] = language;
+                                        System.arraycopy(parameters, 0, params, 2, parameters.length);
+
+                                        closeMethod.invoke(methodClass, params);
+                                    } catch (Exception e) {
+                                        LOGGER.error("Error while executing closeMethod: " + e.getMessage());
+                                    }
+                                } else {
+                                    res.editMessage(text).setComponents().queue();
                                 }
                             }
                         }

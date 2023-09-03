@@ -107,7 +107,7 @@ public class CharacterBase {
         private final Object classMethod;
 
         public OptionBtn(String id, String name, String icon, ButtonStyle style, StMaryClient stMaryClient, Object classMethod, Method method) {
-            super(id, name, style, Emoji.fromFormatted(icon), stMaryClient);
+            super(id, name, style, Emoji.fromFormatted(icon), stMaryClient, null, null);
             this.id = id;
             this.name = name;
             this.icon = icon;

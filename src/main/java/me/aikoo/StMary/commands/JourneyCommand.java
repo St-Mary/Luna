@@ -5,6 +5,7 @@ import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import me.aikoo.StMary.core.bases.JourneyBase;
 import me.aikoo.StMary.core.bases.PlaceBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
+import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.database.MoveEntity;
 import me.aikoo.StMary.core.database.PlayerEntity;
 import net.dv8tion.jda.api.entities.Message;
@@ -17,6 +18,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,6 @@ import java.util.List;
  */
 public class JourneyCommand extends CommandAbstract {
 
-    private boolean isStarted = false;
 
     /**
      * Constructs a Journey instance.
@@ -85,31 +86,24 @@ public class JourneyCommand extends CommandAbstract {
             return;
         }
 
-        ConfirmBtn confirmBtn = new ConfirmBtn(move, player, language);
-        CloseBtn closeBtn = new CloseBtn(destinationPlace, language);
+        try {
+            Method confirmMethod = JourneyCommand.class.getMethod("confirmBtn", ButtonInteractionEvent.class, String.class, JourneyBase.class, PlayerEntity.class);
+            Method closeMethod = JourneyCommand.class.getMethod("closeBtn", ButtonInteractionEvent.class, String.class, PlaceBase.class);
+            Method close = JourneyCommand.class.getMethod("close", Message.class, String.class, PlaceBase.class);
 
-        long time = move.getTime();
+            ButtonAbstract confirmBtn = new ButtonAbstract("confirmBtn", stMaryClient.getTextManager().getText("journey_btn_confirm", language), ButtonStyle.SUCCESS, Emoji.fromFormatted(BotConfigConstant.getEmote("yes")), stMaryClient, this, confirmMethod, move, player);
+            ButtonAbstract closeBtn = new ButtonAbstract("closeBtn", stMaryClient.getTextManager().getText("journey_btn_cancel", language), ButtonStyle.DANGER, Emoji.fromFormatted(BotConfigConstant.getEmote("no")), stMaryClient, this, closeMethod, destinationPlace);
 
-        String formattedText = (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getId(), language);
-        String str = stMaryClient.getTextManager().createText("journey_confirm", language).replace("time", String.valueOf(time)).replace("destination", formattedText).build();
+            long time = move.getTime();
 
-        event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
-            // Add buttons to the message for user interaction.
-            stMaryClient.getButtonManager().addButtons(res.getId(), new ArrayList<>(List.of(confirmBtn, closeBtn)));
+            String formattedText = (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ? stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language) : stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getId(), language);
+            String str = stMaryClient.getTextManager().createText("journey_confirm", language).replace("time", String.valueOf(time)).replace("destination", formattedText).build();
 
-            // Schedule a timer to close the journey if it is not started.
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            if (!isStarted) {
-                                close(res, destinationPlace, language);
-                            }
-                        }
-                    },
-                    20000
-            );
-        }));
+
+            this.sendMsgWithButtons(event, str, language, new ArrayList<>(List.of(confirmBtn, closeBtn)), 20000, close, this, destinationPlace);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -119,7 +113,7 @@ public class JourneyCommand extends CommandAbstract {
      * @param message          The message to edit.
      * @param destinationPlace The destination place.
      */
-    private void close(Message message, PlaceBase destinationPlace, String language) {
+    public void close(Message message, String language, PlaceBase destinationPlace) {
         String formattedLocation = stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language);
         String text = stMaryClient.getTextManager().createText("journey_cancel", language).replace("destination", formattedLocation).build();
         List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = message.getButtons();
@@ -175,91 +169,47 @@ public class JourneyCommand extends CommandAbstract {
         event.replyChoices(choices).queue();
     }
 
+    public void confirmBtn(ButtonInteractionEvent event, String language, JourneyBase move, PlayerEntity player) {
+        // Get the old place and destination place based on the player's current location and destination.
+        PlaceBase oldPlace = stMaryClient.getLocationManager().getPlaceById(player.getCurrentLocationPlace());
+        PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceById(move.getTo().getId());
 
-    /**
-     * Represents a confirm button for journey.
-     */
-    private class ConfirmBtn extends ButtonAbstract {
+        // Create a new MoveEntity to track the journey details.
+        MoveEntity moves = new MoveEntity();
+        moves.setPlayerId(player.getId());
+        moves.setFrom(move.getFrom().getId());
+        moves.setTo(move.getTo().getId());
+        moves.setTime(move.getTime());
+        moves.setStart(System.currentTimeMillis());
 
-        private final JourneyBase move;
-        private final PlayerEntity player;
+        // Save the journey details in the database.
+        stMaryClient.getDatabaseManager().save(moves);
 
-        /**
-         * Constructs a ConfirmBtn instance.
-         *
-         * @param move   The journey move.
-         * @param player The player associated with the user.
-         */
-        public ConfirmBtn(JourneyBase move, PlayerEntity player, String language) {
-            super("confirm_move", stMaryClient.getTextManager().getText("journey_btn_confirm", language), ButtonStyle.SUCCESS, Emoji.fromUnicode("\uD83D\uDDFA\uFE0F"), stMaryClient);
+        // Determine the formatted text based on the town of the destination.
+        String formattedText = (oldPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
+                stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language) :
+                stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getId(), language);
 
-            this.move = move;
-            this.player = player;
-        }
+        // Generate a message to inform the user about the journey.
+        String text = stMaryClient.getTextManager().createText("journey_success", language).replace("destination", formattedText).replace("time", move.getTime().toString()).build();
 
-        @Override
-        public void onClick(ButtonInteractionEvent event, String language) {
-            // Get the old place and destination place based on the player's current location and destination.
-            PlaceBase oldPlace = stMaryClient.getLocationManager().getPlaceById(player.getCurrentLocationPlace());
-            PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceById(move.getTo().getId());
+        // Get the list of buttons from the event message and disable them.
+        List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = event.getMessage().getButtons();
+        buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
 
-            // Create a new MoveEntity to track the journey details.
-            MoveEntity moves = new MoveEntity();
-            moves.setPlayerId(player.getId());
-            moves.setFrom(move.getFrom().getId());
-            moves.setTo(move.getTo().getId());
-            moves.setTime(move.getTime());
-            moves.setStart(System.currentTimeMillis());
+        // Edit the message to update the journey details and disabled buttons.
+        event.getMessage().editMessage(text).setActionRow(buttons).queue();
 
-            // Save the journey details in the database.
-            stMaryClient.getDatabaseManager().save(moves);
-
-            // Set the journey as started.
-            isStarted = true;
-
-            // Determine the formatted text based on the town of the destination.
-            String formattedText = (oldPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
-                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language) :
-                    stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getId(), language);
-
-            // Generate a message to inform the user about the journey.
-            String text = stMaryClient.getTextManager().createText("journey_success", language).replace("destination", formattedText).replace("time", move.getTime().toString()).build();
-
-            // Get the list of buttons from the event message and disable them.
-            List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons = event.getMessage().getButtons();
-            buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
-
-            // Edit the message to update the journey details and disabled buttons.
-            event.getMessage().editMessage(text).setActionRow(buttons).queue();
-
-            // Defer the edit of the interaction.
-            if (!event.isAcknowledged()) {
-                event.deferEdit().queue();
-            }
+        // Defer the edit of the interaction.
+        if (!event.isAcknowledged()) {
+            event.deferEdit().queue();
         }
     }
 
-    /**
-     * Represents a close button for journey.
-     */
-    private class CloseBtn extends ButtonAbstract {
+    public void closeBtn(ButtonInteractionEvent event, String language, PlaceBase destinationPlace) {
+        close(event.getMessage(), language, destinationPlace);
 
-        private final PlaceBase destinationPlace;
-
-        /**
-         * Constructs a CloseBtn instance.
-         *
-         * @param destinationPlace The destination place.
-         */
-        public CloseBtn(PlaceBase destinationPlace, String language) {
-            super("close_btn", stMaryClient.getTextManager().getText("journey_btn_cancel", language), ButtonStyle.DANGER, Emoji.fromUnicode("❌"), stMaryClient);
-            this.destinationPlace = destinationPlace;
-        }
-
-        @Override
-        public void onClick(ButtonInteractionEvent event, String language) {
-            close(event.getMessage(), destinationPlace, language);
-            isStarted = true;
+        if (!event.isAcknowledged()) {
             event.deferEdit().queue();
         }
     }

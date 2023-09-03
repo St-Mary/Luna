@@ -6,10 +6,12 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
+import java.lang.reflect.Method;
+
 /**
  * Represents an abstract button that can be interacted with in a Discord message.
  */
-public abstract class ButtonAbstract {
+public class ButtonAbstract {
 
     /**
      * Get the name of the button.
@@ -39,6 +41,15 @@ public abstract class ButtonAbstract {
     @Getter
     private Emoji emoji = null;
 
+    @Getter
+    private Object classMethod;
+
+    @Getter
+    private Method method;
+
+    @Getter
+    private Object[] parameters;
+
     /**
      * Creates a new Button instance.
      *
@@ -48,12 +59,15 @@ public abstract class ButtonAbstract {
      * @param emoji        The emoji associated with the button.
      * @param stMaryClient The StMaryClient instance.
      */
-    public ButtonAbstract(String id, String name, ButtonStyle style, Emoji emoji, StMaryClient stMaryClient) {
+    public ButtonAbstract(String id, String name, ButtonStyle style, Emoji emoji, StMaryClient stMaryClient, Object classMethod, Method method, Object ...parameters) {
         this.id = id;
         this.name = name;
         this.style = style;
         this.emoji = emoji;
         this.stMaryClient = stMaryClient;
+        this.classMethod = classMethod;
+        this.method = method;
+        this.parameters = parameters;
     }
 
     /**
@@ -61,7 +75,24 @@ public abstract class ButtonAbstract {
      *
      * @param event The ButtonInteractionEvent triggered when the button is clicked.
      */
-    public abstract void onClick(ButtonInteractionEvent event, String language);
+    public void onClick(ButtonInteractionEvent event, String language) {
+        if (this.method == null) {
+            return;
+        }
+
+        Object[] params = new Object[this.parameters.length + 2];
+
+        params[0] = event;
+        params[1] = language;
+
+        System.arraycopy(this.parameters, 0, params, 2, this.parameters.length);
+
+        try {
+            this.method.invoke(this.classMethod, params);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Get a JDA button representation of this custom button.
