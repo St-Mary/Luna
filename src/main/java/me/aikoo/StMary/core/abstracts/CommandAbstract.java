@@ -115,6 +115,10 @@ public abstract class CommandAbstract {
                     new java.util.TimerTask() {
                         @Override
                         public void run() {
+                            if (event.isAcknowledged()) {
+                                return;
+                            }
+
                             if (stMaryClient.getButtonManager().isButtons(res.getId())) {
                                 stMaryClient.getButtonManager().removeButtons(res.getId());
 
