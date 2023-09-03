@@ -123,6 +123,7 @@ public class JourneyCommand extends CommandAbstract {
 
     public void confirmBtn(ButtonInteractionEvent event, String language, JourneyBase move, PlayerEntity player) {
         if (player.getDiscordId() != event.getUser().getIdLong()) {
+            event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
             return;
         }
 
@@ -164,6 +165,11 @@ public class JourneyCommand extends CommandAbstract {
     }
 
     public void closeBtn(ButtonInteractionEvent event, String language, String id, PlaceBase destinationPlace) {
+        if (!event.getUser().getId().equals(id)) {
+            event.reply(stMaryClient.getTextManager().createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
+            return;
+        }
+
         close(event.getMessage(), language, id, destinationPlace);
 
         if (!event.isAcknowledged()) {
