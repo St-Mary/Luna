@@ -18,7 +18,9 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -69,17 +71,11 @@ public class MenuCommand extends CommandAbstract {
             TitlesBtn titlesBtn = new TitlesBtn(player, user.getId(), language);
             CloseBtn closeBtn = new CloseBtn(user.getId(), language);
 
-            // Add buttons to the button manager
-            this.buttons.put(inventoryBtn.getId(), inventoryBtn);
-            this.buttons.put(profilBtn.getId(), profilBtn);
-            this.buttons.put(titlesBtn.getId(), titlesBtn);
-            this.buttons.put(closeBtn.getId(), closeBtn);
-
             // Send the profile with buttons
             event.reply(profil)
                     .addActionRow(profilBtn.getButton(), inventoryBtn.getButton(), titlesBtn.getButton(), closeBtn.getButton())
                     .queue(msg -> msg.retrieveOriginal().queue(res -> {
-                        stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
+                        stMaryClient.getButtonManager().addButtons(res.getId(), new ArrayList<>(List.of(inventoryBtn, profilBtn, titlesBtn, closeBtn)));
 
                         // Schedule the menu to close after 60 seconds
                         new java.util.Timer().schedule(

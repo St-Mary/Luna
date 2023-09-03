@@ -24,8 +24,6 @@ import java.util.concurrent.TimeUnit;
 public abstract class CommandAbstract {
     protected final StMaryClient stMaryClient;
     protected final List<OptionData> options = new ArrayList<>();
-    @Getter
-    protected final HashMap<String, ButtonAbstract> buttons = new HashMap<>();
     private final Logger LOGGER = LoggerFactory.getLogger(CommandAbstract.class);
     @Getter
     @Setter
@@ -95,10 +93,6 @@ public abstract class CommandAbstract {
         PlayerEntity player = this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
         language = (player != null) ? player.getLanguage() : language;
         this.autoComplete(event, language);
-    }
-
-    protected ArrayList<ButtonAbstract> getArrayListButtons() {
-        return new ArrayList<>(this.buttons.values());
     }
 
     public String getName() {

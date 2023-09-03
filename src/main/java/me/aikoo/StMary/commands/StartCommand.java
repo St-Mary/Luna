@@ -1,5 +1,6 @@
 package me.aikoo.StMary.commands;
 
+import me.aikoo.StMary.core.abstracts.ButtonAbstract;
 import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import me.aikoo.StMary.core.bases.CharacterBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
@@ -13,9 +14,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.lang.reflect.Method;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The Start command allows users to begin their adventure.
@@ -77,16 +76,13 @@ public class StartCommand extends CommandAbstract {
             CharacterBase.OptionBtn optionBtn1 = new CharacterBase.OptionBtn(optionOne.getId(), optionOne.getName(), optionOne.getIcon(), optionOne.getStyle(), stMaryClient, this, yesMethod);
             CharacterBase.OptionBtn optionBtn2 = new CharacterBase.OptionBtn(optionTwo.getId(), optionTwo.getName(), optionTwo.getIcon(), optionTwo.getStyle(), stMaryClient, this, noMethod);
 
-            this.buttons.put(optionBtn1.getId(), optionBtn1);
-            this.buttons.put(optionBtn2.getId(), optionBtn2);
-
             stMaryClient.getCache().put("startCmdLanguage_" + event.getUser().getId(), language);
 
             String introduction = stMaryClient.getTextManager().createText("start_adventure_introduction", language).build();
             String text = introduction + "\n\n" + stMaryClient.getCharacterManager().formatCharacterDialog(character, dialog);
 
             event.reply(text).addActionRow(optionBtn1.getButton(), optionBtn2.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
-                stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
+                stMaryClient.getButtonManager().addButtons(res.getId(), new ArrayList<>(List.of(optionBtn1, optionBtn2)));
 
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {

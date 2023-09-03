@@ -87,8 +87,6 @@ public class JourneyCommand extends CommandAbstract {
 
         ConfirmBtn confirmBtn = new ConfirmBtn(move, player, language);
         CloseBtn closeBtn = new CloseBtn(destinationPlace, language);
-        this.buttons.put(confirmBtn.getId(), confirmBtn);
-        this.buttons.put(closeBtn.getId(), closeBtn);
 
         long time = move.getTime();
 
@@ -97,7 +95,7 @@ public class JourneyCommand extends CommandAbstract {
 
         event.reply(str).addActionRow(confirmBtn.getButton(), closeBtn.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
             // Add buttons to the message for user interaction.
-            stMaryClient.getButtonManager().addButtons(res.getId(), this.getArrayListButtons());
+            stMaryClient.getButtonManager().addButtons(res.getId(), new ArrayList<>(List.of(confirmBtn, closeBtn)));
 
             // Schedule a timer to close the journey if it is not started.
             new java.util.Timer().schedule(
