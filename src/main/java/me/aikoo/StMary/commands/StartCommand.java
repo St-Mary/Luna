@@ -80,7 +80,7 @@ public class StartCommand extends CommandAbstract {
             CharacterBase.OptionBtn optionBtn2 = new CharacterBase.OptionBtn(optionTwo.getId(), optionTwo.getName(), optionTwo.getIcon(), optionTwo.getStyle(), stMaryClient, this, noMethod);
 
             stMaryClient.getCache().put("startCmdLanguage_" + event.getUser().getId(), language);
-
+            stMaryClient.getCache().put("actionWaiter_" + event.getUser().getId(), "start");
             String introduction = stMaryClient.getTextManager().createText("start_adventure_introduction", language).build();
             String text = introduction + "\n\n" + stMaryClient.getCharacterManager().formatCharacterDialog(character, dialog);
 
@@ -108,6 +108,7 @@ public class StartCommand extends CommandAbstract {
 
         // Remove the cache and buttons
         stMaryClient.getCache().delete("startCmdLanguage_" + user.getId());
+        stMaryClient.getCache().delete("actionWaiter_" + user.getId());
         stMaryClient.getButtonManager().removeButtons(res.getId());
         res.editMessage(text).setComponents().queue();
     }
@@ -149,6 +150,7 @@ public class StartCommand extends CommandAbstract {
         event.editMessage(dialog).setComponents().queue();
         stMaryClient.getButtonManager().removeButtons(event.getMessageId());
         stMaryClient.getCache().delete("startCmdLanguage_" + event.getUser().getId());
+        stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
     }
 
     public void onClickNoBtn(ButtonInteractionEvent event, String language) {

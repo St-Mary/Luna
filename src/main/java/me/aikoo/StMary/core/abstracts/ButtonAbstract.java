@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * Represents an abstract button that can be interacted with in a Discord message.
@@ -77,6 +78,13 @@ public class ButtonAbstract {
      */
     public void onClick(ButtonInteractionEvent event, String language) {
         if (this.method == null) {
+            return;
+        }
+
+        // Get slash command
+        String slashCommand = Objects.requireNonNull(event.getMessage().getInteraction()).getName();
+        if (this.stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent() && !this.stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).get().equals(slashCommand)) {
+            event.reply(this.stMaryClient.getTextManager().createText("command_error_action_waiter", language).buildError()).setEphemeral(true).queue();
             return;
         }
 

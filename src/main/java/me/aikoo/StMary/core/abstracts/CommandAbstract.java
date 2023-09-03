@@ -83,6 +83,12 @@ public abstract class CommandAbstract {
             this.stMaryClient.getCooldownManager().addCooldown(event.getUser().getId(), this.name, this.cooldown);
         }
 
+        // Check if user have an action waiter
+        if (this.stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
+            event.reply(this.stMaryClient.getTextManager().createText("command_error_action_waiter", language).buildError()).setEphemeral(true).queue();
+            return;
+        }
+
         // If the command requires the user to be registered in-game, we check if he is. If not, we send an error message.
         if (this.mustBeRegistered && this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong()) == null) {
             event.reply(this.stMaryClient.getTextManager().createText("command_error_must_be_player", language).buildError()).setEphemeral(true).queue();
@@ -120,12 +126,26 @@ public abstract class CommandAbstract {
                                         System.arraycopy(parameters, 0, params, 2, parameters.length);
 
                                         closeMethod.invoke(methodClass, params);
+
+                                        if (stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
+                                            stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
+                                        }
                                     } catch (Exception e) {
-                                        LOGGER.error("Error while executing closeMethod: " + e.getMessage());
+                                        LOGGER.error("Error while executing closeMethod: " + e);
                                     }
                                 } else {
                                     res.editMessage(text).setComponents().queue();
+
+                                    if (stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
+                                        stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
+                                    }
                                 }
+                                if (stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
+                                    stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
+                                }
+                            }
+                            if (stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
+                                stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
                             }
                         }
                     },

@@ -38,5 +38,15 @@
       "title": "Button execution",
       "text": "You must be the author of the message to click on this button!"
     }
+  },
+  "command_error_action_waiter": {
+    "fr": {
+      "title": "Exécution de la commande",
+      "text": "Vous devez effectuer l'action en cours avant d'exécuter cette commande !"
+    },
+    "en": {
+      "title": "Command execution",
+      "text": "You must complete the current action before executing this command!"
+    }
   }
 }

@@ -35,7 +35,7 @@ public class StMaryClient {
     @Getter
     private final ButtonManager buttonManager;
     @Getter
-    private final Cache<String, String> cache = new Cache<>(10000);
+    private final Cache<String, String> cache = new Cache<>(20000);
 
     // JDA instance to interact with Discord
     @Getter
