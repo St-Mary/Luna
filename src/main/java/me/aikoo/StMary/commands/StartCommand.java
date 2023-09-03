@@ -6,6 +6,9 @@ import me.aikoo.StMary.core.bases.CharacterBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.constants.PlayerConstant;
 import me.aikoo.StMary.core.database.PlayerEntity;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -81,29 +84,32 @@ public class StartCommand extends CommandAbstract {
             String introduction = stMaryClient.getTextManager().createText("start_adventure_introduction", language).build();
             String text = introduction + "\n\n" + stMaryClient.getCharacterManager().formatCharacterDialog(character, dialog);
 
-            event.reply(text).addActionRow(optionBtn1.getButton(), optionBtn2.getButton()).queue(msg -> msg.retrieveOriginal().queue(res -> {
-                stMaryClient.getButtonManager().addButtons(res.getId(), new ArrayList<>(List.of(optionBtn1, optionBtn2)));
+            Method closeMethod = StartCommand.class.getMethod("closeBtnMenuEvent", Message.class, String.class, SlashCommandInteractionEvent.class);
+            ArrayList<ButtonAbstract> buttons = new ArrayList<>(List.of(optionBtn1, optionBtn2));
 
-                new java.util.Timer().schedule(
-                        new java.util.TimerTask() {
-                            @Override
-                            public void run() {
-                                if (stMaryClient.getButtonManager().isButtons(res.getId())) {
-                                    stMaryClient.getButtonManager().removeButtons(res.getId());
-
-                                    CharacterBase.Dialog noDialog = character.getDialog("1.1.2");
-                                    String text = stMaryClient.getCharacterManager().formatCharacterDialog(character, noDialog);
-                                    stMaryClient.getCache().delete("startCmdLanguage_" + event.getUser().getId());
-                                    res.editMessage(text).setComponents().queue();
-                                }
-                            }
-                        },
-                        120000
-                );
-            }));
+            this.sendMsgWithButtons(event, text, language, buttons, 5000, closeMethod, this);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void closeBtnMenuEvent(Message res, String language, SlashCommandInteractionEvent event) {
+        closeBtn(res, language, event.getUser());
+    }
+
+    public void closeBtnMenuEvent(Message res, String language, ButtonInteractionEvent event) {
+        closeBtn(res, language, event.getUser());
+    }
+
+    private void closeBtn(Message res, String language, User user) {
+        CharacterBase.Information character = this.stMaryClient.getCharacterManager().getCharacter("1").getCharacterInformation(language);
+        CharacterBase.Dialog noDialog = character.getDialog("1.1.2");
+        String text = stMaryClient.getCharacterManager().formatCharacterDialog(character, noDialog);
+
+        // Remove the cache and buttons
+        stMaryClient.getCache().delete("startCmdLanguage_" + user.getId());
+        stMaryClient.getButtonManager().removeButtons(res.getId());
+        res.editMessage(text).setComponents().queue();
     }
 
     /**
@@ -146,14 +152,7 @@ public class StartCommand extends CommandAbstract {
     }
 
     public void onClickNoBtn(ButtonInteractionEvent event, String language) {
-        Optional<String> cacheLanguage = stMaryClient.getCache().get("startCmdLanguage_" + event.getUser().getId());
-        language = cacheLanguage.orElse(language);
-
-        CharacterBase.Information character = this.stMaryClient.getCharacterManager().getCharacter("1").getCharacterInformation(language);
-        String dialog = stMaryClient.getCharacterManager().formatCharacterDialog(character, character.getDialog("1.1.2"));
-
-        event.editMessage(dialog).setComponents().queue();
-        stMaryClient.getButtonManager().removeButtons(event.getMessageId());
-        stMaryClient.getCache().delete("startCmdLanguage_" + event.getUser().getId());
+        language = stMaryClient.getCache().get("startCmdLanguage_" + event.getUser().getId()).orElse(language);
+        closeBtnMenuEvent(event.getMessage(), language, event);
     }
 }

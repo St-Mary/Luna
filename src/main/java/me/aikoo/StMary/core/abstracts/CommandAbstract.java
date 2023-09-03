@@ -2,20 +2,24 @@ package me.aikoo.StMary.core.abstracts;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.aikoo.StMary.core.bases.CharacterBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.database.PlayerEntity;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.localization.LocalizationFunction;
 import net.dv8tion.jda.api.interactions.commands.localization.ResourceBundleLocalizationFunction;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +97,32 @@ public abstract class CommandAbstract {
         PlayerEntity player = this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
         language = (player != null) ? player.getLanguage() : language;
         this.autoComplete(event, language);
+    }
+
+    public void sendMsgWithButtons(SlashCommandInteractionEvent event, String text, String language, ArrayList<ButtonAbstract> buttons, int time, Method closeMethod, Object methodClass) {
+        ArrayList<Button> buttonList = new ArrayList<>();
+        buttons.forEach(button -> buttonList.add(button.getButton()));
+        event.reply(text).addActionRow(buttonList).queue(msg -> msg.retrieveOriginal().queue(res -> {
+            stMaryClient.getButtonManager().addButtons(res.getId(), buttons);
+
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            if (stMaryClient.getButtonManager().isButtons(res.getId())) {
+                                stMaryClient.getButtonManager().removeButtons(res.getId());
+
+                                try {
+                                    closeMethod.invoke(methodClass, res, language, event);
+                                } catch (Exception e) {
+                                    LOGGER.error("Error while executing closeMethod: " + e.getMessage());
+                                }
+                            }
+                        }
+                    },
+                    time
+            );
+        }));
     }
 
     public String getName() {
