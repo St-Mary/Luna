@@ -7,6 +7,7 @@ import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Manages the creation and retrieval of game objects.
@@ -50,7 +51,7 @@ public class ObjectManager {
      */
     private static void load() {
         // Load objects from JSON files
-        ArrayList<JsonObject> objectArrayList = JSONFileReaderUtils.readAllFilesFrom("items");
+        List<JsonObject> objectArrayList = JSONFileReaderUtils.readAllFilesFrom("items");
 
         // Iterate through each JSON object and add them to the manager
         for (JsonObject object : objectArrayList) {

@@ -23,10 +23,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A command to display a user's menu, including their profile, inventory, and titles.
@@ -180,7 +177,7 @@ public class MenuCommand extends CommandAbstract {
         TitleBase title = player.getCurrentTitle(stMaryClient);
         String icon = title.getIcon();
 
-        HashMap<String, TitleBase> titles = player.getTitles(stMaryClient);
+        Map<String, TitleBase> titles = player.getTitles(stMaryClient);
 
         StringBuilder stringBuilder = new StringBuilder();
         for (TitleBase t : titles.values()) {

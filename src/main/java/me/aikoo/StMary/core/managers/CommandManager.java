@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -44,7 +45,7 @@ public class CommandManager {
      *
      * @return A map of all registered commands.
      */
-    public static HashMap<String, CommandAbstract> getCommands() {
+    public static Map<String, CommandAbstract> getCommands() {
         return commands;
     }
 
@@ -53,7 +54,7 @@ public class CommandManager {
      *
      * @return A map of all registered admin commands.
      */
-    public static HashMap<String, CommandAbstract> getAdminCommands() {
+    public static Map<String, CommandAbstract> getAdminCommands() {
         return adminCommands;
     }
 

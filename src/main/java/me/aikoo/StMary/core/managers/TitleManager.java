@@ -7,6 +7,7 @@ import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Title manager for players.
@@ -24,7 +25,7 @@ public class TitleManager {
      * Load titles from JSON files and add them to the list of titles.
      */
     public static void load() {
-        ArrayList<JsonObject> jsonObjects = JSONFileReaderUtils.readAllFilesFrom("titles");
+        List<JsonObject> jsonObjects = JSONFileReaderUtils.readAllFilesFrom("titles");
 
         for (JsonObject jsonObject : jsonObjects) {
             String id = jsonObject.get("id").getAsString();

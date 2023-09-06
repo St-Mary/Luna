@@ -1,6 +1,7 @@
 package me.aikoo.StMary.core.database;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "titles")
 public class TitleEntity {
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +24,7 @@ public class TitleEntity {
      *
      * @return The id of the title.
      */
-    public String getId() {
+    public String getTitleId() {
         return titleId;
     }
 

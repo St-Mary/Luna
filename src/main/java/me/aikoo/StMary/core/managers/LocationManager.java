@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -126,7 +127,7 @@ public class LocationManager {
      * @return A map of regions with their names as keys and corresponding region objects as values.
      */
     private static HashMap<String, RegionBase> loadRegions() {
-        ArrayList<JsonObject> regions = JSONFileReaderUtils.readAllFilesFrom("places", "regions");
+        List<JsonObject> regions = JSONFileReaderUtils.readAllFilesFrom("places", "regions");
         HashMap<String, RegionBase> regionHashMap = new HashMap<>();
 
         for (JsonObject regionObject : regions) {

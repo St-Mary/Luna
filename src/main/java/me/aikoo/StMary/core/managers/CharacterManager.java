@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CharacterManager {
 
@@ -36,7 +37,7 @@ public class CharacterManager {
     }
 
     private static void loadCharacters() {
-        ArrayList<JsonObject> charactersObject = JSONFileReaderUtils.readAllFilesFrom("characters");
+        List<JsonObject> charactersObject = JSONFileReaderUtils.readAllFilesFrom("characters");
 
         charactersObject.forEach(CharacterManager::loadCharacter);
     }

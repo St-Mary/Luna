@@ -23,7 +23,7 @@ public class JSONFileReaderUtils {
      * @param subDir The subdirectory within the main directory.
      * @return A list of JSON objects read from the files.
      */
-    public static ArrayList<JsonObject> readAllFilesFrom(String dir, String subDir) {
+    public static List<JsonObject> readAllFilesFrom(String dir, String subDir) {
         String path = "src/main/resources/json/" + dir + "/" + subDir;
         return readFiles(path);
     }
@@ -34,7 +34,7 @@ public class JSONFileReaderUtils {
      * @param dir The directory containing JSON files.
      * @return A list of JSON objects read from the files.
      */
-    public static ArrayList<JsonObject> readAllFilesFrom(String dir) {
+    public static List<JsonObject> readAllFilesFrom(String dir) {
         String path = "src/main/resources/json/" + dir;
         return readFiles(path);
     }
@@ -45,9 +45,9 @@ public class JSONFileReaderUtils {
      * @param path The path to the directory containing JSON files.
      * @return A list of JSON objects read from the files.
      */
-    private static ArrayList<JsonObject> readFiles(String path) {
+    private static List<JsonObject> readFiles(String path) {
         Gson gson = new Gson();
-        ArrayList<JsonObject> objects = new ArrayList<>();
+        List<JsonObject> objects = new ArrayList<>();
         try {
             List<String> jsonFiles = Files.list(Path.of(path))
                     .filter(Files::isRegularFile)

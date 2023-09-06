@@ -13,10 +13,7 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A command to select and display a title for the user.
@@ -80,7 +77,7 @@ public class SelectTitleCommand extends CommandAbstract {
      */
     public boolean verifications(PlayerEntity player, String titleId, SlashCommandInteractionEvent event, String language) {
         if (player == null) return false;
-        HashMap<String, TitleBase> titles = player.getTitles(stMaryClient);
+        Map<String, TitleBase> titles = player.getTitles(stMaryClient);
 
         // Check if the player owns the selected title
         if (!titles.containsKey(titleId)) {

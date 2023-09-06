@@ -100,10 +100,10 @@ public class PlayerEntity {
      * @return A HashMap of title names and Title objects.
      */
     @Transactional
-    public HashMap<String, TitleBase> getTitles(StMaryClient client) {
-        HashMap<String, TitleBase> titles = new HashMap<>();
+    public Map<String, TitleBase> getTitles(StMaryClient client) {
+        Map<String, TitleBase> titles = new HashMap<>();
         for (TitleEntity title : this.titles) {
-            titles.put(title.getId(), TitleManager.getTitle(title.getId()));
+            titles.put(title.getTitleId(), TitleManager.getTitle(title.getTitleId()));
         }
         return titles;
     }

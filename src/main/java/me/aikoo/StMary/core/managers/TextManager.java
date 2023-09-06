@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -70,7 +71,7 @@ public class TextManager {
      * Load texts from JSON files.
      */
     private static void load() {
-        ArrayList<JsonObject> files = JSONFileReaderUtils.readAllFilesFrom("text");
+        List<JsonObject> files = JSONFileReaderUtils.readAllFilesFrom("text");
 
         for (JsonObject file : files) {
             for (String key : file.keySet()) {
