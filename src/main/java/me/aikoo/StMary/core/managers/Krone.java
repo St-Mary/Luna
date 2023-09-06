@@ -10,5 +10,11 @@ public class Krone {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Krone.class);
 
+    /**
+     * The adventure manager constructor.
+     */
+    public Krone() {
+        LOGGER.info("Starting Krone...");
+    }
 
 }
