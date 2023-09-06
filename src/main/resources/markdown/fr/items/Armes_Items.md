@@ -3,7 +3,7 @@
 ### 📖 Lexique
 
 -
-    - Attaque
+  - Attaque
 - ❤️ - Gain de Vie
 - 😵 - Chance Étourdissement
 - 🛡 - Défense
@@ -50,5 +50,3 @@
 | Hache de Bataille Celtique | Hache féroce des Celtes                                               | Quartz      |       |
 | Bouclier de Spartiate      | Bouclier résistant des spartiates                                     | Quartz      |       |
 | Torchon de maman           | Massue brutale des barbares                                           | Quartz      |       |
-
-

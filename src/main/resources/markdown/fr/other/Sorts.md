@@ -11,8 +11,8 @@
 
 ### ❗ Particularités
 
-- Les sorts venant du livre **La Bible de l'Archimage** et **Le Codex des Abysses** ne peuvent être utilisés qu'une
-  seule fois par combat.
+- Les sorts venant du livre **La Bible de l'Archimage** et **Le Codex des Abysses
+  ** ne peuvent être utilisés qu'une seule fois par combat.
 - Les sorts venant du livre **La Bible de l'Archimage** ont une chance de 20% d'échouer.
 
 | Nom                           | Description                                                                                                                      | Livre                                      | Type de Magie | Coût | Conséquences                                           |
