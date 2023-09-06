@@ -5,7 +5,6 @@ import me.aikoo.StMary.core.bases.CharacterBase;
 import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

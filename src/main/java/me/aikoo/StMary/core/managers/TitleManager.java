@@ -5,7 +5,6 @@ import lombok.Getter;
 import me.aikoo.StMary.core.bases.TitleBase;
 import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -5,7 +5,6 @@ import me.aikoo.StMary.core.bases.ObjectBase;
 import me.aikoo.StMary.core.enums.ObjectType;
 import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
