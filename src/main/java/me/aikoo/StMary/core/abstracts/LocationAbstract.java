@@ -23,7 +23,7 @@ public abstract class LocationAbstract {
      *
      * @param id The id of the location.
      */
-    public LocationAbstract(String id) {
+    protected LocationAbstract(String id) {
         this.id = id;
     }
 

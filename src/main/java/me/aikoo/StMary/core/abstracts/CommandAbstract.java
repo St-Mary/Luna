@@ -45,7 +45,7 @@ public abstract class CommandAbstract {
      *
      * @param stMaryClient The client instance
      */
-    public CommandAbstract(StMaryClient stMaryClient) {
+    protected CommandAbstract(StMaryClient stMaryClient) {
         this.stMaryClient = stMaryClient;
         this.name = this.getClass().getSimpleName().toLowerCase();
         this.description = "No description provided.";
