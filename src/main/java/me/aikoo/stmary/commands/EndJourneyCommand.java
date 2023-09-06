@@ -21,6 +21,7 @@ public class EndJourneyCommand extends CommandAbstract {
 
     /**
      * Constructor for the endjourney command.
+     *
      * @param stMaryClient The StMaryClient instance.
      */
     public EndJourneyCommand(StMaryClient stMaryClient) {
@@ -84,7 +85,8 @@ public class EndJourneyCommand extends CommandAbstract {
 
     /**
      * The autocomplete method for the command.
-     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     @Override

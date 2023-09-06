@@ -22,6 +22,7 @@ public class CharacterBase {
 
     /**
      * Creates a new Character instance with the specified informations.
+     *
      * @param informations The informations of the character.
      */
     public CharacterBase(HashMap<String, Information> informations) {
@@ -30,6 +31,7 @@ public class CharacterBase {
 
     /**
      * Get the information of the character in the specified language.
+     *
      * @param language The language to get the information in.
      * @return The information of the character in the specified language.
      */
@@ -68,10 +70,11 @@ public class CharacterBase {
 
         /**
          * Creates a new CharacterInformation instance with the specified id, name, description, and dialogs.
-         * @param id The id of the character.
-         * @param name The name of the character.
+         *
+         * @param id          The id of the character.
+         * @param name        The name of the character.
          * @param description The description of the character.
-         * @param dialogs The dialogs of the character.
+         * @param dialogs     The dialogs of the character.
          */
         public Information(String id, String name, String description, HashMap<String, Dialog> dialogs) {
             this.id = id;
@@ -82,6 +85,7 @@ public class CharacterBase {
 
         /**
          * Get the dialog of the character in the specified language.
+         *
          * @param dialogId The id of the dialog to get.
          * @return The dialog of the character in the specified language.
          */
@@ -135,11 +139,12 @@ public class CharacterBase {
 
         /**
          * Creates a new Dialog instance with the specified id, text, isQuestion, question, and options.
-         * @param id The id of the dialog.
-         * @param text The text of the dialog.
+         *
+         * @param id         The id of the dialog.
+         * @param text       The text of the dialog.
          * @param isQuestion If the dialog is a question.
-         * @param question The question of the dialog.
-         * @param options The options of the dialog.
+         * @param question   The question of the dialog.
+         * @param options    The options of the dialog.
          */
         public Dialog(String id, String text, boolean isQuestion, String question, HashMap<String, Option> options) {
             this.id = id;
@@ -187,10 +192,11 @@ public class CharacterBase {
 
         /**
          * Creates a new Option instance with the specified id, name, icon, style, and dialog.
-         * @param id The id of the option.
-         * @param name The name of the option.
-         * @param icon The icon of the option.
-         * @param style The style of the option.
+         *
+         * @param id     The id of the option.
+         * @param name   The name of the option.
+         * @param icon   The icon of the option.
+         * @param style  The style of the option.
          * @param dialog The dialog of the option.
          */
         public Option(String id, String name, String icon, ButtonStyle style, Dialog dialog) {
@@ -236,13 +242,14 @@ public class CharacterBase {
 
         /**
          * Creates a new Option instance with the specified id, name, icon, style, and dialog.
-         * @param id The id of the option.
-         * @param name The name of the option.
-         * @param icon The icon of the option.
-         * @param style The style of the option.
+         *
+         * @param id           The id of the option.
+         * @param name         The name of the option.
+         * @param icon         The icon of the option.
+         * @param style        The style of the option.
          * @param stMaryClient The StMaryClient instance.
-         * @param classMethod The class method to be executed when the button is clicked.
-         * @param method The method to be executed when the button is clicked.
+         * @param classMethod  The class method to be executed when the button is clicked.
+         * @param method       The method to be executed when the button is clicked.
          */
         public OptionBtn(String id, String name, String icon, ButtonStyle style, StMaryClient stMaryClient, Object classMethod, Method method) {
             super(id, name, style, Emoji.fromFormatted(icon), stMaryClient, null, null);
@@ -256,7 +263,8 @@ public class CharacterBase {
 
         /**
          * Executes the method when the button is clicked.
-         * @param event The ButtonInteractionEvent triggered when the button is clicked.
+         *
+         * @param event    The ButtonInteractionEvent triggered when the button is clicked.
          * @param language The language of the player.
          */
         @Override

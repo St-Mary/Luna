@@ -2,6 +2,7 @@ package me.aikoo.stmary.core.cache;
 
 /**
  * A dummy node implementation.
+ *
  * @param <T> The type of the elements in the list.
  */
 public class DummyNode<T> implements LinkedListNode<T> {
@@ -9,6 +10,7 @@ public class DummyNode<T> implements LinkedListNode<T> {
 
     /**
      * Creates a new DummyNode instance.
+     *
      * @param list The list the node is in.
      */
     public DummyNode(DoublyLinkedList<T> list) {
@@ -17,6 +19,7 @@ public class DummyNode<T> implements LinkedListNode<T> {
 
     /**
      * Check if the node has an element.
+     *
      * @return Whether the node has an element.
      */
     @Override
@@ -26,6 +29,7 @@ public class DummyNode<T> implements LinkedListNode<T> {
 
     /**
      * Check if the node is empty.
+     *
      * @return Whether the node is empty.
      */
     @Override
@@ -35,6 +39,7 @@ public class DummyNode<T> implements LinkedListNode<T> {
 
     /**
      * Get the element of the node.
+     *
      * @return The element of the node.
      * @throws NullPointerException If the node has no element.
      */
@@ -53,11 +58,22 @@ public class DummyNode<T> implements LinkedListNode<T> {
 
     /**
      * Get the list the node is in.
+     *
      * @return The list the node is in.
      */
     @Override
     public DoublyLinkedList<T> getListReference() {
         return list;
+    }
+
+    /**
+     * Get the previous node.
+     *
+     * @return The previous node.
+     */
+    @Override
+    public LinkedListNode<T> getPrev() {
+        return this;
     }
 
     /**
@@ -70,6 +86,16 @@ public class DummyNode<T> implements LinkedListNode<T> {
     }
 
     /**
+     * Get the next node.
+     *
+     * @return The next node.
+     */
+    @Override
+    public LinkedListNode<T> getNext() {
+        return this;
+    }
+
+    /**
      * Set the next node.
      *
      * @param prev The next node.
@@ -79,25 +105,8 @@ public class DummyNode<T> implements LinkedListNode<T> {
     }
 
     /**
-     * Get the previous node.
-     * @return The previous node.
-     */
-    @Override
-    public LinkedListNode<T> getPrev() {
-        return this;
-    }
-
-    /**
-     * Get the next node.
-     * @return The next node.
-     */
-    @Override
-    public LinkedListNode<T> getNext() {
-        return this;
-    }
-
-    /**
      * Search for a value in the list.
+     *
      * @param value The value to search for.
      * @return The node containing the value.
      */

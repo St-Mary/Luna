@@ -79,6 +79,7 @@ public abstract class LocationAbstract {
 
     /**
      * Get the type of the location.
+     *
      * @return The type of the location.
      */
     public String getType() {

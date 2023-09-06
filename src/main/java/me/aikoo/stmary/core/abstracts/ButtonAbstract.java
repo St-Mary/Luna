@@ -2,11 +2,15 @@ package me.aikoo.stmary.core.abstracts;
 
 import lombok.Getter;
 import me.aikoo.stmary.core.bot.StMaryClient;
+import me.aikoo.stmary.core.managers.ButtonManager;
 import me.aikoo.stmary.core.managers.TextManager;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
@@ -14,6 +18,8 @@ import java.util.Objects;
  * Represents an abstract button that can be interacted with in a Discord message.
  */
 public class ButtonAbstract {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(ButtonAbstract.class);
 
     /**
      * Get the name of the button.
@@ -34,30 +40,26 @@ public class ButtonAbstract {
     private final ButtonStyle style;
 
     private final StMaryClient stMaryClient;
-
-    /**
-     * Get the emoji associated with the button, if any.
-     */
-    @Getter
-    private Emoji emoji = null;
-
     /**
      * Get the class method to be executed when the button is clicked.
      */
     @Getter
     private final Object classMethod;
-
     /**
      * Get the method to be executed when the button is clicked.
      */
     @Getter
     private final Method method;
-
     /**
      * Get the parameters to be passed to the method when the button is clicked.
      */
     @Getter
     private final Object[] parameters;
+    /**
+     * Get the emoji associated with the button, if any.
+     */
+    @Getter
+    private Emoji emoji = null;
 
     /**
      * Creates a new Button instance.
@@ -105,8 +107,18 @@ public class ButtonAbstract {
 
         try {
             this.method.invoke(this.classMethod, params);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            LOGGER.error("Error while executing command: " + e);
+            String errorText = TextManager.createText("command_error", language).buildError();
+            event.reply(errorText).setEphemeral(true).queue();
+
+            if (stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
+                stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
+            }
+
+            ButtonManager.removeButtons(event.getMessage().getId());
+
+            TextManager.sendError(slashCommand, e);
         }
     }
 

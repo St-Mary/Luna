@@ -21,6 +21,7 @@ public class Cache<K, V> implements ICache<K, V> {
 
     /**
      * Creates a new Cache instance with the specified size.
+     *
      * @param size The size of the cache.
      */
     public Cache(int size) {
@@ -31,7 +32,8 @@ public class Cache<K, V> implements ICache<K, V> {
 
     /**
      * Put a new item into the cache.
-     * @param key The key of the item.
+     *
+     * @param key   The key of the item.
      * @param value The value of the item.
      * @return Whether the item was successfully put into the cache.
      */
@@ -62,6 +64,7 @@ public class Cache<K, V> implements ICache<K, V> {
 
     /**
      * Get an item from the cache.
+     *
      * @param key The key of the item.
      * @return The value of the item.
      */
@@ -82,6 +85,7 @@ public class Cache<K, V> implements ICache<K, V> {
 
     /**
      * Delete an item from the cache.
+     *
      * @param key The key of the item.
      */
     @Override
@@ -100,6 +104,7 @@ public class Cache<K, V> implements ICache<K, V> {
 
     /**
      * Get the size of the cache.
+     *
      * @return The size of the cache.
      */
     @Override
@@ -114,6 +119,7 @@ public class Cache<K, V> implements ICache<K, V> {
 
     /**
      * Check if the cache is empty.
+     *
      * @return true if the cache is empty, false otherwise.
      */
     @Override

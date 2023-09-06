@@ -315,7 +315,8 @@ public class InfoCommand extends CommandAbstract {
 
     /**
      * Provides auto-completion for the info command.
-     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     @Override

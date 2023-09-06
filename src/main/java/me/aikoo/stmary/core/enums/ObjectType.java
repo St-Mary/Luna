@@ -24,6 +24,7 @@ public enum ObjectType {
 
     /**
      * Get the name of the object type in the specified language.
+     *
      * @param language The language to get the name in.
      * @return The name of the object type in the specified language.
      */
@@ -46,6 +47,7 @@ public enum ObjectType {
 
         /**
          * Creates a new Name instance with the specified id.
+         *
          * @param id The id of the object type.
          */
         public Name(String id) {

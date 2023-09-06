@@ -17,6 +17,7 @@ public class RemoveAdminCommand extends CommandAbstract {
 
     /**
      * Constructor of the removeadmin command
+     *
      * @param stMaryClient The StMaryClient instance
      */
     public RemoveAdminCommand(StMaryClient stMaryClient) {
@@ -33,7 +34,8 @@ public class RemoveAdminCommand extends CommandAbstract {
 
     /**
      * Remove an administrator.
-     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The SlashCommandInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     @Override
@@ -64,7 +66,8 @@ public class RemoveAdminCommand extends CommandAbstract {
 
     /**
      * Auto complete method for the command.
-     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     @Override

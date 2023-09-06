@@ -19,6 +19,7 @@ public class AddTitleCommand extends CommandAbstract {
 
     /**
      * Constructor for the command.
+     *
      * @param stMaryClient The StMaryClient instance.
      */
     public AddTitleCommand(StMaryClient stMaryClient) {
@@ -38,7 +39,8 @@ public class AddTitleCommand extends CommandAbstract {
 
     /**
      * Execute method for the command.
-     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The SlashCommandInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     @Override
@@ -71,7 +73,8 @@ public class AddTitleCommand extends CommandAbstract {
 
     /**
      * Auto complete method for the command.
-     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     @Override

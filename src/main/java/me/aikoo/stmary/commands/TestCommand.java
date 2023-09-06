@@ -12,6 +12,7 @@ public class TestCommand extends CommandAbstract {
 
     /**
      * Constructs a Test command.
+     *
      * @param stMaryClient The StMaryClient instance.
      */
     public TestCommand(StMaryClient stMaryClient) {
@@ -26,7 +27,8 @@ public class TestCommand extends CommandAbstract {
 
     /**
      * Executes the Test command.
-     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The SlashCommandInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     @Override
@@ -36,7 +38,8 @@ public class TestCommand extends CommandAbstract {
 
     /**
      * Auto complete method for the Test command.
-     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     @Override

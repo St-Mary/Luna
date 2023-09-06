@@ -40,6 +40,7 @@ public class BotConfigConstant {
 
     /**
      * Get the token of the bot.
+     *
      * @return The token of the bot.
      */
     public static String getToken() {
@@ -48,6 +49,7 @@ public class BotConfigConstant {
 
     /**
      * Get the dev token of the bot.
+     *
      * @return The dev token of the bot.
      */
     public static String getDevToken() {
@@ -56,6 +58,7 @@ public class BotConfigConstant {
 
     /**
      * Get the dev guild id of the bot.
+     *
      * @return The dev guild id of the bot.
      */
     public static String getDevGuildId() {
@@ -64,6 +67,7 @@ public class BotConfigConstant {
 
     /**
      * Get the owner id of the bot.
+     *
      * @return The owner id of the bot.
      */
     public static String getOwnerId() {
@@ -71,7 +75,17 @@ public class BotConfigConstant {
     }
 
     /**
+     * Get the debug channel id of the bot.
+     *
+     * @return The debug channel id of the bot.
+     */
+    public static String getDebugChannelId() {
+        return prop.getProperty("debugChannelId");
+    }
+
+    /**
      * Get the mode of the bot.
+     *
      * @return The mode of the bot.
      */
     public static String getMode() {
@@ -84,6 +98,7 @@ public class BotConfigConstant {
 
     /**
      * Get the database host of the bot.
+     *
      * @return The database host of the bot.
      */
     public static String getDatabaseHost() {
@@ -92,6 +107,7 @@ public class BotConfigConstant {
 
     /**
      * Get the database port of the bot.
+     *
      * @return The database port of the bot.
      */
     public static String getDatabasePort() {
@@ -100,6 +116,7 @@ public class BotConfigConstant {
 
     /**
      * Get the database username of the bot.
+     *
      * @return The database username of the bot.
      */
     public static String getDatabaseUsername() {
@@ -108,6 +125,7 @@ public class BotConfigConstant {
 
     /**
      * Get the database password of the bot.
+     *
      * @return The database password of the bot.
      */
     public static String getDatabasePassword() {
@@ -116,6 +134,7 @@ public class BotConfigConstant {
 
     /**
      * Get the database name of the bot.
+     *
      * @return The database name of the bot.
      */
     public static String getDatabaseName() {
@@ -124,6 +143,7 @@ public class BotConfigConstant {
 
     /**
      * Get the emote of the specified emote name.
+     *
      * @param emoteName The name of the emote.
      * @return The emote of the specified emote name.
      */

@@ -2,6 +2,7 @@ package me.aikoo.stmary.core.cache;
 
 /**
  * The CacheElement class is a simple implementation of a cache element.
+ *
  * @param <K> The key type.
  * @param <V> The value type.
  */
@@ -11,7 +12,8 @@ public class CacheElement<K, V> {
 
     /**
      * Creates a new CacheElement instance with the specified key and value.
-     * @param key The key of the element.
+     *
+     * @param key   The key of the element.
      * @param value The value of the element.
      */
     public CacheElement(K key, V value) {
@@ -21,6 +23,7 @@ public class CacheElement<K, V> {
 
     /**
      * Get the key of the element.
+     *
      * @return The key of the element.
      */
     public K getKey() {
@@ -29,6 +32,7 @@ public class CacheElement<K, V> {
 
     /**
      * Set the key of the element.
+     *
      * @param key The key of the element.
      */
     public void setKey(K key) {
@@ -37,6 +41,7 @@ public class CacheElement<K, V> {
 
     /**
      * Get the value of the element.
+     *
      * @return The value of the element.
      */
     public V getValue() {
@@ -45,6 +50,7 @@ public class CacheElement<K, V> {
 
     /**
      * Set the value of the element.
+     *
      * @param value The value of the element.
      */
     public void setValue(V value) {

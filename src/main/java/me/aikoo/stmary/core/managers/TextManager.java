@@ -4,9 +4,14 @@ import com.google.gson.JsonObject;
 import lombok.Getter;
 import me.aikoo.stmary.core.constants.BotConfigConstant;
 import me.aikoo.stmary.core.utils.JSONFileReaderUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -32,8 +37,7 @@ public class TextManager {
      */
     public static String getText(String id, String language) {
         if (texts.get(id) == null) {
-            LOGGER.error("Text {} doesn't exist.", id);
-            System.exit(1);
+            throw new NullPointerException("Text " + id + " doesn't exist.");
         }
 
         return texts.get(id).get(language).getAsJsonObject().get("text").getAsString();
@@ -80,6 +84,31 @@ public class TextManager {
                 }
                 texts.put(key, file.get(key).getAsJsonObject());
             }
+        }
+    }
+
+    /**
+     * Send an error to the development team.
+     *
+     * @param err The error.
+     */
+    public static void sendError(String cmdName, Exception err) {
+        try {
+            String stackTrace = err + "\n" + Arrays.toString(err.getStackTrace()).replace(",", "\n");
+            String token = (BotConfigConstant.getMode().equals("dev")) ? BotConfigConstant.getDevToken() : BotConfigConstant.getToken();
+            JDA jda = JDABuilder.createDefault(token).build();
+            TextChannel channel = jda.awaitReady().getTextChannelById(BotConfigConstant.getDebugChannelId());
+
+            EmbedBuilder errorEmbed = new EmbedBuilder();
+            errorEmbed.setTitle(BotConfigConstant.getEmote("no") + " Error");
+            errorEmbed.setDescription("Command: `" + cmdName + "`\nAn error occurred: \n\n```\n" + stackTrace + "\n```");
+            errorEmbed.setColor(0xff0000);
+
+            channel.sendMessageEmbeds(errorEmbed.build()).queue();
+
+            jda.shutdown();
+        } catch (Exception e) {
+            LOGGER.error("Error while sending error: " + e);
         }
     }
 

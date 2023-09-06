@@ -2,6 +2,7 @@ package me.aikoo.stmary.core.cache;
 
 /**
  * A node implementation.
+ *
  * @param <T> The type of the elements in the list.
  */
 public class Node<T> implements LinkedListNode<T> {
@@ -12,9 +13,10 @@ public class Node<T> implements LinkedListNode<T> {
 
     /**
      * Creates a new Node instance.
+     *
      * @param value The value of the node.
-     * @param next The next node.
-     * @param list The list the node is in.
+     * @param next  The next node.
+     * @param list  The list the node is in.
      */
     public Node(T value, LinkedListNode<T> next, DoublyLinkedList<T> list) {
         this.value = value;
@@ -27,6 +29,7 @@ public class Node<T> implements LinkedListNode<T> {
 
     /**
      * Check if the node has an element.
+     *
      * @return Whether the node has an element.
      */
     @Override
@@ -36,6 +39,7 @@ public class Node<T> implements LinkedListNode<T> {
 
     /**
      * Check if the node is empty.
+     *
      * @return Whether the node is empty.
      */
     @Override
@@ -45,6 +49,7 @@ public class Node<T> implements LinkedListNode<T> {
 
     /**
      * Get the element of the node.
+     *
      * @return The element of the node.
      */
     public T getElement() {
@@ -61,6 +66,7 @@ public class Node<T> implements LinkedListNode<T> {
 
     /**
      * Get the list the node is in.
+     *
      * @return The list the node is in.
      */
     @Override
@@ -69,25 +75,8 @@ public class Node<T> implements LinkedListNode<T> {
     }
 
     /**
-     * Set the previous node.
-     * @param prev The previous node.
-     */
-    @Override
-    public void setPrev(LinkedListNode<T> prev) {
-        this.prev = prev;
-    }
-
-    /**
-     * Set the next node.
-     * @param next The next node.
-     */
-    @Override
-    public void setNext(LinkedListNode<T> next) {
-        this.next = next;
-    }
-
-    /**
      * Get the previous node.
+     *
      * @return The previous node.
      */
     @Override
@@ -96,7 +85,18 @@ public class Node<T> implements LinkedListNode<T> {
     }
 
     /**
+     * Set the previous node.
+     *
+     * @param prev The previous node.
+     */
+    @Override
+    public void setPrev(LinkedListNode<T> prev) {
+        this.prev = prev;
+    }
+
+    /**
      * Get the next node.
+     *
      * @return The next node.
      */
     @Override
@@ -105,7 +105,18 @@ public class Node<T> implements LinkedListNode<T> {
     }
 
     /**
+     * Set the next node.
+     *
+     * @param next The next node.
+     */
+    @Override
+    public void setNext(LinkedListNode<T> next) {
+        this.next = next;
+    }
+
+    /**
      * Search for a value in the list.
+     *
      * @param value The value to search for.
      * @return The node containing the value.
      */

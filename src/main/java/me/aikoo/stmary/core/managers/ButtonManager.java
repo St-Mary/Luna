@@ -30,6 +30,7 @@ public class ButtonManager extends ListenerAdapter {
 
     /**
      * Removes a list of buttons associated with a message ID.
+     *
      * @param id The ID of the message the buttons are associated with.
      */
     public static void removeButtons(String id) {
@@ -38,6 +39,7 @@ public class ButtonManager extends ListenerAdapter {
 
     /**
      * Checks if a message ID is associated with any registered buttons.
+     *
      * @param id The ID of the message to check.
      * @return Whether the message ID is associated with any registered buttons.
      */

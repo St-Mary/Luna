@@ -149,6 +149,13 @@ public abstract class CommandAbstract {
 
             String errorText = TextManager.createText("command_error", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
+
+            if (stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
+                stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
+            }
+
+            ButtonManager.removeButtons(event.getHook().retrieveOriginal().complete().getId());
+            TextManager.sendError(name, e);
         }
     }
 
@@ -161,7 +168,12 @@ public abstract class CommandAbstract {
         String language = (event.getGuild().getLocale() == DiscordLocale.FRENCH) ? "fr" : "en";
         PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
         language = (player != null) ? player.getLanguage() : language;
-        this.autoComplete(event, language);
+
+        try {
+            this.autoComplete(event, language);
+        } catch (Exception e) {
+            TextManager.sendError(event.getName(), e);
+        }
     }
 
     /**
@@ -207,6 +219,9 @@ public abstract class CommandAbstract {
                                         }
                                     } catch (Exception e) {
                                         LOGGER.error("Error while executing closeMethod: " + e);
+                                        String errorText = TextManager.createText("command_error", language).buildError();
+                                        event.reply(errorText).setEphemeral(true).queue();
+                                        TextManager.sendError(event.getName(), e);
                                     }
                                 } else {
                                     res.editMessage(text).setComponents().queue();

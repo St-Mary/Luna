@@ -19,6 +19,7 @@ public class AddAdminCommand extends CommandAbstract {
 
     /**
      * Constructor for the command.
+     *
      * @param stMaryClient The StMaryClient instance.
      */
     public AddAdminCommand(StMaryClient stMaryClient) {
@@ -34,7 +35,8 @@ public class AddAdminCommand extends CommandAbstract {
 
     /**
      * Execute method for the command.
-     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The SlashCommandInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     @Override
@@ -61,7 +63,8 @@ public class AddAdminCommand extends CommandAbstract {
 
     /**
      * Autocomplete method for the command.
-     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     @Override

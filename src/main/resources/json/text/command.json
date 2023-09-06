@@ -52,11 +52,11 @@
   "command_error": {
     "fr": {
       "title": "Exécution de la commande",
-      "text": "Une erreur est survenue lors de l'exécution de la commande ! Veuillez contacter l'équipe de développement."
+      "text": "**Une erreur est survenue lors de l'exécution de la commande ! Notre équipe de développement a été prévenue.**\n\n**Merci de réessayer plus tard, ou de rejoindre le serveur support afin d'obtenir de l'aide**"
     },
     "en": {
       "title": "Command execution",
-      "text": "An error occurred while executing the command! Please contact the development team."
+      "text": "**An error occurred while executing the command! Our development team has been notified.**\n\n**Please try again later, or join the support server for help**"
     }
   }
 }

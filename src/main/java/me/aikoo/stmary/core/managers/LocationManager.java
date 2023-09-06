@@ -243,7 +243,6 @@ public class LocationManager {
      * @return The corresponding JSON object or null if not found.
      */
     private static JsonObject findTownObject(String townId, String region) {
-        System.out.println(townId + " " + region);
         return townsObjects.stream()
                 .filter(t -> t.get("id").getAsString().equals(townId))
                 .filter(t -> t.get("region").getAsString().equalsIgnoreCase(region))
