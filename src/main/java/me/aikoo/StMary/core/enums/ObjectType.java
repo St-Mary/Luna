@@ -32,12 +32,22 @@ public enum ObjectType {
     }
 
 
+    /**
+     * Represents the name of an object type in a given language.
+     */
     private static class Name {
 
+        /**
+         * Get the id of the object type.
+         */
         @Getter
         private final String id;
         private final HashMap<String, String> names = new HashMap<>();
 
+        /**
+         * Creates a new Name instance with the specified id.
+         * @param id The id of the object type.
+         */
         public Name(String id) {
             this.id = id;
         }
