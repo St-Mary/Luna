@@ -82,20 +82,23 @@ public abstract class CommandAbstract {
 
     /**
      * Execute the command
-     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The SlashCommandInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     public abstract void execute(SlashCommandInteractionEvent event, String language);
 
     /**
      * Auto complete the command
-     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     *
+     * @param event    The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
      * @param language The language of the player
      */
     public abstract void autoComplete(CommandAutoCompleteInteractionEvent event, String language);
 
     /**
      * Run the command
+     *
      * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
      */
     public void run(SlashCommandInteractionEvent event) {
@@ -139,11 +142,19 @@ public abstract class CommandAbstract {
             return;
         }
 
-        this.execute(event, language);
+        try {
+            this.execute(event, language);
+        } catch (Exception e) {
+            LOGGER.error("Error while executing command: " + e);
+
+            String errorText = TextManager.createText("command_error", language).buildError();
+            event.reply(errorText).setEphemeral(true).queue();
+        }
     }
 
     /**
      * Run the autocomplete of the command
+     *
      * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
      */
     public void runAutoComplete(CommandAutoCompleteInteractionEvent event) {
@@ -155,14 +166,15 @@ public abstract class CommandAbstract {
 
     /**
      * Send a message with buttons
-     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
-     * @param text The text to send
-     * @param language The language of the player
-     * @param buttons The list of Button objects to add.
-     * @param time The time before the message is deleted
+     *
+     * @param event       The SlashCommandInteractionEvent triggered when the button is clicked.
+     * @param text        The text to send
+     * @param language    The language of the player
+     * @param buttons     The list of Button objects to add.
+     * @param time        The time before the message is deleted
      * @param closeMethod The method to execute when the message is deleted
      * @param methodClass The class of the method to execute
-     * @param parameters The parameters of the method to execute
+     * @param parameters  The parameters of the method to execute
      */
     public void sendMsgWithButtons(SlashCommandInteractionEvent event, String text, String language, List<ButtonAbstract> buttons, int time, Method closeMethod, Object methodClass, Object... parameters) {
         ArrayList<Button> buttonList = new ArrayList<>();
@@ -219,6 +231,7 @@ public abstract class CommandAbstract {
 
     /**
      * Send a message with buttons
+     *
      * @return The SlashCommandData of the command
      */
     public SlashCommandData buildCommandData() {

@@ -9,6 +9,7 @@ public class Main {
 
     /**
      * Start StMary's Gate
+     *
      * @param args The arguments passed to the application.
      */
     public static void main(String[] args) {

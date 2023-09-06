@@ -94,7 +94,7 @@ public class CommandManager {
                 }
             } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                      NoSuchMethodException e) {
-                e.printStackTrace();
+                LOGGER.error("An error occurred while loading commands: ", e);
             }
         }
     }

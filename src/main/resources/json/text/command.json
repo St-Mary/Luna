@@ -48,5 +48,15 @@
       "title": "Command execution",
       "text": "You must complete the current action before executing this command!"
     }
+  },
+  "command_error": {
+    "fr": {
+      "title": "Exécution de la commande",
+      "text": "Une erreur est survenue lors de l'exécution de la commande ! Veuillez contacter l'équipe de développement."
+    },
+    "en": {
+      "title": "Command execution",
+      "text": "An error occurred while executing the command! Please contact the development team."
+    }
   }
 }

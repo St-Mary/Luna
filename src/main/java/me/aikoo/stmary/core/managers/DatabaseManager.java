@@ -12,7 +12,10 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
+import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +25,7 @@ import java.util.UUID;
  * Database manager for the application.
  */
 public class DatabaseManager {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseManager.class);
     private static StandardServiceRegistry registry;
     private static SessionFactory sessionFactory;
 
@@ -35,22 +39,7 @@ public class DatabaseManager {
             try {
                 StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
 
-                Map<String, Object> settings = new HashMap<>();
-                settings.put(Environment.DRIVER, "org.mariadb.jdbc.Driver");
-                settings.put(Environment.URL, "jdbc:mariadb" + "://" + BotConfigConstant.getDatabaseHost() + ":" + BotConfigConstant.getDatabasePort() + "/" + BotConfigConstant.getDatabaseName());
-                settings.put(Environment.USER, BotConfigConstant.getDatabaseUsername());
-                settings.put(Environment.PASS, BotConfigConstant.getDatabasePassword());
-                settings.put(Environment.HBM2DDL_AUTO, "update");
-                settings.put(Environment.SHOW_SQL, false);
-                settings.put(Environment.FORMAT_SQL, true);
-                settings.put(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider");
-
-                // HikariCP settings
-
-                settings.put("hibernate.hikari.connectionTimeout", "20000");
-                settings.put("hibernate.hikari.minimumIdle", "10");
-                settings.put("hibernate.hikari.maximumPoolSize", "20");
-                settings.put("hibernate.hikari.idleTimeout", "300000");
+                Map<String, Object> settings = getStringObjectMap();
 
                 registryBuilder.applySettings(settings);
 
@@ -68,10 +57,37 @@ public class DatabaseManager {
                 if (registry != null) {
                     StandardServiceRegistryBuilder.destroy(registry);
                 }
-                e.printStackTrace();
+
+                LOGGER.error("An error occurred while building the Hibernate session factory: ", e);
             }
         }
         return sessionFactory;
+    }
+
+    /**
+     * Get the settings for the Hibernate session.
+     *
+     * @return The settings for the Hibernate session.
+     */
+    @NotNull
+    private static Map<String, Object> getStringObjectMap() {
+        Map<String, Object> settings = new HashMap<>();
+        settings.put(Environment.DRIVER, "org.mariadb.jdbc.Driver");
+        settings.put(Environment.URL, "jdbc:mariadb" + "://" + BotConfigConstant.getDatabaseHost() + ":" + BotConfigConstant.getDatabasePort() + "/" + BotConfigConstant.getDatabaseName());
+        settings.put(Environment.USER, BotConfigConstant.getDatabaseUsername());
+        settings.put(Environment.PASS, BotConfigConstant.getDatabasePassword());
+        settings.put(Environment.HBM2DDL_AUTO, "update");
+        settings.put(Environment.SHOW_SQL, false);
+        settings.put(Environment.FORMAT_SQL, true);
+        settings.put(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider");
+
+        // HikariCP settings
+
+        settings.put("hibernate.hikari.connectionTimeout", "20000");
+        settings.put("hibernate.hikari.minimumIdle", "10");
+        settings.put("hibernate.hikari.maximumPoolSize", "20");
+        settings.put("hibernate.hikari.idleTimeout", "300000");
+        return settings;
     }
 
     /**

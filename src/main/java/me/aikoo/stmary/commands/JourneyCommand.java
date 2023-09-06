@@ -20,6 +20,8 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import java.util.List;
  */
 public class JourneyCommand extends CommandAbstract {
 
+    Logger LOGGER = LoggerFactory.getLogger(JourneyCommand.class);
 
     /**
      * Constructs a Journey instance.
@@ -105,7 +108,10 @@ public class JourneyCommand extends CommandAbstract {
             stMaryClient.getCache().put("actionWaiter_" + event.getUser().getId(), "journey");
             this.sendMsgWithButtons(event, str, language, new ArrayList<>(List.of(confirmBtn, closeBtn)), 20000, close, this, event.getUser().getId(), destinationPlace);
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            LOGGER.error("Error while executing the journey command.", e);
+
+            String errorText = TextManager.createText("command_error", language).buildError();
+            event.reply(errorText).setEphemeral(true).queue();
         }
     }
 
@@ -177,9 +183,10 @@ public class JourneyCommand extends CommandAbstract {
 
     /**
      * Closes the journey message.
-     * @param event The ButtonInteractionEvent triggered when the button is clicked.
-     * @param language The language of the player.
-     * @param id The Discord ID of the player.
+     *
+     * @param event            The ButtonInteractionEvent triggered when the button is clicked.
+     * @param language         The language of the player.
+     * @param id               The Discord ID of the player.
      * @param destinationPlace The destination place.
      */
     public void closeBtn(ButtonInteractionEvent event, String language, String id, PlaceBase destinationPlace) {

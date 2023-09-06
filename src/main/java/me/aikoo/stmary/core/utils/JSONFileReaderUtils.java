@@ -2,6 +2,8 @@ package me.aikoo.stmary.core.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -15,6 +17,8 @@ import java.util.List;
  * This class provides utility methods for reading JSON files.
  */
 public class JSONFileReaderUtils {
+
+    static Logger LOGGER = LoggerFactory.getLogger(JSONFileReaderUtils.class);
 
     /**
      * Reads all JSON files from the specified directory and subdirectory.
@@ -59,11 +63,11 @@ public class JSONFileReaderUtils {
                     JsonObject object = gson.fromJson(reader, JsonObject.class);
                     objects.add(object);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error("Failed to read JSON file: " + file + " (" + e.getMessage() + ")");
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to read JSON files from directory: " + path + " (" + e.getMessage() + ")");
         }
 
         return objects;
