@@ -106,7 +106,7 @@ public abstract class CommandAbstract {
         this.autoComplete(event, language);
     }
 
-    public void sendMsgWithButtons(SlashCommandInteractionEvent event, String text, String language, ArrayList<ButtonAbstract> buttons, int time, Method closeMethod, Object methodClass, Object... parameters) {
+    public void sendMsgWithButtons(SlashCommandInteractionEvent event, String text, String language, List<ButtonAbstract> buttons, int time, Method closeMethod, Object methodClass, Object... parameters) {
         ArrayList<Button> buttonList = new ArrayList<>();
         buttons.forEach(button -> buttonList.add(button.getButton()));
         event.reply(text).addActionRow(buttonList).queue(msg -> msg.retrieveOriginal().queue(res -> {

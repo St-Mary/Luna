@@ -30,8 +30,6 @@ public class StMaryClient {
     public StMaryClient() {
         CommandManager.loadCommands(this);
 
-        ButtonManager.setStMaryClient(this);
-
         // Initialize the database manager
         DatabaseManager.getSessionFactory();
 

@@ -8,6 +8,7 @@ import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Title manager for players.
@@ -15,7 +16,7 @@ import java.util.List;
 public class TitleManager {
 
     @Getter
-    public static HashMap<String, TitleBase> titles = new HashMap<>();
+    public static Map<String, TitleBase> titles = new HashMap<>();
 
     static {
         load();

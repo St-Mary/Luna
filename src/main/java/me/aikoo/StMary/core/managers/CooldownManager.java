@@ -1,6 +1,7 @@
 package me.aikoo.StMary.core.managers;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Manages cooldowns for user commands.
@@ -42,7 +43,7 @@ public class CooldownManager {
      * @param command The command for which to get the cooldown details.
      * @return A map of cooldown details (timestamps and duration) for the user's command.
      */
-    public static HashMap<Long, Long> getUserCommandCooldown(String userId, String command) {
+    public static Map<Long, Long> getUserCommandCooldown(String userId, String command) {
         return cooldowns.get(userId).get(command);
     }
 

@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Manages interactive buttons in the bot.
@@ -18,8 +19,6 @@ import java.util.HashMap;
 public class ButtonManager extends ListenerAdapter {
 
     private static final HashMap<String, ArrayList<ButtonAbstract>> commands = new HashMap<>();
-    @Setter
-    private static StMaryClient stMaryClient;
 
     /**
      * Adds a list of buttons associated with a message ID.
@@ -27,8 +26,8 @@ public class ButtonManager extends ListenerAdapter {
      * @param id      The ID of the message the buttons are associated with.
      * @param buttons The list of Button objects to add.
      */
-    public static void addButtons(String id, ArrayList<ButtonAbstract> buttons) {
-        commands.put(id, buttons);
+    public static void addButtons(String id, List<ButtonAbstract> buttons) {
+        commands.put(id, new ArrayList<>(buttons));
     }
 
     public static void removeButtons(String id) {
