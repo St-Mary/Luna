@@ -17,18 +17,11 @@ import java.util.regex.Pattern;
  */
 public class TextManager {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(TextManager.class);
-    private final HashMap<String, JsonObject> texts = new HashMap<>();
-    private final StMaryClient stMaryClient;
+    private static final Logger LOGGER = LoggerFactory.getLogger(TextManager.class);
+    private static final HashMap<String, JsonObject> texts = new HashMap<>();
 
-    /**
-     * Constructor for the TextManager class.
-     *
-     * @param stMaryClient The main StMary client.
-     */
-    public TextManager(StMaryClient stMaryClient) {
-        this.stMaryClient = stMaryClient;
-        this.load();
+    static {
+        load();
     }
 
     /**
@@ -38,8 +31,13 @@ public class TextManager {
      * @param language The language of the text.
      * @return The text associated with the name, or null if it doesn't exist.
      */
-    public String getText(String id, String language) {
-        return (this.texts.get(id) != null) ? this.texts.get(id).get(language).getAsJsonObject().get("text").getAsString() : null;
+    public static String getText(String id, String language) {
+        if (texts.get(id) == null) {
+            LOGGER.error("Text {} doesn't exist.", id);
+            System.exit(1);
+        }
+
+        return texts.get(id).get(language).getAsJsonObject().get("text").getAsString();
     }
 
     /**
@@ -49,8 +47,13 @@ public class TextManager {
      * @param language The language of the title.
      * @return The title associated with the name, or null if it doesn't exist.
      */
-    public String getTitle(String id, String language) {
-        return (this.texts.get(id) != null) ? this.texts.get(id).get(language).getAsJsonObject().get("title").getAsString() : null;
+    public static String getTitle(String id, String language) {
+        if (texts.get(id) == null) {
+            LOGGER.error("Title {} doesn't exist.", id);
+            System.exit(1);
+        }
+
+        return texts.get(id).get(language).getAsJsonObject().get("title").getAsString();
     }
 
     /**
@@ -60,14 +63,14 @@ public class TextManager {
      * @param language The language of the text.
      * @return The created Text object.
      */
-    public Text createText(String id, String language) {
-        return new Text(id, language, this.getText(id, language), this.getTitle(id, language));
+    public static Text createText(String id, String language) {
+        return new Text(id, language, getText(id, language), getTitle(id, language));
     }
 
     /**
      * Load texts from JSON files.
      */
-    private void load() {
+    private static void load() {
         ArrayList<JsonObject> files = JSONFileReaderUtils.readAllFilesFrom("text");
 
         for (JsonObject file : files) {
@@ -76,7 +79,7 @@ public class TextManager {
                     LOGGER.error("JSON Object {} is invalid. Please check the syntax.", key);
                     System.exit(1);
                 }
-                this.texts.put(key, file.get(key).getAsJsonObject());
+                texts.put(key, file.get(key).getAsJsonObject());
             }
         }
     }
@@ -84,7 +87,7 @@ public class TextManager {
     /**
      * Text class for formatting and generating texts.
      */
-    public class Text {
+    public static class Text {
 
         @Getter
         private final String id;
@@ -126,8 +129,8 @@ public class TextManager {
             Pattern pattern = Pattern.compile(regex);
             if ((pattern.matcher(tmpText).find())) {
                 while (pattern.matcher(tmpText).find()) {
-                    String name = stMaryClient.getLocationManager().extractLocationName(tmpText);
-                    tmpText = tmpText.replaceFirst(regex, stMaryClient.getLocationManager().formatLocation(name, this.language));
+                    String name = LocationManager.extractLocationName(tmpText);
+                    tmpText = tmpText.replaceFirst(regex, LocationManager.formatLocation(name, this.language));
                 }
             }
         }

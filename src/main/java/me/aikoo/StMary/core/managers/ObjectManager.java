@@ -13,12 +13,9 @@ import java.util.HashMap;
  */
 public class ObjectManager {
     // Stores objects using their ID as the key
-    private final HashMap<String, ObjectBase> objects = new HashMap<>();
+    private static final HashMap<String, ObjectBase> objects = new HashMap<>();
 
-    /**
-     * Constructor for the ObjectManager class. Loads objects from JSON files at startup.
-     */
-    public ObjectManager() {
+   static {
         load();
     }
 
@@ -28,7 +25,7 @@ public class ObjectManager {
      * @param id The ID of the object to retrieve.
      * @return The object corresponding to the ID or null if not found.
      */
-    public ObjectBase getObject(String id) {
+    public static ObjectBase getObject(String id) {
         return objects.get(id);
     }
 
@@ -38,7 +35,7 @@ public class ObjectManager {
      * @param name The name of the object to retrieve.
      * @return The object corresponding to the name or null if not found.
      */
-    public ObjectBase getObjectByName(String name, String language) {
+    public static ObjectBase getObjectByName(String name, String language) {
         name = name.toLowerCase();
         for (ObjectBase object : objects.values()) {
             if (object.getName(language).toLowerCase().equalsIgnoreCase(name)) {
@@ -51,12 +48,12 @@ public class ObjectManager {
     /**
      * Loads object data from JSON files.
      */
-    private void load() {
+    private static void load() {
         // Load objects from JSON files
-        ArrayList<JsonObject> objects = JSONFileReaderUtils.readAllFilesFrom("items");
+        ArrayList<JsonObject> objectArrayList = JSONFileReaderUtils.readAllFilesFrom("items");
 
         // Iterate through each JSON object and add them to the manager
-        for (JsonObject object : objects) {
+        for (JsonObject object : objectArrayList) {
             String id = object.get("id").getAsString();
             String icon = object.get("icon").getAsString();
             ObjectType type = ObjectType.valueOf(object.get("type").getAsString().toUpperCase());
@@ -67,7 +64,7 @@ public class ObjectManager {
             objectBase.setName("fr", object.get("name").getAsJsonObject().get("fr").getAsString());
             objectBase.setDescription("fr", object.get("description").getAsJsonObject().get("fr").getAsString());
 
-            this.objects.put(id, objectBase);
+            objects.put(id, objectBase);
         }
     }
 }

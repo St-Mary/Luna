@@ -14,20 +14,16 @@ import java.util.HashMap;
 public class TitleManager {
 
     @Getter
-    public HashMap<String, TitleBase> titles = new HashMap<>();
+    public static HashMap<String, TitleBase> titles = new HashMap<>();
 
-    /**
-     * Constructor for the TitleManager class.
-     * Loads titles from JSON files.
-     */
-    public TitleManager() {
-        this.load();
+    static {
+        load();
     }
 
     /**
      * Load titles from JSON files and add them to the list of titles.
      */
-    public void load() {
+    public static void load() {
         ArrayList<JsonObject> jsonObjects = JSONFileReaderUtils.readAllFilesFrom("titles");
 
         for (JsonObject jsonObject : jsonObjects) {
@@ -40,7 +36,7 @@ public class TitleManager {
             title.setName("fr", jsonObject.get("name").getAsJsonObject().get("fr").getAsString());
             title.setDescription("fr", jsonObject.get("description").getAsJsonObject().get("fr").getAsString());
 
-            this.titles.put(id, title);
+            titles.put(id, title);
         }
     }
 
@@ -50,8 +46,8 @@ public class TitleManager {
      * @param id The id of the title to retrieve.
      * @return The title corresponding to the id, or null if it doesn't exist.
      */
-    public TitleBase getTitle(String id) {
-        return this.titles.get(id);
+    public static TitleBase getTitle(String id) {
+        return titles.get(id);
     }
 
     /**
@@ -61,8 +57,8 @@ public class TitleManager {
      * @param language The language to get the title in.
      * @return The title corresponding to the name, or null if it doesn't exist.
      */
-    public TitleBase getTitleByName(String name, String language) {
-        for (TitleBase title : this.titles.values()) {
+    public static TitleBase getTitleByName(String name, String language) {
+        for (TitleBase title : titles.values()) {
             if (title.getName(language).equalsIgnoreCase(name)) {
                 return title;
             }

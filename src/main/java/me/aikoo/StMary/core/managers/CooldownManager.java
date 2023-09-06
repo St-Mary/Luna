@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class CooldownManager {
     // Stores user-specific command cooldowns
-    private final HashMap<String, HashMap<String, HashMap<Long, Long>>> cooldowns = new HashMap<>();
+    private static final HashMap<String, HashMap<String, HashMap<Long, Long>>> cooldowns = new HashMap<>();
 
     /**
      * Adds a cooldown for a user and command.
@@ -16,7 +16,7 @@ public class CooldownManager {
      * @param command The command for which to add the cooldown.
      * @param time    The time (in milliseconds) for the cooldown.
      */
-    public void addCooldown(String user, String command, Long time) {
+    public static void addCooldown(String user, String command, Long time) {
         HashMap<String, HashMap<Long, Long>> cooldown = new HashMap<>();
         HashMap<Long, Long> times = new HashMap<>();
         times.put(System.currentTimeMillis(), time);
@@ -31,7 +31,7 @@ public class CooldownManager {
      * @param command The command to check for cooldown.
      * @return True if the user has a cooldown for the command, otherwise False.
      */
-    public boolean hasCooldown(String user, String command) {
+    public static boolean hasCooldown(String user, String command) {
         return cooldowns.containsKey(user) && cooldowns.get(user).containsKey(command);
     }
 
@@ -42,7 +42,7 @@ public class CooldownManager {
      * @param command The command for which to get the cooldown details.
      * @return A map of cooldown details (timestamps and duration) for the user's command.
      */
-    public HashMap<Long, Long> getUserCommandCooldown(String userId, String command) {
+    public static HashMap<Long, Long> getUserCommandCooldown(String userId, String command) {
         return cooldowns.get(userId).get(command);
     }
 
@@ -53,7 +53,7 @@ public class CooldownManager {
      * @param command The command for which to get the remaining cooldown time.
      * @return The remaining cooldown time in milliseconds.
      */
-    public Long getRemainingCooldown(String userId, String command) {
+    public static Long getRemainingCooldown(String userId, String command) {
         return getUserCommandCooldown(userId, command).entrySet().iterator().next().getValue() - (System.currentTimeMillis() - getUserCommandCooldown(userId, command).entrySet().iterator().next().getKey());
     }
 }

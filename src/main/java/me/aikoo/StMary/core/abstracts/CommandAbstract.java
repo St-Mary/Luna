@@ -6,6 +6,10 @@ import me.aikoo.StMary.core.bases.CharacterBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.database.PlayerEntity;
+import me.aikoo.StMary.core.managers.ButtonManager;
+import me.aikoo.StMary.core.managers.CooldownManager;
+import me.aikoo.StMary.core.managers.DatabaseManager;
+import me.aikoo.StMary.core.managers.TextManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -55,13 +59,13 @@ public abstract class CommandAbstract {
     public abstract void autoComplete(CommandAutoCompleteInteractionEvent event, String language);
 
     public void run(SlashCommandInteractionEvent event) {
-        PlayerEntity player = this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
         String language = (event.getGuild().getLocale() == DiscordLocale.FRENCH) ? "fr" : "en";
         language = (player != null) ? player.getLanguage() : language;
 
         if (this.isAdminCommand) {
-            if (!this.stMaryClient.getDatabaseManager().isAdministrator(event.getUser().getIdLong()) && !event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
-                event.reply(stMaryClient.getTextManager().createText("command_error_not_allowed", language).buildError()).setEphemeral(true).queue();
+            if (!DatabaseManager.isAdministrator(event.getUser().getIdLong()) && !event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
+                event.reply(TextManager.createText("command_error_not_allowed", language).buildError()).setEphemeral(true).queue();
                 return;
             }
         }
@@ -69,29 +73,29 @@ public abstract class CommandAbstract {
         if (this.cooldown > 0) {
 
             // If the user has a cooldown, we check if it's over. If not, we send an error message, otherwise we add a new cooldown.
-            if (this.stMaryClient.getCooldownManager().hasCooldown(event.getUser().getId(), this.name) && this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name) > 0) {
-                long timeRemaining = this.stMaryClient.getCooldownManager().getRemainingCooldown(event.getUser().getId(), this.name);
+            if (CooldownManager.hasCooldown(event.getUser().getId(), this.name) && CooldownManager.getRemainingCooldown(event.getUser().getId(), this.name) > 0) {
+                long timeRemaining = CooldownManager.getRemainingCooldown(event.getUser().getId(), this.name);
                 long timestampRemaining = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + timeRemaining);
 
                 String timestamp = "<t:" + timestampRemaining + ":R>";
-                String text = stMaryClient.getTextManager().createText("command_error_cooldown", language).replace("cooldown", timestamp).buildError();
+                String text = TextManager.createText("command_error_cooldown", language).replace("cooldown", timestamp).buildError();
                 event.reply(text).setEphemeral(true).queue();
                 return;
             }
 
             // Add a new cooldown
-            this.stMaryClient.getCooldownManager().addCooldown(event.getUser().getId(), this.name, this.cooldown);
+            CooldownManager.addCooldown(event.getUser().getId(), this.name, this.cooldown);
         }
 
         // Check if user have an action waiter
         if (this.stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
-            event.reply(this.stMaryClient.getTextManager().createText("command_error_action_waiter", language).buildError()).setEphemeral(true).queue();
+            event.reply(TextManager.createText("command_error_action_waiter", language).buildError()).setEphemeral(true).queue();
             return;
         }
 
         // If the command requires the user to be registered in-game, we check if he is. If not, we send an error message.
-        if (this.mustBeRegistered && this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong()) == null) {
-            event.reply(this.stMaryClient.getTextManager().createText("command_error_must_be_player", language).buildError()).setEphemeral(true).queue();
+        if (this.mustBeRegistered && DatabaseManager.getPlayer(event.getUser().getIdLong()) == null) {
+            event.reply(TextManager.createText("command_error_must_be_player", language).buildError()).setEphemeral(true).queue();
             return;
         }
 
@@ -100,7 +104,7 @@ public abstract class CommandAbstract {
 
     public void runAutoComplete(CommandAutoCompleteInteractionEvent event) {
         String language = (event.getGuild().getLocale() == DiscordLocale.FRENCH) ? "fr" : "en";
-        PlayerEntity player = this.stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
         language = (player != null) ? player.getLanguage() : language;
         this.autoComplete(event, language);
     }
@@ -109,7 +113,7 @@ public abstract class CommandAbstract {
         ArrayList<Button> buttonList = new ArrayList<>();
         buttons.forEach(button -> buttonList.add(button.getButton()));
         event.reply(text).addActionRow(buttonList).queue(msg -> msg.retrieveOriginal().queue(res -> {
-            stMaryClient.getButtonManager().addButtons(res.getId(), buttons);
+            ButtonManager.addButtons(res.getId(), buttons);
 
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
@@ -119,8 +123,8 @@ public abstract class CommandAbstract {
                                 return;
                             }
 
-                            if (stMaryClient.getButtonManager().isButtons(res.getId())) {
-                                stMaryClient.getButtonManager().removeButtons(res.getId());
+                            if (ButtonManager.isButtons(res.getId())) {
+                                ButtonManager.removeButtons(res.getId());
 
                                 if (closeMethod != null) {
                                     try {

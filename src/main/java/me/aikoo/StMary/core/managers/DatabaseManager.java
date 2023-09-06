@@ -22,16 +22,16 @@ import java.util.UUID;
  * Database manager for the application.
  */
 public class DatabaseManager {
-    private StandardServiceRegistry registry;
-    private SessionFactory sessionFactory;
+    private static StandardServiceRegistry registry;
+    private static SessionFactory sessionFactory;
 
     /**
      * Retrieve or build the Hibernate session.
      *
      * @return The Hibernate session.
      */
-    public SessionFactory getSessionFactory() {
-        if (this.sessionFactory == null) {
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
             try {
                 StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();
 
@@ -77,7 +77,7 @@ public class DatabaseManager {
     /**
      * Close the Hibernate session.
      */
-    public void shutdown() {
+    public static void shutdown() {
         if (registry != null) {
             StandardServiceRegistryBuilder.destroy(registry);
         }
@@ -91,8 +91,8 @@ public class DatabaseManager {
      * @param <T> The type of the entity.
      * @return The entity corresponding to the ID, or null if not found.
      */
-    public <T> T findById(Long id, Class<T> cls) {
-        Session session = this.getSessionFactory().openSession();
+    public static <T> T findById(Long id, Class<T> cls) {
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
         T obj = session.find(cls, id);
         session.getTransaction().commit();
@@ -105,8 +105,8 @@ public class DatabaseManager {
      *
      * @param obj The object to save or update.
      */
-    public void save(Object obj) {
-        Session session = this.getSessionFactory().openSession();
+    public static void save(Object obj) {
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
         session.persist(obj);
         session.getTransaction().commit();
@@ -118,8 +118,8 @@ public class DatabaseManager {
      *
      * @param obj The object to delete.
      */
-    public void delete(Object obj) {
-        Session session = this.getSessionFactory().openSession();
+    public static void delete(Object obj) {
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
         session.remove(obj);
         session.getTransaction().commit();
@@ -131,8 +131,8 @@ public class DatabaseManager {
      *
      * @param obj The object to update.
      */
-    public void update(Object obj) {
-        Session session = this.getSessionFactory().openSession();
+    public static void update(Object obj) {
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
         session.merge(obj);
         session.getTransaction().commit();
@@ -145,8 +145,8 @@ public class DatabaseManager {
      * @param idLong The Discord ID of the player.
      * @return The player corresponding to the Discord ID, or null if not found.
      */
-    public PlayerEntity getPlayer(long idLong) {
-        Session session = this.getSessionFactory().openSession();
+    public static PlayerEntity getPlayer(long idLong) {
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
         PlayerEntity player = session.createQuery("from PlayerEntity where discordId = :discordId", PlayerEntity.class).setParameter("discordId", idLong).uniqueResult();
         session.getTransaction().commit();
@@ -160,8 +160,8 @@ public class DatabaseManager {
      * @param idLong The Discord ID of the administrator.
      * @return The administrator corresponding to the Discord ID, or null if not found.
      */
-    public AdministratorEntity getAdministrator(long idLong) {
-        Session session = this.getSessionFactory().openSession();
+    public static AdministratorEntity getAdministrator(long idLong) {
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
         AdministratorEntity admin = session.createQuery("from AdministratorEntity where discordId = :discordId", AdministratorEntity.class).setParameter("discordId", idLong).uniqueResult();
         session.getTransaction().commit();
@@ -175,8 +175,8 @@ public class DatabaseManager {
      * @param idLong The Discord ID of the user to check.
      * @return True if the user is an administrator, otherwise False.
      */
-    public boolean isAdministrator(long idLong) {
-        Session session = this.getSessionFactory().openSession();
+    public static boolean isAdministrator(long idLong) {
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
         AdministratorEntity admin = session.createQuery("from AdministratorEntity where discordId = :discordId", AdministratorEntity.class).setParameter("discordId", idLong).uniqueResult();
         session.getTransaction().commit();
@@ -190,8 +190,8 @@ public class DatabaseManager {
      * @param uuid The UUID of the player.
      * @return The movements of the player corresponding to the UUID, or null if not found.
      */
-    public MoveEntity getMove(UUID uuid) {
-        Session session = this.getSessionFactory().openSession();
+    public static MoveEntity getMove(UUID uuid) {
+        Session session = getSessionFactory().openSession();
         session.beginTransaction();
         MoveEntity moves = session.createQuery("from MoveEntity where playerId = :uuid", MoveEntity.class).setParameter("uuid", uuid).uniqueResult();
         session.getTransaction().commit();

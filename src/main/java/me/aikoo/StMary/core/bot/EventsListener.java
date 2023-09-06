@@ -2,6 +2,7 @@ package me.aikoo.StMary.core.bot;
 
 import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import me.aikoo.StMary.core.constants.BotConfigConstant;
+import me.aikoo.StMary.core.managers.CommandManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -42,21 +43,21 @@ public class EventsListener extends ListenerAdapter {
 
         if (BotConfigConstant.getMode().equals("dev")) {
             // Merge commands and admin commands
-            ArrayList<CommandAbstract> commands = new ArrayList<>(this.stMaryClient.getCommandManager().getCommands().values());
-            commands.addAll(this.stMaryClient.getCommandManager().getAdminCommands().values());
+            ArrayList<CommandAbstract> commands = new ArrayList<>(CommandManager.getCommands().values());
+            commands.addAll(CommandManager.getAdminCommands().values());
 
             Objects.requireNonNull(this.stMaryClient.getJda().getGuildById(BotConfigConstant.getDevGuildId())).updateCommands()
                     .addCommands(commands.stream().map(CommandAbstract::buildCommandData).toArray(CommandData[]::new))
                     .queue(cmds -> LOGGER.info("Registered {} development commands !", cmds.size()));
         } else {
             this.stMaryClient.getJda().updateCommands()
-                    .addCommands(this.stMaryClient.getCommandManager().getCommands().values().stream().map(CommandAbstract::buildCommandData).toArray(CommandData[]::new))
+                    .addCommands(CommandManager.getCommands().values().stream().map(CommandAbstract::buildCommandData).toArray(CommandData[]::new))
                     .queue(cmds -> {
                         LOGGER.info("Registered {} commands !", cmds.size());
                     });
 
             Objects.requireNonNull(this.stMaryClient.getJda().getGuildById(BotConfigConstant.getDevGuildId())).updateCommands()
-                    .addCommands(this.stMaryClient.getCommandManager().getAdminCommands().values().stream().map(CommandAbstract::buildCommandData).toArray(CommandData[]::new))
+                    .addCommands(CommandManager.getAdminCommands().values().stream().map(CommandAbstract::buildCommandData).toArray(CommandData[]::new))
                     .queue(cmds -> LOGGER.info("Registered {} admin commands !", cmds.size()));
         }
     }
@@ -68,8 +69,8 @@ public class EventsListener extends ListenerAdapter {
      */
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        CommandAbstract command = this.stMaryClient.getCommandManager().getCommand(event.getName());
-        command = (command == null) ? this.stMaryClient.getCommandManager().getAdminCommand(event.getName()) : command;
+        CommandAbstract command = CommandManager.getCommand(event.getName());
+        command = (command == null) ? CommandManager.getAdminCommand(event.getName()) : command;
         if (command == null) return;
         command.run(event);
     }
@@ -81,7 +82,7 @@ public class EventsListener extends ListenerAdapter {
      */
     @Override
     public void onCommandAutoCompleteInteraction(CommandAutoCompleteInteractionEvent event) {
-        CommandAbstract command = this.stMaryClient.getCommandManager().getCommand(event.getInteraction().getName());
+        CommandAbstract command = CommandManager.getCommand(event.getInteraction().getName());
         if (command == null) return;
         command.runAutoComplete(event);
     }

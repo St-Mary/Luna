@@ -5,6 +5,9 @@ import me.aikoo.StMary.core.bases.PlaceBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.database.MoveEntity;
 import me.aikoo.StMary.core.database.PlayerEntity;
+import me.aikoo.StMary.core.managers.DatabaseManager;
+import me.aikoo.StMary.core.managers.LocationManager;
+import me.aikoo.StMary.core.managers.TextManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -31,12 +34,12 @@ public class EndJourneyCommand extends CommandAbstract {
      */
     @Override
     public void execute(SlashCommandInteractionEvent event, String language) {
-        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
         UUID uuid = player.getId();
-        MoveEntity moves = stMaryClient.getDatabaseManager().getMove(uuid);
+        MoveEntity moves = DatabaseManager.getMove(uuid);
 
         if (moves == null) {
-            String text = stMaryClient.getTextManager().createText("endjourney_no_journey", language).build();
+            String text = TextManager.createText("endjourney_no_journey", language).build();
             event.reply(text).queue();
             return;
         }
@@ -46,17 +49,17 @@ public class EndJourneyCommand extends CommandAbstract {
         long now = System.currentTimeMillis();
         long end = start + time;
 
-        PlaceBase destinationPlace = stMaryClient.getLocationManager().getPlaceById(moves.getTo());
-        PlaceBase fromPlace = stMaryClient.getLocationManager().getPlaceById(moves.getFrom());
+        PlaceBase destinationPlace = LocationManager.getPlaceById(moves.getTo());
+        PlaceBase fromPlace = LocationManager.getPlaceById(moves.getFrom());
         String formatted = (fromPlace.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace()) ?
-                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getId(), language) :
-                this.stMaryClient.getLocationManager().formatLocation(destinationPlace.getTown().getId(), language);
+                LocationManager.formatLocation(destinationPlace.getId(), language) :
+                LocationManager.formatLocation(destinationPlace.getTown().getId(), language);
 
         // Check if the player has arrived at the destination.
         if (now < end) {
             long remaining = end - now;
             long seconds = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() + remaining);
-            String text = stMaryClient.getTextManager().createText("endjourney_journey_not_finsh", language).replace("time", String.valueOf(seconds)).replace("location", formatted).build();
+            String text = TextManager.createText("endjourney_journey_not_finsh", language).replace("time", String.valueOf(seconds)).replace("location", formatted).build();
             event.reply(text).queue();
             return;
         }
@@ -67,11 +70,11 @@ public class EndJourneyCommand extends CommandAbstract {
         player.setCurrentLocationTown(destinationPlace.isTownPlace() ? destinationPlace.getTown().getId() : "");
 
         // Update the player's location in the database.
-        stMaryClient.getDatabaseManager().delete(moves);
-        stMaryClient.getDatabaseManager().update(player);
+        DatabaseManager.delete(moves);
+        DatabaseManager.update(player);
 
         // Send the arrival message.
-        String text = stMaryClient.getTextManager().createText("endjourney_success", language).replace("location", formatted).build();
+        String text = TextManager.createText("endjourney_success", language).replace("location", formatted).build();
         event.reply(text).queue();
     }
 

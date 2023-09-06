@@ -22,22 +22,15 @@ import java.util.regex.Pattern;
  */
 public class LocationManager {
 
-    private final ArrayList<TownBase> towns = new ArrayList<>();
-    private final StMaryClient stMaryClient;
-    private final ArrayList<PlaceBase> places = new ArrayList<>();
-    private final ArrayList<JsonObject> placesObject = new ArrayList<>();
-    private final ArrayList<JsonObject> townsObjects = new ArrayList<>();
-    private final Logger LOGGER = LoggerFactory.getLogger(LocationManager.class);
-    private HashMap<String, RegionBase> regions = new HashMap<>();
+    private static final ArrayList<TownBase> towns = new ArrayList<>();
+    private static final ArrayList<PlaceBase> places = new ArrayList<>();
+    private static final ArrayList<JsonObject> placesObject = new ArrayList<>();
+    private static final ArrayList<JsonObject> townsObjects = new ArrayList<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocationManager.class);
+    private static HashMap<String, RegionBase> regions = new HashMap<>();
 
-    /**
-     * Constructor for the LocationManager class.
-     *
-     * @param stMaryClient The main StMary client.
-     */
-    public LocationManager(StMaryClient stMaryClient) {
-        this.stMaryClient = stMaryClient;
-        this.load();
+    static {
+        load();
     }
 
     /**
@@ -46,10 +39,10 @@ public class LocationManager {
      * @param name The name of the location to retrieve.
      * @return The corresponding location or null if not found.
      */
-    public LocationAbstract getLocationByName(String name, String language) {
-        LocationAbstract location = this.getRegionByName(name);
-        location = (location != null) ? location : this.getTownByName(name, language);
-        location = (location != null) ? location : this.getPlaceByName(name, language);
+    public static LocationAbstract getLocationByName(String name, String language) {
+        LocationAbstract location = getRegionByName(name);
+        location = (location != null) ? location : getTownByName(name, language);
+        location = (location != null) ? location : getPlaceByName(name, language);
 
         return location;
     }
@@ -60,10 +53,10 @@ public class LocationManager {
      * @param id The id of the location to retrieve.
      * @return The corresponding location or null if not found.
      */
-    public LocationAbstract getLocationById(String id) {
-        LocationAbstract location = this.getRegionById(id);
-        location = (location != null) ? location : this.getTownById(id);
-        location = (location != null) ? location : this.getPlaceById(id);
+    public static LocationAbstract getLocationById(String id) {
+        LocationAbstract location = getRegionById(id);
+        location = (location != null) ? location : getTownById(id);
+        location = (location != null) ? location : getPlaceById(id);
 
         return location;
     }
@@ -74,8 +67,8 @@ public class LocationManager {
      * @param id The id of the region to retrieve.
      * @return The region object or null if not found.
      */
-    public LocationAbstract getRegionById(String id) {
-        return this.regions.get(id);
+    public static LocationAbstract getRegionById(String id) {
+        return regions.get(id);
     }
 
     /**
@@ -84,8 +77,8 @@ public class LocationManager {
      * @param name The name of the town to retrieve.
      * @return The town object or null if not found.
      */
-    public TownBase getTownByName(String name, String language) {
-        return this.towns.stream().filter(town -> town.getName(language).equalsIgnoreCase(name)).findFirst().orElse(null);
+    public static TownBase getTownByName(String name, String language) {
+        return towns.stream().filter(town -> town.getName(language).equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     /**
@@ -94,8 +87,8 @@ public class LocationManager {
      * @param name The name of the region to retrieve.
      * @return The region object or null if not found.
      */
-    public RegionBase getRegionByName(String name) {
-        return this.regions.get(name);
+    public static RegionBase getRegionByName(String name) {
+        return regions.get(name);
     }
 
     /**
@@ -104,8 +97,8 @@ public class LocationManager {
      * @param name The name of the place to retrieve.
      * @return The place object or null if not found.
      */
-    public PlaceBase getPlaceByName(String name, String language) {
-        return this.places.stream().filter(place -> place.getName(language).equalsIgnoreCase(name)).findFirst().orElse(null);
+    public static PlaceBase getPlaceByName(String name, String language) {
+        return places.stream().filter(place -> place.getName(language).equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     /**
@@ -114,8 +107,8 @@ public class LocationManager {
      * @param id The id of the place to retrieve.
      * @return The place object or null if not found.
      */
-    public PlaceBase getPlaceById(String id) {
-        return this.places.stream().filter(place -> place.getId().equals(id)).findFirst().orElse(null);
+    public static PlaceBase getPlaceById(String id) {
+        return places.stream().filter(place -> place.getId().equals(id)).findFirst().orElse(null);
     }
 
     /**
@@ -124,8 +117,8 @@ public class LocationManager {
      * @param id The id of the town to retrieve.
      * @return The town object or null if not found.
      */
-    public TownBase getTownById(String id) {
-        return this.towns.stream().filter(town -> town.getId().equals(id)).findFirst().orElse(null);
+    public static TownBase getTownById(String id) {
+        return towns.stream().filter(town -> town.getId().equals(id)).findFirst().orElse(null);
     }
 
     /**
@@ -133,7 +126,7 @@ public class LocationManager {
      *
      * @return A map of regions with their names as keys and corresponding region objects as values.
      */
-    private HashMap<String, RegionBase> loadRegions() {
+    private static HashMap<String, RegionBase> loadRegions() {
         ArrayList<JsonObject> regions = JSONFileReaderUtils.readAllFilesFrom("places", "regions");
         HashMap<String, RegionBase> regionHashMap = new HashMap<>();
 
@@ -166,7 +159,7 @@ public class LocationManager {
      * @param region       The region object to which to add towns.
      * @param regionObject The JSON object of the region containing town information.
      */
-    private void loadTowns(RegionBase region, JsonObject regionObject) {
+    private static void loadTowns(RegionBase region, JsonObject regionObject) {
         regionObject.get("towns").getAsJsonArray().forEach(townObj -> {
             String townId = townObj.getAsString();
             JsonObject townObject = findTownObject(townId, region.getId());
@@ -212,7 +205,7 @@ public class LocationManager {
      * @param location The region or town object to which to add places.
      * @param json     The JSON object containing place information.
      */
-    private void loadPlaces(LocationAbstract location, JsonObject json) {
+    private static void loadPlaces(LocationAbstract location, JsonObject json) {
         json.get("places").getAsJsonArray().forEach(place -> {
             String placeId = place.getAsString();
             JsonObject placeObject = findPlaceObject(placeId);
@@ -238,7 +231,7 @@ public class LocationManager {
                 p.setTown((TownBase) location);
             }
 
-            this.places.add(p);
+            places.add(p);
         });
     }
 
@@ -249,9 +242,9 @@ public class LocationManager {
      * @param region The name of the region in which to search for the town.
      * @return The corresponding JSON object or null if not found.
      */
-    private JsonObject findTownObject(String townId, String region) {
+    private static JsonObject findTownObject(String townId, String region) {
         System.out.println(townId + " " + region);
-        return this.townsObjects.stream()
+        return townsObjects.stream()
                 .filter(t -> t.get("id").getAsString().equals(townId))
                 .filter(t -> t.get("region").getAsString().equalsIgnoreCase(region))
                 .findFirst()
@@ -264,8 +257,8 @@ public class LocationManager {
      * @param placeId The id of the place to search for.
      * @return The corresponding JSON object or null if not found.
      */
-    private JsonObject findPlaceObject(String placeId) {
-        return this.placesObject.stream()
+    private static JsonObject findPlaceObject(String placeId) {
+        return placesObject.stream()
                 .filter(p -> p.get("id").getAsString().equalsIgnoreCase(placeId))
                 .findFirst()
                 .orElse(null);
@@ -277,9 +270,9 @@ public class LocationManager {
      * @param townObject The JSON object of the town containing the entry point name.
      * @return The corresponding JSON object for the entry point or null if not found.
      */
-    private JsonObject findEntryPointObject(JsonObject townObject) {
+    private static JsonObject findEntryPointObject(JsonObject townObject) {
         String entryPointName = townObject.get("entryPoint").getAsString();
-        return this.placesObject.stream()
+        return placesObject.stream()
                 .filter(p -> p.get("id").getAsString().equalsIgnoreCase(entryPointName))
                 .findFirst()
                 .orElse(null);
@@ -288,8 +281,8 @@ public class LocationManager {
     /**
      * Load available movements for each place.
      */
-    private void loadMoves() {
-        for (PlaceBase place : this.places) {
+    private static void loadMoves() {
+        for (PlaceBase place : places) {
             // Find the JSON object corresponding to the current place
             JsonObject placeObject = findPlaceObject(place.getId());
 
@@ -329,9 +322,9 @@ public class LocationManager {
      * @param id The id of the location to format.
      * @return The location name with its icon or "Unknown location" if not found.
      */
-    public String formatLocation(String id, String language) {
+    public static String formatLocation(String id, String language) {
         // Get the location object corresponding to the name
-        LocationAbstract location = this.stMaryClient.getLocationManager().getLocationById(id);
+        LocationAbstract location = getLocationById(id);
 
         // If the location is found, return its icon followed by its name; otherwise, return "Unknown location"
         return (location != null) ? location.getIcon() + location.getName(language) : "Unknown Location";
@@ -343,7 +336,7 @@ public class LocationManager {
      * @param input The text string from which to extract the location name.
      * @return The extracted location name or null if not found.
      */
-    public String extractLocationName(String input) {
+    public static String extractLocationName(String input) {
         // Regular expression to search for the pattern "{location:Name}"
         String regex = "\\{location:([^{}]+)\\}";
 
@@ -364,17 +357,17 @@ public class LocationManager {
     /**
      * Load data related to locations, towns, regions, and movements from JSON files.
      */
-    private void load() {
+    private static void load() {
         // Load JSON objects of places from JSON files
-        this.placesObject.addAll(JSONFileReaderUtils.readAllFilesFrom("places", "places"));
+        placesObject.addAll(JSONFileReaderUtils.readAllFilesFrom("places", "places"));
 
         // Load JSON objects of towns from JSON files
-        this.townsObjects.addAll(JSONFileReaderUtils.readAllFilesFrom("places", "towns"));
+        townsObjects.addAll(JSONFileReaderUtils.readAllFilesFrom("places", "towns"));
 
         // Load regions
-        this.regions = this.loadRegions();
+        regions = loadRegions();
 
         // Load movements between places
-        this.loadMoves();
+        loadMoves();
     }
 }

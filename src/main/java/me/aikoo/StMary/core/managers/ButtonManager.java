@@ -1,5 +1,6 @@
 package me.aikoo.StMary.core.managers;
 
+import lombok.Setter;
 import me.aikoo.StMary.core.abstracts.ButtonAbstract;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.database.PlayerEntity;
@@ -16,17 +17,10 @@ import java.util.HashMap;
  */
 public class ButtonManager extends ListenerAdapter {
 
-    private final StMaryClient stMaryClient;
-    private final HashMap<String, ArrayList<ButtonAbstract>> commands = new HashMap<>();
+    @Setter
+    private static StMaryClient stMaryClient;
+    private static final HashMap<String, ArrayList<ButtonAbstract>> commands = new HashMap<>();
 
-    /**
-     * Constructs a ButtonManager with the provided StMaryClient instance.
-     *
-     * @param stMaryClient The StMaryClient instance.
-     */
-    public ButtonManager(StMaryClient stMaryClient) {
-        this.stMaryClient = stMaryClient;
-    }
 
     /**
      * Handles button interactions.
@@ -39,7 +33,7 @@ public class ButtonManager extends ListenerAdapter {
         if (!commands.containsKey(event.getMessageId())) return;
         String authorId = event.getUser().getId();
         String language = (event.getGuild().getLocale() == DiscordLocale.FRENCH) ? "fr" : "en";
-        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(Long.parseLong(authorId));
+        PlayerEntity player = DatabaseManager.getPlayer(Long.parseLong(authorId));
         language = (player != null) ? player.getLanguage() : language;
 
         // Find the button that was clicked based on the component ID
@@ -64,15 +58,15 @@ public class ButtonManager extends ListenerAdapter {
      * @param id      The ID of the message the buttons are associated with.
      * @param buttons The list of Button objects to add.
      */
-    public void addButtons(String id, ArrayList<ButtonAbstract> buttons) {
+    public static void addButtons(String id, ArrayList<ButtonAbstract> buttons) {
         commands.put(id, buttons);
     }
 
-    public void removeButtons(String id) {
+    public static void removeButtons(String id) {
         commands.remove(id);
     }
 
-    public boolean isButtons(String id) {
+    public static boolean isButtons(String id) {
         return commands.containsKey(id);
     }
 }

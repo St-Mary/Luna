@@ -15,25 +15,6 @@ import org.slf4j.LoggerFactory;
 public class StMaryClient {
     // Logger
     private final Logger LOGGER = LoggerFactory.getLogger(StMaryClient.class);
-
-    @Getter
-    private final CooldownManager cooldownManager = new CooldownManager();
-    @Getter
-    private final CommandManager commandManager;
-    @Getter
-    private final LocationManager locationManager = new LocationManager(this);
-    @Getter
-    private final TextManager textManager = new TextManager(this);
-    @Getter
-    private final DatabaseManager databaseManager = new DatabaseManager();
-    @Getter
-    private final TitleManager titleManager = new TitleManager();
-    @Getter
-    private final ObjectManager objectManager = new ObjectManager();
-    @Getter
-    private final CharacterManager characterManager = new CharacterManager();
-    @Getter
-    private final ButtonManager buttonManager;
     @Getter
     private final Cache<String, String> cache = new Cache<>(20000);
 
@@ -45,16 +26,12 @@ public class StMaryClient {
      * StMaryClient constructor. It initialize all managers and start the bot.
      */
     public StMaryClient() {
+        CommandManager.loadCommands(this);
 
-        // Initialize the command manager
-        this.commandManager = new CommandManager();
-        this.commandManager.loadCommands(this);
-
-        // Initialize the button manager
-        this.buttonManager = new ButtonManager(this);
+        ButtonManager.setStMaryClient(this);
 
         // Initialize the database manager
-        this.databaseManager.getSessionFactory();
+        DatabaseManager.getSessionFactory();
 
         // Start the bot
         startStMaryClient();
@@ -69,7 +46,7 @@ public class StMaryClient {
 
         jda = JDABuilder.createDefault(token)
                 .addEventListeners(new EventsListener(this))
-                .addEventListeners(buttonManager)
+                .addEventListeners(new ButtonManager())
                 .build();
     }
 }

@@ -2,6 +2,7 @@ package me.aikoo.StMary.core.abstracts;
 
 import lombok.Getter;
 import me.aikoo.StMary.core.bot.StMaryClient;
+import me.aikoo.StMary.core.managers.TextManager;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
@@ -84,7 +85,7 @@ public class ButtonAbstract {
         // Get slash command
         String slashCommand = Objects.requireNonNull(event.getMessage().getInteraction()).getName();
         if (this.stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent() && !this.stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).get().equals(slashCommand)) {
-            event.reply(this.stMaryClient.getTextManager().createText("command_error_action_waiter", language).buildError()).setEphemeral(true).queue();
+            event.reply(TextManager.createText("command_error_action_waiter", language).buildError()).setEphemeral(true).queue();
             return;
         }
 

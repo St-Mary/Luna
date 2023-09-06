@@ -4,7 +4,9 @@ import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import me.aikoo.StMary.core.bases.TitleBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.database.PlayerEntity;
+import me.aikoo.StMary.core.managers.DatabaseManager;
 import me.aikoo.StMary.core.managers.TextManager;
+import me.aikoo.StMary.core.managers.TitleManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command;
@@ -49,22 +51,22 @@ public class SelectTitleCommand extends CommandAbstract {
         String titleId = Objects.requireNonNull(event.getOption("title")).getAsString();
 
         // Check if the selected title exists
-        if (stMaryClient.getTitleManager().getTitle(titleId) == null) {
-            String errorText = stMaryClient.getTextManager().createText("select_title_error_title_not_exist", language).buildError();
+        if (TitleManager.getTitle(titleId) == null) {
+            String errorText = TextManager.createText("select_title_error_title_not_exist", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return;
         }
 
-        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
 
-        TextManager.Text text = stMaryClient.getTextManager().createText("select_title_success", language);
-        text.replace("title", stMaryClient.getTitleManager().getTitle(titleId).format(language));
+        TextManager.Text text = TextManager.createText("select_title_success", language);
+        text.replace("title", TitleManager.getTitle(titleId).format(language));
 
         // Perform verifications before update the current title
         if (!verifications(player, titleId, event, language)) return;
 
         player.setCurrentTitle(titleId);
-        stMaryClient.getDatabaseManager().update(player);
+        DatabaseManager.update(player);
         event.reply(text.build()).queue();
     }
 
@@ -82,14 +84,14 @@ public class SelectTitleCommand extends CommandAbstract {
 
         // Check if the player owns the selected title
         if (!titles.containsKey(titleId)) {
-            String errorText = this.stMaryClient.getTextManager().createText("select_title_error_title_not_posseded", language).buildError();
+            String errorText = TextManager.createText("select_title_error_title_not_posseded", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return false;
         }
 
         // Check if the selected title is already the current title
         if (player.getCurrentTitle(stMaryClient).getId().equals(titleId)) {
-            String errorText = this.stMaryClient.getTextManager().createText("select_title_error_title_already_active", language).buildError();
+            String errorText = TextManager.createText("select_title_error_title_already_active", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
             return false;
         }
@@ -104,7 +106,7 @@ public class SelectTitleCommand extends CommandAbstract {
      */
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
-        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
 
         if (player != null) {
             Collection<TitleBase> titles = player.getTitles(stMaryClient).values();

@@ -3,6 +3,8 @@ package me.aikoo.StMary.commands;
 import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.database.PlayerEntity;
+import me.aikoo.StMary.core.managers.DatabaseManager;
+import me.aikoo.StMary.core.managers.TitleManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -37,19 +39,19 @@ public class AddTitleCommand extends CommandAbstract {
             return;
         }
 
-        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(Objects.requireNonNull(event.getOption("userid")).getAsLong());
+        PlayerEntity player = DatabaseManager.getPlayer(Objects.requireNonNull(event.getOption("userid")).getAsLong());
 
         if (player == null) {
             event.reply("This user doesn't exist").queue();
             return;
         }
 
-        if (stMaryClient.getTitleManager().getTitle(titleId) == null) {
+        if (TitleManager.getTitle(titleId) == null) {
             event.reply("This title doesn't exist").queue();
             return;
         }
         player.addTitle(titleId, stMaryClient);
-        stMaryClient.getDatabaseManager().update(player);
+        DatabaseManager.update(player);
 
         event.reply("The title has been added to the user").queue();
     }

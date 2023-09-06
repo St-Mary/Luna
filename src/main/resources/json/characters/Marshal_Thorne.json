@@ -39,6 +39,11 @@
             "en": "I understand your rejection, soldier, the choice is yours. Have a nice day!"
           }
         }
+      },
+      "conditions": {
+        "CurrentQuestCondition": "quest_0001",
+        "LocationCondition": "talon_02",
+        "LevelCondition": 1
       }
     }
   }

@@ -4,6 +4,7 @@ import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.database.AdministratorEntity;
+import me.aikoo.StMary.core.managers.DatabaseManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -30,7 +31,7 @@ public class AddAdminCommand extends CommandAbstract {
             event.reply(errMsg).queue();
         }
 
-        AdministratorEntity administrators = stMaryClient.getDatabaseManager().getAdministrator(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
+        AdministratorEntity administrators = DatabaseManager.getAdministrator(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
         if (administrators != null) {
             String errMsg = "Cet utilisateur est déjà administrateur !";
             event.reply(errMsg).queue();
@@ -40,7 +41,7 @@ public class AddAdminCommand extends CommandAbstract {
         AdministratorEntity newAdmin = new AdministratorEntity();
         newAdmin.setDiscordId(Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
 
-        stMaryClient.getDatabaseManager().save(newAdmin);
+        DatabaseManager.save(newAdmin);
 
         event.reply("L'utilisateur a été ajouté en tant qu'administrateur !").queue();
     }

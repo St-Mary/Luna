@@ -4,6 +4,7 @@ import me.aikoo.StMary.core.abstracts.CommandAbstract;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.database.AdministratorEntity;
+import me.aikoo.StMary.core.managers.DatabaseManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -36,14 +37,14 @@ public class RemoveAdminCommand extends CommandAbstract {
             return;
         }
 
-        AdministratorEntity administrator = stMaryClient.getDatabaseManager().getAdministrator(Long.parseLong(userId));
+        AdministratorEntity administrator = DatabaseManager.getAdministrator(Long.parseLong(userId));
         if (administrator == null) {
             String errMsg = "Cet utilisateur n'est pas administrateur !";
             event.reply(errMsg).queue();
             return;
         }
 
-        stMaryClient.getDatabaseManager().delete(administrator);
+        DatabaseManager.delete(administrator);
 
         event.reply("L'utilisateur a été déstitué de son rôle d'administrateur !").queue();
     }

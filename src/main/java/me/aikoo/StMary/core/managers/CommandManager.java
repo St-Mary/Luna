@@ -16,8 +16,8 @@ import java.util.Set;
  */
 public class CommandManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
-    private final HashMap<String, CommandAbstract> commands = new HashMap<>();
-    private final HashMap<String, CommandAbstract> adminCommands = new HashMap<>();
+    private static final HashMap<String, CommandAbstract> commands = new HashMap<>();
+    private static final HashMap<String, CommandAbstract> adminCommands = new HashMap<>();
 
     /**
      * Get a command by its name.
@@ -25,8 +25,8 @@ public class CommandManager {
      * @param name The name of the command to retrieve.
      * @return The command with the specified name, or null if not found.
      */
-    public CommandAbstract getCommand(String name) {
-        return this.commands.get(name);
+    public static CommandAbstract getCommand(String name) {
+        return commands.get(name);
     }
 
     /**
@@ -35,8 +35,8 @@ public class CommandManager {
      * @param name The name of the admin command to retrieve.
      * @return The admin command with the specified name, or null if not found.
      */
-    public CommandAbstract getAdminCommand(String name) {
-        return this.adminCommands.get(name);
+    public static CommandAbstract getAdminCommand(String name) {
+        return adminCommands.get(name);
     }
 
     /**
@@ -44,7 +44,7 @@ public class CommandManager {
      *
      * @return A map of all registered commands.
      */
-    public HashMap<String, CommandAbstract> getCommands() {
+    public static HashMap<String, CommandAbstract> getCommands() {
         return commands;
     }
 
@@ -53,7 +53,7 @@ public class CommandManager {
      *
      * @return A map of all registered admin commands.
      */
-    public HashMap<String, CommandAbstract> getAdminCommands() {
+    public static HashMap<String, CommandAbstract> getAdminCommands() {
         return adminCommands;
     }
 
@@ -62,7 +62,7 @@ public class CommandManager {
      *
      * @param stMaryClient The StMaryClient instance for command initialization.
      */
-    public void loadCommands(StMaryClient stMaryClient) {
+    public static void loadCommands(StMaryClient stMaryClient) {
         // Use Reflections library to scan for classes in the "me.aikoo.StMary.commands" package
         Reflections reflections = new Reflections("me.aikoo.StMary.commands");
 

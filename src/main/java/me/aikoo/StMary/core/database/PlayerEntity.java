@@ -7,6 +7,9 @@ import lombok.Setter;
 import me.aikoo.StMary.core.bases.ObjectBase;
 import me.aikoo.StMary.core.bases.TitleBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
+import me.aikoo.StMary.core.managers.DatabaseManager;
+import me.aikoo.StMary.core.managers.ObjectManager;
+import me.aikoo.StMary.core.managers.TitleManager;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigInteger;
@@ -87,7 +90,7 @@ public class PlayerEntity {
      * @return The current title of the player.
      */
     public TitleBase getCurrentTitle(StMaryClient client) {
-        return client.getTitleManager().getTitle(this.currentTitle);
+        return TitleManager.getTitle(this.currentTitle);
     }
 
     /**
@@ -100,7 +103,7 @@ public class PlayerEntity {
     public HashMap<String, TitleBase> getTitles(StMaryClient client) {
         HashMap<String, TitleBase> titles = new HashMap<>();
         for (TitleEntity title : this.titles) {
-            titles.put(title.getId(), client.getTitleManager().getTitle(title.getId()));
+            titles.put(title.getId(), TitleManager.getTitle(title.getId()));
         }
         return titles;
     }
@@ -114,7 +117,7 @@ public class PlayerEntity {
     public void addTitle(String titleId, StMaryClient client) {
         TitleEntity titleEntity = new TitleEntity();
         titleEntity.setTitleId(titleId);
-        client.getDatabaseManager().save(titleEntity);
+        DatabaseManager.save(titleEntity);
         this.titles.add(titleEntity);
     }
 
@@ -125,7 +128,7 @@ public class PlayerEntity {
      * @return The magical book owned by the player.
      */
     public ObjectBase getMagicalBook(StMaryClient client) {
-        return client.getObjectManager().getObject(this.magicalBook);
+        return ObjectManager.getObject(this.magicalBook);
     }
 
     /**
@@ -140,7 +143,7 @@ public class PlayerEntity {
             TitleEntity titleEntity = new TitleEntity();
             titleEntity.setTitleId(id);
             titles.add(titleEntity);
-            client.getDatabaseManager().save(titleEntity);
+            DatabaseManager.save(titleEntity);
         }
 
         this.titles = titles;

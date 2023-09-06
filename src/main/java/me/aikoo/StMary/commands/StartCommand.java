@@ -6,6 +6,10 @@ import me.aikoo.StMary.core.bases.CharacterBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.constants.PlayerConstant;
 import me.aikoo.StMary.core.database.PlayerEntity;
+import me.aikoo.StMary.core.managers.ButtonManager;
+import me.aikoo.StMary.core.managers.CharacterManager;
+import me.aikoo.StMary.core.managers.DatabaseManager;
+import me.aikoo.StMary.core.managers.TextManager;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.Event;
@@ -51,25 +55,25 @@ public class StartCommand extends CommandAbstract {
      */
     @Override
     public void execute(SlashCommandInteractionEvent event, String language) {
-        PlayerEntity player = stMaryClient.getDatabaseManager().getPlayer(event.getUser().getIdLong());
+        PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
         LocalDate creationDate = event.getUser().getTimeCreated().toLocalDateTime().toLocalDate();
         language = event.getOption("language").getAsString();
 
         // Check if the Discord account was created more than a week ago
         if (creationDate.isAfter(LocalDate.now().minusWeeks(PlayerConstant.CREATION_TIME_WEEK_LIMIT))) {
-            event.reply(stMaryClient.getTextManager().createText("start_adventure_error_creation_date", language).buildError()).queue();
+            event.reply(TextManager.createText("start_adventure_error_creation_date", language).buildError()).queue();
             return;
         }
 
         if (player != null) {
             // Player already exists, send an error message
-            String error = stMaryClient.getTextManager().createText("start_adventure_error_already_started", language).buildError();
+            String error = TextManager.createText("start_adventure_error_already_started", language).buildError();
             event.reply(error).setEphemeral(true).queue();
             return;
         }
 
         try {
-            CharacterBase.Information character = this.stMaryClient.getCharacterManager().getCharacter("1").getCharacterInformation(language);
+            CharacterBase.Information character = CharacterManager.getCharacter("1").getCharacterInformation(language);
             CharacterBase.Dialog dialog = character.getDialog("1.1");
             CharacterBase.Option optionOne = dialog.getOptions().get("1.1.1");
             CharacterBase.Option optionTwo = dialog.getOptions().get("1.1.2");
@@ -81,8 +85,8 @@ public class StartCommand extends CommandAbstract {
 
             stMaryClient.getCache().put("startCmdLanguage_" + event.getUser().getId(), language);
             stMaryClient.getCache().put("actionWaiter_" + event.getUser().getId(), "start");
-            String introduction = stMaryClient.getTextManager().createText("start_adventure_introduction", language).build();
-            String text = introduction + "\n\n" + stMaryClient.getCharacterManager().formatCharacterDialog(character, dialog);
+            String introduction = TextManager.createText("start_adventure_introduction", language).build();
+            String text = introduction + "\n\n" + CharacterManager.formatCharacterDialog(character, dialog);
 
             Method closeMethod = StartCommand.class.getMethod("closeBtnMenuEvent", Message.class, String.class, SlashCommandInteractionEvent.class);
             ArrayList<ButtonAbstract> buttons = new ArrayList<>(List.of(optionBtn1, optionBtn2));
@@ -102,14 +106,14 @@ public class StartCommand extends CommandAbstract {
     }
 
     private void closeBtn(Message res, String language, User user) {
-        CharacterBase.Information character = this.stMaryClient.getCharacterManager().getCharacter("1").getCharacterInformation(language);
+        CharacterBase.Information character = CharacterManager.getCharacter("1").getCharacterInformation(language);
         CharacterBase.Dialog noDialog = character.getDialog("1.1.2");
-        String text = stMaryClient.getCharacterManager().formatCharacterDialog(character, noDialog);
+        String text = CharacterManager.formatCharacterDialog(character, noDialog);
 
         // Remove the cache and buttons
         stMaryClient.getCache().delete("startCmdLanguage_" + user.getId());
         stMaryClient.getCache().delete("actionWaiter_" + user.getId());
-        stMaryClient.getButtonManager().removeButtons(res.getId());
+        ButtonManager.removeButtons(res.getId());
         res.editMessage(text).setComponents().queue();
     }
 
@@ -126,8 +130,8 @@ public class StartCommand extends CommandAbstract {
         Optional<String> cacheLanguage = stMaryClient.getCache().get("startCmdLanguage_" + event.getUser().getId());
         language = cacheLanguage.orElse(language);
 
-        CharacterBase.Information character = this.stMaryClient.getCharacterManager().getCharacter("1").getCharacterInformation(language);
-        String dialog = stMaryClient.getCharacterManager().formatCharacterDialog(character, character.getDialog("1.1.1"));
+        CharacterBase.Information character = CharacterManager.getCharacter("1").getCharacterInformation(language);
+        String dialog = CharacterManager.formatCharacterDialog(character, character.getDialog("1.1.1"));
 
         // Create a new player entity
         PlayerEntity player = new PlayerEntity();
@@ -145,10 +149,10 @@ public class StartCommand extends CommandAbstract {
         player.setCreationTimestamp(new Date());
 
         // Save the new player entity to the database
-        stMaryClient.getDatabaseManager().save(player);
+        DatabaseManager.save(player);
 
         event.editMessage(dialog).setComponents().queue();
-        stMaryClient.getButtonManager().removeButtons(event.getMessageId());
+        ButtonManager.removeButtons(event.getMessageId());
         stMaryClient.getCache().delete("startCmdLanguage_" + event.getUser().getId());
         stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
     }
