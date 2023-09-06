@@ -10,7 +10,15 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
+/**
+ * RemoveAdminCommand is the command used to remove an administrator.
+ */
 public class RemoveAdminCommand extends CommandAbstract {
+
+    /**
+     * Constructor of the removeadmin command
+     * @param stMaryClient The StMaryClient instance
+     */
     public RemoveAdminCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
@@ -23,6 +31,11 @@ public class RemoveAdminCommand extends CommandAbstract {
                 .setRequired(true));
     }
 
+    /**
+     * Remove an administrator.
+     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     @Override
     public void execute(SlashCommandInteractionEvent event, String language) {
         if (!event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
@@ -49,6 +62,11 @@ public class RemoveAdminCommand extends CommandAbstract {
         event.reply("L'utilisateur a été déstitué de son rôle d'administrateur !").queue();
     }
 
+    /**
+     * Auto complete method for the command.
+     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
         // Unused method for this command

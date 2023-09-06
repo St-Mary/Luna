@@ -26,18 +26,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Represents an abstract command that can be executed in Discord.
+ */
 public abstract class CommandAbstract {
+
     protected final StMaryClient stMaryClient;
     protected final List<OptionData> options = new ArrayList<>();
     private final Logger LOGGER = LoggerFactory.getLogger(CommandAbstract.class);
+
+    /**
+     * Get whether the command requires the user to be registered in-game.
+     * Set the command to require the user to be registered in-game.
+     */
     @Getter
     @Setter
     protected boolean mustBeRegistered = true;
+
+    /**
+     * Get whether the command is an administrator command.
+     * Set the command to be an administrator command.
+     */
     @Getter
     @Setter
     protected boolean isAdminCommand = false;
+
+    /**
+     * Get the name of the command.
+     */
+    @Getter
     protected String name;
+
+    /**
+     * Get the description of the command.
+     */
+    @Getter
     protected String description;
+
+    /**
+     * Get the cooldown of the command.
+     */
+    @Getter
     protected Long cooldown = 5000L;
 
     /**
@@ -51,10 +80,24 @@ public abstract class CommandAbstract {
         this.description = "No description provided.";
     }
 
+    /**
+     * Execute the command
+     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     public abstract void execute(SlashCommandInteractionEvent event, String language);
 
+    /**
+     * Auto complete the command
+     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     public abstract void autoComplete(CommandAutoCompleteInteractionEvent event, String language);
 
+    /**
+     * Run the command
+     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
+     */
     public void run(SlashCommandInteractionEvent event) {
         PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
         String language = (event.getGuild().getLocale() == DiscordLocale.FRENCH) ? "fr" : "en";
@@ -99,6 +142,10 @@ public abstract class CommandAbstract {
         this.execute(event, language);
     }
 
+    /**
+     * Run the autocomplete of the command
+     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     */
     public void runAutoComplete(CommandAutoCompleteInteractionEvent event) {
         String language = (event.getGuild().getLocale() == DiscordLocale.FRENCH) ? "fr" : "en";
         PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
@@ -106,6 +153,17 @@ public abstract class CommandAbstract {
         this.autoComplete(event, language);
     }
 
+    /**
+     * Send a message with buttons
+     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
+     * @param text The text to send
+     * @param language The language of the player
+     * @param buttons The list of Button objects to add.
+     * @param time The time before the message is deleted
+     * @param closeMethod The method to execute when the message is deleted
+     * @param methodClass The class of the method to execute
+     * @param parameters The parameters of the method to execute
+     */
     public void sendMsgWithButtons(SlashCommandInteractionEvent event, String text, String language, List<ButtonAbstract> buttons, int time, Method closeMethod, Object methodClass, Object... parameters) {
         ArrayList<Button> buttonList = new ArrayList<>();
         buttons.forEach(button -> buttonList.add(button.getButton()));
@@ -159,18 +217,10 @@ public abstract class CommandAbstract {
         }));
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Long getCooldown() {
-        return cooldown;
-    }
-
+    /**
+     * Send a message with buttons
+     * @return The SlashCommandData of the command
+     */
     public SlashCommandData buildCommandData() {
         LocalizationFunction localizationFunction = ResourceBundleLocalizationFunction.fromBundles("bundles/Commands", DiscordLocale.FRENCH).build();
         SlashCommandData data = Commands.slash(this.name, this.description).setLocalizationFunction(localizationFunction);

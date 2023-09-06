@@ -12,7 +12,15 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Objects;
 
+/**
+ * AddTitleCommand is the command used to add a title to a user.
+ */
 public class AddTitleCommand extends CommandAbstract {
+
+    /**
+     * Constructor for the command.
+     * @param stMaryClient The StMaryClient instance.
+     */
     public AddTitleCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
@@ -28,6 +36,11 @@ public class AddTitleCommand extends CommandAbstract {
                 .setRequired(true));
     }
 
+    /**
+     * Execute method for the command.
+     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     @Override
     public void execute(SlashCommandInteractionEvent event, String language) {
         if (!event.getUser().getId().equals("985986599995187270")) return;
@@ -56,6 +69,11 @@ public class AddTitleCommand extends CommandAbstract {
         event.reply("The title has been added to the user").queue();
     }
 
+    /**
+     * Auto complete method for the command.
+     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
         // Unused method for this command

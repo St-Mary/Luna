@@ -7,16 +7,26 @@ import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
+/**
+ * The AdministratorEntity class represents an administrator in the database.
+ */
+@Getter
 @Entity
 @Table(name = "administrators")
 public class AdministratorEntity {
+
+    /**
+     * The id of the administrator.
+     */
     @Id
-    @Getter
     @GeneratedValue
     @UuidGenerator
     private UUID id;
 
-    @Getter
+    /**
+     * The discord id of the administrator.
+     * Set the Discord id of the administrator.
+     */
     @Setter
     @Column(name = "discord_id", nullable = false)
     private Long discordId;

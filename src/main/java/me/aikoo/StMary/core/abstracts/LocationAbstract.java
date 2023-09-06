@@ -12,6 +12,9 @@ import java.util.HashMap;
  */
 public abstract class LocationAbstract {
 
+    /**
+     * Get the id of the location.
+     */
     @Getter
     private final String id;
 

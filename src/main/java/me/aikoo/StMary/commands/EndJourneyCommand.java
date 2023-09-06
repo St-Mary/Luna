@@ -19,6 +19,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class EndJourneyCommand extends CommandAbstract {
 
+    /**
+     * Constructor for the endjourney command.
+     * @param stMaryClient The StMaryClient instance.
+     */
     public EndJourneyCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
@@ -78,6 +82,11 @@ public class EndJourneyCommand extends CommandAbstract {
         event.reply(text).queue();
     }
 
+    /**
+     * The autocomplete method for the command.
+     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
         // Unused method for this command

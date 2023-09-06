@@ -10,12 +10,21 @@ import java.util.ArrayList;
  */
 public class RegionBase extends LocationAbstract {
 
+    /**
+     * Get the icon associated with the region.
+     */
     @Getter
     private final String icon = "\uD83C\uDF0D "; // A region icon, you can customize this.
 
+    /**
+     * Get the list of towns in the region.
+     */
     @Getter
     private final ArrayList<TownBase> towns = new ArrayList<>();
 
+    /**
+     * Get the list of places in the region.
+     */
     @Getter
     private final ArrayList<PlaceBase> places = new ArrayList<>();
 

@@ -12,7 +12,15 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Objects;
 
+/**
+ * AddAdminCommand is the command used to add an administrator.
+ */
 public class AddAdminCommand extends CommandAbstract {
+
+    /**
+     * Constructor for the command.
+     * @param stMaryClient The StMaryClient instance.
+     */
     public AddAdminCommand(StMaryClient stMaryClient) {
         super(stMaryClient);
 
@@ -24,6 +32,11 @@ public class AddAdminCommand extends CommandAbstract {
         this.options.add(new OptionData(OptionType.USER, "user", "The new administrator").setRequired(true));
     }
 
+    /**
+     * Execute method for the command.
+     * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     @Override
     public void execute(SlashCommandInteractionEvent event, String language) {
         if (!event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
@@ -46,6 +59,11 @@ public class AddAdminCommand extends CommandAbstract {
         event.reply("L'utilisateur a été ajouté en tant qu'administrateur !").queue();
     }
 
+    /**
+     * Autocomplete method for the command.
+     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
         // Unused method for this command

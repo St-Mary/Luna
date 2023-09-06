@@ -9,12 +9,24 @@ import java.util.HashMap;
  * Represents an in-game object.
  */
 public class ObjectBase {
+
+    /**
+     * Get the id of the object.
+     */
     @Getter
     private final String id;
     private final HashMap<String, String> names = new HashMap<>();
     private final HashMap<String, String> descriptions = new HashMap<>();
+
+    /**
+     * Get the icon associated with the object.
+     */
     @Getter
     private final String icon;
+
+    /**
+     * Get the type of the object.
+     */
     @Getter
     private final ObjectType type;
 

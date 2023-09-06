@@ -8,6 +8,9 @@ import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Manages characters in the bot.
+ */
 public class CharacterManager {
 
     private static final HashMap<String, CharacterBase> characters = new HashMap<>();
@@ -17,14 +20,31 @@ public class CharacterManager {
         loadCharacters();
     }
 
+    /**
+     * Get all the characters.
+     * @param characterId The ID of the character.
+     * @return The character.
+     */
     public static CharacterBase getCharacter(String characterId) {
         return characters.get(characterId);
     }
 
+    /**
+     * Get all the characters.
+     * @param characterName The name of the character.
+     * @param language The language to get the character in.
+     * @return The character.
+     */
     public static CharacterBase getCharacterByName(String characterName, String language) {
         return characters.values().stream().filter(character -> character.getCharacterInformation(language).getName().equalsIgnoreCase(characterName)).findFirst().orElse(null);
     }
 
+    /**
+     * Format a character dialog.
+     * @param characterInformation The information of the character.
+     * @param dialog The dialog of the character.
+     * @return The formatted character dialog.
+     */
     public static String formatCharacterDialog(CharacterBase.Information characterInformation, CharacterBase.Dialog dialog) {
         String text = "\uD83D\uDDE3\uFE0F  **" + characterInformation.getName() + "** - " + dialog.getText();
 
@@ -35,12 +55,19 @@ public class CharacterManager {
         return text;
     }
 
+    /**
+     * Format a character option.
+     */
     private static void loadCharacters() {
         List<JsonObject> charactersObject = JSONFileReaderUtils.readAllFilesFrom("characters");
 
         charactersObject.forEach(CharacterManager::loadCharacter);
     }
 
+    /**
+     * Load a character.
+     * @param characterObject The character object.
+     */
     private static void loadCharacter(JsonObject characterObject) {
         HashMap<String, CharacterBase.Information> informations = new HashMap<>();
         String id = characterObject.get("id").getAsString();
@@ -50,6 +77,13 @@ public class CharacterManager {
         characters.put(id, new CharacterBase(informations));
     }
 
+    /**
+     * Load a character by language.
+     * @param id The ID of the character.
+     * @param characterObject The character object.
+     * @param language The language to load the character in.
+     * @return The character information.
+     */
     private static CharacterBase.Information loadCharacterByLanguage(String id, JsonObject characterObject, String language) {
         String characterName = characterObject.get("name").getAsJsonObject().get(language).getAsString();
         String characterDescription = characterObject.get("description").getAsJsonObject().get(language).getAsString();
@@ -59,6 +93,12 @@ public class CharacterManager {
         return new CharacterBase.Information(id, characterName, characterDescription, dialogs);
     }
 
+    /**
+     * Load the dialogs of a character.
+     * @param characterObject The character object.
+     * @param language The language to load the dialogs in.
+     * @return The dialogs of the character.
+     */
     private static HashMap<String, CharacterBase.Dialog> loadDialogs(JsonObject characterObject, String language) {
         HashMap<String, CharacterBase.Dialog> dialogs = new HashMap<>();
 
@@ -70,6 +110,13 @@ public class CharacterManager {
         return dialogs;
     }
 
+    /**
+     * Load a dialog.
+     * @param id The ID of the dialog.
+     * @param dialogObject The dialog object.
+     * @param language The language to load the dialog in.
+     * @return The dialog.
+     */
     private static CharacterBase.Dialog loadDialog(String id, JsonObject dialogObject, String language) {
         String dialog = dialogObject.get(language).getAsString();
         boolean isQuestion = dialogObject.get("choice").getAsJsonObject() != null;
@@ -89,6 +136,14 @@ public class CharacterManager {
         }
     }
 
+    /**
+     * Load an option.
+     * @param dialogId The ID of the dialog.
+     * @param optionId The ID of the option.
+     * @param option The option object.
+     * @param language The language to load the option in.
+     * @return The option.
+     */
     private static CharacterBase.Option loadOption(String dialogId, String optionId, JsonObject option, String language) {
         String name = option.get("name").getAsJsonObject().get(language).getAsString();
         String answer = option.get(language).getAsString();

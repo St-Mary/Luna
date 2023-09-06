@@ -6,10 +6,22 @@ import lombok.Getter;
  * Represents a journey from one Place to another.
  */
 public class JourneyBase {
+
+    /**
+     * Get the starting Place of the journey.
+     */
     @Getter
     private final PlaceBase from;
+
+    /**
+     * Get the destination Place of the journey.
+     */
     @Getter
     private final PlaceBase to;
+
+    /**
+     * Get the time duration of the journey.
+     */
     @Getter
     private final Long time;
 

@@ -19,12 +19,22 @@ public class Cache<K, V> implements ICache<K, V> {
     private final DoublyLinkedList<CacheElement<K, V>> doublyLinkedList;
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
+    /**
+     * Creates a new Cache instance with the specified size.
+     * @param size The size of the cache.
+     */
     public Cache(int size) {
         this.size = size;
         this.linkedListNodeMap = new ConcurrentHashMap<>(size);
         this.doublyLinkedList = new DoublyLinkedList<>();
     }
 
+    /**
+     * Put a new item into the cache.
+     * @param key The key of the item.
+     * @param value The value of the item.
+     * @return Whether the item was successfully put into the cache.
+     */
     @Override
     public boolean put(K key, V value) {
         this.lock.writeLock().lock();
@@ -50,6 +60,11 @@ public class Cache<K, V> implements ICache<K, V> {
         }
     }
 
+    /**
+     * Get an item from the cache.
+     * @param key The key of the item.
+     * @return The value of the item.
+     */
     @Override
     public Optional<V> get(K key) {
         this.lock.readLock().lock();
@@ -65,6 +80,10 @@ public class Cache<K, V> implements ICache<K, V> {
         }
     }
 
+    /**
+     * Delete an item from the cache.
+     * @param key The key of the item.
+     */
     @Override
     public void delete(K key) {
         this.lock.writeLock().lock();
@@ -79,6 +98,10 @@ public class Cache<K, V> implements ICache<K, V> {
         }
     }
 
+    /**
+     * Get the size of the cache.
+     * @return The size of the cache.
+     */
     @Override
     public int size() {
         this.lock.readLock().lock();
@@ -89,11 +112,19 @@ public class Cache<K, V> implements ICache<K, V> {
         }
     }
 
+    /**
+     * Check if the cache is empty.
+     * @return true if the cache is empty, false otherwise.
+     */
     @Override
     public boolean isEmpty() {
         return size() == 0;
     }
 
+    /**
+     * Clear the cache.
+     * This method is not thread-safe.
+     */
     @Override
     public void clear() {
         this.lock.writeLock().lock();
@@ -106,6 +137,10 @@ public class Cache<K, V> implements ICache<K, V> {
     }
 
 
+    /**
+     * Evict an element from the cache.
+     * This method is not thread-safe.
+     */
     private void evictElement() {
         this.lock.writeLock().lock();
         try {

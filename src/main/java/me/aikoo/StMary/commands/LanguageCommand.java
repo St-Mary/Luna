@@ -13,6 +13,9 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.util.Objects;
 
+/**
+ * LanguageCommand is the command used to change the bot language.
+ */
 public class LanguageCommand extends CommandAbstract {
     /**
      * Constructor for the AbstractCommand class

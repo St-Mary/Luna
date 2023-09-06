@@ -4,6 +4,10 @@ import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * A doubly linked list implementation.
+ * @param <T> The type of the elements in the list.
+ */
 public class DoublyLinkedList<T> {
 
     private final DummyNode<T> dummyNode;
@@ -12,11 +16,17 @@ public class DoublyLinkedList<T> {
     private LinkedListNode<T> tail;
     private AtomicInteger size;
 
+    /**
+     * Creates a new DoublyLinkedList instance.
+     */
     public DoublyLinkedList() {
         this.dummyNode = new DummyNode<T>(this);
         clear();
     }
 
+    /**
+     * Clears the list.
+     */
     public void clear() {
         this.lock.writeLock().lock();
         try {
@@ -28,6 +38,10 @@ public class DoublyLinkedList<T> {
         }
     }
 
+    /**
+     * Get the size of the list.
+     * @return The size of the list.
+     */
     public int size() {
         this.lock.readLock().lock();
         try {
@@ -37,6 +51,10 @@ public class DoublyLinkedList<T> {
         }
     }
 
+    /**
+     * Check if the list is empty.
+     * @return Whether the list is empty.
+     */
     public boolean isEmpty() {
         this.lock.readLock().lock();
         try {
@@ -46,6 +64,11 @@ public class DoublyLinkedList<T> {
         }
     }
 
+    /**
+     * Check if the list contains the specified value.
+     * @param value The value to check for.
+     * @return Whether the list contains the specified value.
+     */
     public boolean contains(T value) {
         this.lock.readLock().lock();
         try {
@@ -55,6 +78,11 @@ public class DoublyLinkedList<T> {
         }
     }
 
+    /**
+     * Search for the specified value in the list.
+     * @param value The value to search for.
+     * @return The node containing the specified value, or an empty node if not found.
+     */
     public LinkedListNode<T> search(T value) {
         this.lock.readLock().lock();
         try {
@@ -64,6 +92,11 @@ public class DoublyLinkedList<T> {
         }
     }
 
+    /**
+     * Add a value to the list.
+     * @param value The value to add.
+     * @return The node containing the value.
+     */
     public LinkedListNode<T> add(T value) {
         this.lock.writeLock().lock();
         try {
@@ -78,6 +111,11 @@ public class DoublyLinkedList<T> {
         }
     }
 
+    /**
+     * Add a collection of values to the list.
+     * @param values The values to add.
+     * @return Whether all the values were successfully added.
+     */
     public boolean addAll(Collection<T> values) {
         this.lock.writeLock().lock();
         try {
@@ -92,7 +130,12 @@ public class DoublyLinkedList<T> {
         }
     }
 
-    public LinkedListNode<T> remove(T value) {
+    /**
+     * Remove a value from the list.
+     *
+     * @param value The value to remove.
+     */
+    public void remove(T value) {
         this.lock.writeLock().lock();
         try {
             LinkedListNode<T> linkedListNode = head.search(value);
@@ -106,12 +149,15 @@ public class DoublyLinkedList<T> {
                 linkedListNode.detach();
                 size.decrementAndGet();
             }
-            return linkedListNode;
         } finally {
             this.lock.writeLock().unlock();
         }
     }
 
+    /**
+     * Remove the head of the list.
+     * @return The node that was removed.
+     */
     public LinkedListNode<T> removeTail() {
         this.lock.writeLock().lock();
         try {
@@ -131,10 +177,21 @@ public class DoublyLinkedList<T> {
         }
     }
 
+    /**
+     * Move a node to the front of the list.
+     * @param node The node to move.
+     * @return The node that was moved.
+     */
     public LinkedListNode<T> moveToFront(LinkedListNode<T> node) {
         return node.isEmpty() ? dummyNode : updateAndMoveToFront(node, node.getElement());
     }
 
+    /**
+     * Update a node and move it to the front of the list.
+     * @param node The node to update.
+     * @param newValue The new value of the node.
+     * @return The node that was updated.
+     */
     public LinkedListNode<T> updateAndMoveToFront(LinkedListNode<T> node, T newValue) {
         this.lock.writeLock().lock();
         try {
@@ -149,6 +206,10 @@ public class DoublyLinkedList<T> {
         }
     }
 
+    /**
+     * Detach a node from the list.
+     * @param node The node to detach.
+     */
     private void detach(LinkedListNode<T> node) {
         if (node != tail) {
             node.detach();

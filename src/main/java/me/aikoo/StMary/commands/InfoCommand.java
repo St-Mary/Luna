@@ -313,6 +313,11 @@ public class InfoCommand extends CommandAbstract {
         return TextManager.createText("info_title_title", language).replace("icon", title.getIcon()).replace("name", title.getName(language)).replace("description", title.getDescription(language)).build();
     }
 
+    /**
+     * Provides auto-completion for the info command.
+     * @param event The CommandAutoCompleteInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
         // Unused method for this command

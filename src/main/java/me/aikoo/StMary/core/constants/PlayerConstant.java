@@ -3,6 +3,9 @@ package me.aikoo.StMary.core.constants;
 import java.math.BigInteger;
 import java.util.List;
 
+/**
+ * The PlayerConstant class contains all the constants of the player.
+ */
 public class PlayerConstant {
     public static final Integer CREATION_TIME_WEEK_LIMIT = 1; // The number of weeks that a Discord account must be old to be able to create a character.
     public static final Integer LEVEL = 1;

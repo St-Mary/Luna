@@ -15,12 +15,18 @@ import org.slf4j.LoggerFactory;
  * StMaryClient is the main class of the bot. It contains all the managers and the JDA instance.
  */
 public class StMaryClient {
-    // Logger
+
     private final Logger LOGGER = LoggerFactory.getLogger(StMaryClient.class);
+
+    /**
+     * Get the cache of the bot.
+     */
     @Getter
     private final Cache<String, String> cache = new Cache<>(20000);
 
-    // JDA instance to interact with Discord
+    /**
+     * Get the JDA instance of the bot.
+     */
     @Getter
     private JDA jda;
 

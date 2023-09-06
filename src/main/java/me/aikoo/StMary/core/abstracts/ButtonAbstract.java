@@ -37,18 +37,25 @@ public class ButtonAbstract {
 
     /**
      * Get the emoji associated with the button, if any.
-     *
-     * @return The emoji associated with the button.
      */
     @Getter
     private Emoji emoji = null;
 
+    /**
+     * Get the class method to be executed when the button is clicked.
+     */
     @Getter
     private final Object classMethod;
 
+    /**
+     * Get the method to be executed when the button is clicked.
+     */
     @Getter
     private final Method method;
 
+    /**
+     * Get the parameters to be passed to the method when the button is clicked.
+     */
     @Getter
     private final Object[] parameters;
 

@@ -135,6 +135,13 @@ public class MenuCommand extends CommandAbstract {
                 .replace("{{region}}", LocationManager.getRegionById(player.getCurrentLocationRegion()).getName(player.getLanguage()));
     }
 
+    /**
+     * Displays the user's profile.
+     * @param event The ButtonInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     * @param id The id of the player
+     * @param player The PlayerEntity instance
+     */
     public void profilBtn(ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
         if (!event.getUser().getId().equals(id)) {
             event.reply(TextManager.createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
@@ -147,6 +154,13 @@ public class MenuCommand extends CommandAbstract {
         }
     }
 
+    /**
+     * Displays the user's inventory.
+     * @param event The ButtonInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     * @param id The id of the player
+     * @param player The PlayerEntity instance
+     */
     public void inventoryBtn(ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
         if (!event.getUser().getId().equals(id)) {
             event.reply(TextManager.createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
@@ -171,6 +185,13 @@ public class MenuCommand extends CommandAbstract {
         }
     }
 
+    /**
+     * Displays the user's titles.
+     * @param event The ButtonInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     * @param id The id of the player
+     * @param player The PlayerEntity instance
+     */
     public void titlesBtn(ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
         if (!event.getUser().getId().equals(id)) {
             event.reply(TextManager.createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
@@ -205,6 +226,13 @@ public class MenuCommand extends CommandAbstract {
         }
     }
 
+    /**
+     * Closes the menu.
+     * @param event The ButtonInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     * @param id The id of the player
+     * @param player The player
+     */
     public void closeBtn(ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
         if (!event.getUser().getId().equals(id)) {
             event.reply(TextManager.createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();

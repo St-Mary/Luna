@@ -99,14 +99,32 @@ public class StartCommand extends CommandAbstract {
         }
     }
 
+    /**
+     * Close the button menu when the user clicks on the "No" button.
+     * @param res The message to edit.
+     * @param language The language of the player.
+     * @param event The ButtonInteractionEvent triggered when the button is clicked.
+     */
     public void closeBtnMenuEvent(Message res, String language, SlashCommandInteractionEvent event) {
         closeBtn(res, language, event.getUser());
     }
 
+    /**
+     * Close the button menu when the user clicks on the "No" button.
+     * @param res The message to edit.
+     * @param language The language of the player.
+     * @param event The ButtonInteractionEvent triggered when the button is clicked.
+     */
     public void closeBtnMenuEvent(Message res, String language, ButtonInteractionEvent event) {
         closeBtn(res, language, event.getUser());
     }
 
+    /**
+     * Close the button menu.
+     * @param res The message to edit.
+     * @param language The language of the player.
+     * @param user  The user who clicked the button.
+     */
     private void closeBtn(Message res, String language, User user) {
         CharacterBase.Information character = CharacterManager.getCharacter("1").getCharacterInformation(language);
         CharacterBase.Dialog noDialog = character.getDialog("1.1.2");
@@ -119,6 +137,11 @@ public class StartCommand extends CommandAbstract {
         res.editMessage(text).setComponents().queue();
     }
 
+    /**
+     * Handle the click on the "Yes" button.
+     * @param event The ButtonInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     public void onClickYesBtn(ButtonInteractionEvent event, String language) {
         Optional<String> cacheLanguage = stMaryClient.getCache().get("startCmdLanguage_" + event.getUser().getId());
         language = cacheLanguage.orElse(language);
@@ -150,6 +173,11 @@ public class StartCommand extends CommandAbstract {
         stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
     }
 
+    /**
+     * Handle the click on the "No" button.
+     * @param event The ButtonInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player
+     */
     public void onClickNoBtn(ButtonInteractionEvent event, String language) {
         language = stMaryClient.getCache().get("startCmdLanguage_" + event.getUser().getId()).orElse(language);
         closeBtnMenuEvent(event.getMessage(), language, event);

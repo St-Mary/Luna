@@ -22,6 +22,11 @@ public enum ObjectType {
         this.name = name;
     }
 
+    /**
+     * Get the name of the object type in the specified language.
+     * @param language The language to get the name in.
+     * @return The name of the object type in the specified language.
+     */
     public String getName(String language) {
         return name.getName(language);
     }

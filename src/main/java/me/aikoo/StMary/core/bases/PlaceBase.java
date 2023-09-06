@@ -11,14 +11,28 @@ import java.util.ArrayList;
  */
 public class PlaceBase extends LocationAbstract {
 
-
+    /**
+     * Get the icon associated with the place.
+     */
     @Getter
     private final String icon = "\uD83D\uDCCD"; // You can customize this icon.
 
+    /**
+     * Get the region to which the place belongs.
+     */
     @Getter
     private final RegionBase region;
+
+    /**
+     * Get the list of available moves from this place.
+     */
     @Getter
     private final ArrayList<JourneyBase> availableMoves = new ArrayList<>();
+
+    /**
+     * Get the town to which the place belongs.
+     * Set the town to which the place belongs.
+     */
     @Getter
     @Setter
     private TownBase town = null;

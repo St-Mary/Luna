@@ -9,12 +9,18 @@ import java.util.HashMap;
  */
 public class TitleBase {
 
+    /**
+     * Get the id of the title.
+     */
     @Getter
     private final String id;
 
     private final HashMap<String, String> names = new HashMap<>();
     private final HashMap<String, String> descriptions = new HashMap<>();
 
+    /**
+     * Get the icon associated with the title.
+     */
     @Getter
     private final String icon;
 

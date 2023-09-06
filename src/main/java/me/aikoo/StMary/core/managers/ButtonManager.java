@@ -28,10 +28,19 @@ public class ButtonManager extends ListenerAdapter {
         commands.put(id, new ArrayList<>(buttons));
     }
 
+    /**
+     * Removes a list of buttons associated with a message ID.
+     * @param id The ID of the message the buttons are associated with.
+     */
     public static void removeButtons(String id) {
         commands.remove(id);
     }
 
+    /**
+     * Checks if a message ID is associated with any registered buttons.
+     * @param id The ID of the message to check.
+     * @return Whether the message ID is associated with any registered buttons.
+     */
     public static boolean isButtons(String id) {
         return commands.containsKey(id);
     }
