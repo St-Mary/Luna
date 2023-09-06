@@ -2,6 +2,9 @@ package me.aikoo.StMary;
 
 import me.aikoo.StMary.core.bot.StMaryClient;
 
+/**
+ * The main class of the application.
+ */
 public class Main {
 
     /**

@@ -77,6 +77,10 @@ public abstract class LocationAbstract {
      */
     public abstract String getIcon();
 
+    /**
+     * Get the type of the location.
+     * @return The type of the location.
+     */
     public String getType() {
         String type = "";
         if (this instanceof RegionBase) {

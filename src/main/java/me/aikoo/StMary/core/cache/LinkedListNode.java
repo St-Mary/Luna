@@ -61,5 +61,10 @@ public interface LinkedListNode<V> {
      */
     void setNext(LinkedListNode<V> next);
 
+    /**
+     * Search for a value in the list.
+     * @param value The value to search for.
+     * @return The node containing the value, or null if not found.
+     */
     LinkedListNode<V> search(V value);
 }

@@ -175,6 +175,13 @@ public class JourneyCommand extends CommandAbstract {
         }
     }
 
+    /**
+     * Closes the journey message.
+     * @param event The ButtonInteractionEvent triggered when the button is clicked.
+     * @param language The language of the player.
+     * @param id The Discord ID of the player.
+     * @param destinationPlace The destination place.
+     */
     public void closeBtn(ButtonInteractionEvent event, String language, String id, PlaceBase destinationPlace) {
         if (!event.getUser().getId().equals(id)) {
             event.reply(TextManager.createText("command_error_button_only_author", language).buildError()).setEphemeral(true).queue();
