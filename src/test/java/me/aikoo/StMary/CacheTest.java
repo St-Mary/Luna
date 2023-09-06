@@ -11,10 +11,10 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class CacheTest {
+class CacheTest {
 
     @Test
-    public void addSomeDataToCache_WhenGetData_ThenIsEqualWithCacheElement() {
+    void addSomeDataToCache_WhenGetData_ThenIsEqualWithCacheElement() {
         Cache<String, String> cache = new Cache<>(3);
         cache.put("1", "test1");
         cache.put("2", "test2");
@@ -25,7 +25,7 @@ public class CacheTest {
     }
 
     @Test
-    public void addDataToCacheToTheNumberOfSize_WhenAddOneMoreData_ThenLeastRecentlyDataWillEvict() {
+    void addDataToCacheToTheNumberOfSize_WhenAddOneMoreData_ThenLeastRecentlyDataWillEvict() {
         Cache<String, String> cache = new Cache<>(3);
         cache.put("1", "test1");
         cache.put("2", "test2");
@@ -35,7 +35,7 @@ public class CacheTest {
     }
 
     @Test
-    public void runMultiThreadTask_WhenPutDataInConcurrentToCache_ThenNoDataLost() throws Exception {
+    void runMultiThreadTask_WhenPutDataInConcurrentToCache_ThenNoDataLost() throws Exception {
         final int size = 50;
         final ExecutorService executorService = Executors.newFixedThreadPool(5);
         Cache<Integer, String> cache = new Cache<>(size);
