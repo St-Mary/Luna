@@ -119,15 +119,6 @@ public class StartCommand extends CommandAbstract {
         res.editMessage(text).setComponents().queue();
     }
 
-    /**
-     * Auto-complete method for the Start command.
-     *
-     * @param event The CommandAutoCompleteInteractionEvent.
-     */
-    @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
-    }
-
     public void onClickYesBtn(ButtonInteractionEvent event, String language) {
         Optional<String> cacheLanguage = stMaryClient.getCache().get("startCmdLanguage_" + event.getUser().getId());
         language = cacheLanguage.orElse(language);
@@ -162,5 +153,15 @@ public class StartCommand extends CommandAbstract {
     public void onClickNoBtn(ButtonInteractionEvent event, String language) {
         language = stMaryClient.getCache().get("startCmdLanguage_" + event.getUser().getId()).orElse(language);
         closeBtnMenuEvent(event.getMessage(), language, event);
+    }
+
+    /**
+     * Auto-complete method for the Start command.
+     *
+     * @param event The CommandAutoCompleteInteractionEvent.
+     */
+    @Override
+    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
+        // Unused method for this command
     }
 }

@@ -80,6 +80,6 @@ public class EndJourneyCommand extends CommandAbstract {
 
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
-        // Auto-complete logic can be added here if needed.
+        // Unused method for this command
     }
 }

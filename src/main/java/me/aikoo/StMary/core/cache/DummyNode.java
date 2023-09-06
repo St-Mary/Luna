@@ -24,6 +24,7 @@ public class DummyNode<T> implements LinkedListNode<T> {
 
     @Override
     public void detach() {
+        // Unused method
     }
 
     @Override

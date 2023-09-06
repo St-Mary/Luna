@@ -51,6 +51,6 @@ public class RemoveAdminCommand extends CommandAbstract {
 
     @Override
     public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
-
+        // Unused method for this command
     }
 }

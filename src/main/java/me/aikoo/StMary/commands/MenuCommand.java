@@ -91,15 +91,7 @@ public class MenuCommand extends CommandAbstract {
         }
     }
 
-    /**
-     * Auto-complete handler for the Menu command.
-     *
-     * @param event The CommandAutoCompleteInteractionEvent triggered by auto-complete.
-     */
-    @Override
-    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
-        // This command doesn't support auto-complete, so this method is left empty.
-    }
+
 
     /**
      * Generates a formatted profile embed for a user.
@@ -224,5 +216,15 @@ public class MenuCommand extends CommandAbstract {
         if (!event.getInteraction().isAcknowledged()) {
             event.deferEdit().queue();
         }
+    }
+
+    /**
+     * Auto-complete handler for the Menu command.
+     *
+     * @param event The CommandAutoCompleteInteractionEvent triggered by auto-complete.
+     */
+    @Override
+    public void autoComplete(CommandAutoCompleteInteractionEvent event, String language) {
+        // This command doesn't support auto-complete, so this method is left empty.
     }
 }
