@@ -2,7 +2,6 @@ package me.aikoo.StMary.core.managers;
 
 import com.google.gson.JsonObject;
 import lombok.Getter;
-import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 import org.slf4j.Logger;

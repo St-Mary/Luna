@@ -2,7 +2,6 @@ package me.aikoo.StMary.core.abstracts;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.aikoo.StMary.core.bases.CharacterBase;
 import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.constants.BotConfigConstant;
 import me.aikoo.StMary.core.database.PlayerEntity;
@@ -12,7 +11,6 @@ import me.aikoo.StMary.core.managers.DatabaseManager;
 import me.aikoo.StMary.core.managers.TextManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -25,7 +23,6 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -109,7 +106,7 @@ public abstract class CommandAbstract {
         this.autoComplete(event, language);
     }
 
-    public void sendMsgWithButtons(SlashCommandInteractionEvent event, String text, String language, ArrayList<ButtonAbstract> buttons, int time, Method closeMethod, Object methodClass, Object ...parameters) {
+    public void sendMsgWithButtons(SlashCommandInteractionEvent event, String text, String language, ArrayList<ButtonAbstract> buttons, int time, Method closeMethod, Object methodClass, Object... parameters) {
         ArrayList<Button> buttonList = new ArrayList<>();
         buttons.forEach(button -> buttonList.add(button.getButton()));
         event.reply(text).addActionRow(buttonList).queue(msg -> msg.retrieveOriginal().queue(res -> {

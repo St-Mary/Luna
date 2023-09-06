@@ -44,13 +44,13 @@ public class ButtonAbstract {
     private Emoji emoji = null;
 
     @Getter
-    private Object classMethod;
+    private final Object classMethod;
 
     @Getter
-    private Method method;
+    private final Method method;
 
     @Getter
-    private Object[] parameters;
+    private final Object[] parameters;
 
     /**
      * Creates a new Button instance.
@@ -61,7 +61,7 @@ public class ButtonAbstract {
      * @param emoji        The emoji associated with the button.
      * @param stMaryClient The StMaryClient instance.
      */
-    public ButtonAbstract(String id, String name, ButtonStyle style, Emoji emoji, StMaryClient stMaryClient, Object classMethod, Method method, Object ...parameters) {
+    public ButtonAbstract(String id, String name, ButtonStyle style, Emoji emoji, StMaryClient stMaryClient, Object classMethod, Method method, Object... parameters) {
         this.id = id;
         this.name = name;
         this.style = style;

@@ -15,7 +15,7 @@ public class ObjectManager {
     // Stores objects using their ID as the key
     private static final HashMap<String, ObjectBase> objects = new HashMap<>();
 
-   static {
+    static {
         load();
     }
 

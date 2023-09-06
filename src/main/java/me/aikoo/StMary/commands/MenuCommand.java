@@ -20,7 +20,6 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 import java.lang.reflect.Method;
@@ -84,7 +83,7 @@ public class MenuCommand extends CommandAbstract {
                 ButtonAbstract closeBtn = new ButtonAbstract("close_btn", TextManager.getText("menu_btn_close", language), ButtonStyle.DANGER, Emoji.fromFormatted(BotConfigConstant.getEmote("no")), stMaryClient, this, closeMethod, event.getUser().getId(), player);
 
                 // Send the profile menu
-                this.sendMsgWithButtons(event, profil, language, new ArrayList<>(List.of(inventoryBtn, profilBtn, titlesBtn, closeBtn)),60000, null, null);
+                this.sendMsgWithButtons(event, profil, language, new ArrayList<>(List.of(inventoryBtn, profilBtn, titlesBtn, closeBtn)), 60000, null, null);
 
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();

@@ -12,7 +12,6 @@ import me.aikoo.StMary.core.managers.DatabaseManager;
 import me.aikoo.StMary.core.managers.TextManager;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -21,7 +20,10 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 import java.lang.reflect.Method;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The Start command allows users to begin their adventure.

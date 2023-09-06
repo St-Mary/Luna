@@ -1,6 +1,5 @@
 package me.aikoo.StMary.core.managers;
 
-import me.aikoo.StMary.core.bot.StMaryClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

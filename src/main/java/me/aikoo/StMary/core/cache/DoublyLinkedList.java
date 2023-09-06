@@ -7,10 +7,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class DoublyLinkedList<T> {
 
     private final DummyNode<T> dummyNode;
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private LinkedListNode<T> head;
     private LinkedListNode<T> tail;
     private AtomicInteger size;
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     public DoublyLinkedList() {
         this.dummyNode = new DummyNode<T>(this);

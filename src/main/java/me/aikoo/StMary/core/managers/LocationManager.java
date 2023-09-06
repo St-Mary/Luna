@@ -7,7 +7,6 @@ import me.aikoo.StMary.core.bases.JourneyBase;
 import me.aikoo.StMary.core.bases.PlaceBase;
 import me.aikoo.StMary.core.bases.RegionBase;
 import me.aikoo.StMary.core.bases.TownBase;
-import me.aikoo.StMary.core.bot.StMaryClient;
 import me.aikoo.StMary.core.utils.JSONFileReaderUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

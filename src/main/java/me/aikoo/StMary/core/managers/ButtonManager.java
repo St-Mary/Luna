@@ -17,10 +17,27 @@ import java.util.HashMap;
  */
 public class ButtonManager extends ListenerAdapter {
 
+    private static final HashMap<String, ArrayList<ButtonAbstract>> commands = new HashMap<>();
     @Setter
     private static StMaryClient stMaryClient;
-    private static final HashMap<String, ArrayList<ButtonAbstract>> commands = new HashMap<>();
 
+    /**
+     * Adds a list of buttons associated with a message ID.
+     *
+     * @param id      The ID of the message the buttons are associated with.
+     * @param buttons The list of Button objects to add.
+     */
+    public static void addButtons(String id, ArrayList<ButtonAbstract> buttons) {
+        commands.put(id, buttons);
+    }
+
+    public static void removeButtons(String id) {
+        commands.remove(id);
+    }
+
+    public static boolean isButtons(String id) {
+        return commands.containsKey(id);
+    }
 
     /**
      * Handles button interactions.
@@ -50,23 +67,5 @@ public class ButtonManager extends ListenerAdapter {
 
         // Remove the executed button from the commands
         commands.remove(event.getId());
-    }
-
-    /**
-     * Adds a list of buttons associated with a message ID.
-     *
-     * @param id      The ID of the message the buttons are associated with.
-     * @param buttons The list of Button objects to add.
-     */
-    public static void addButtons(String id, ArrayList<ButtonAbstract> buttons) {
-        commands.put(id, buttons);
-    }
-
-    public static void removeButtons(String id) {
-        commands.remove(id);
-    }
-
-    public static boolean isButtons(String id) {
-        return commands.containsKey(id);
     }
 }

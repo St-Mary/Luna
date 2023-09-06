@@ -127,10 +127,10 @@ public class JourneyCommand extends CommandAbstract {
     /**
      * Confirms the journey.
      *
-     * @param event The ButtonInteractionEvent triggered when the button is clicked.
+     * @param event    The ButtonInteractionEvent triggered when the button is clicked.
      * @param language The language of the player.
-     * @param move The journey move.
-     * @param player The PlayerEntity instance.
+     * @param move     The journey move.
+     * @param player   The PlayerEntity instance.
      */
     public void confirmBtn(ButtonInteractionEvent event, String language, JourneyBase move, PlayerEntity player) {
         if (player.getDiscordId() != event.getUser().getIdLong()) {
