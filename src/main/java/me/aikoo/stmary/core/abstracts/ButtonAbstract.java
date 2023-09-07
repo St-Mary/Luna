@@ -108,7 +108,6 @@ public class ButtonAbstract {
         try {
             this.method.invoke(this.classMethod, params);
         } catch (InvocationTargetException | IllegalAccessException e) {
-            LOGGER.error("Error while executing command: " + e);
             String errorText = TextManager.createText("command_error", language).buildError();
             event.reply(errorText).setEphemeral(true).queue();
 
