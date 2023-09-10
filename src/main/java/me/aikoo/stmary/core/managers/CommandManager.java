@@ -1,101 +1,156 @@
 package me.aikoo.stmary.core.managers;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import me.aikoo.stmary.core.abstracts.CommandAbstract;
 import me.aikoo.stmary.core.bot.StMaryClient;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-/**
- * Manages commands for the application.
- */
+/** Manages commands for the application. */
 public class CommandManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
-    private static final HashMap<String, CommandAbstract> commands = new HashMap<>();
-    private static final HashMap<String, CommandAbstract> adminCommands = new HashMap<>();
+  private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
+  private static final HashMap<String, CommandAbstract> commands = new HashMap<>();
+  private static final HashMap<String, CommandAbstract> adminCommands = new HashMap<>();
 
-    /**
-     * Get a command by its name.
-     *
-     * @param name The name of the command to retrieve.
-     * @return The command with the specified name, or null if not found.
-     */
-    public static CommandAbstract getCommand(String name) {
-        return commands.get(name);
-    }
+  /**
+   * Get a command by its name.
+   *
+   * @param name The name of the command to retrieve.
+   * @return The command with the specified name, or null if not found.
+   */
+  public static CommandAbstract getCommand(String name) {
+    return commands.get(name);
+  }
 
-    /**
-     * Get an admin command by its name.
-     *
-     * @param name The name of the admin command to retrieve.
-     * @return The admin command with the specified name, or null if not found.
-     */
-    public static CommandAbstract getAdminCommand(String name) {
-        return adminCommands.get(name);
-    }
+  /**
+   * Get an admin command by its name.
+   *
+   * @param name The name of the admin command to retrieve.
+   * @return The admin command with the specified name, or null if not found.
+   */
+  public static CommandAbstract getAdminCommand(String name) {
+    return adminCommands.get(name);
+  }
 
-    /**
-     * Get all registered commands.
-     *
-     * @return A map of all registered commands.
-     */
-    public static Map<String, CommandAbstract> getCommands() {
-        return commands;
-    }
+  /**
+   * Get all registered commands.
+   *
+   * @return A map of all registered commands.
+   */
+  public static Map<String, CommandAbstract> getCommands() {
+    return commands;
+  }
 
-    /**
-     * Get all registered admin commands.
-     *
-     * @return A map of all registered admin commands.
-     */
-    public static Map<String, CommandAbstract> getAdminCommands() {
-        return adminCommands;
-    }
+  /**
+   * Get all registered admin commands.
+   *
+   * @return A map of all registered admin commands.
+   */
+  public static Map<String, CommandAbstract> getAdminCommands() {
+    return adminCommands;
+  }
 
-    /**
-     * Load commands into the manager.
-     *
-     * @param stMaryClient The StMaryClient instance for command initialization.
-     */
-    public static void loadCommands(StMaryClient stMaryClient) {
-        // Use Reflections library to scan for classes in the "me.aikoo.StMary.commands" package
-        Reflections reflections = new Reflections("me.aikoo.StMary.commands");
+  /**
+   * Load commands into the manager.
+   *
+   * @param stMaryClient The StMaryClient instance for command initialization.
+   */
+  public static void loadCommands(StMaryClient stMaryClient) {
+    Reflections reflections = new Reflections("me.aikoo.stmary.commands");
+    Set<Class<? extends CommandAbstract>> commandClasses =
+        reflections.getSubTypesOf(CommandAbstract.class);
 
-        // Get all classes that are subclasses of AbstractCommand
-        Set<Class<? extends CommandAbstract>> classes = reflections.getSubTypesOf(CommandAbstract.class);
+    for (Class<? extends CommandAbstract> commandClass : commandClasses) {
+      if (isAbstractClass(commandClass)) {
+        continue;
+      }
 
-        // Iterate through each found command class
-        for (Class<? extends CommandAbstract> s : classes) {
-            try {
-                // Skip abstract command classes
-                if (Modifier.isAbstract(s.getModifiers()))
-                    continue;
+      try {
+        CommandAbstract command = instantiateCommand(stMaryClient, commandClass);
 
-                // Create an instance of the command class using its constructor
-                CommandAbstract c = s.getConstructor(StMaryClient.class).newInstance(stMaryClient);
-
-                // Check if the command is not already loaded
-                if (!commands.containsKey(c.getName())) {
-                    // Log that the command is loaded
-                    LOGGER.info("Loaded command: " + c.getName());
-
-                    // Check if the command is an admin command and add it to the appropriate map
-                    if (c.isAdminCommand()) {
-                        adminCommands.put(c.getName(), c);
-                    } else {
-                        commands.put(c.getName(), c);
-                    }
-                }
-            } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
-                     NoSuchMethodException e) {
-                LOGGER.error("An error occurred while loading commands: ", e);
-            }
+        if (!isCommandLoaded(command)) {
+          logLoadedCommand(command);
+          addCommandToAppropriateMap(command);
         }
+      } catch (Exception e) {
+        logErrorLoadingCommand(e);
+      }
     }
+  }
+
+  /**
+   * Check if a class is abstract.
+   *
+   * @param commandClass The class to check.
+   * @return True if the class is abstract, false otherwise.
+   */
+  private static boolean isAbstractClass(Class<?> commandClass) {
+    return Modifier.isAbstract(commandClass.getModifiers());
+  }
+
+  /**
+   * Instantiate a command.
+   *
+   * @param stMaryClient The StMaryClient instance for command initialization.
+   * @param commandClass The class of the command to instantiate.
+   * @return The instantiated command.
+   * @throws InstantiationException If the command cannot be instantiated.
+   * @throws IllegalAccessException If the command cannot be accessed.
+   * @throws NoSuchMethodException If the command does not have a constructor.
+   * @throws InvocationTargetException If the command cannot be invoked.
+   */
+  private static CommandAbstract instantiateCommand(
+      StMaryClient stMaryClient, Class<? extends CommandAbstract> commandClass)
+      throws InstantiationException,
+          IllegalAccessException,
+          NoSuchMethodException,
+          InvocationTargetException {
+    return commandClass.getConstructor(StMaryClient.class).newInstance(stMaryClient);
+  }
+
+  /**
+   * Check if a command is loaded.
+   *
+   * @param command The command to check.
+   * @return True if the command is loaded, false otherwise.
+   */
+  private static boolean isCommandLoaded(CommandAbstract command) {
+    return commands.containsKey(command.getName());
+  }
+
+  /**
+   * Log that a command has been loaded.
+   *
+   * @param command The command that has been loaded.
+   */
+  private static void logLoadedCommand(CommandAbstract command) {
+    LOGGER.info("Loaded command: " + command.getName());
+  }
+
+  /**
+   * Add a command to the appropriate map.
+   *
+   * @param command The command to add.
+   */
+  private static void addCommandToAppropriateMap(CommandAbstract command) {
+    if (command.isAdminCommand()) {
+      adminCommands.put(command.getName(), command);
+    } else {
+      commands.put(command.getName(), command);
+    }
+  }
+
+  /**
+   * Log an error that occurred while loading a command.
+   *
+   * @param e The exception that occurred.
+   */
+  private static void logErrorLoadingCommand(Exception e) {
+    LOGGER.error("An error occurred while loading commands: ", e);
+  }
 }
