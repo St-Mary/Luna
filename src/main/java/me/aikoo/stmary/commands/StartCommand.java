@@ -132,9 +132,9 @@ public class StartCommand extends CommandAbstract {
    * @param event The ButtonInteractionEvent triggered when the button is clicked.
    */
   /**
-  public void closeBtnMenuEvent(Message res, String language, SlashCommandInteractionEvent event) {
-    closeBtn(res, language, event.getUser());
-  }*/
+   * public void closeBtnMenuEvent(Message res, String language, SlashCommandInteractionEvent event)
+   * { closeBtn(res, language, event.getUser()); }
+   */
 
   /**
    * Close the button menu when the user clicks on the "No" button.

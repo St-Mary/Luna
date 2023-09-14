@@ -2,14 +2,12 @@ package me.aikoo.stmary.core.managers;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import me.aikoo.stmary.core.bases.CharacterBase;
 import me.aikoo.stmary.core.bases.Effect;
 import me.aikoo.stmary.core.utils.JSONFileReaderUtils;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 /** Manages characters in the bot. */
 public class CharacterManager {
@@ -19,10 +17,18 @@ public class CharacterManager {
     load();
   }
 
+  /**
+   * Get a character by its id.
+   * @param id The id of the character.
+   * @return The character.
+   */
   public static CharacterBase getCharacter(String id) {
     return characters.get(id);
   }
 
+  /**
+   * Load all characters from the characters folder.
+   */
   private static void load() {
     List<JsonObject> charactersObjects = JSONFileReaderUtils.readAllFilesFrom("characters");
 
@@ -31,6 +37,11 @@ public class CharacterManager {
     }
   }
 
+  /**
+   * Load a character from a JsonObject.
+   *
+   * @param obj The JsonObject containing the character.
+   */
   private static void loadCharacter(JsonObject obj) {
     String id  = obj.get("id").getAsString();
     HashMap<String, String> names = getCharacterNamesOrDescription(obj.get("name").getAsJsonObject());
@@ -49,6 +60,13 @@ public class CharacterManager {
     characters.put(id, character);
   }
 
+  /**
+   * Load a dialog from a JsonObject.
+   *
+   * @param obj       The JsonObject containing the dialog.
+   * @param character The character of the dialog.
+   * @return The dialog.
+   */
   private static CharacterBase.Dialog loadDialog(JsonObject obj, CharacterBase character) {
     boolean haveChoices = obj.get("haveChoices").getAsBoolean();
     HashMap<String, String> texts = getCharacterNamesOrDescription(obj.get("text").getAsJsonObject());
@@ -86,6 +104,12 @@ public class CharacterManager {
     return dialog;
   }
 
+  /**
+   * Get the names or descriptions of a character.
+   *
+   * @param nameObj The JsonObject containing the names or descriptions.
+   * @return A HashMap containing the names or descriptions.
+   */
   private static HashMap<String, String> getCharacterNamesOrDescription(JsonObject nameObj) {
     HashMap<String, String> names = new HashMap<>();
     for (String lang : nameObj.keySet()) {

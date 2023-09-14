@@ -3,11 +3,8 @@ package me.aikoo.stmary.core.managers;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-
 import lombok.Getter;
-import me.aikoo.stmary.commands.MenuCommand;
 import me.aikoo.stmary.core.abstracts.CommandAbstract;
 import me.aikoo.stmary.core.bot.StMaryClient;
 import org.reflections.Reflections;
