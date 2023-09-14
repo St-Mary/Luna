@@ -1,16 +1,15 @@
 package me.aikoo.stmary.commands;
 
+import java.util.ArrayList;
+import me.aikoo.stmary.core.abstracts.ButtonListener;
 import me.aikoo.stmary.core.abstracts.CommandAbstract;
 import me.aikoo.stmary.core.bases.CharacterBase;
-import me.aikoo.stmary.core.bot.ButtonListener;
 import me.aikoo.stmary.core.bot.StMaryClient;
 import me.aikoo.stmary.core.managers.CharacterManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-
-import java.util.ArrayList;
 
 /** The Test command. */
 public class TestCommand extends CommandAbstract {
@@ -25,7 +24,7 @@ public class TestCommand extends CommandAbstract {
 
     this.name = "test";
     this.description = "Test command";
-    this.cooldown = 10000L;
+    this.cooldown = 3000L;
 
     this.setAdminCommand(true);
   }
@@ -42,15 +41,16 @@ public class TestCommand extends CommandAbstract {
     ArrayList<Button> buttons = new ArrayList<>();
 
     for (CharacterBase.Choice choice : character.getDialog("1.1").getChoices()) {
-         buttons.add(choice.getButton(language));
-      }
+      buttons.add(choice.getButton(language));
+    }
 
-    ButtonListener buttonListener = new ButtonListener(stMaryClient, event.getUser().getId(), language, buttons, 5000L, true, true) {
-      @Override
-      public void buttonClick(ButtonInteractionEvent event) {
-        // Unused method for this command
-      }
-    };
+    ButtonListener buttonListener =
+        new ButtonListener(stMaryClient, event.getUser().getId(), language, buttons, 25000L, true) {
+          @Override
+          public void buttonClick(ButtonInteractionEvent event) {
+            // Unused method for this command
+          }
+        };
 
     stMaryClient.getJda().addEventListener(buttonListener);
     buttonListener.sendButtonMenu(event, character.getDialog("1.1").getText(language));

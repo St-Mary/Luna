@@ -50,7 +50,9 @@
         "en": "Glad to hear it, soldier! Welcome to the King's army! I'll be your guide until you're strong enough to dive into these abysses! Here, have a little something to help you progress! Go see Sir Alden, the Admiral of the Golden Star, at Talon Port to learn how to handle it!"
       },
       "effects": {
-        "objectGain": ["book_I"]
+        "objectGain": [
+          "book_I"
+        ]
       },
       "choicesQuestion": {},
       "choices": []
