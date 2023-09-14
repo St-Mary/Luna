@@ -160,7 +160,15 @@ public class MenuCommand extends CommandAbstract {
             null);
 
       } catch (NoSuchMethodException e) {
-        e.printStackTrace();
+        String errorText = TextManager.createText("command_error", language).buildError();
+        event.reply(errorText).setEphemeral(true).queue();
+
+        if (stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
+          stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
+        }
+
+        ButtonManager.removeButtons(event.getHook().retrieveOriginal().complete().getId());
+        TextManager.sendError(name, e);
       }
     }
   }
@@ -213,7 +221,7 @@ public class MenuCommand extends CommandAbstract {
           LocationManager.getPlaceById(player.getCurrentLocationPlace())
               .getName(player.getLanguage());
       String town =
-          (!player.getCurrentLocationTown().equals(""))
+          (!player.getCurrentLocationTown().isEmpty())
               ? LocationManager.getTownById(player.getCurrentLocationTown())
                   .getName(player.getLanguage())
               : TextManager.getText("menu_no_town", language);

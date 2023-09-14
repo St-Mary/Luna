@@ -1,7 +1,9 @@
 package me.aikoo.stmary.commands;
 
 import me.aikoo.stmary.core.abstracts.CommandAbstract;
+import me.aikoo.stmary.core.bases.CharacterBase;
 import me.aikoo.stmary.core.bot.StMaryClient;
+import me.aikoo.stmary.core.managers.CharacterManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
@@ -31,7 +33,8 @@ public class TestCommand extends CommandAbstract {
    */
   @Override
   public void execute(SlashCommandInteractionEvent event, String language) {
-    event.reply("Test command").queue();
+    CharacterBase character = CharacterManager.getCharacter("1");
+    event.reply(character.getDialog("1.1").getText(language)).queue();
   }
 
   /**

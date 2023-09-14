@@ -5,6 +5,9 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import lombok.Getter;
+import me.aikoo.stmary.commands.MenuCommand;
 import me.aikoo.stmary.core.abstracts.CommandAbstract;
 import me.aikoo.stmary.core.bot.StMaryClient;
 import org.reflections.Reflections;
@@ -14,8 +17,8 @@ import org.slf4j.LoggerFactory;
 /** Manages commands for the application. */
 public class CommandManager {
   private static final Logger LOGGER = LoggerFactory.getLogger(CommandManager.class);
-  private static final HashMap<String, CommandAbstract> commands = new HashMap<>();
-  private static final HashMap<String, CommandAbstract> adminCommands = new HashMap<>();
+  @Getter private static final HashMap<String, CommandAbstract> commands = new HashMap<>();
+  @Getter private static final HashMap<String, CommandAbstract> adminCommands = new HashMap<>();
 
   /**
    * Get a command by its name.
@@ -38,30 +41,13 @@ public class CommandManager {
   }
 
   /**
-   * Get all registered commands.
-   *
-   * @return A map of all registered commands.
-   */
-  public static Map<String, CommandAbstract> getCommands() {
-    return commands;
-  }
-
-  /**
-   * Get all registered admin commands.
-   *
-   * @return A map of all registered admin commands.
-   */
-  public static Map<String, CommandAbstract> getAdminCommands() {
-    return adminCommands;
-  }
-
-  /**
    * Load commands into the manager.
    *
    * @param stMaryClient The StMaryClient instance for command initialization.
    */
   public static void loadCommands(StMaryClient stMaryClient) {
     Reflections reflections = new Reflections("me.aikoo.stmary.commands");
+
     Set<Class<? extends CommandAbstract>> commandClasses =
         reflections.getSubTypesOf(CommandAbstract.class);
 
