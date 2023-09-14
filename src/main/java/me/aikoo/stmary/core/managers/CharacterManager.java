@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import me.aikoo.stmary.core.bases.CharacterBase;
 import me.aikoo.stmary.core.bases.Effect;
 import me.aikoo.stmary.core.utils.JSONFileReaderUtils;
@@ -19,6 +20,7 @@ public class CharacterManager {
 
   /**
    * Get a character by its id.
+   *
    * @param id The id of the character.
    * @return The character.
    */
@@ -26,9 +28,7 @@ public class CharacterManager {
     return characters.get(id);
   }
 
-  /**
-   * Load all characters from the characters folder.
-   */
+  /** Load all characters from the characters folder. */
   private static void load() {
     List<JsonObject> charactersObjects = JSONFileReaderUtils.readAllFilesFrom("characters");
 
@@ -43,16 +43,20 @@ public class CharacterManager {
    * @param obj The JsonObject containing the character.
    */
   private static void loadCharacter(JsonObject obj) {
-    String id  = obj.get("id").getAsString();
-    HashMap<String, String> names = getCharacterNamesOrDescription(obj.get("name").getAsJsonObject());
-    HashMap<String, String> descriptions = getCharacterNamesOrDescription(obj.get("description").getAsJsonObject());
+    String id = obj.get("id").getAsString();
+    HashMap<String, String> names =
+        getCharacterNamesOrDescription(obj.get("name").getAsJsonObject());
+    HashMap<String, String> descriptions =
+        getCharacterNamesOrDescription(obj.get("description").getAsJsonObject());
 
     CharacterBase character = new CharacterBase(id);
     character.addNames(names);
     character.addDescriptions(descriptions);
 
-    for (String dialogId : obj.get("dialogs").getAsJsonObject().keySet()) {
-      JsonObject dialogObj = obj.get("dialogs").getAsJsonObject().get(dialogId).getAsJsonObject();
+    for (Map.Entry<String, JsonElement> dialogEntry :
+        obj.get("dialogs").getAsJsonObject().entrySet()) {
+      String dialogId = dialogEntry.getKey();
+      JsonObject dialogObj = dialogEntry.getValue().getAsJsonObject();
       CharacterBase.Dialog dialog = loadDialog(dialogObj, character);
       character.addDialog(dialogId, dialog);
     }
@@ -63,14 +67,16 @@ public class CharacterManager {
   /**
    * Load a dialog from a JsonObject.
    *
-   * @param obj       The JsonObject containing the dialog.
+   * @param obj The JsonObject containing the dialog.
    * @param character The character of the dialog.
    * @return The dialog.
    */
   private static CharacterBase.Dialog loadDialog(JsonObject obj, CharacterBase character) {
     boolean haveChoices = obj.get("haveChoices").getAsBoolean();
-    HashMap<String, String> texts = getCharacterNamesOrDescription(obj.get("text").getAsJsonObject());
-    HashMap<String, String> questions = getCharacterNamesOrDescription(obj.get("choicesQuestion").getAsJsonObject());
+    HashMap<String, String> texts =
+        getCharacterNamesOrDescription(obj.get("text").getAsJsonObject());
+    HashMap<String, String> questions =
+        getCharacterNamesOrDescription(obj.get("choicesQuestion").getAsJsonObject());
     ArrayList<Effect> effects = new ArrayList<>();
     ArrayList<CharacterBase.Choice> choices = new ArrayList<>();
 
@@ -84,10 +90,13 @@ public class CharacterManager {
         String id = choiceObj.get("id").getAsString();
         String nextDialog = choiceObj.get("next").getAsString();
 
-        CharacterBase.Choice choice = new CharacterBase.Choice(character, buttonIcon, buttonStyle, id, nextDialog);
+        CharacterBase.Choice choice =
+            new CharacterBase.Choice(character, buttonIcon, buttonStyle, id, nextDialog);
 
-        for (String lang : choiceObj.get("text").getAsJsonObject().keySet()) {
-          choice.addText(lang, choiceObj.get("text").getAsJsonObject().get(lang).getAsString());
+        // For each text, get key and value
+        for (Map.Entry<String, JsonElement> langEntry :
+            choiceObj.get("text").getAsJsonObject().entrySet()) {
+          choice.addText(langEntry.getKey(), langEntry.getValue().getAsString());
         }
 
         choices.add(choice);
@@ -95,9 +104,9 @@ public class CharacterManager {
     }
 
     // For each effect, get key and value
-    for (String effect : obj.get("effects").getAsJsonObject().keySet()) {
-      String value = obj.get("effects").getAsJsonObject().get(effect).getAsString();
-      effects.add(new Effect(effect, value));
+    for (Map.Entry<String, JsonElement> effectEntry :
+        obj.get("effects").getAsJsonObject().entrySet()) {
+      effects.add(new Effect(effectEntry.getKey(), effectEntry.getValue().getAsString()));
     }
 
     dialog.addChoices(choices);
@@ -112,9 +121,11 @@ public class CharacterManager {
    */
   private static HashMap<String, String> getCharacterNamesOrDescription(JsonObject nameObj) {
     HashMap<String, String> names = new HashMap<>();
-    for (String lang : nameObj.keySet()) {
-      names.put(lang, nameObj.get(lang).getAsString());
+
+    for (Map.Entry<String, JsonElement> lang : nameObj.entrySet()) {
+      names.put(lang.getKey(), lang.getValue().getAsString());
     }
+
     return names;
   }
 }

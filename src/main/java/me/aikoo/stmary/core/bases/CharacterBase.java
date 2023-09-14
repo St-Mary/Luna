@@ -3,14 +3,13 @@ package me.aikoo.stmary.core.bases;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
-/**
- * The CharacterBase class represents a character.
- */
+/** The CharacterBase class represents a character. */
 public class CharacterBase {
 
   @Getter private final String id;
@@ -21,6 +20,7 @@ public class CharacterBase {
 
   /**
    * Creates a new CharacterBase.
+   *
    * @param id The id of the character.
    */
   public CharacterBase(String id) {
@@ -29,49 +29,55 @@ public class CharacterBase {
 
   /**
    * Add names to the character.
+   *
    * @param names The names to add.
    */
-  public void addNames(HashMap<String, String> names) {
+  public void addNames(Map<String, String> names) {
     this.name.putAll(names);
   }
 
   /**
    * Add descriptions to the character.
+   *
    * @param descriptions The descriptions to add.
    */
-  public void addDescriptions(HashMap<String, String> descriptions) {
+  public void addDescriptions(Map<String, String> descriptions) {
     this.description.putAll(descriptions);
   }
 
   /**
    * Get the name of the character.
-    * @param language The language of the player to get the name in.
+   *
+   * @param language The language of the player to get the name in.
    * @return The name of the character.
    */
   public String getName(String language) {
-        return this.name.get(language);
-    }
+    return this.name.get(language);
+  }
 
   /**
    * Get the description of the character.
+   *
    * @param language The language of the player to get the description in.
    * @return The description of the character.
    */
   public String getDescription(String language) {
-        return this.description.get(language);
-    }
+    return this.description.get(language);
+  }
 
   /**
    * Add a dialog to the character.
-   * @param id  The id of the dialog.
+   *
+   * @param id The id of the dialog.
    * @param dialog The dialog to add.
    */
-    public void addDialog(String id, Dialog dialog) {
+  public void addDialog(String id, Dialog dialog) {
     this.dialogs.put(id, dialog);
   }
 
   /**
    * Get a dialog by its id.
+   *
    * @param id The id of the dialog.
    * @return The dialog.
    */
@@ -79,9 +85,7 @@ public class CharacterBase {
     return this.dialogs.get(id);
   }
 
-  /**
-   * The Dialog class represents a dialog.
-   */
+  /** The Dialog class represents a dialog. */
   public static class Dialog {
     private final boolean haveChoices;
     private final HashMap<String, String> text;
@@ -91,11 +95,13 @@ public class CharacterBase {
 
     /**
      * Creates a new Dialog.
+     *
      * @param haveChoices If the dialog have choices.
      * @param text The text of the dialog.
      * @param question The question of the dialog.
      */
-    public Dialog(boolean haveChoices, HashMap<String, String> text, HashMap<String, String> question) {
+    public Dialog(
+        boolean haveChoices, HashMap<String, String> text, HashMap<String, String> question) {
       this.haveChoices = haveChoices;
       this.text = text;
       this.question = question;
@@ -103,6 +109,7 @@ public class CharacterBase {
 
     /**
      * Get the text of the dialog.
+     *
      * @param language The language of the player to get the text in.
      * @return The text of the dialog.
      */
@@ -112,6 +119,7 @@ public class CharacterBase {
 
     /**
      * Get the question of the dialog.
+     *
      * @param language The language of the player to get the question in.
      * @return The question of the dialog.
      */
@@ -121,6 +129,7 @@ public class CharacterBase {
 
     /**
      * Get the choice of the dialog.
+     *
      * @param id The id of the choice.
      * @return The choice.
      */
@@ -135,6 +144,7 @@ public class CharacterBase {
 
     /**
      * Add choices to the dialog.
+     *
      * @param choices The choices to add.
      */
     public void addChoices(List<Choice> choices) {
@@ -142,9 +152,7 @@ public class CharacterBase {
     }
   }
 
-  /**
-   * The Choice class represents a choice.
-   */
+  /** The Choice class represents a choice. */
   public static class Choice {
     private final HashMap<String, String> texts = new HashMap<>();
     private final CharacterBase character;
@@ -155,13 +163,19 @@ public class CharacterBase {
 
     /**
      * Creates a new Choice.
+     *
      * @param character The character of the choice.
      * @param buttonIcon The icon of the button.
      * @param buttonStyle The style of the button.
      * @param id The id of the button.
      * @param nextDialog The id of the next dialog.
      */
-    public Choice(CharacterBase character, String buttonIcon, String buttonStyle, String id, String nextDialog) {
+    public Choice(
+        CharacterBase character,
+        String buttonIcon,
+        String buttonStyle,
+        String id,
+        String nextDialog) {
       this.character = character;
       this.buttonIcon = buttonIcon;
       this.buttonStyle = buttonStyle;
@@ -171,6 +185,7 @@ public class CharacterBase {
 
     /**
      * Add a text to the choice.
+     *
      * @param lang The language of the text.
      * @param text The text to add.
      */
@@ -180,6 +195,7 @@ public class CharacterBase {
 
     /**
      * Get the next dialog.
+     *
      * @return The next dialog.
      */
     public Dialog getNextDialog() {
@@ -188,11 +204,16 @@ public class CharacterBase {
 
     /**
      * Get the button.
+     *
      * @param language The language of the player to get the button in.
      * @return The button.
      */
     public Button getButton(String language) {
-      return Button.of(ButtonStyle.valueOf(this.buttonStyle.toUpperCase()), id, this.texts.get(language), Emoji.fromFormatted(this.buttonIcon));
+      return Button.of(
+          ButtonStyle.valueOf(this.buttonStyle.toUpperCase()),
+          id,
+          this.texts.get(language),
+          Emoji.fromFormatted(this.buttonIcon));
     }
   }
 }
