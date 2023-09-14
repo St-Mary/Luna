@@ -53,7 +53,7 @@ public class TestCommand extends CommandAbstract {
         };
 
     stMaryClient.getJda().addEventListener(buttonListener);
-    buttonListener.sendButtonMenu(event, character.getDialog("1.1").getText(language));
+    buttonListener.sendButtonMenu(event, character.getDialog("1.1").printDialog(language));
   }
 
   /**

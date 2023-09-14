@@ -1,6 +1,7 @@
 package me.aikoo.stmary.core.abstracts;
 
 import java.util.*;
+
 import lombok.Setter;
 import me.aikoo.stmary.core.bases.CharacterBase;
 import me.aikoo.stmary.core.bot.StMaryClient;
@@ -11,6 +12,8 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** The ButtonListener class represents a listener for button interactions. */
 public abstract class ButtonListener extends ListenerAdapter implements EventListener {
@@ -23,6 +26,8 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
   @Setter protected String messageId;
   protected Message message;
   protected Timer timer;
+
+  Logger LOGGER = LoggerFactory.getLogger(ButtonListener.class);
 
   /**
    * Creates a new ButtonListener.
@@ -77,8 +82,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
         new TimerTask() {
           @Override
           public void run() {
-            message.editMessage(message.getContentRaw()).setComponents().queue();
-            stMaryClient.getJda().removeEventListener(this);
+            closeBtnMenu(null, message.getContentRaw());
           }
         },
         menuDuration);
@@ -121,7 +125,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
     if (!dialog.getChoices().isEmpty()) {
       updateMessage(event, dialog);
     } else {
-      closeBtnMenu(event, dialog.getText(language));
+      closeBtnMenu(event, dialog.printDialog(language));
     }
   }
 
@@ -140,7 +144,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
     }
 
     createTimer();
-    event.editMessage(dialog.getText(language)).setComponents().setActionRow(buttons).queue();
+    event.editMessage(dialog.printDialog(language)).setComponents().setActionRow(buttons).queue();
   }
 
   /**
@@ -152,7 +156,20 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
   protected void closeBtnMenu(ButtonInteractionEvent event, String text) {
     timer.cancel();
     stMaryClient.getJda().removeEventListener(this);
-    event.editMessage(text).setComponents().queue();
+
+    String msgText = (text == null) ? message.getContentRaw() : text;
+
+    if (msgText.length() > 1999) {
+      handleErrorResponse(event);
+      LOGGER.error("Error: message too long");
+      return;
+    }
+
+    if (event == null) {
+      message.editMessage(msgText).setComponents().queue();
+    } else {
+      event.editMessage(msgText).setComponents().queue();
+    }
   }
 
   /**
@@ -164,6 +181,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
     String errorText = TextManager.createText("command_error", language).buildError();
     event.reply(errorText).setEphemeral(true).queue();
     stMaryClient.getJda().removeEventListener(this);
+    LOGGER.error("Error in ButtonListener");
   }
 
   /**

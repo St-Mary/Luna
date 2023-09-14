@@ -1,11 +1,24 @@
 package me.aikoo.stmary.commands;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+
+import me.aikoo.stmary.core.abstracts.ButtonListener;
 import me.aikoo.stmary.core.abstracts.CommandAbstract;
+import me.aikoo.stmary.core.bases.CharacterBase;
 import me.aikoo.stmary.core.bot.StMaryClient;
+import me.aikoo.stmary.core.constants.PlayerConstant;
+import me.aikoo.stmary.core.database.PlayerEntity;
+import me.aikoo.stmary.core.managers.CharacterManager;
+import me.aikoo.stmary.core.managers.DatabaseManager;
+import me.aikoo.stmary.core.managers.TextManager;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 /** The Start command allows users to begin their adventure. */
 public class StartCommand extends CommandAbstract {
@@ -37,7 +50,7 @@ public class StartCommand extends CommandAbstract {
    */
   @Override
   public void execute(SlashCommandInteractionEvent event, String language) {
-    /*PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
+    PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
     LocalDate creationDate = event.getUser().getTimeCreated().toLocalDateTime().toLocalDate();
     language = event.getOption("language").getAsString();
 
@@ -58,97 +71,66 @@ public class StartCommand extends CommandAbstract {
       return;
     }
 
-    try {
-      CharacterBase.Information character =
-          CharacterManager.getCharacter("1").getCharacterInformation(language);
-      CharacterBase.Dialog dialog = character.getDialog("1.1");
-      CharacterBase.Option optionOne = dialog.getOptions().get("1.1.1");
-      CharacterBase.Option optionTwo = dialog.getOptions().get("1.1.2");
-      Method yesMethod =
-          StartCommand.class.getMethod("onClickYesBtn", ButtonInteractionEvent.class, String.class);
-      Method noMethod =
-          StartCommand.class.getMethod("onClickNoBtn", ButtonInteractionEvent.class, String.class);
+    CharacterBase character = CharacterManager.getCharacter("1");
+    CharacterBase.Dialog dialog = character.getDialog("1.1");
+    ArrayList<Button> buttons = new ArrayList<>();
 
-      CharacterBase.OptionBtn optionBtn1 =
-          new CharacterBase.OptionBtn(
-              optionOne.getId(),
-              optionOne.getName(),
-              optionOne.getIcon(),
-              optionOne.getStyle(),
-              stMaryClient,
-              this,
-              yesMethod);
-      CharacterBase.OptionBtn optionBtn2 =
-          new CharacterBase.OptionBtn(
-              optionTwo.getId(),
-              optionTwo.getName(),
-              optionTwo.getIcon(),
-              optionTwo.getStyle(),
-              stMaryClient,
-              this,
-              noMethod);
-
-      stMaryClient.getCache().put("startCmdLanguage_" + event.getUser().getId(), language);
-      stMaryClient.getCache().put("actionWaiter_" + event.getUser().getId(), "start");
-      String introduction =
-          TextManager.createText("start_adventure_introduction", language).build();
-      String text =
-          introduction + "\n\n" + CharacterManager.formatCharacterDialog(character, dialog);
-
-      Method closeMethod =
-          StartCommand.class.getMethod(
-              "closeBtnMenuEvent", Message.class, String.class, SlashCommandInteractionEvent.class);
-      ArrayList<ButtonAbstract> buttons = new ArrayList<>(List.of(optionBtn1, optionBtn2));
-
-      this.sendMsgWithButtons(event, text, language, buttons, 120000, closeMethod, this);
-    } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e);
+    for (CharacterBase.Choice choice : character.getDialog("1.1").getChoices()) {
+      buttons.add(choice.getButton(language));
     }
-     */
+
+    SlashCommandInteractionEvent e = event;
+
+    ButtonListener buttonListener =
+        new ButtonListener(stMaryClient, event.getUser().getId(), language, buttons, 5000L, false) {
+          @Override
+          public void buttonClick(ButtonInteractionEvent event) {
+            if (event.getComponentId().equals("yes_1.1")) {
+              onClickYesBtn(event, language);
+            } else {
+              onClickNoBtn(event, language);
+              this.timer.cancel();
+            }
+            this.timer.cancel();
+          }
+
+          @Override
+          protected void closeBtnMenu(ButtonInteractionEvent event, String text) {
+            CharacterBase.Dialog dialog = character.getDialog("1.1.2");
+            timer.cancel();
+            stMaryClient.getJda().removeEventListener(this);
+
+            if (event == null) {
+              message.editMessage(dialog.printDialog(language)).setComponents().queue();
+            } else {
+              event.editMessage(dialog.printDialog(language)).setComponents().queue();
+            }
+          }
+        };
+
+    stMaryClient.getJda().addEventListener(buttonListener);
+    stMaryClient.getCache().put("actionWaiter_" + event.getUser().getId(), "start");
+
+    String introduction = TextManager.createText("start_adventure_introduction", language).build();
+    String text = introduction + "\n\n" + dialog.printDialog(language);
+
+    buttonListener.sendButtonMenu(event, text);
   }
 
   /**
    * Close the button menu when the user clicks on the "No" button.
    *
-   * @param res The message to edit.
-   * @param language The language of the player.
    * @param event The ButtonInteractionEvent triggered when the button is clicked.
-   */
-  /**
-   * public void closeBtnMenuEvent(Message res, String language, SlashCommandInteractionEvent event)
-   * { closeBtn(res, language, event.getUser()); }
-   */
-
-  /**
-   * Close the button menu when the user clicks on the "No" button.
-   *
-   * @param res The message to edit.
    * @param language The language of the player.
-   * @param event The ButtonInteractionEvent triggered when the button is clicked.
    */
-  /*public void closeBtnMenuEvent(Message res, String language, ButtonInteractionEvent event) {
-    closeBtn(res, language, event.getUser());
-  }*/
-
-  /**
-   * Close the button menu.
-   *
-   * @param res The message to edit.
-   * @param language The language of the player.
-   * @param user The user who clicked the button.
-   */
-  /*private void closeBtn(Message res, String language, User user) {
-    CharacterBase.Information character =
-        CharacterManager.getCharacter("1").getCharacterInformation(language);
-    CharacterBase.Dialog noDialog = character.getDialog("1.1.2");
-    String text = CharacterManager.formatCharacterDialog(character, noDialog);
+  public void onClickNoBtn(ButtonInteractionEvent event, String language) {
+    CharacterBase character = CharacterManager.getCharacter("1");
+    CharacterBase.Dialog dialog = character.getDialog("1.1.2");
 
     // Remove the cache and buttons
-    stMaryClient.getCache().delete("startCmdLanguage_" + user.getId());
-    stMaryClient.getCache().delete("actionWaiter_" + user.getId());
-    ButtonManager.removeButtons(res.getId());
-    res.editMessage(text).setComponents().queue();
-  }*/
+    stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
+    event.editMessage(dialog.printDialog(language)).setComponents().queue();
+  }
 
   /**
    * Handle the click on the "Yes" button.
@@ -156,14 +138,9 @@ public class StartCommand extends CommandAbstract {
    * @param event The ButtonInteractionEvent triggered when the button is clicked.
    * @param language The language of the player
    */
-  /*public void onClickYesBtn(ButtonInteractionEvent event, String language) {
-    Optional<String> cacheLanguage =
-        stMaryClient.getCache().get("startCmdLanguage_" + event.getUser().getId());
-    language = cacheLanguage.orElse(language);
-
-    CharacterBase.Information character =
-        CharacterManager.getCharacter("1").getCharacterInformation(language);
-    String dialog = CharacterManager.formatCharacterDialog(character, character.getDialog("1.1.1"));
+  public void onClickYesBtn(ButtonInteractionEvent event, String language) {
+    CharacterBase character = CharacterManager.getCharacter("1");
+    String dialog = character.getDialog("1.1.1").printDialog(language);
 
     // Create a new player entity
     PlayerEntity player = new PlayerEntity();
@@ -184,22 +161,8 @@ public class StartCommand extends CommandAbstract {
     DatabaseManager.save(player);
 
     event.editMessage(dialog).setComponents().queue();
-    ButtonManager.removeButtons(event.getMessageId());
-    stMaryClient.getCache().delete("startCmdLanguage_" + event.getUser().getId());
     stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
-  }*/
-
-  /**
-   * Handle the click on the "No" button.
-   *
-   * @param event The ButtonInteractionEvent triggered when the button is clicked.
-   * @param language The language of the player
-   */
-  /*public void onClickNoBtn(ButtonInteractionEvent event, String language) {
-    language =
-        stMaryClient.getCache().get("startCmdLanguage_" + event.getUser().getId()).orElse(language);
-    closeBtnMenuEvent(event.getMessage(), language, event);
-  }*/
+  }
 
   /**
    * Auto-complete method for the Start command.

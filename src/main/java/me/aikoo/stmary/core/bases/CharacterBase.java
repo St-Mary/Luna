@@ -87,6 +87,7 @@ public class CharacterBase {
 
   /** The Dialog class represents a dialog. */
   public static class Dialog {
+    @Getter private final CharacterBase character;
     @Getter private final boolean haveChoices;
     private final HashMap<String, String> text;
     private final HashMap<String, String> question;
@@ -96,12 +97,14 @@ public class CharacterBase {
     /**
      * Creates a new Dialog.
      *
+     * @param character The character of the dialog.
      * @param haveChoices If the dialog have choices.
      * @param text The text of the dialog.
      * @param question The question of the dialog.
      */
     public Dialog(
-        boolean haveChoices, HashMap<String, String> text, HashMap<String, String> question) {
+        CharacterBase character, boolean haveChoices, HashMap<String, String> text, HashMap<String, String> question) {
+        this.character = character;
       this.haveChoices = haveChoices;
       this.text = text;
       this.question = question;
@@ -125,6 +128,24 @@ public class CharacterBase {
      */
     public String getQuestion(String language) {
       return this.question.get(language);
+    }
+
+    /**
+     * Print the dialog.
+     *
+     * @param language The language of the player to print the dialog in.`
+     *                 @return The printed dialog.
+     */
+    public String printDialog(String language) {
+      StringBuilder stringBuilder = new StringBuilder();
+
+      stringBuilder.append("\uD83D\uDDE3️  **").append(this.character.getName(language)).append(" :** ").append(this.getText(language)).append("\n");
+
+      if (this.isHaveChoices()) {
+        stringBuilder.append("\n➡️ **").append(this.getQuestion(language)).append("**").append("\n");
+      }
+
+      return stringBuilder.toString();
     }
 
     /**
