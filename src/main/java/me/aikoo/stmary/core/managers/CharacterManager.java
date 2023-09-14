@@ -28,6 +28,42 @@ public class CharacterManager {
     return characters.get(id);
   }
 
+  /**
+   * Get a dialog by its id.
+   *
+   * @param id The id of the dialog.
+   * @return The dialog.
+   */
+  public static CharacterBase.Dialog getDialog(String id) {
+    for (CharacterBase character : characters.values()) {
+      if (character.getDialogs().containsKey(id)) {
+        return character.getDialog(id);
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Get a choice by its id.
+   *
+   * @param id The id of the choice.
+   * @return The choice.
+   */
+  public static CharacterBase.Choice getChoice(String id) {
+    for (CharacterBase character : characters.values()) {
+      for (CharacterBase.Dialog dialog : character.getDialogs().values()) {
+        for (CharacterBase.Choice choice : dialog.getChoices()) {
+          if (choice.getId().equals(id)) {
+            return choice;
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
   /** Load all characters from the characters folder. */
   private static void load() {
     List<JsonObject> charactersObjects = JSONFileReaderUtils.readAllFilesFrom("characters");

@@ -16,7 +16,7 @@ public class CharacterBase {
   private final HashMap<String, String> name = new HashMap<>();
   private final HashMap<String, String> description = new HashMap<>();
 
-  private final HashMap<String, Dialog> dialogs = new HashMap<>();
+  @Getter private final HashMap<String, Dialog> dialogs = new HashMap<>();
 
   /**
    * Creates a new CharacterBase.
@@ -87,11 +87,11 @@ public class CharacterBase {
 
   /** The Dialog class represents a dialog. */
   public static class Dialog {
-    private final boolean haveChoices;
+    @Getter private final boolean haveChoices;
     private final HashMap<String, String> text;
     private final HashMap<String, String> question;
-    private final ArrayList<Effect> effects = new ArrayList<>();
-    private final ArrayList<Choice> choices = new ArrayList<>();
+    @Getter private final ArrayList<Effect> effects = new ArrayList<>();
+    @Getter private final ArrayList<Choice> choices = new ArrayList<>();
 
     /**
      * Creates a new Dialog.
@@ -158,7 +158,7 @@ public class CharacterBase {
     private final CharacterBase character;
     private final String buttonIcon;
     private final String buttonStyle;
-    private final String id;
+    @Getter private final String id;
     private final String nextDialog;
 
     /**
