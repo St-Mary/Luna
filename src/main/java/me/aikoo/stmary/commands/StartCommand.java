@@ -50,64 +50,14 @@ public class StartCommand extends CommandAbstract {
    */
   @Override
   public void execute(SlashCommandInteractionEvent event, String language) {
-    PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
-    LocalDate creationDate = event.getUser().getTimeCreated().toLocalDateTime().toLocalDate();
+    CharacterBase.Dialog dialog = CharacterManager.getCharacter("1").getDialog("1.1");
     language = event.getOption("language").getAsString();
 
-    // Check if the Discord account was created more than a week ago
-    if (creationDate.isAfter(LocalDate.now().minusWeeks(PlayerConstant.CREATION_TIME_WEEK_LIMIT))) {
-      event
-          .reply(
-              TextManager.createText("start_adventure_error_creation_date", language).buildError())
-          .queue();
+    if (!isEligibleToStartAdventure(event, language)) {
       return;
     }
 
-    if (player != null) {
-      // Player already exists, send an error message
-      String error =
-          TextManager.createText("start_adventure_error_already_started", language).buildError();
-      event.reply(error).setEphemeral(true).queue();
-      return;
-    }
-
-    CharacterBase character = CharacterManager.getCharacter("1");
-    CharacterBase.Dialog dialog = character.getDialog("1.1");
-    ArrayList<Button> buttons = new ArrayList<>();
-
-    for (CharacterBase.Choice choice : character.getDialog("1.1").getChoices()) {
-      buttons.add(choice.getButton(language));
-    }
-
-    SlashCommandInteractionEvent e = event;
-
-    ButtonListener buttonListener =
-        new ButtonListener(stMaryClient, event.getUser().getId(), language, buttons, 5000L, false) {
-          @Override
-          public void buttonClick(ButtonInteractionEvent event) {
-            if (event.getComponentId().equals("yes_1.1")) {
-              onClickYesBtn(event, language);
-            } else {
-              onClickNoBtn(event, language);
-              this.timer.cancel();
-            }
-            this.timer.cancel();
-          }
-
-          @Override
-          protected void closeBtnMenu(ButtonInteractionEvent event, String text) {
-            CharacterBase.Dialog dialog = character.getDialog("1.1.2");
-            timer.cancel();
-            stMaryClient.getJda().removeEventListener(this);
-
-            if (event == null) {
-              message.editMessage(dialog.printDialog(language)).setComponents().queue();
-            } else {
-              event.editMessage(dialog.printDialog(language)).setComponents().queue();
-            }
-          }
-        };
-
+    ButtonListener buttonListener = generateButtonListener(event, language, dialog);
     stMaryClient.getJda().addEventListener(buttonListener);
     stMaryClient.getCache().put("actionWaiter_" + event.getUser().getId(), "start");
 
@@ -115,6 +65,79 @@ public class StartCommand extends CommandAbstract {
     String text = introduction + "\n\n" + dialog.printDialog(language);
 
     buttonListener.sendButtonMenu(event, text);
+  }
+
+  /**
+   * Generate the ButtonListener for the Start command.
+   *
+   * @param event The SlashCommandInteractionEvent.
+   * @param language The language of the player.
+   * @return The ButtonListener.
+   */
+  public ButtonListener generateButtonListener(SlashCommandInteractionEvent event, String language, CharacterBase.Dialog dialog) {
+    CharacterBase character = dialog.getCharacter();
+    ArrayList<Button> buttons = new ArrayList<>();
+
+    for (CharacterBase.Choice choice : dialog.getChoices()) {
+      buttons.add(choice.getButton(language));
+    }
+
+    return new ButtonListener(stMaryClient, event.getUser().getId(), language, buttons, 120000L, false) {
+              @Override
+              public void buttonClick(ButtonInteractionEvent event) {
+                if (event.getComponentId().equals("yes_1.1")) {
+                  onClickYesBtn(event, language);
+                } else {
+                  onClickNoBtn(event, language);
+                  this.timer.cancel();
+                }
+                this.timer.cancel();
+              }
+
+              @Override
+              protected void closeBtnMenu(ButtonInteractionEvent event, String text) {
+                CharacterBase.Dialog dialog = character.getDialog("1.1.2");
+                timer.cancel();
+                stMaryClient.getJda().removeEventListener(this);
+                stMaryClient.getCache().delete("actionWaiter_" + authorId);
+
+                if (event == null) {
+                  message.editMessage(dialog.printDialog(language)).setComponents().queue();
+                } else {
+                  event.editMessage(dialog.printDialog(language)).setComponents().queue();
+                }
+              }
+            };
+  }
+
+  /**
+   * Check if player is eligible to start the adventure.
+   *
+   * @param event The SlashCommandInteractionEvent.
+   * @param language The language of the player.
+   */
+  private boolean isEligibleToStartAdventure(SlashCommandInteractionEvent event, String language) {
+    LocalDate creationDate = event.getUser().getTimeCreated().toLocalDateTime().toLocalDate();
+    PlayerEntity player = DatabaseManager.getPlayer(event.getUser().getIdLong());
+
+    // Check if the Discord account was created more than a week ago
+    if (creationDate.isAfter(LocalDate.now().minusWeeks(PlayerConstant.CREATION_TIME_WEEK_LIMIT))) {
+      event
+              .reply(
+                      TextManager.createText("start_adventure_error_creation_date", language).buildError())
+              .queue();
+      return false;
+    }
+
+    if (player != null) {
+      // Player already exists, send an error message
+      String error =
+              TextManager.createText("start_adventure_error_already_started", language).buildError();
+      event.reply(error).setEphemeral(true).queue();
+      return false;
+    }
+
+    return true;
   }
 
   /**
