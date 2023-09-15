@@ -1,7 +1,6 @@
 package me.aikoo.stmary.core.abstracts;
 
 import java.util.*;
-
 import lombok.Setter;
 import me.aikoo.stmary.core.bases.CharacterBase;
 import me.aikoo.stmary.core.bot.StMaryClient;
