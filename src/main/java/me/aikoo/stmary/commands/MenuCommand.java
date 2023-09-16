@@ -29,8 +29,6 @@ import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 /** A command to display a user's menu, including their profile, inventory, and titles. */
 public class MenuCommand extends CommandAbstract {
 
-  // Indicates if the menu is closed
-
   /**
    * Constructs a Menu command.
    *
@@ -126,7 +124,7 @@ public class MenuCommand extends CommandAbstract {
       String language,
       PlayerEntity player,
       ArrayList<Button> buttons) {
-    return new ButtonListener(stMaryClient, userId, language, buttons, 60000L, false) {
+    return new ButtonListener(stMaryClient, userId, language, buttons, 60000L, true, false) {
       @Override
       public void buttonClick(ButtonInteractionEvent event) {
         switch (event.getComponentId()) {

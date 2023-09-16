@@ -83,7 +83,7 @@ public class StartCommand extends CommandAbstract {
     }
 
     return new ButtonListener(
-        stMaryClient, event.getUser().getId(), language, buttons, 120000L, false) {
+        stMaryClient, event.getUser().getId(), language, buttons, 120000L, true, false) {
       @Override
       public void buttonClick(ButtonInteractionEvent event) {
         if (event.getComponentId().equals("yes_1.1")) {

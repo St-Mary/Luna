@@ -235,7 +235,7 @@ public class JourneyCommand extends CommandAbstract {
       PlayerEntity player,
       PlaceBase destinationPlace) {
     return new ButtonListener(
-        stMaryClient, event.getUser().getId(), language, buttons, 25000L, false) {
+        stMaryClient, event.getUser().getId(), language, buttons, 25000L, true, false) {
       @Override
       public void buttonClick(ButtonInteractionEvent event) {
         if (event.getComponentId().equals("confirmBtn")) {

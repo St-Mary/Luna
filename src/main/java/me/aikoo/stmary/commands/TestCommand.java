@@ -45,7 +45,7 @@ public class TestCommand extends CommandAbstract {
     }
 
     ButtonListener buttonListener =
-        new ButtonListener(stMaryClient, event.getUser().getId(), language, buttons, 25000L, true) {
+        new ButtonListener(stMaryClient, event.getUser().getId(), language, buttons, 25000L, true, true) {
           @Override
           public void buttonClick(ButtonInteractionEvent event) {
             // Unused method for this command

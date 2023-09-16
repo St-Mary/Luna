@@ -22,6 +22,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
   protected final ArrayList<Button> buttons;
   protected final Long menuDuration;
   protected final boolean isDialog;
+  protected final boolean isAuthorOnlyBtnMenu;
   @Setter protected String messageId;
   protected Message message;
   protected Timer timer;
@@ -36,6 +37,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
    * @param language The language of the player.
    * @param buttons The buttons to display.
    * @param menuDuration The duration of the button menu.
+   * @param isAuthorOnlyBtnMenu Whether the button menu is author-only or not.
    * @param isDialog Whether the button menu is a dialog or not.
    */
   public ButtonListener(
@@ -44,12 +46,14 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
       String language,
       ArrayList<Button> buttons,
       Long menuDuration,
+      boolean isAuthorOnlyBtnMenu,
       boolean isDialog) {
     this.stMaryClient = stMaryClient;
     this.authorId = authorId;
     this.language = language;
     this.buttons = buttons;
     this.menuDuration = menuDuration;
+    this.isAuthorOnlyBtnMenu = isAuthorOnlyBtnMenu;
     this.isDialog = isDialog;
   }
 
@@ -96,14 +100,31 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
   public void onButtonInteraction(ButtonInteractionEvent event) {
     if (event.getGuild() == null || event.getUser().isBot()) return;
     if (!event.getMessageId().equals(messageId)) return;
-    if (!event.getUser().getId().equals(authorId) && authorId.isEmpty()) return;
     this.message = event.getMessage();
+
+    if (!checkAuthorEvent(event)) return;
 
     if (isDialog) {
       executeDialog(event);
     } else {
       buttonClick(event);
     }
+  }
+
+  /**
+   * Check the author of the button
+   *
+   * @param event The Button Interaction event
+   * @return True if conditions are completed otherwise false
+   */
+  private boolean checkAuthorEvent(ButtonInteractionEvent event) {
+    if (isAuthorOnlyBtnMenu && !event.getUser().getId().equals(authorId)) {
+      String errorTxt = TextManager.createText("command_error_btn_author_only", language).buildError();
+      event.reply(errorTxt).setEphemeral(true).queue();
+      return false;
+    }
+
+    return true;
   }
 
   /**
