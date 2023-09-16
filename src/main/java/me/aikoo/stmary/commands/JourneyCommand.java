@@ -150,7 +150,7 @@ public class JourneyCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, String id, PlaceBase destinationPlace) {
     String text = getCancelText(language, destinationPlace);
 
-    event.editMessage(text).setComponents().queue();
+    event.getMessage().editMessage(text).setComponents().queue();
     stMaryClient.getCache().delete("actionWaiter_" + id);
   }
 
@@ -180,7 +180,9 @@ public class JourneyCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, JourneyBase move, PlayerEntity player) {
     if (player.getDiscordId() != event.getUser().getIdLong()) {
       event
-          .getHook().sendMessage(TextManager.createText("command_error_button_only_author", language).buildError())
+          .getHook()
+          .sendMessage(
+              TextManager.createText("command_error_button_only_author", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -255,7 +257,7 @@ public class JourneyCommand extends CommandAbstract {
         if (event == null) {
           this.message.editMessage(text).setComponents().queue();
         } else {
-          event.editMessage(text).setComponents().queue();
+          event.getMessage().editMessage(text).setComponents().queue();
         }
         stMaryClient.getCache().delete("actionWaiter_" + this.authorId);
       }

@@ -40,18 +40,18 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
    * @param isAuthorOnlyBtnMenu Whether the button menu is author-only or not.
    * @param isDialog Whether the button menu is a dialog or not.
    */
-  public ButtonListener(
+  protected ButtonListener(
       StMaryClient stMaryClient,
       String authorId,
       String language,
-      ArrayList<Button> buttons,
+      List<Button> buttons,
       Long menuDuration,
       boolean isAuthorOnlyBtnMenu,
       boolean isDialog) {
     this.stMaryClient = stMaryClient;
     this.authorId = authorId;
     this.language = language;
-    this.buttons = buttons;
+    this.buttons = new ArrayList<>(buttons);
     this.menuDuration = menuDuration;
     this.isAuthorOnlyBtnMenu = isAuthorOnlyBtnMenu;
     this.isDialog = isDialog;
@@ -64,14 +64,16 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
    * @param text The text to display.
    */
   public void sendButtonMenu(SlashCommandInteractionEvent e, String text) {
-    e.getHook().sendMessage(text)
+    e.getHook()
+        .sendMessage(text)
         .addActionRow(buttons)
-        .queue(m -> {
-            this.messageId = m.getId();
-            this.message = m;
+        .queue(
+            m -> {
+              this.messageId = m.getId();
+              this.message = m;
 
-            createTimer();
-        });
+              createTimer();
+            });
   }
 
   /** Creates a timer to close the button menu. */
@@ -87,9 +89,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
         menuDuration);
   }
 
-  /**
-   * Kill the current timer
-   */
+  /** Kill the current timer */
   public void killTimer() {
     timer.cancel();
     timer = null;
@@ -124,7 +124,8 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
    */
   private boolean checkAuthorEvent(ButtonInteractionEvent event) {
     if (isAuthorOnlyBtnMenu && !event.getUser().getId().equals(authorId)) {
-      String errorTxt = TextManager.createText("command_error_btn_author_only", language).buildError();
+      String errorTxt =
+          TextManager.createText("command_error_btn_author_only", language).buildError();
       event.getHook().sendMessage(errorTxt).setEphemeral(true).queue();
       return false;
     }
@@ -169,7 +170,12 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
     }
 
     createTimer();
-    event.getMessage().editMessage(dialog.printDialog(language)).setComponents().setActionRow(buttons).queue();
+    event
+        .getMessage()
+        .editMessage(dialog.printDialog(language))
+        .setComponents()
+        .setActionRow(buttons)
+        .queue();
   }
 
   /**

@@ -62,7 +62,8 @@ public class MenuCommand extends CommandAbstract {
     // Check if the user has an adventure account
     if (player == null) {
       event
-          .getHook().sendMessage(TextManager.createText("menu_no_account", language).buildError())
+          .getHook()
+          .sendMessage(TextManager.createText("menu_no_account", language).buildError())
           .setEphemeral(true)
           .queue();
     }
@@ -81,7 +82,7 @@ public class MenuCommand extends CommandAbstract {
    * @param language The language of the Player
    * @return The Button List
    */
-  public ArrayList<Button> getButtons(String language) {
+  public List<Button> getButtons(String language) {
     Button profilButton =
         Button.of(
             ButtonStyle.PRIMARY,
@@ -123,7 +124,7 @@ public class MenuCommand extends CommandAbstract {
       String userId,
       String language,
       PlayerEntity player,
-      ArrayList<Button> buttons) {
+      List<Button> buttons) {
     return new ButtonListener(stMaryClient, userId, language, buttons, 60000L, true, false) {
       @Override
       public void buttonClick(ButtonInteractionEvent event) {
@@ -227,13 +228,18 @@ public class MenuCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
     if (!event.getUser().getId().equals(id)) {
       event
-          .getHook().sendMessage(TextManager.createText("command_error_button_only_author", language).buildError())
+          .getHook()
+          .sendMessage(
+              TextManager.createText("command_error_button_only_author", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
     }
 
-    event.getMessage().editMessage(profilEmbed(event.getUser().getGlobalName(), player, language)).queue();
+    event
+        .getMessage()
+        .editMessage(profilEmbed(event.getUser().getGlobalName(), player, language))
+        .queue();
   }
 
   /**
@@ -248,7 +254,9 @@ public class MenuCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
     if (!event.getUser().getId().equals(id)) {
       event
-          .getHook().sendMessage(TextManager.createText("command_error_button_only_author", language).buildError())
+          .getHook()
+          .sendMessage(
+              TextManager.createText("command_error_button_only_author", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -285,7 +293,9 @@ public class MenuCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
     if (!event.getUser().getId().equals(id)) {
       event
-          .getHook().sendMessage(TextManager.createText("command_error_button_only_author", language).buildError())
+          .getHook()
+          .sendMessage(
+              TextManager.createText("command_error_button_only_author", language).buildError())
           .setEphemeral(true)
           .queue();
       return;

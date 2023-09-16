@@ -105,12 +105,12 @@ public class CharacterBase {
     public Dialog(
         CharacterBase character,
         boolean haveChoices,
-        HashMap<String, String> text,
-        HashMap<String, String> question) {
+        Map<String, String> text,
+        Map<String, String> question) {
       this.character = character;
       this.haveChoices = haveChoices;
-      this.text = text;
-      this.question = question;
+      this.text = new HashMap<>(text);
+      this.question = new HashMap<>(question);
     }
 
     /**

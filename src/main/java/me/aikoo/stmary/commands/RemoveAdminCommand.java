@@ -59,7 +59,10 @@ public class RemoveAdminCommand extends CommandAbstract {
 
     DatabaseManager.delete(administrator);
 
-    event.getHook().sendMessage("L'utilisateur a été déstitué de son rôle d'administrateur !").queue();
+    event
+        .getHook()
+        .sendMessage("L'utilisateur a été déstitué de son rôle d'administrateur !")
+        .queue();
   }
 
   /**

@@ -40,9 +40,6 @@ public class StMaryClient {
             ? BotConfigConstant.getDevToken()
             : BotConfigConstant.getToken();
 
-    jda =
-        JDABuilder.createDefault(token)
-            .addEventListeners(new EventsListener(this))
-            .build();
+    jda = JDABuilder.createDefault(token).addEventListeners(new EventsListener(this)).build();
   }
 }
