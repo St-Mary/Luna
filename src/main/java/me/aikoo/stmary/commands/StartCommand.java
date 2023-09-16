@@ -124,7 +124,7 @@ public class StartCommand extends CommandAbstract {
     // Check if the Discord account was created more than a week ago
     if (creationDate.isAfter(LocalDate.now().minusWeeks(PlayerConstant.CREATION_TIME_WEEK_LIMIT))) {
       event
-          .reply(
+          .getHook().sendMessage(
               TextManager.createText("start_adventure_error_creation_date", language).buildError())
           .queue();
       return false;
@@ -134,7 +134,7 @@ public class StartCommand extends CommandAbstract {
       // Player already exists, send an error message
       String error =
           TextManager.createText("start_adventure_error_already_started", language).buildError();
-      event.reply(error).setEphemeral(true).queue();
+      event.getHook().sendMessage(error).setEphemeral(true).queue();
       return false;
     }
 

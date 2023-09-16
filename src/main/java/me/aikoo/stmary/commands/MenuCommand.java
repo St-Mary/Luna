@@ -62,7 +62,7 @@ public class MenuCommand extends CommandAbstract {
     // Check if the user has an adventure account
     if (player == null) {
       event
-          .reply(TextManager.createText("menu_no_account", language).buildError())
+          .getHook().sendMessage(TextManager.createText("menu_no_account", language).buildError())
           .setEphemeral(true)
           .queue();
     }
@@ -227,16 +227,13 @@ public class MenuCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
     if (!event.getUser().getId().equals(id)) {
       event
-          .reply(TextManager.createText("command_error_button_only_author", language).buildError())
+          .getHook().sendMessage(TextManager.createText("command_error_button_only_author", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
     }
 
-    event.editMessage(profilEmbed(event.getUser().getGlobalName(), player, language)).queue();
-    if (!event.getInteraction().isAcknowledged()) {
-      event.deferEdit().queue();
-    }
+    event.getMessage().editMessage(profilEmbed(event.getUser().getGlobalName(), player, language)).queue();
   }
 
   /**
@@ -251,7 +248,7 @@ public class MenuCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
     if (!event.getUser().getId().equals(id)) {
       event
-          .reply(TextManager.createText("command_error_button_only_author", language).buildError())
+          .getHook().sendMessage(TextManager.createText("command_error_button_only_author", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -273,10 +270,7 @@ public class MenuCommand extends CommandAbstract {
             .replace("{{money}}", player.getMoney().toString())
             .replace("{{magical_book}}", magicalBookName);
 
-    event.editMessage(text).queue();
-    if (!event.getInteraction().isAcknowledged()) {
-      event.deferEdit().queue();
-    }
+    event.getMessage().editMessage(text).queue();
   }
 
   /**
@@ -291,7 +285,7 @@ public class MenuCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
     if (!event.getUser().getId().equals(id)) {
       event
-          .reply(TextManager.createText("command_error_button_only_author", language).buildError())
+          .getHook().sendMessage(TextManager.createText("command_error_button_only_author", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -320,10 +314,7 @@ public class MenuCommand extends CommandAbstract {
             .replace("{{titles}}", stringBuilder.toString())
             .replace("{{nb_titles}}", String.valueOf(titles.size()));
 
-    event.editMessage(text).queue();
-    if (!event.getInteraction().isAcknowledged()) {
-      event.deferEdit().queue();
-    }
+    event.getMessage().editMessage(text).queue();
   }
 
   /**

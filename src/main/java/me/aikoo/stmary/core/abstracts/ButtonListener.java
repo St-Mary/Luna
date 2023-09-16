@@ -64,18 +64,14 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
    * @param text The text to display.
    */
   public void sendButtonMenu(SlashCommandInteractionEvent e, String text) {
-    e.reply(text)
+    e.getHook().sendMessage(text)
         .addActionRow(buttons)
-        .queue(
-            q ->
-                q.retrieveOriginal()
-                    .queue(
-                        m -> {
-                          this.messageId = m.getId();
-                          this.message = m;
+        .queue(m -> {
+            this.messageId = m.getId();
+            this.message = m;
 
-                          createTimer();
-                        }));
+            createTimer();
+        });
   }
 
   /** Creates a timer to close the button menu. */
@@ -92,12 +88,21 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
   }
 
   /**
+   * Kill the current timer
+   */
+  public void killTimer() {
+    timer.cancel();
+    timer = null;
+  }
+
+  /**
    * Executes when a button is clicked.
    *
    * @param event The ButtonInteractionEvent triggered when the button is clicked.
    */
   @Override
   public void onButtonInteraction(ButtonInteractionEvent event) {
+    event.deferEdit().queue();
     if (event.getGuild() == null || event.getUser().isBot()) return;
     if (!event.getMessageId().equals(messageId)) return;
     this.message = event.getMessage();
@@ -120,7 +125,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
   private boolean checkAuthorEvent(ButtonInteractionEvent event) {
     if (isAuthorOnlyBtnMenu && !event.getUser().getId().equals(authorId)) {
       String errorTxt = TextManager.createText("command_error_btn_author_only", language).buildError();
-      event.reply(errorTxt).setEphemeral(true).queue();
+      event.getHook().sendMessage(errorTxt).setEphemeral(true).queue();
       return false;
     }
 
@@ -164,7 +169,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
     }
 
     createTimer();
-    event.editMessage(dialog.printDialog(language)).setComponents().setActionRow(buttons).queue();
+    event.getMessage().editMessage(dialog.printDialog(language)).setComponents().setActionRow(buttons).queue();
   }
 
   /**
@@ -188,7 +193,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
     if (event == null) {
       message.editMessage(msgText).setComponents().queue();
     } else {
-      event.editMessage(msgText).setComponents().queue();
+      event.getMessage().editMessage(msgText).setComponents().queue();
     }
   }
 
@@ -199,7 +204,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
    */
   private void handleErrorResponse(ButtonInteractionEvent event) {
     String errorText = TextManager.createText("command_error", language).buildError();
-    event.reply(errorText).setEphemeral(true).queue();
+    event.getHook().sendMessage(errorText).setEphemeral(true).queue();
     stMaryClient.getJda().removeEventListener(this);
     LOGGER.error("Error in ButtonListener");
   }

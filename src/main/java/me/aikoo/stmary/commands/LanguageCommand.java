@@ -48,7 +48,7 @@ public class LanguageCommand extends CommandAbstract {
 
     if (player == null) {
       event
-          .reply(TextManager.createText("language_cmd_error_not_started", language).buildError())
+          .getHook().sendMessage(TextManager.createText("language_cmd_error_not_started", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -56,7 +56,7 @@ public class LanguageCommand extends CommandAbstract {
 
     if (player.getLanguage().equals(newLanguage)) {
       event
-          .reply(TextManager.createText("language_cmd_error_already_set", language).buildError())
+          .getHook().sendMessage(TextManager.createText("language_cmd_error_already_set", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -65,7 +65,7 @@ public class LanguageCommand extends CommandAbstract {
     player.setLanguage(newLanguage);
     DatabaseManager.update(player);
 
-    event.reply(TextManager.createText("language_cmd_success", newLanguage).build()).queue();
+    event.getHook().sendMessage(TextManager.createText("language_cmd_success", newLanguage).build()).queue();
   }
 
   /**

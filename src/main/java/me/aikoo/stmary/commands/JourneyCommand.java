@@ -65,7 +65,7 @@ public class JourneyCommand extends CommandAbstract {
     if (place == null || destinationPlace == null) {
       String errorText =
           TextManager.createText("journey_destination_not_exist", language).buildError();
-      event.reply(errorText).setEphemeral(true).queue();
+      event.getHook().sendMessage(errorText).setEphemeral(true).queue();
       return;
     }
 
@@ -95,7 +95,7 @@ public class JourneyCommand extends CommandAbstract {
         text = TextManager.createText("journey_err_destination_2", language).buildError();
       }
 
-      event.reply(text).setEphemeral(true).queue();
+      event.getHook().sendMessage(text).setEphemeral(true).queue();
       return;
     }
 
@@ -180,7 +180,7 @@ public class JourneyCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, JourneyBase move, PlayerEntity player) {
     if (player.getDiscordId() != event.getUser().getIdLong()) {
       event
-          .reply(TextManager.createText("command_error_button_only_author", language).buildError())
+          .getHook().sendMessage(TextManager.createText("command_error_button_only_author", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -240,6 +240,7 @@ public class JourneyCommand extends CommandAbstract {
       public void buttonClick(ButtonInteractionEvent event) {
         if (event.getComponentId().equals("confirmBtn")) {
           confirmBtn(event, language, move, player);
+          this.killTimer();
         } else if (event.getComponentId().equals("closeBtn")) {
           closeBtn(event, language, event.getUser().getId(), destinationPlace);
         } else {

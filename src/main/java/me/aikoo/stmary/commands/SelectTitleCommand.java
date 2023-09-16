@@ -52,7 +52,7 @@ public class SelectTitleCommand extends CommandAbstract {
     if (TitleManager.getTitle(titleId) == null) {
       String errorText =
           TextManager.createText("select_title_error_title_not_exist", language).buildError();
-      event.reply(errorText).setEphemeral(true).queue();
+      event.getHook().sendMessage(errorText).setEphemeral(true).queue();
       return;
     }
 
@@ -68,7 +68,7 @@ public class SelectTitleCommand extends CommandAbstract {
 
     player.setCurrentTitle(titleId);
     DatabaseManager.update(player);
-    event.reply(text.build()).queue();
+    event.getHook().sendMessage(text.build()).queue();
   }
 
   /**
@@ -90,7 +90,7 @@ public class SelectTitleCommand extends CommandAbstract {
     if (!titles.containsKey(titleId)) {
       String errorText =
           TextManager.createText("select_title_error_title_not_posseded", language).buildError();
-      event.reply(errorText).setEphemeral(true).queue();
+      event.getHook().sendMessage(errorText).setEphemeral(true).queue();
       return false;
     }
 
@@ -98,7 +98,7 @@ public class SelectTitleCommand extends CommandAbstract {
     if (player.getCurrentTitle(stMaryClient).getId().equals(titleId)) {
       String errorText =
           TextManager.createText("select_title_error_title_already_active", language).buildError();
-      event.reply(errorText).setEphemeral(true).queue();
+      event.getHook().sendMessage(errorText).setEphemeral(true).queue();
       return false;
     }
 
