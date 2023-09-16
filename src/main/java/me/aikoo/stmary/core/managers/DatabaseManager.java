@@ -31,7 +31,7 @@ public class DatabaseManager {
    *
    * @return The Hibernate session.
    */
-  public static SessionFactory getSessionFactory() {
+  public static synchronized SessionFactory getSessionFactory() {
     if (sessionFactory == null) {
       try {
         StandardServiceRegistryBuilder registryBuilder = new StandardServiceRegistryBuilder();

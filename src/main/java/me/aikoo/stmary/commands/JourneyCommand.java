@@ -1,9 +1,8 @@
 package me.aikoo.stmary.commands;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import me.aikoo.stmary.core.abstracts.ButtonAbstract;
+import me.aikoo.stmary.core.abstracts.ButtonListener;
 import me.aikoo.stmary.core.abstracts.CommandAbstract;
 import me.aikoo.stmary.core.bases.JourneyBase;
 import me.aikoo.stmary.core.bases.PlaceBase;
@@ -14,7 +13,6 @@ import me.aikoo.stmary.core.database.PlayerEntity;
 import me.aikoo.stmary.core.managers.DatabaseManager;
 import me.aikoo.stmary.core.managers.LocationManager;
 import me.aikoo.stmary.core.managers.TextManager;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -22,6 +20,7 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +65,7 @@ public class JourneyCommand extends CommandAbstract {
     if (place == null || destinationPlace == null) {
       String errorText =
           TextManager.createText("journey_destination_not_exist", language).buildError();
-      event.reply(errorText).setEphemeral(true).queue();
+      event.getHook().sendMessage(errorText).setEphemeral(true).queue();
       return;
     }
 
@@ -96,98 +95,76 @@ public class JourneyCommand extends CommandAbstract {
         text = TextManager.createText("journey_err_destination_2", language).buildError();
       }
 
-      event.reply(text).setEphemeral(true).queue();
+      event.getHook().sendMessage(text).setEphemeral(true).queue();
       return;
     }
 
-    try {
-      Method confirmMethod =
-          JourneyCommand.class.getMethod(
-              "confirmBtn",
-              ButtonInteractionEvent.class,
-              String.class,
-              JourneyBase.class,
-              PlayerEntity.class);
-      Method closeMethod =
-          JourneyCommand.class.getMethod(
-              "closeBtn",
-              ButtonInteractionEvent.class,
-              String.class,
-              String.class,
-              PlaceBase.class);
-      Method close =
-          JourneyCommand.class.getMethod(
-              "close", Message.class, String.class, String.class, PlaceBase.class);
+    Button confirmButton =
+        Button.of(
+            ButtonStyle.SUCCESS,
+            "confirmBtn",
+            TextManager.getText("journey_btn_confirm", language),
+            Emoji.fromFormatted(BotConfigConstant.getEmote("yes")));
+    Button closeButton =
+        Button.of(
+            ButtonStyle.DANGER,
+            "closeBtn",
+            TextManager.getText("journey_btn_cancel", language),
+            Emoji.fromFormatted(BotConfigConstant.getEmote("no")));
 
-      ButtonAbstract confirmBtn =
-          new ButtonAbstract(
-              "confirmBtn",
-              TextManager.getText("journey_btn_confirm", language),
-              ButtonStyle.SUCCESS,
-              Emoji.fromFormatted(BotConfigConstant.getEmote("yes")),
-              stMaryClient,
-              this,
-              confirmMethod,
-              move,
-              player);
-      ButtonAbstract closeBtn =
-          new ButtonAbstract(
-              "closeBtn",
-              TextManager.getText("journey_btn_cancel", language),
-              ButtonStyle.DANGER,
-              Emoji.fromFormatted(BotConfigConstant.getEmote("no")),
-              stMaryClient,
-              this,
-              closeMethod,
-              event.getUser().getId(),
-              destinationPlace);
+    ButtonListener btnListener =
+        getButtonListener(
+                event,
+            language,
+            new ArrayList<>(List.of(confirmButton, closeButton)),
+            move,
+            player,
+            destinationPlace);
 
-      long time = move.getTime();
+    long time = move.getTime();
 
-      String formattedText =
-          (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace())
-              ? LocationManager.formatLocation(destinationPlace.getId(), language)
-              : LocationManager.formatLocation(destinationPlace.getTown().getId(), language);
-      String str =
-          TextManager.createText("journey_confirm", language)
-              .replace("time", String.valueOf(time))
-              .replace("destination", formattedText)
-              .build();
+    String formattedText =
+        (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace())
+            ? LocationManager.formatLocation(destinationPlace.getId(), language)
+            : LocationManager.formatLocation(destinationPlace.getTown().getId(), language);
+    String str =
+        TextManager.createText("journey_confirm", language)
+            .replace("time", String.valueOf(time))
+            .replace("destination", formattedText)
+            .build();
 
-      stMaryClient.getCache().put("actionWaiter_" + event.getUser().getId(), "journey");
-      this.sendMsgWithButtons(
-          event,
-          str,
-          language,
-          new ArrayList<>(List.of(confirmBtn, closeBtn)),
-          20000,
-          close,
-          this,
-          event.getUser().getId(),
-          destinationPlace);
-    } catch (NoSuchMethodException e) {
-      LOGGER.error("Error while executing the journey command.", e);
+    stMaryClient.getCache().put("actionWaiter_" + event.getUser().getId(), "journey");
+    stMaryClient.getJda().addEventListener(btnListener);
 
-      String errorText = TextManager.createText("command_error", language).buildError();
-      event.reply(errorText).setEphemeral(true).queue();
-    }
+    btnListener.sendButtonMenu(event, str);
   }
 
   /**
    * Closes the journey message.
    *
-   * @param message The message to edit.
+   * @param event The ButtonInteractionEvent triggered when the button is clicked.
    * @param destinationPlace The destination place.
    */
-  public void close(Message message, String language, String id, PlaceBase destinationPlace) {
-    String formattedLocation = LocationManager.formatLocation(destinationPlace.getId(), language);
-    String text =
-        TextManager.createText("journey_cancel", language)
-            .replace("destination", formattedLocation)
-            .build();
+  public void closeBtn(
+      ButtonInteractionEvent event, String language, String id, PlaceBase destinationPlace) {
+    String text = getCancelText(language, destinationPlace);
 
-    message.editMessage(text).setComponents().queue();
+    event.getMessage().editMessage(text).setComponents().queue();
     stMaryClient.getCache().delete("actionWaiter_" + id);
+  }
+
+  /**
+   * Get the text of canceled journey.
+   *
+   * @param language The language of the player.
+   * @return The text of canceled journey.
+   */
+  public String getCancelText(String language, PlaceBase destinationPlace) {
+    String formattedLocation = LocationManager.formatLocation(destinationPlace.getId(), language);
+
+    return TextManager.createText("journey_cancel", language)
+        .replace("destination", formattedLocation)
+        .build();
   }
 
   /**
@@ -202,7 +179,9 @@ public class JourneyCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, JourneyBase move, PlayerEntity player) {
     if (player.getDiscordId() != event.getUser().getIdLong()) {
       event
-          .reply(TextManager.createText("command_error_button_only_author", language).buildError())
+          .getHook()
+          .sendMessage(
+              TextManager.createText("command_error_button_only_author", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -237,13 +216,8 @@ public class JourneyCommand extends CommandAbstract {
             .replace("time", move.getTime().toString())
             .build();
 
-    // Get the list of buttons from the event message and disable them.
-    List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons =
-        event.getMessage().getButtons();
-    buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
-
     // Edit the message to update the journey details and disabled buttons.
-    event.getMessage().editMessage(text).setActionRow(buttons).queue();
+    event.getMessage().editMessage(text).setComponents().queue();
     stMaryClient.getCache().delete("actionWaiter_" + player.getDiscordId());
 
     // Defer the edit of the interaction.
@@ -252,29 +226,40 @@ public class JourneyCommand extends CommandAbstract {
     }
   }
 
-  /**
-   * Closes the journey message.
-   *
-   * @param event The ButtonInteractionEvent triggered when the button is clicked.
-   * @param language The language of the player.
-   * @param id The Discord ID of the player.
-   * @param destinationPlace The destination place.
-   */
-  public void closeBtn(
-      ButtonInteractionEvent event, String language, String id, PlaceBase destinationPlace) {
-    if (!event.getUser().getId().equals(id)) {
-      event
-          .reply(TextManager.createText("command_error_button_only_author", language).buildError())
-          .setEphemeral(true)
-          .queue();
-      return;
-    }
+  /** Get the ButtonListener instance. */
+  private ButtonListener getButtonListener(
+      SlashCommandInteractionEvent event,
+      String language,
+      ArrayList<Button> buttons,
+      JourneyBase move,
+      PlayerEntity player,
+      PlaceBase destinationPlace) {
+    return new ButtonListener(
+        stMaryClient, event.getUser().getId(), language, buttons, 25000L, true, false) {
+      @Override
+      public void buttonClick(ButtonInteractionEvent event) {
+        if (event.getComponentId().equals("confirmBtn")) {
+          confirmBtn(event, language, move, player);
+          this.killTimer();
+        } else if (event.getComponentId().equals("closeBtn")) {
+          closeBtn(event, language, event.getUser().getId(), destinationPlace);
+        } else {
+          LOGGER.error(
+              "Unknown button clicked: {}", event.getComponentId() + " - " + "journey command");
+        }
+      }
 
-    close(event.getMessage(), language, id, destinationPlace);
-
-    if (!event.isAcknowledged()) {
-      event.deferEdit().queue();
-    }
+      @Override
+      public void closeBtnMenu(ButtonInteractionEvent event, String text) {
+        String cancelText = getCancelText(language, destinationPlace);
+        if (event == null) {
+          this.message.editMessage(cancelText).setComponents().queue();
+        } else {
+          event.getMessage().editMessage(cancelText).setComponents().queue();
+        }
+        stMaryClient.getCache().delete("actionWaiter_" + this.authorId);
+      }
+    };
   }
 
   /**

@@ -3,7 +3,6 @@ package me.aikoo.stmary.core.bot;
 import lombok.Getter;
 import me.aikoo.stmary.core.cache.Cache;
 import me.aikoo.stmary.core.constants.BotConfigConstant;
-import me.aikoo.stmary.core.managers.ButtonManager;
 import me.aikoo.stmary.core.managers.CommandManager;
 import me.aikoo.stmary.core.managers.DatabaseManager;
 import net.dv8tion.jda.api.JDA;
@@ -41,10 +40,6 @@ public class StMaryClient {
             ? BotConfigConstant.getDevToken()
             : BotConfigConstant.getToken();
 
-    jda =
-        JDABuilder.createDefault(token)
-            .addEventListeners(new EventsListener(this))
-            .addEventListeners(new ButtonManager())
-            .build();
+    jda = JDABuilder.createDefault(token).addEventListeners(new EventsListener(this)).build();
   }
 }

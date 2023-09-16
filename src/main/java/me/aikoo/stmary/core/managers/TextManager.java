@@ -1,9 +1,11 @@
 package me.aikoo.stmary.core.managers;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import lombok.Getter;
 import me.aikoo.stmary.core.constants.BotConfigConstant;
@@ -72,13 +74,16 @@ public class TextManager {
     List<JsonObject> files = JSONFileReaderUtils.readAllFilesFrom("text");
 
     for (JsonObject file : files) {
-      for (String key : file.keySet()) {
-        if (file.get(key).getAsJsonObject().get("en").getAsJsonObject().get("text") == null
-            || file.get(key).getAsJsonObject().get("fr").getAsJsonObject().get("text") == null) {
-          LOGGER.error("JSON Object {} is invalid. Please check the syntax.", key);
+      for (Map.Entry<String, JsonElement> entry : file.entrySet()) {
+        if (file.get(entry.getKey()).getAsJsonObject().get("en").getAsJsonObject().get("text")
+                == null
+            || file.get(entry.getKey()).getAsJsonObject().get("fr").getAsJsonObject().get("text")
+                == null) {
+          LOGGER.error("JSON Object {} is invalid. Please check the syntax.", entry.getKey());
           System.exit(1);
         }
-        texts.put(key, file.get(key).getAsJsonObject());
+
+        texts.put(entry.getKey(), file.get(entry.getKey()).getAsJsonObject());
       }
     }
   }

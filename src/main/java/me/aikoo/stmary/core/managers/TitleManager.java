@@ -11,7 +11,7 @@ import me.aikoo.stmary.core.utils.JSONFileReaderUtils;
 /** Title manager for players. */
 public class TitleManager {
 
-  @Getter public static Map<String, TitleBase> titles = new HashMap<>();
+  @Getter private static final Map<String, TitleBase> titles = new HashMap<>();
 
   static {
     load();
