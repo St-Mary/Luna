@@ -128,7 +128,7 @@ public abstract class CommandAbstract {
     // Check if user have an action waiter
     if (this.stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
       event
-          .reply(TextManager.createText("command_error_action_waiter", language).buildError())
+          .getHook().sendMessage(TextManager.createText("command_error_action_waiter", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -138,7 +138,7 @@ public abstract class CommandAbstract {
     // an error message.
     if (this.mustBeRegistered && DatabaseManager.getPlayer(event.getUser().getIdLong()) == null) {
       event
-          .reply(TextManager.createText("command_error_must_be_player", language).buildError())
+          .getHook().sendMessage(TextManager.createText("command_error_must_be_player", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
