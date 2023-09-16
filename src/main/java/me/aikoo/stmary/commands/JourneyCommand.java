@@ -114,8 +114,7 @@ public class JourneyCommand extends CommandAbstract {
 
     ButtonListener btnListener =
         getButtonListener(
-            stMaryClient,
-            event,
+                event,
             language,
             new ArrayList<>(List.of(confirmButton, closeButton)),
             move,
@@ -229,7 +228,6 @@ public class JourneyCommand extends CommandAbstract {
 
   /** Get the ButtonListener instance. */
   private ButtonListener getButtonListener(
-      StMaryClient client,
       SlashCommandInteractionEvent event,
       String language,
       ArrayList<Button> buttons,
@@ -253,11 +251,11 @@ public class JourneyCommand extends CommandAbstract {
 
       @Override
       public void closeBtnMenu(ButtonInteractionEvent event, String text) {
-        text = getCancelText(language, destinationPlace);
+        String cancelText = getCancelText(language, destinationPlace);
         if (event == null) {
-          this.message.editMessage(text).setComponents().queue();
+          this.message.editMessage(cancelText).setComponents().queue();
         } else {
-          event.getMessage().editMessage(text).setComponents().queue();
+          event.getMessage().editMessage(cancelText).setComponents().queue();
         }
         stMaryClient.getCache().delete("actionWaiter_" + this.authorId);
       }

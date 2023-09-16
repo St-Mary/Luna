@@ -133,6 +133,10 @@ public class MenuCommand extends CommandAbstract {
           case "inventory_btn" -> inventoryBtn(event, language, authorId, player);
           case "titles_btn" -> titlesBtn(event, language, authorId, player);
           case "close_btn" -> closeBtnMenu(event, event.getMessage().getContentRaw());
+          default -> {
+            event.getHook().sendMessage("Something went wrong").queue();
+            System.out.println("Switch error on menu command: " + event.getComponentId());
+          }
         }
       }
     };
