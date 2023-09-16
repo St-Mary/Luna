@@ -99,49 +99,45 @@ public class JourneyCommand extends CommandAbstract {
       return;
     }
 
-    Button confirmButton = Button.of(ButtonStyle.SUCCESS, "confirmBtn", TextManager.getText("journey_btn_confirm", language), Emoji.fromFormatted(BotConfigConstant.getEmote("yes")));
-    Button closeButton = Button.of(ButtonStyle.DANGER, "closeBtn", TextManager.getText("journey_btn_cancel", language), Emoji.fromFormatted(BotConfigConstant.getEmote("no")));
+    Button confirmButton =
+        Button.of(
+            ButtonStyle.SUCCESS,
+            "confirmBtn",
+            TextManager.getText("journey_btn_confirm", language),
+            Emoji.fromFormatted(BotConfigConstant.getEmote("yes")));
+    Button closeButton =
+        Button.of(
+            ButtonStyle.DANGER,
+            "closeBtn",
+            TextManager.getText("journey_btn_cancel", language),
+            Emoji.fromFormatted(BotConfigConstant.getEmote("no")));
 
-    ButtonListener btnListener = new ButtonListener(stMaryClient, event.getUser().getId(), language, new ArrayList<>(List.of(confirmButton, closeButton)), 25000L, false) {
-      @Override
-      public void buttonClick(ButtonInteractionEvent event) {
-        if (event.getComponentId().equals("confirmBtn")) {
-          confirmBtn(event, language, move, player);
-        } else if (event.getComponentId().equals("closeBtn")) {
-          closeBtn(event, language, event.getUser().getId(), destinationPlace);
-        } else {
-          LOGGER.error("Unknown button clicked: {}", event.getComponentId() + " - " + "journey command");
-        }
-      }
+    ButtonListener btnListener =
+        getButtonListener(
+            stMaryClient,
+            event,
+            language,
+            new ArrayList<>(List.of(confirmButton, closeButton)),
+            move,
+            player,
+            destinationPlace);
 
-        @Override
-        public void closeBtnMenu(ButtonInteractionEvent event, String text) {
-            text = getCancelText(language, destinationPlace);
-            if (event == null) {
-                this.message.editMessage(text).setComponents().queue();
-            } else {
-                event.editMessage(text).setComponents().queue();
-            }
-            stMaryClient.getCache().delete("actionWaiter_" + this.authorId);
-        }
-    };
+    long time = move.getTime();
 
-      long time = move.getTime();
+    String formattedText =
+        (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace())
+            ? LocationManager.formatLocation(destinationPlace.getId(), language)
+            : LocationManager.formatLocation(destinationPlace.getTown().getId(), language);
+    String str =
+        TextManager.createText("journey_confirm", language)
+            .replace("time", String.valueOf(time))
+            .replace("destination", formattedText)
+            .build();
 
-      String formattedText =
-          (place.getTown() == destinationPlace.getTown() || !destinationPlace.isTownPlace())
-              ? LocationManager.formatLocation(destinationPlace.getId(), language)
-              : LocationManager.formatLocation(destinationPlace.getTown().getId(), language);
-      String str =
-          TextManager.createText("journey_confirm", language)
-              .replace("time", String.valueOf(time))
-              .replace("destination", formattedText)
-              .build();
+    stMaryClient.getCache().put("actionWaiter_" + event.getUser().getId(), "journey");
+    stMaryClient.getJda().addEventListener(btnListener);
 
-      stMaryClient.getCache().put("actionWaiter_" + event.getUser().getId(), "journey");
-      stMaryClient.getJda().addEventListener(btnListener);
-
-      btnListener.sendButtonMenu(event, str);
+    btnListener.sendButtonMenu(event, str);
   }
 
   /**
@@ -150,7 +146,8 @@ public class JourneyCommand extends CommandAbstract {
    * @param event The ButtonInteractionEvent triggered when the button is clicked.
    * @param destinationPlace The destination place.
    */
-  public void closeBtn(ButtonInteractionEvent event, String language, String id, PlaceBase destinationPlace) {
+  public void closeBtn(
+      ButtonInteractionEvent event, String language, String id, PlaceBase destinationPlace) {
     String text = getCancelText(language, destinationPlace);
 
     event.editMessage(text).setComponents().queue();
@@ -163,15 +160,15 @@ public class JourneyCommand extends CommandAbstract {
    * @param language The language of the player.
    * @return The text of canceled journey.
    */
-    public String getCancelText(String language, PlaceBase destinationPlace) {
-      String formattedLocation = LocationManager.formatLocation(destinationPlace.getId(), language);
+  public String getCancelText(String language, PlaceBase destinationPlace) {
+    String formattedLocation = LocationManager.formatLocation(destinationPlace.getId(), language);
 
-        return TextManager.createText("journey_cancel", language)
-                .replace("destination", formattedLocation)
-                .build();
-    }
+    return TextManager.createText("journey_cancel", language)
+        .replace("destination", formattedLocation)
+        .build();
+  }
 
-    /**
+  /**
    * Confirms the journey.
    *
    * @param event The ButtonInteractionEvent triggered when the button is clicked.
@@ -218,11 +215,6 @@ public class JourneyCommand extends CommandAbstract {
             .replace("time", move.getTime().toString())
             .build();
 
-    // Get the list of buttons from the event message and disable them.
-    List<net.dv8tion.jda.api.interactions.components.buttons.Button> buttons =
-        event.getMessage().getButtons();
-    buttons.replaceAll(net.dv8tion.jda.api.interactions.components.buttons.Button::asDisabled);
-
     // Edit the message to update the journey details and disabled buttons.
     event.getMessage().editMessage(text).setComponents().queue();
     stMaryClient.getCache().delete("actionWaiter_" + player.getDiscordId());
@@ -231,6 +223,42 @@ public class JourneyCommand extends CommandAbstract {
     if (!event.isAcknowledged()) {
       event.deferEdit().queue();
     }
+  }
+
+  /** Get the ButtonListener instance. */
+  private ButtonListener getButtonListener(
+      StMaryClient client,
+      SlashCommandInteractionEvent event,
+      String language,
+      ArrayList<Button> buttons,
+      JourneyBase move,
+      PlayerEntity player,
+      PlaceBase destinationPlace) {
+    return new ButtonListener(
+        stMaryClient, event.getUser().getId(), language, buttons, 25000L, false) {
+      @Override
+      public void buttonClick(ButtonInteractionEvent event) {
+        if (event.getComponentId().equals("confirmBtn")) {
+          confirmBtn(event, language, move, player);
+        } else if (event.getComponentId().equals("closeBtn")) {
+          closeBtn(event, language, event.getUser().getId(), destinationPlace);
+        } else {
+          LOGGER.error(
+              "Unknown button clicked: {}", event.getComponentId() + " - " + "journey command");
+        }
+      }
+
+      @Override
+      public void closeBtnMenu(ButtonInteractionEvent event, String text) {
+        text = getCancelText(language, destinationPlace);
+        if (event == null) {
+          this.message.editMessage(text).setComponents().queue();
+        } else {
+          event.editMessage(text).setComponents().queue();
+        }
+        stMaryClient.getCache().delete("actionWaiter_" + this.authorId);
+      }
+    };
   }
 
   /**

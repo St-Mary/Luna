@@ -1,11 +1,10 @@
 package me.aikoo.stmary.commands;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import me.aikoo.stmary.core.abstracts.ButtonAbstract;
+import me.aikoo.stmary.core.abstracts.ButtonListener;
 import me.aikoo.stmary.core.abstracts.CommandAbstract;
 import me.aikoo.stmary.core.bases.ObjectBase;
 import me.aikoo.stmary.core.bases.PlaceBase;
@@ -14,7 +13,6 @@ import me.aikoo.stmary.core.bot.StMaryClient;
 import me.aikoo.stmary.core.constants.BotConfigConstant;
 import me.aikoo.stmary.core.database.MoveEntity;
 import me.aikoo.stmary.core.database.PlayerEntity;
-import me.aikoo.stmary.core.managers.ButtonManager;
 import me.aikoo.stmary.core.managers.DatabaseManager;
 import me.aikoo.stmary.core.managers.LocationManager;
 import me.aikoo.stmary.core.managers.TextManager;
@@ -25,6 +23,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 /** A command to display a user's menu, including their profile, inventory, and titles. */
@@ -68,109 +67,76 @@ public class MenuCommand extends CommandAbstract {
           .reply(TextManager.createText("menu_no_account", language).buildError())
           .setEphemeral(true)
           .queue();
-    } else {
-      try {
-        // Generate and send the user's profile
-        String profil = profilEmbed(user.getGlobalName(), player, language);
-
-        Method profilMethod =
-            MenuCommand.class.getMethod(
-                "profilBtn",
-                ButtonInteractionEvent.class,
-                String.class,
-                String.class,
-                PlayerEntity.class);
-        ButtonAbstract profilBtn =
-            new ButtonAbstract(
-                "profil_btn",
-                TextManager.getText("menu_btn_profil", language),
-                ButtonStyle.PRIMARY,
-                Emoji.fromUnicode("\uD83D\uDCDD"),
-                stMaryClient,
-                this,
-                profilMethod,
-                event.getUser().getId(),
-                player);
-
-        Method inventoryMethod =
-            MenuCommand.class.getMethod(
-                "inventoryBtn",
-                ButtonInteractionEvent.class,
-                String.class,
-                String.class,
-                PlayerEntity.class);
-        ButtonAbstract inventoryBtn =
-            new ButtonAbstract(
-                "inventory_btn",
-                TextManager.getText("menu_btn_backpack", language),
-                ButtonStyle.PRIMARY,
-                Emoji.fromUnicode("\uD83C\uDF92"),
-                stMaryClient,
-                this,
-                inventoryMethod,
-                event.getUser().getId(),
-                player);
-
-        Method titlesMethod =
-            MenuCommand.class.getMethod(
-                "titlesBtn",
-                ButtonInteractionEvent.class,
-                String.class,
-                String.class,
-                PlayerEntity.class);
-        ButtonAbstract titlesBtn =
-            new ButtonAbstract(
-                "titles_btn",
-                TextManager.getText("menu_btn_titles", language),
-                ButtonStyle.PRIMARY,
-                Emoji.fromUnicode("\uD83C\uDFC5"),
-                stMaryClient,
-                this,
-                titlesMethod,
-                event.getUser().getId(),
-                player);
-
-        Method closeMethod =
-            MenuCommand.class.getMethod(
-                "closeBtn",
-                ButtonInteractionEvent.class,
-                String.class,
-                String.class,
-                PlayerEntity.class);
-        ButtonAbstract closeBtn =
-            new ButtonAbstract(
-                "close_btn",
-                TextManager.getText("menu_btn_close", language),
-                ButtonStyle.DANGER,
-                Emoji.fromFormatted(BotConfigConstant.getEmote("no")),
-                stMaryClient,
-                this,
-                closeMethod,
-                event.getUser().getId(),
-                player);
-
-        // Send the profile menu
-        this.sendMsgWithButtons(
-            event,
-            profil,
-            language,
-            new ArrayList<>(List.of(inventoryBtn, profilBtn, titlesBtn, closeBtn)),
-            60000,
-            null,
-            null);
-
-      } catch (NoSuchMethodException e) {
-        String errorText = TextManager.createText("command_error", language).buildError();
-        event.reply(errorText).setEphemeral(true).queue();
-
-        if (stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
-          stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
-        }
-
-        ButtonManager.removeButtons(event.getHook().retrieveOriginal().complete().getId());
-        TextManager.sendError(name, e);
-      }
     }
+
+    ButtonListener buttonListener =
+        getButtonListener(
+            stMaryClient, event.getUser().getId(), language, player, getButtons(language));
+    buttonListener.sendButtonMenu(
+        event, profilEmbed(event.getUser().getGlobalName(), player, language));
+    stMaryClient.getJda().addEventListener(buttonListener);
+  }
+
+  /**
+   * Get the button list
+   *
+   * @param language The language of the Player
+   * @return The Button List
+   */
+  public ArrayList<Button> getButtons(String language) {
+    Button profilButton =
+        Button.of(
+            ButtonStyle.PRIMARY,
+            "profil_btn",
+            TextManager.getText("menu_btn_profil", language),
+            Emoji.fromUnicode("\uD83D\uDCDD"));
+    Button inventoryButton =
+        Button.of(
+            ButtonStyle.PRIMARY,
+            "inventory_btn",
+            TextManager.getText("menu_btn_backpack", language),
+            Emoji.fromUnicode("\uD83C\uDF92"));
+    Button titlesButton =
+        Button.of(
+            ButtonStyle.PRIMARY,
+            "titles_btn",
+            TextManager.getText("menu_btn_titles", language),
+            Emoji.fromUnicode("\uD83C\uDFC5"));
+    Button closeButton =
+        Button.of(
+            ButtonStyle.DANGER,
+            "close_btn",
+            TextManager.getText("menu_btn_close", language),
+            Emoji.fromFormatted(BotConfigConstant.getEmote("no")));
+
+    return new ArrayList<>(List.of(profilButton, inventoryButton, titlesButton, closeButton));
+  }
+
+  /**
+   * Generate the Button Listener
+   *
+   * @param stMaryClient The StMary Client
+   * @param userId The UserId
+   * @param language The Player language
+   * @return The Button Listener
+   */
+  private ButtonListener getButtonListener(
+      StMaryClient stMaryClient,
+      String userId,
+      String language,
+      PlayerEntity player,
+      ArrayList<Button> buttons) {
+    return new ButtonListener(stMaryClient, userId, language, buttons, 60000L, false) {
+      @Override
+      public void buttonClick(ButtonInteractionEvent event) {
+        switch (event.getComponentId()) {
+          case "profil_btn" -> profilBtn(event, language, authorId, player);
+          case "inventory_btn" -> inventoryBtn(event, language, authorId, player);
+          case "titles_btn" -> titlesBtn(event, language, authorId, player);
+          case "close_btn" -> closeBtnMenu(event, event.getMessage().getContentRaw());
+        }
+      }
+    };
   }
 
   /**
@@ -357,31 +323,6 @@ public class MenuCommand extends CommandAbstract {
             .replace("{{nb_titles}}", String.valueOf(titles.size()));
 
     event.editMessage(text).queue();
-    if (!event.getInteraction().isAcknowledged()) {
-      event.deferEdit().queue();
-    }
-  }
-
-  /**
-   * Closes the menu.
-   *
-   * @param event The ButtonInteractionEvent triggered when the button is clicked.
-   * @param language The language of the player
-   * @param id The id of the player
-   * @param player The player
-   */
-  public void closeBtn(
-      ButtonInteractionEvent event, String language, String id, PlayerEntity player) {
-    if (!event.getUser().getId().equals(id)) {
-      event
-          .reply(TextManager.createText("command_error_button_only_author", language).buildError())
-          .setEphemeral(true)
-          .queue();
-      return;
-    }
-
-    event.getMessage().editMessage(event.getMessage().getContentRaw()).setComponents().queue();
-    ButtonManager.removeButtons(event.getMessageId());
     if (!event.getInteraction().isAcknowledged()) {
       event.deferEdit().queue();
     }
