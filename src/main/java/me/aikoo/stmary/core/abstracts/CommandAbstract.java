@@ -1,6 +1,5 @@
 package me.aikoo.stmary.core.abstracts;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -9,7 +8,6 @@ import lombok.Setter;
 import me.aikoo.stmary.core.bot.StMaryClient;
 import me.aikoo.stmary.core.constants.BotConfigConstant;
 import me.aikoo.stmary.core.database.PlayerEntity;
-import me.aikoo.stmary.core.managers.ButtonManager;
 import me.aikoo.stmary.core.managers.CooldownManager;
 import me.aikoo.stmary.core.managers.DatabaseManager;
 import me.aikoo.stmary.core.managers.TextManager;
@@ -21,7 +19,6 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.localization.LocalizationFunction;
 import net.dv8tion.jda.api.interactions.commands.localization.ResourceBundleLocalizationFunction;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,7 +91,8 @@ public abstract class CommandAbstract {
       if (!DatabaseManager.isAdministrator(event.getUser().getIdLong())
           && !event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
         event
-            .reply(TextManager.createText("command_error_not_allowed", language).buildError())
+            .getHook()
+            .sendMessage(TextManager.createText("command_error_not_allowed", language).buildError())
             .setEphemeral(true)
             .queue();
         return;
@@ -117,7 +115,7 @@ public abstract class CommandAbstract {
             TextManager.createText("command_error_cooldown", language)
                 .replace("cooldown", timestamp)
                 .buildError();
-        event.reply(text).setEphemeral(true).queue();
+        event.getHook().sendMessage(text).setEphemeral(true).queue();
         return;
       }
 
@@ -150,13 +148,12 @@ public abstract class CommandAbstract {
       LOGGER.error("Error while executing command: " + e);
 
       String errorText = TextManager.createText("command_error", language).buildError();
-      event.reply(errorText).setEphemeral(true).queue();
+      event.getHook().sendMessage(errorText).setEphemeral(true).queue();
 
       if (stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
         stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
       }
 
-      ButtonManager.removeButtons(event.getHook().retrieveOriginal().complete().getId());
       TextManager.sendError(name, e);
     }
   }
@@ -176,113 +173,6 @@ public abstract class CommandAbstract {
     } catch (Exception e) {
       TextManager.sendError(event.getName(), e);
     }
-  }
-
-  /**
-   * Send a message with buttons
-   *
-   * @param event The SlashCommandInteractionEvent triggered when the button is clicked.
-   * @param text The text to send
-   * @param language The language of the player
-   * @param buttons The list of Button objects to add.
-   * @param time The time before the message is deleted
-   * @param closeMethod The method to execute when the message is deleted
-   * @param methodClass The class of the method to execute
-   * @param parameters The parameters of the method to execute
-   */
-  public void sendMsgWithButtons(
-      SlashCommandInteractionEvent event,
-      String text,
-      String language,
-      List<ButtonAbstract> buttons,
-      int time,
-      Method closeMethod,
-      Object methodClass,
-      Object... parameters) {
-    ArrayList<Button> buttonList = new ArrayList<>();
-    buttons.forEach(button -> buttonList.add(button.getButton()));
-    event
-        .reply(text)
-        .addActionRow(buttonList)
-        .queue(
-            msg ->
-                msg.retrieveOriginal()
-                    .queue(
-                        res -> {
-                          ButtonManager.addButtons(res.getId(), buttons);
-
-                          new java.util.Timer()
-                              .schedule(
-                                  new java.util.TimerTask() {
-                                    @Override
-                                    public void run() {
-                                      if (event.isAcknowledged()) {
-                                        return;
-                                      }
-
-                                      if (ButtonManager.isButtons(res.getId())) {
-                                        ButtonManager.removeButtons(res.getId());
-
-                                        if (closeMethod != null) {
-                                          try {
-                                            Object[] params = new Object[parameters.length + 2];
-                                            params[0] = res;
-                                            params[1] = language;
-                                            System.arraycopy(
-                                                parameters, 0, params, 2, parameters.length);
-
-                                            closeMethod.invoke(methodClass, params);
-
-                                            if (stMaryClient
-                                                .getCache()
-                                                .get("actionWaiter_" + event.getUser().getId())
-                                                .isPresent()) {
-                                              stMaryClient
-                                                  .getCache()
-                                                  .delete(
-                                                      "actionWaiter_" + event.getUser().getId());
-                                            }
-                                          } catch (Exception e) {
-                                            LOGGER.error("Error while executing closeMethod: " + e);
-                                            String errorText =
-                                                TextManager.createText("command_error", language)
-                                                    .buildError();
-                                            event.reply(errorText).setEphemeral(true).queue();
-                                            TextManager.sendError(event.getName(), e);
-                                          }
-                                        } else {
-                                          res.editMessage(text).setComponents().queue();
-
-                                          if (stMaryClient
-                                              .getCache()
-                                              .get("actionWaiter_" + event.getUser().getId())
-                                              .isPresent()) {
-                                            stMaryClient
-                                                .getCache()
-                                                .delete("actionWaiter_" + event.getUser().getId());
-                                          }
-                                        }
-                                        if (stMaryClient
-                                            .getCache()
-                                            .get("actionWaiter_" + event.getUser().getId())
-                                            .isPresent()) {
-                                          stMaryClient
-                                              .getCache()
-                                              .delete("actionWaiter_" + event.getUser().getId());
-                                        }
-                                      }
-                                      if (stMaryClient
-                                          .getCache()
-                                          .get("actionWaiter_" + event.getUser().getId())
-                                          .isPresent()) {
-                                        stMaryClient
-                                            .getCache()
-                                            .delete("actionWaiter_" + event.getUser().getId());
-                                      }
-                                    }
-                                  },
-                                  time);
-                        }));
   }
 
   /**

@@ -116,7 +116,8 @@ public class CharacterManager {
     ArrayList<Effect> effects = new ArrayList<>();
     ArrayList<CharacterBase.Choice> choices = new ArrayList<>();
 
-    CharacterBase.Dialog dialog = new CharacterBase.Dialog(character, haveChoices, texts, questions);
+    CharacterBase.Dialog dialog =
+        new CharacterBase.Dialog(character, haveChoices, texts, questions);
 
     if (haveChoices) {
       for (JsonElement choiceElement : obj.get("choices").getAsJsonArray()) {
@@ -127,7 +128,7 @@ public class CharacterManager {
         String nextDialog = choiceObj.get("next").getAsString();
 
         CharacterBase.Choice choice =
-                new CharacterBase.Choice(character, buttonIcon, buttonStyle, id, nextDialog);
+            new CharacterBase.Choice(character, buttonIcon, buttonStyle, id, nextDialog);
 
         // For each text, get key and value
         for (Map.Entry<String, JsonElement> langEntry :

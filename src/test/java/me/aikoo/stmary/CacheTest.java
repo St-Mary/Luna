@@ -49,7 +49,7 @@ class CacheTest {
         } finally {
             executorService.shutdown();
         }
-        assertEquals(cache.size(), size);
+        assertEquals(size, cache.size());
         IntStream.range(0, size).forEach(i -> assertEquals("value" + i, cache.get(i).get()));
     }
 }
