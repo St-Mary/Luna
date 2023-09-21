@@ -104,7 +104,7 @@ public class StartCommand extends CommandAbstract {
         if (event == null) {
           message.editMessage(dialog.printDialog(language)).setComponents().queue();
         } else {
-          event.getMessage().editMessage(dialog.printDialog(language)).setComponents().queue();
+          event.editMessage(dialog.printDialog(language)).setComponents().queue();
         }
       }
     };
@@ -123,8 +123,7 @@ public class StartCommand extends CommandAbstract {
     // Check if the Discord account was created more than a week ago
     if (creationDate.isAfter(LocalDate.now().minusWeeks(PlayerConstant.CREATION_TIME_WEEK_LIMIT))) {
       event
-          .getHook()
-          .sendMessage(
+          .reply(
               TextManager.createText("start_adventure_error_creation_date", language).buildError())
           .queue();
       return false;
@@ -134,7 +133,7 @@ public class StartCommand extends CommandAbstract {
       // Player already exists, send an error message
       String error =
           TextManager.createText("start_adventure_error_already_started", language).buildError();
-      event.getHook().sendMessage(error).setEphemeral(true).queue();
+      event.reply(error).setEphemeral(true).queue();
       return false;
     }
 
@@ -153,7 +152,7 @@ public class StartCommand extends CommandAbstract {
 
     // Remove the cache and buttons
     stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
-    event.getMessage().editMessage(dialog.printDialog(language)).setComponents().queue();
+    event.editMessage(dialog.printDialog(language)).setComponents().queue();
   }
 
   /**
@@ -184,7 +183,7 @@ public class StartCommand extends CommandAbstract {
     // Save the new player entity to the database
     DatabaseManager.save(player);
 
-    event.getMessage().editMessage(dialog).setComponents().queue();
+    event.editMessage(dialog).setComponents().queue();
     stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());
   }
 

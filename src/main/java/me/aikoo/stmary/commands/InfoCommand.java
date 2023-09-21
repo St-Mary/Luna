@@ -96,7 +96,7 @@ public class InfoCommand extends CommandAbstract {
       case "title" -> infoTitle(event, name, language);
       default -> {
         String error = TextManager.createText("info_error_not_found", language).buildError();
-        event.getHook().sendMessage(error).setEphemeral(true).queue();
+        event.reply(error).setEphemeral(true).queue();
       }
     }
   }
@@ -112,7 +112,7 @@ public class InfoCommand extends CommandAbstract {
 
     if (location == null) {
       String error = TextManager.createText("info_place_error_dont_exist", language).buildError();
-      event.getHook().sendMessage(error).setEphemeral(true).queue();
+      event.reply(error).setEphemeral(true).queue();
       return;
     }
 
@@ -143,7 +143,7 @@ public class InfoCommand extends CommandAbstract {
         TextManager.createText("info_place_formatted", language)
             .replace("place_description", content)
             .build();
-    event.getHook().sendMessage(text).queue();
+    event.reply(text).queue();
   }
 
   /**
@@ -250,7 +250,7 @@ public class InfoCommand extends CommandAbstract {
   private void infoObject(SlashCommandInteractionEvent event, String name, String language) {
     if (name == null) {
       String text = TextManager.createText("info_object_error_no_object", language).buildError();
-      event.getHook().sendMessage(text).setEphemeral(true).queue();
+      event.reply(text).setEphemeral(true).queue();
       return;
     }
 
@@ -258,7 +258,7 @@ public class InfoCommand extends CommandAbstract {
 
     if (object == null) {
       String error = TextManager.createText("info_object_error_not_found", language).buildError();
-      event.getHook().sendMessage(error).setEphemeral(true).queue();
+      event.reply(error).setEphemeral(true).queue();
       return;
     }
 
@@ -270,7 +270,7 @@ public class InfoCommand extends CommandAbstract {
             .replace("type", object.getType().getName(language))
             .build();
 
-    event.getHook().sendMessage(text).queue();
+    event.reply(text).queue();
   }
 
   /**
@@ -281,7 +281,7 @@ public class InfoCommand extends CommandAbstract {
    */
   private void infoTitle(SlashCommandInteractionEvent event, String name, String language) {
     String text = (name == null) ? infoAllTitles(language) : infoOneTitle(name, language);
-    event.getHook().sendMessage(text).queue();
+    event.reply(text).queue();
   }
 
   /**
@@ -292,7 +292,7 @@ public class InfoCommand extends CommandAbstract {
    */
   private void infoCharacter(SlashCommandInteractionEvent event, String name, String language) {
     String text = TextManager.createText("info_character_not_available", language).buildError();
-    event.getHook().sendMessage(text).queue();
+    event.reply(text).queue();
   }
 
   /**
@@ -303,7 +303,7 @@ public class InfoCommand extends CommandAbstract {
    */
   private void infoMonster(SlashCommandInteractionEvent event, String name, String language) {
     String text = TextManager.createText("info_monster_not_available", language).buildError();
-    event.getHook().sendMessage(text).queue();
+    event.reply(text).queue();
   }
 
   /**
@@ -314,7 +314,7 @@ public class InfoCommand extends CommandAbstract {
    */
   private void infoQuest(SlashCommandInteractionEvent event, String name, String language) {
     String text = TextManager.createText("info_quest_not_available", language).buildError();
-    event.getHook().sendMessage(text).queue();
+    event.reply(text).queue();
   }
 
   /**

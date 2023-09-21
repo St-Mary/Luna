@@ -7,6 +7,7 @@ build/
 LogFile.log
 config/config.properties
 ./config/config.properties
+logs/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

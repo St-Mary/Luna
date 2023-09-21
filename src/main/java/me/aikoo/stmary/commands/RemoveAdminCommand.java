@@ -40,29 +40,26 @@ public class RemoveAdminCommand extends CommandAbstract {
   public void execute(SlashCommandInteractionEvent event, String language) {
     if (!event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
       String errMsg = "Seul le propriétaire du bot peut exécuter cette commande !";
-      event.getHook().sendMessage(errMsg).queue();
+      event.reply(errMsg).queue();
     }
 
     String userId = event.getOption("userid").getAsString();
 
     if (!userId.matches("[0-9]+")) {
-      event.getHook().sendMessage("This user doesn't exist").queue();
+      event.reply("This user doesn't exist").queue();
       return;
     }
 
     AdministratorEntity administrator = DatabaseManager.getAdministrator(Long.parseLong(userId));
     if (administrator == null) {
       String errMsg = "Cet utilisateur n'est pas administrateur !";
-      event.getHook().sendMessage(errMsg).queue();
+      event.reply(errMsg).queue();
       return;
     }
 
     DatabaseManager.delete(administrator);
 
-    event
-        .getHook()
-        .sendMessage("L'utilisateur a été déstitué de son rôle d'administrateur !")
-        .queue();
+    event.reply("L'utilisateur a été déstitué de son rôle d'administrateur !").queue();
   }
 
   /**

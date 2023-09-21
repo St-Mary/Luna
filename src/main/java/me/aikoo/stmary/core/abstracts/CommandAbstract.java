@@ -91,8 +91,7 @@ public abstract class CommandAbstract {
       if (!DatabaseManager.isAdministrator(event.getUser().getIdLong())
           && !event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
         event
-            .getHook()
-            .sendMessage(TextManager.createText("command_error_not_allowed", language).buildError())
+            .reply(TextManager.createText("command_error_not_allowed", language).buildError())
             .setEphemeral(true)
             .queue();
         return;
@@ -115,7 +114,7 @@ public abstract class CommandAbstract {
             TextManager.createText("command_error_cooldown", language)
                 .replace("cooldown", timestamp)
                 .buildError();
-        event.getHook().sendMessage(text).setEphemeral(true).queue();
+        event.reply(text).setEphemeral(true).queue();
         return;
       }
 
@@ -126,7 +125,7 @@ public abstract class CommandAbstract {
     // Check if user have an action waiter
     if (this.stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
       event
-          .getHook().sendMessage(TextManager.createText("command_error_action_waiter", language).buildError())
+          .reply(TextManager.createText("command_error_action_waiter", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -136,7 +135,7 @@ public abstract class CommandAbstract {
     // an error message.
     if (this.mustBeRegistered && DatabaseManager.getPlayer(event.getUser().getIdLong()) == null) {
       event
-          .getHook().sendMessage(TextManager.createText("command_error_must_be_player", language).buildError())
+          .reply(TextManager.createText("command_error_must_be_player", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -148,7 +147,7 @@ public abstract class CommandAbstract {
       LOGGER.error("Error while executing command: " + e);
 
       String errorText = TextManager.createText("command_error", language).buildError();
-      event.getHook().sendMessage(errorText).setEphemeral(true).queue();
+      event.reply(errorText).setEphemeral(true).queue();
 
       if (stMaryClient.getCache().get("actionWaiter_" + event.getUser().getId()).isPresent()) {
         stMaryClient.getCache().delete("actionWaiter_" + event.getUser().getId());

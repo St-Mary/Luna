@@ -80,7 +80,6 @@ public class EventsListener extends ListenerAdapter {
    */
   @Override
   public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-    event.deferReply().queue();
     CommandAbstract command = CommandManager.getCommand(event.getName());
     command = (command == null) ? CommandManager.getAdminCommand(event.getName()) : command;
     if (command == null) {

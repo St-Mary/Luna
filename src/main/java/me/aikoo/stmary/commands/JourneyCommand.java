@@ -45,7 +45,7 @@ public class JourneyCommand extends CommandAbstract {
     this.options.add(
         new OptionData(OptionType.STRING, "destination", "The destination where to go")
             .setAutoComplete(true)
-            .setRequired(true));
+            .setRequired(false));
   }
 
   /**
@@ -65,7 +65,7 @@ public class JourneyCommand extends CommandAbstract {
     if (place == null || destinationPlace == null) {
       String errorText =
           TextManager.createText("journey_destination_not_exist", language).buildError();
-      event.getHook().sendMessage(errorText).setEphemeral(true).queue();
+      event.reply(errorText).setEphemeral(true).queue();
       return;
     }
 
@@ -95,7 +95,7 @@ public class JourneyCommand extends CommandAbstract {
         text = TextManager.createText("journey_err_destination_2", language).buildError();
       }
 
-      event.getHook().sendMessage(text).setEphemeral(true).queue();
+      event.reply(text).setEphemeral(true).queue();
       return;
     }
 
@@ -114,7 +114,7 @@ public class JourneyCommand extends CommandAbstract {
 
     ButtonListener btnListener =
         getButtonListener(
-                event,
+            event,
             language,
             new ArrayList<>(List.of(confirmButton, closeButton)),
             move,
@@ -149,7 +149,7 @@ public class JourneyCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, String id, PlaceBase destinationPlace) {
     String text = getCancelText(language, destinationPlace);
 
-    event.getMessage().editMessage(text).setComponents().queue();
+    event.editMessage(text).setComponents().queue();
     stMaryClient.getCache().delete("actionWaiter_" + id);
   }
 
@@ -179,9 +179,7 @@ public class JourneyCommand extends CommandAbstract {
       ButtonInteractionEvent event, String language, JourneyBase move, PlayerEntity player) {
     if (player.getDiscordId() != event.getUser().getIdLong()) {
       event
-          .getHook()
-          .sendMessage(
-              TextManager.createText("command_error_button_only_author", language).buildError())
+          .reply(TextManager.createText("command_error_button_only_author", language).buildError())
           .setEphemeral(true)
           .queue();
       return;
@@ -217,7 +215,7 @@ public class JourneyCommand extends CommandAbstract {
             .build();
 
     // Edit the message to update the journey details and disabled buttons.
-    event.getMessage().editMessage(text).setComponents().queue();
+    event.editMessage(text).setComponents().queue();
     stMaryClient.getCache().delete("actionWaiter_" + player.getDiscordId());
 
     // Defer the edit of the interaction.
@@ -255,7 +253,7 @@ public class JourneyCommand extends CommandAbstract {
         if (event == null) {
           this.message.editMessage(cancelText).setComponents().queue();
         } else {
-          event.getMessage().editMessage(cancelText).setComponents().queue();
+          event.editMessage(cancelText).setComponents().queue();
         }
         stMaryClient.getCache().delete("actionWaiter_" + this.authorId);
       }

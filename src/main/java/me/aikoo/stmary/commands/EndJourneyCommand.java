@@ -42,7 +42,7 @@ public class EndJourneyCommand extends CommandAbstract {
 
     if (moves == null) {
       String text = TextManager.createText("endjourney_no_journey", language).build();
-      event.getHook().sendMessage(text).queue();
+      event.reply(text).queue();
       return;
     }
 
@@ -67,7 +67,7 @@ public class EndJourneyCommand extends CommandAbstract {
               .replace("time", String.valueOf(seconds))
               .replace("location", formatted)
               .build();
-      event.getHook().sendMessage(text).queue();
+      event.reply(text).queue();
       return;
     }
 
@@ -86,7 +86,7 @@ public class EndJourneyCommand extends CommandAbstract {
         TextManager.createText("endjourney_success", language)
             .replace("location", formatted)
             .build();
-    event.getHook().sendMessage(text).queue();
+    event.reply(text).queue();
   }
 
   /**

@@ -48,7 +48,7 @@ public class AddTitleCommand extends CommandAbstract {
     String userId = Objects.requireNonNull(event.getOption("userid")).getAsString();
 
     if (!userId.matches("[0-9]+")) {
-      event.getHook().sendMessage("This user doesn't exist").queue();
+      event.reply("This user doesn't exist").queue();
       return;
     }
 
@@ -56,18 +56,18 @@ public class AddTitleCommand extends CommandAbstract {
         DatabaseManager.getPlayer(Objects.requireNonNull(event.getOption("userid")).getAsLong());
 
     if (player == null) {
-      event.getHook().sendMessage("This user doesn't exist").queue();
+      event.reply("This user doesn't exist").queue();
       return;
     }
 
     if (TitleManager.getTitle(titleId) == null) {
-      event.getHook().sendMessage("This title doesn't exist").queue();
+      event.reply("This title doesn't exist").queue();
       return;
     }
     player.addTitle(titleId, stMaryClient);
     DatabaseManager.update(player);
 
-    event.getHook().sendMessage("The title has been added to the user").queue();
+    event.reply("The title has been added to the user").queue();
   }
 
   /**

@@ -41,7 +41,7 @@ public class AddAdminCommand extends CommandAbstract {
   public void execute(SlashCommandInteractionEvent event, String language) {
     if (!event.getUser().getId().equals(BotConfigConstant.getOwnerId())) {
       String errMsg = "Seul le propriétaire du bot peut exécuter cette commande !";
-      event.getHook().sendMessage(errMsg).queue();
+      event.reply(errMsg).queue();
     }
 
     AdministratorEntity administrators =
@@ -49,7 +49,7 @@ public class AddAdminCommand extends CommandAbstract {
             Objects.requireNonNull(event.getOption("user")).getAsUser().getIdLong());
     if (administrators != null) {
       String errMsg = "Cet utilisateur est déjà administrateur !";
-      event.getHook().sendMessage(errMsg).queue();
+      event.reply(errMsg).queue();
       return;
     }
 
@@ -58,7 +58,7 @@ public class AddAdminCommand extends CommandAbstract {
 
     DatabaseManager.save(newAdmin);
 
-    event.getHook().sendMessage("L'utilisateur a été ajouté en tant qu'administrateur !").queue();
+    event.reply("L'utilisateur a été ajouté en tant qu'administrateur !").queue();
   }
 
   /**

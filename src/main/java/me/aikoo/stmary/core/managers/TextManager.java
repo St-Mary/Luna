@@ -110,7 +110,11 @@ public class TextManager {
           "Command: `" + cmdName + "`\nAn error occurred: \n\n```\n" + stackTrace + "\n```");
       errorEmbed.setColor(0xff0000);
 
-      channel.sendMessageEmbeds(errorEmbed.build()).queue();
+      if (channel != null) {
+        channel.sendMessageEmbeds(errorEmbed.build()).queue();
+      } else {
+        LOGGER.error("Error while sending error: channel is null");
+      }
 
       jda.shutdown();
     } catch (Exception e) {

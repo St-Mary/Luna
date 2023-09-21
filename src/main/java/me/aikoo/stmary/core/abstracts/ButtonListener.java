@@ -64,15 +64,18 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
    * @param text The text to display.
    */
   public void sendButtonMenu(SlashCommandInteractionEvent e, String text) {
-    e.getHook()
-        .sendMessage(text)
+    e.reply(text)
         .addActionRow(buttons)
         .queue(
             m -> {
-              this.messageId = m.getId();
-              this.message = m;
+              m.retrieveOriginal()
+                  .queue(
+                      msg -> {
+                        this.messageId = msg.getId();
+                        this.message = msg;
 
-              createTimer();
+                        createTimer();
+                      });
             });
   }
 
@@ -102,7 +105,6 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
    */
   @Override
   public void onButtonInteraction(ButtonInteractionEvent event) {
-    event.deferEdit().queue();
     if (event.getGuild() == null || event.getUser().isBot()) return;
     if (!event.getMessageId().equals(messageId)) return;
     this.message = event.getMessage();
@@ -126,7 +128,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
     if (isAuthorOnlyBtnMenu && !event.getUser().getId().equals(authorId)) {
       String errorTxt =
           TextManager.createText("command_error_btn_author_only", language).buildError();
-      event.getHook().sendMessage(errorTxt).setEphemeral(true).queue();
+      event.reply(errorTxt).setEphemeral(true).queue();
       return false;
     }
 
@@ -199,7 +201,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
     if (event == null) {
       message.editMessage(msgText).setComponents().queue();
     } else {
-      event.getMessage().editMessage(msgText).setComponents().queue();
+      event.editMessage(msgText).setComponents().queue();
     }
   }
 
@@ -210,7 +212,7 @@ public abstract class ButtonListener extends ListenerAdapter implements EventLis
    */
   private void handleErrorResponse(ButtonInteractionEvent event) {
     String errorText = TextManager.createText("command_error", language).buildError();
-    event.getHook().sendMessage(errorText).setEphemeral(true).queue();
+    event.reply(errorText).setEphemeral(true).queue();
     stMaryClient.getJda().removeEventListener(this);
     LOGGER.error("Error in ButtonListener");
   }
