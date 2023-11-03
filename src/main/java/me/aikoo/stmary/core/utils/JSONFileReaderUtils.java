@@ -2,13 +2,16 @@ package me.aikoo.stmary.core.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import java.io.IOException;
-import java.io.Reader;
+
+import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +28,7 @@ public class JSONFileReaderUtils {
    * @return A list of JSON objects read from the files.
    */
   public static List<JsonObject> readAllFilesFrom(String dir, String subDir) {
-    String path = "src/main/resources/json/" + dir + "/" + subDir;
+    String path = "/json/" + dir + "/" + subDir;
     return readFiles(path);
   }
 
@@ -36,7 +39,7 @@ public class JSONFileReaderUtils {
    * @return A list of JSON objects read from the files.
    */
   public static List<JsonObject> readAllFilesFrom(String dir) {
-    String path = "src/main/resources/json/" + dir;
+    String path = "/json/" + dir;
     return readFiles(path);
   }
 
@@ -49,23 +52,26 @@ public class JSONFileReaderUtils {
   private static List<JsonObject> readFiles(String path) {
     Gson gson = new Gson();
     List<JsonObject> objects = new ArrayList<>();
-    try {
-      List<String> jsonFiles =
-          Files.list(Path.of(path)).filter(Files::isRegularFile).map(Path::toString).toList();
+    List<String> jsonFiles =
+            Stream.of(getResourceFolderFiles(path)).filter(f -> Files.isRegularFile(f.toPath())).map(f -> path + "/" + f.getName()).toList();
 
-      for (String file : jsonFiles) {
-        try (Reader reader = Files.newBufferedReader(Path.of(file), StandardCharsets.UTF_8)) {
-          JsonObject object = gson.fromJson(reader, JsonObject.class);
-          objects.add(object);
-        } catch (IOException e) {
-          LOGGER.error("Failed to read JSON file: " + file + " (" + e.getMessage() + ")");
-        }
+    for (String file : jsonFiles) {
+      try (Reader reader =
+          new BufferedReader(
+              new InputStreamReader(
+                      JSONFileReaderUtils.class.getResource(file).openStream(), StandardCharsets.UTF_8))) {
+        JsonObject object = gson.fromJson(reader, JsonObject.class);
+        objects.add(object);
+      } catch (IOException e) {
+        LOGGER.error("Failed to read JSON file: " + file + " (" + e.getMessage() + ")");
       }
-    } catch (IOException e) {
-      LOGGER.error(
-          "Failed to read JSON files from directory: " + path + " (" + e.getMessage() + ")");
     }
 
     return objects;
+  }
+
+  private static File[] getResourceFolderFiles(String folder) {
+    URL url = JSONFileReaderUtils.class.getResource(folder);
+    return new File(url.getPath()).listFiles();
   }
 }

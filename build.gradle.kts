@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    application
 }
 
 group = "me.aikoo"
@@ -8,6 +10,9 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
 }
+
+// Required by the 'shadowJar' task
+project.setProperty("mainClassName", "me.aikoo.stmary.Main")
 
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.22")
@@ -29,6 +34,18 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-core:6.3.0.CR1")
     implementation("org.hibernate.orm:hibernate-hikaricp:6.3.0.CR1")
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "me.aikoo.stmary.Main"
+    }
+}
+
+tasks.shadowJar {
+    archiveBaseName.set("stmary")
+    archiveClassifier.set("")
+    archiveVersion.set("")
 }
 
 tasks.test {

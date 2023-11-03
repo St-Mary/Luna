@@ -72,7 +72,7 @@ public class MenuCommand extends CommandAbstract {
         getButtonListener(
             stMaryClient, event.getUser().getId(), language, player, getButtons(language));
     buttonListener.sendButtonMenu(
-        event, profilEmbed(event.getUser().getGlobalName(), player, language));
+        event, profilEmbed(event.getUser().getEffectiveName(), player, language));
     stMaryClient.getJda().addEventListener(buttonListener);
   }
 
@@ -274,7 +274,7 @@ public class MenuCommand extends CommandAbstract {
     String text =
         TextManager.getText("menu_backpack", language)
             .replace("{{icon}}", icon)
-            .replace("{{name}}", event.getUser().getGlobalName())
+            .replace("{{name}}", event.getUser().getEffectiveName())
             .replace("{{money}}", player.getMoney().toString())
             .replace("{{magical_book}}", magicalBookName);
 

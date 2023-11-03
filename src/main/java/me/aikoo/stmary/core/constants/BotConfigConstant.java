@@ -14,9 +14,8 @@ public class BotConfigConstant {
   private static final Properties prop = new Properties();
   private static final Logger LOGGER = LoggerFactory.getLogger(BotConfigConstant.class);
 
-  /** Load the properties file. */
   static {
-    try (InputStream input = new FileInputStream("config/config.properties")) {
+    try (InputStream input = BotConfigConstant.class.getResourceAsStream("/config/config.properties")) {
       prop.load(input);
 
       List<String> keys =
