@@ -16,6 +16,7 @@ tmp/
 tmp
 ./tmp
 /tmp/
+*.gz
 >>>>>>> Stashed changes
 
 ### IntelliJ IDEA ###
