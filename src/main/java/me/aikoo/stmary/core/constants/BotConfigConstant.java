@@ -1,6 +1,5 @@
 package me.aikoo.stmary.core.constants;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -16,7 +15,12 @@ public class BotConfigConstant {
 
   /** Load the properties file. */
   static {
+<<<<<<< Updated upstream
     try (InputStream input = new FileInputStream("config/config.properties")) {
+=======
+    try (InputStream input =
+        BotConfigConstant.class.getResourceAsStream("/config/config.properties")) {
+>>>>>>> Stashed changes
       prop.load(input);
 
       List<String> keys =

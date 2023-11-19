@@ -14,10 +14,6 @@ import me.aikoo.stmary.core.utils.JSONFileReaderUtils;
 public class CharacterManager {
   private static final HashMap<String, CharacterBase> characters = new HashMap<>();
 
-  static {
-    load();
-  }
-
   /**
    * Get a character by its id.
    *
@@ -65,7 +61,7 @@ public class CharacterManager {
   }
 
   /** Load all characters from the characters folder. */
-  private static void load() {
+  public static void load() {
     List<JsonObject> charactersObjects = JSONFileReaderUtils.readAllFilesFrom("characters");
 
     for (JsonObject obj : charactersObjects) {

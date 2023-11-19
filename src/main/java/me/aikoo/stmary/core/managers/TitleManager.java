@@ -13,10 +13,6 @@ public class TitleManager {
 
   @Getter public static Map<String, TitleBase> titles = new HashMap<>();
 
-  static {
-    load();
-  }
-
   /** Load titles from JSON files and add them to the list of titles. */
   public static void load() {
     List<JsonObject> jsonObjects = JSONFileReaderUtils.readAllFilesFrom("titles");

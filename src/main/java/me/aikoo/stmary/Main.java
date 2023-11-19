@@ -1,5 +1,6 @@
 package me.aikoo.stmary;
 
+import java.io.File;
 import me.aikoo.stmary.core.bot.StMaryClient;
 
 /** The main class of the application. */

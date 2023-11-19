@@ -9,6 +9,20 @@ repositories {
     mavenCentral()
 }
 
+<<<<<<< Updated upstream
+=======
+sourceSets {
+    main {
+        resources {
+            srcDirs("src/main/resources")
+        }
+    }
+}
+
+// Required by the 'shadowJar' task
+project.setProperty("mainClassName", "me.aikoo.stmary.Main")
+
+>>>>>>> Stashed changes
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.22")
     annotationProcessor("org.projectlombok:lombok:1.18.22")
@@ -31,6 +45,34 @@ dependencies {
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
 }
 
+<<<<<<< Updated upstream
+=======
+tasks {
+    withType<Copy> {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+
+tasks.jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes["Main-Class"] = "me.aikoo.stmary.Main"
+    }
+
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
+}
+
+tasks.shadowJar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveBaseName.set("stmary")
+    archiveClassifier.set("")
+    archiveVersion.set("")
+}
+
+>>>>>>> Stashed changes
 tasks.test {
     useJUnitPlatform()
 }

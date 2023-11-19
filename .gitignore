@@ -5,8 +5,18 @@ build/
 !**/src/test/**/build/
 .env
 LogFile.log
+<<<<<<< Updated upstream
 config/config.properties
 ./config/config.properties
+=======
+src/main/resources/config/config.properties
+src/main/resources/config/config.properties
+logs/
+tmp/
+tmp
+./tmp
+/tmp/
+>>>>>>> Stashed changes
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

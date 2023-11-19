@@ -21,10 +21,6 @@ public class TextManager {
   private static final Logger LOGGER = LoggerFactory.getLogger(TextManager.class);
   private static final HashMap<String, JsonObject> texts = new HashMap<>();
 
-  static {
-    load();
-  }
-
   /**
    * Get the text associated with a given id and language.
    *
@@ -68,7 +64,7 @@ public class TextManager {
   }
 
   /** Load texts from JSON files. */
-  private static void load() {
+  public static void load() {
     List<JsonObject> files = JSONFileReaderUtils.readAllFilesFrom("text");
 
     for (JsonObject file : files) {

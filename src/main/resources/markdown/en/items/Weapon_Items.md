@@ -3,7 +3,7 @@
 ### 📖 Lexique
 
 -
-  - Attaque
+    - Attaque
 - ❤️ - Gain de Vie
 - 😵 - Chance Étourdissement
 - 🛡 - Défense
