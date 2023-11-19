@@ -17,5 +17,6 @@ RUN gradle --no-daemon clean build --stacktrace
 FROM openjdk:19
 ARG BUILD_HOME
 WORKDIR $BUILD_HOME
+COPY ["./.env", "$BUILD_HOME/."]
 COPY --from=builder $BUILD_HOME/build/libs/stmary.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]

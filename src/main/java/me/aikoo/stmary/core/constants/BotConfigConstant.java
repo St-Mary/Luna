@@ -14,6 +14,7 @@ import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import me.aikoo.stmary.core.utils.JSONFileReaderUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,39 +22,8 @@ import org.slf4j.LoggerFactory;
 /** The BotConfigConstant class contains all the constants of the bot. */
 public class BotConfigConstant {
 
-  private static final Properties prop = new Properties();
+  private static final Dotenv dotenv = Dotenv.load();
   private static final Logger LOGGER = LoggerFactory.getLogger(BotConfigConstant.class);
-
-  /** Load the properties file. */
-  static {
-    try (InputStream input = getInputStream()) {
-        prop.load(input);
-
-      List<String> keys =
-          List.of(
-              "token",
-              "devToken",
-              "devGuildId",
-              "ownerId",
-              "mode",
-              "databaseHost",
-              "databasePort",
-              "databaseUsername",
-              "databasePassword",
-              "databaseDevDB",
-              "databaseProdDB");
-
-      for (String key : keys) {
-        if (prop.getProperty(key) == null) {
-          LOGGER.error("Missing key in properties file: " + key);
-          System.exit(1);
-        }
-      }
-    } catch (IOException io) {
-      io.printStackTrace();
-      System.exit(1);
-    }
-  }
 
   /**
    * Get the token of the bot.
@@ -61,7 +31,7 @@ public class BotConfigConstant {
    * @return The token of the bot.
    */
   public static String getToken() {
-    return prop.getProperty("token");
+    return dotenv.get("token");
   }
 
   /**
@@ -70,7 +40,7 @@ public class BotConfigConstant {
    * @return The dev token of the bot.
    */
   public static String getDevToken() {
-    return prop.getProperty("devToken");
+    return dotenv.get("devToken");
   }
 
   /**
@@ -79,7 +49,7 @@ public class BotConfigConstant {
    * @return The dev guild id of the bot.
    */
   public static String getDevGuildId() {
-    return prop.getProperty("devGuildId");
+    return dotenv.get("devGuildId");
   }
 
   /**
@@ -88,7 +58,7 @@ public class BotConfigConstant {
    * @return The owner id of the bot.
    */
   public static String getOwnerId() {
-    return prop.getProperty("ownerId");
+    return dotenv.get("ownerId");
   }
 
   /**
@@ -97,7 +67,7 @@ public class BotConfigConstant {
    * @return The debug channel id of the bot.
    */
   public static String getDebugChannelId() {
-    return prop.getProperty("debugChannelId");
+    return dotenv.get("debugChannelId");
   }
 
   /**
@@ -106,11 +76,11 @@ public class BotConfigConstant {
    * @return The mode of the bot.
    */
   public static String getMode() {
-    if (!List.of("dev", "prod").contains(prop.getProperty("mode"))) {
+    if (!List.of("dev", "prod").contains(dotenv.get("mode"))) {
       LOGGER.error("Invalid mode specified in properties file. Valid modes are 'dev' and 'prod'.");
       System.exit(1);
     }
-    return prop.getProperty("mode");
+    return dotenv.get("mode");
   }
 
   /**
@@ -119,7 +89,7 @@ public class BotConfigConstant {
    * @return The database host of the bot.
    */
   public static String getDatabaseHost() {
-    return prop.getProperty("databaseHost");
+    return dotenv.get("databaseHost");
   }
 
   /**
@@ -128,7 +98,7 @@ public class BotConfigConstant {
    * @return The database port of the bot.
    */
   public static String getDatabasePort() {
-    return prop.getProperty("databasePort");
+    return dotenv.get("databasePort");
   }
 
   /**
@@ -137,7 +107,7 @@ public class BotConfigConstant {
    * @return The database username of the bot.
    */
   public static String getDatabaseUsername() {
-    return prop.getProperty("databaseUsername");
+    return dotenv.get("databaseUsername");
   }
 
   /**
@@ -146,7 +116,7 @@ public class BotConfigConstant {
    * @return The database password of the bot.
    */
   public static String getDatabasePassword() {
-    return prop.getProperty("databasePassword");
+    return dotenv.get("databasePassword");
   }
 
   /**
@@ -156,8 +126,8 @@ public class BotConfigConstant {
    */
   public static String getDatabaseName() {
     return (getMode().equals("dev"))
-        ? prop.getProperty("databaseDevDB")
-        : prop.getProperty("databaseProdDB");
+        ? dotenv.get("databaseDevDB")
+        : dotenv.get("databaseProdDB");
   }
 
   /**
@@ -168,56 +138,6 @@ public class BotConfigConstant {
    */
   public static String getEmote(String emoteName) {
     emoteName = emoteName.substring(0, 1).toUpperCase() + emoteName.substring(1);
-    return prop.getProperty("emote" + emoteName);
-  }
-
-  private static InputStream getInputStream() {
-    JarInputStream jarInputStream = null;
-
-    if (checkIfItsJar()) {
-      try {
-        jarInputStream =
-                new JarInputStream(
-                        new FileInputStream(
-                                new File(
-                                        JSONFileReaderUtils.class
-                                                .getProtectionDomain()
-                                                .getCodeSource()
-                                                .getLocation()
-                                                .toURI())
-                                        .getPath()));
-        // Read content
-        while (true) {
-          JarEntry jarEntry = jarInputStream.getNextJarEntry();
-          if (jarEntry == null) break;
-          String fileName = jarEntry.getName();
-          if (fileName.endsWith("config/config.properties")) {
-              String fileText = new String(jarInputStream.readAllBytes(), StandardCharsets.UTF_8);
-              return new ByteArrayInputStream(fileText.getBytes());
-          }
-        }
-      } catch (IOException ignore) {
-        // Ignore this exception and just return false
-      } catch (URISyntaxException e) {
-        LOGGER.error("Error while reading config file", e);
-      } finally {
-        try {
-          if (jarInputStream != null) jarInputStream.close();
-        } catch (IOException ignored) {
-          // Ignore this exception and just return result
-        }
-      }
-    } else {
-      return BotConfigConstant.class.getResourceAsStream("/config/config.properties");
-    }
-
-    return null;
-  }
-
-  private static boolean checkIfItsJar() {
-    return BotConfigConstant.class
-            .getResource("BotConfigConstant.class")
-            .toString()
-            .startsWith("jar");
+    return dotenv.get("emote" + emoteName);
   }
 }
