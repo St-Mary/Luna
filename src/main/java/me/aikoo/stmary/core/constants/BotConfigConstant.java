@@ -1,6 +1,5 @@
 package me.aikoo.stmary.core.constants;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -14,9 +13,11 @@ public class BotConfigConstant {
   private static final Properties prop = new Properties();
   private static final Logger LOGGER = LoggerFactory.getLogger(BotConfigConstant.class);
 
+  /** Load the properties file. */
   static {
-    try (InputStream input = BotConfigConstant.class.getResourceAsStream("/config/config.properties")) {
-      prop.load(input);
+    try (InputStream input =
+        BotConfigConstant.class.getResourceAsStream("/config/config.properties")) {
+        prop.load(input);
 
       List<String> keys =
           List.of(

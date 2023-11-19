@@ -10,9 +10,12 @@
 
 ## 🎋 Overview
 
-StMary's Gate is an immersive text-based RPG adventure set in a medieval fantasy world. Embark on epic quests, explore mysterious lands, battle fearsome creatures, and interact with intriguing characters. Forge your own path and become a legendary hero in the realm of StMary.
+StMary's Gate is an immersive text-based RPG adventure set in a medieval fantasy world. Embark on epic quests, explore
+mysterious lands, battle fearsome creatures, and interact with intriguing characters. Forge your own path and become a
+legendary hero in the realm of StMary.
 
 🔥 Features:
+
 - Engaging storylines and quests.
 - Character customization and progression.
 - Intriguing NPCs with unique dialogues.
@@ -30,7 +33,8 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 🤝 Contributing
 
-Feel free to contribute to the development of StMary's Gate RPG Bot by submitting issues or pull requests. Your contributions are greatly appreciated! 🙌
+Feel free to contribute to the development of StMary's Gate RPG Bot by submitting issues or pull requests. Your
+contributions are greatly appreciated! 🙌
 
 ## ☎️ Contact
 

@@ -58,15 +58,5 @@
       "title": "Command execution",
       "text": "**An error occurred while executing the command! Our development team has been notified.**\n\n**Please try again later, or join the support server for help**"
     }
-  },
-  "command_error_btn_author_only": {
-    "fr": {
-      "title": "Clique du bouton",
-      "text": "Ce bouton est réservé à l'auteur de la commande."
-    },
-    "en": {
-      "title": "Button click",
-      "text": "This button is reserved to the command author."
-    }
   }
 }

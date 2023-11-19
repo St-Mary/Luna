@@ -3,6 +3,7 @@ package me.aikoo.stmary.commands;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+
 import me.aikoo.stmary.core.abstracts.ButtonListener;
 import me.aikoo.stmary.core.abstracts.CommandAbstract;
 import me.aikoo.stmary.core.bases.CharacterBase;
@@ -73,8 +74,7 @@ public class StartCommand extends CommandAbstract {
    * @param language The language of the player.
    * @return The ButtonListener.
    */
-  public ButtonListener generateButtonListener(
-      SlashCommandInteractionEvent event, String language, CharacterBase.Dialog dialog) {
+  public ButtonListener generateButtonListener(SlashCommandInteractionEvent event, String language, CharacterBase.Dialog dialog) {
     CharacterBase character = dialog.getCharacter();
     ArrayList<Button> buttons = new ArrayList<>();
 
@@ -82,32 +82,32 @@ public class StartCommand extends CommandAbstract {
       buttons.add(choice.getButton(language));
     }
 
-    return new ButtonListener(
-        stMaryClient, event.getUser().getId(), language, buttons, 120000L, true, false) {
-      @Override
-      public void buttonClick(ButtonInteractionEvent event) {
-        if (event.getComponentId().equals("yes_1.1")) {
-          onClickYesBtn(event, language);
-        } else {
-          onClickNoBtn(event, language);
-        }
-        this.timer.cancel();
-      }
+    return new ButtonListener(stMaryClient, event.getUser().getId(), language, buttons, 120000L, false) {
+              @Override
+              public void buttonClick(ButtonInteractionEvent event) {
+                if (event.getComponentId().equals("yes_1.1")) {
+                  onClickYesBtn(event, language);
+                } else {
+                  onClickNoBtn(event, language);
+                  this.timer.cancel();
+                }
+                this.timer.cancel();
+              }
 
-      @Override
-      protected void closeBtnMenu(ButtonInteractionEvent event, String text) {
-        CharacterBase.Dialog dialog = character.getDialog("1.1.2");
-        timer.cancel();
-        stMaryClient.getJda().removeEventListener(this);
-        stMaryClient.getCache().delete("actionWaiter_" + authorId);
+              @Override
+              protected void closeBtnMenu(ButtonInteractionEvent event, String text) {
+                CharacterBase.Dialog dialog = character.getDialog("1.1.2");
+                timer.cancel();
+                stMaryClient.getJda().removeEventListener(this);
+                stMaryClient.getCache().delete("actionWaiter_" + authorId);
 
-        if (event == null) {
-          message.editMessage(dialog.printDialog(language)).setComponents().queue();
-        } else {
-          event.editMessage(dialog.printDialog(language)).setComponents().queue();
-        }
-      }
-    };
+                if (event == null) {
+                  message.editMessage(dialog.printDialog(language)).setComponents().queue();
+                } else {
+                  event.editMessage(dialog.printDialog(language)).setComponents().queue();
+                }
+              }
+            };
   }
 
   /**
@@ -123,16 +123,16 @@ public class StartCommand extends CommandAbstract {
     // Check if the Discord account was created more than a week ago
     if (creationDate.isAfter(LocalDate.now().minusWeeks(PlayerConstant.CREATION_TIME_WEEK_LIMIT))) {
       event
-          .reply(
-              TextManager.createText("start_adventure_error_creation_date", language).buildError())
-          .queue();
+              .reply(
+                      TextManager.createText("start_adventure_error_creation_date", language).buildError())
+              .queue();
       return false;
     }
 
     if (player != null) {
       // Player already exists, send an error message
       String error =
-          TextManager.createText("start_adventure_error_already_started", language).buildError();
+              TextManager.createText("start_adventure_error_already_started", language).buildError();
       event.reply(error).setEphemeral(true).queue();
       return false;
     }

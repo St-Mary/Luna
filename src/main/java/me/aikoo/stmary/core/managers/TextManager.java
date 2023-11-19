@@ -1,11 +1,9 @@
 package me.aikoo.stmary.core.managers;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 import lombok.Getter;
 import me.aikoo.stmary.core.constants.BotConfigConstant;
@@ -22,10 +20,6 @@ public class TextManager {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TextManager.class);
   private static final HashMap<String, JsonObject> texts = new HashMap<>();
-
-  static {
-    load();
-  }
 
   /**
    * Get the text associated with a given id and language.
@@ -70,20 +64,17 @@ public class TextManager {
   }
 
   /** Load texts from JSON files. */
-  private static void load() {
+  public static void load() {
     List<JsonObject> files = JSONFileReaderUtils.readAllFilesFrom("text");
 
     for (JsonObject file : files) {
-      for (Map.Entry<String, JsonElement> entry : file.entrySet()) {
-        if (file.get(entry.getKey()).getAsJsonObject().get("en").getAsJsonObject().get("text")
-                == null
-            || file.get(entry.getKey()).getAsJsonObject().get("fr").getAsJsonObject().get("text")
-                == null) {
-          LOGGER.error("JSON Object {} is invalid. Please check the syntax.", entry.getKey());
+      for (String key : file.keySet()) {
+        if (file.get(key).getAsJsonObject().get("en").getAsJsonObject().get("text") == null
+            || file.get(key).getAsJsonObject().get("fr").getAsJsonObject().get("text") == null) {
+          LOGGER.error("JSON Object {} is invalid. Please check the syntax.", key);
           System.exit(1);
         }
-
-        texts.put(entry.getKey(), file.get(entry.getKey()).getAsJsonObject());
+        texts.put(key, file.get(key).getAsJsonObject());
       }
     }
   }
@@ -110,11 +101,7 @@ public class TextManager {
           "Command: `" + cmdName + "`\nAn error occurred: \n\n```\n" + stackTrace + "\n```");
       errorEmbed.setColor(0xff0000);
 
-      if (channel != null) {
-        channel.sendMessageEmbeds(errorEmbed.build()).queue();
-      } else {
-        LOGGER.error("Error while sending error: channel is null");
-      }
+      channel.sendMessageEmbeds(errorEmbed.build()).queue();
 
       jda.shutdown();
     } catch (Exception e) {

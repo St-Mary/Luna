@@ -26,10 +26,6 @@ public class LocationManager {
   private static final Logger LOGGER = LoggerFactory.getLogger(LocationManager.class);
   private static HashMap<String, RegionBase> regions = new HashMap<>();
 
-  static {
-    load();
-  }
-
   /**
    * Gets a location by its name, which can be a region, town, or place.
    *
@@ -383,7 +379,7 @@ public class LocationManager {
   }
 
   /** Load data related to locations, towns, regions, and movements from JSON files. */
-  private static void load() {
+  public static void load() {
     // Load JSON objects of places from JSON files
     placesObject.addAll(JSONFileReaderUtils.readAllFilesFrom("places", "places"));
 

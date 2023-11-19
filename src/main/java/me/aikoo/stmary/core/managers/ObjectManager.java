@@ -12,10 +12,6 @@ public class ObjectManager {
   // Stores objects using their ID as the key
   private static final HashMap<String, ObjectBase> objects = new HashMap<>();
 
-  static {
-    load();
-  }
-
   /**
    * Retrieves an object using its ID.
    *
@@ -43,7 +39,7 @@ public class ObjectManager {
   }
 
   /** Loads object data from JSON files. */
-  private static void load() {
+  public static void load() {
     // Load objects from JSON files
     List<JsonObject> objectArrayList = JSONFileReaderUtils.readAllFilesFrom("items");
 

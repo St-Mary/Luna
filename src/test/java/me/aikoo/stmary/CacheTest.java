@@ -1,15 +1,14 @@
 package me.aikoo.stmary;
 
-import me.aikoo.stmary.core.cache.Cache;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import me.aikoo.stmary.core.cache.Cache;
+import org.junit.jupiter.api.Test;
 
 class CacheTest {
 
@@ -49,7 +48,7 @@ class CacheTest {
         } finally {
             executorService.shutdown();
         }
-        assertEquals(size, cache.size());
+        assertEquals(cache.size(), size);
         IntStream.range(0, size).forEach(i -> assertEquals("value" + i, cache.get(i).get()));
     }
 }

@@ -3,8 +3,10 @@ package me.aikoo.stmary.core.bot;
 import lombok.Getter;
 import me.aikoo.stmary.core.cache.Cache;
 import me.aikoo.stmary.core.constants.BotConfigConstant;
+import me.aikoo.stmary.core.managers.ButtonManager;
 import me.aikoo.stmary.core.managers.CommandManager;
 import me.aikoo.stmary.core.managers.DatabaseManager;
+import me.aikoo.stmary.core.managers.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.slf4j.Logger;
@@ -23,6 +25,12 @@ public class StMaryClient {
 
   /** StMaryClient constructor. It initialize all managers and start the bot. */
   public StMaryClient() {
+    CharacterManager.load();
+    LocationManager.load();
+    ObjectManager.load();
+    TitleManager.load();
+    TextManager.load();
+
     CommandManager.loadCommands(this);
 
     // Initialize the database manager
@@ -40,6 +48,10 @@ public class StMaryClient {
             ? BotConfigConstant.getDevToken()
             : BotConfigConstant.getToken();
 
-    jda = JDABuilder.createDefault(token).addEventListeners(new EventsListener(this)).build();
+    jda =
+        JDABuilder.createDefault(token)
+            .addEventListeners(new EventsListener(this))
+            .addEventListeners(new ButtonManager())
+            .build();
   }
 }
