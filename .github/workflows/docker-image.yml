@@ -1,0 +1,35 @@
+name: Docker Image CI Develop
+
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+    - name: Preparing config file
+      env:
+        FILE_CONTENT : ${{secrets.STMARY_CONFIG}}
+      shell: bash
+      run: |
+        echo $FILE_CONTENT >> src/main/resources/config/config.properties
+        cat src/main/resources/config/config.properties
+        
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag aikosama/stmary:latest
+      
+    - name: Docker Push
+      run: docker push aikosama/stmary:latest
