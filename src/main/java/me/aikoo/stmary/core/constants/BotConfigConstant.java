@@ -22,7 +22,10 @@ import org.slf4j.LoggerFactory;
 /** The BotConfigConstant class contains all the constants of the bot. */
 public class BotConfigConstant {
 
-  private static final Dotenv dotenv = Dotenv.load();
+  private static final Dotenv dotenv = Dotenv.configure()
+          .ignoreIfMalformed()
+          .ignoreIfMissing()
+          .load();
   private static final Logger LOGGER = LoggerFactory.getLogger(BotConfigConstant.class);
 
   /**
