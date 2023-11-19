@@ -22,7 +22,7 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
     - name: Preparing config file
       run: |
-        touch src/main/resources/config/config.properties && echo ${{secrets.STMARY_CONFIG}} > src/main/resources/config/config.properties
+        touch src/main/resources/config/config.properties && echo "${{secrets.STMARY_CONFIG}}" > src/main/resources/config/config.properties
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag aikosama/stmary:latest
       
