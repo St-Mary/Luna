@@ -8,6 +8,7 @@
 
 🎮 StMary's Gate is a text-based RPG adventure bot for Discord.
 
+
 ## 🎋 Overview
 
 StMary's Gate is an immersive text-based RPG adventure set in a medieval fantasy world. Embark on epic quests, explore
