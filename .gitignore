@@ -5,7 +5,6 @@ build/
 !**/src/test/**/build/
 .env
 LogFile.log
-<<<<<<< Updated upstream
 config/config.properties
 ./config/config.properties
 =======
