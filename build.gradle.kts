@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    application
 }
 
 group = "me.aikoo"
@@ -9,8 +11,6 @@ repositories {
     mavenCentral()
 }
 
-<<<<<<< Updated upstream
-=======
 sourceSets {
     main {
         resources {
@@ -22,7 +22,6 @@ sourceSets {
 // Required by the 'shadowJar' task
 project.setProperty("mainClassName", "me.aikoo.stmary.Main")
 
->>>>>>> Stashed changes
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.22")
     annotationProcessor("org.projectlombok:lombok:1.18.22")
@@ -45,8 +44,6 @@ dependencies {
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
 }
 
-<<<<<<< Updated upstream
-=======
 tasks {
     withType<Copy> {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -72,7 +69,6 @@ tasks.shadowJar {
     archiveVersion.set("")
 }
 
->>>>>>> Stashed changes
 tasks.test {
     useJUnitPlatform()
 }

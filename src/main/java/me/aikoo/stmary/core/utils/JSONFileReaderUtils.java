@@ -2,7 +2,6 @@ package me.aikoo.stmary.core.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-<<<<<<< Updated upstream
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
@@ -10,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-=======
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -21,7 +19,6 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
->>>>>>> Stashed changes
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,11 +35,7 @@ public class JSONFileReaderUtils {
    * @return A list of JSON objects read from the files.
    */
   public static List<JsonObject> readAllFilesFrom(String dir, String subDir) {
-<<<<<<< Updated upstream
-    String path = "src/main/resources/json/" + dir + "/" + subDir;
-=======
     String path = "json" + File.separator + dir + File.separator + subDir;
->>>>>>> Stashed changes
     return readFiles(path);
   }
 
@@ -53,12 +46,7 @@ public class JSONFileReaderUtils {
    * @return A list of JSON objects read from the files.
    */
   public static List<JsonObject> readAllFilesFrom(String dir) {
-<<<<<<< Updated upstream
-    String path = "src/main/resources/json/" + dir;
-=======
-    System.out.println("ReadAllFilesFrom: " + dir);
     String path = "json" + File.separator + dir;
->>>>>>> Stashed changes
     return readFiles(path);
   }
 
@@ -71,36 +59,15 @@ public class JSONFileReaderUtils {
   private static List<JsonObject> readFiles(String path) {
     Gson gson = new Gson();
     List<JsonObject> objects = new ArrayList<>();
-<<<<<<< Updated upstream
-    try {
-      List<String> jsonFiles =
-          Files.list(Path.of(path)).filter(Files::isRegularFile).map(Path::toString).toList();
-
-      for (String file : jsonFiles) {
-        try (Reader reader = Files.newBufferedReader(Path.of(file), StandardCharsets.UTF_8)) {
-          JsonObject object = gson.fromJson(reader, JsonObject.class);
-          objects.add(object);
-        } catch (IOException e) {
-          LOGGER.error("Failed to read JSON file: " + file + " (" + e.getMessage() + ")");
-        }
-      }
-    } catch (IOException e) {
-      LOGGER.error(
-          "Failed to read JSON files from directory: " + path + " (" + e.getMessage() + ")");
-=======
     Map<String, String> jsonFiles = getResourceFolderFiles(path);
 
     for (Map.Entry<String, String> entry : jsonFiles.entrySet()) {
-      // System.out.println("Readfiles: " + entry.getKey());
       JsonObject object = gson.fromJson(entry.getValue(), JsonObject.class);
       objects.add(object);
->>>>>>> Stashed changes
     }
 
     return objects;
   }
-<<<<<<< Updated upstream
-=======
 
   private static Map<String, String> getResourceFolderFiles(String folder) {
     Map<String, String> result = new HashMap<>();
@@ -124,7 +91,6 @@ public class JSONFileReaderUtils {
           if (jarEntry == null) break;
           String fileName = jarEntry.getName();
           if (fileName.startsWith(folder + "/")) {
-            System.out.println("File: " + fileName);
             if (!jarEntry.isDirectory()) {
               String fileText = new String(jarInputStream.readAllBytes(), StandardCharsets.UTF_8);
               result.put(fileName, fileText);
@@ -179,5 +145,4 @@ public class JSONFileReaderUtils {
         .toString()
         .startsWith("jar");
   }
->>>>>>> Stashed changes
 }

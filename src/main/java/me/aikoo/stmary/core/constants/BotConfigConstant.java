@@ -15,13 +15,9 @@ public class BotConfigConstant {
 
   /** Load the properties file. */
   static {
-<<<<<<< Updated upstream
-    try (InputStream input = new FileInputStream("config/config.properties")) {
-=======
     try (InputStream input =
         BotConfigConstant.class.getResourceAsStream("/config/config.properties")) {
->>>>>>> Stashed changes
-      prop.load(input);
+        prop.load(input);
 
       List<String> keys =
           List.of(
