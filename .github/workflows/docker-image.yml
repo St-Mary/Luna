@@ -22,7 +22,7 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: Create .env file
       run: |
-        echo ${{secrets.STMARY_CONFIG}} >> .env
+        echo "${{secrets.STMARY_CONFIG}}" >> .env
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag aikosama/stmary:latest
       
