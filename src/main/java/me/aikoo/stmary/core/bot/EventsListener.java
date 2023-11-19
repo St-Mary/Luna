@@ -5,6 +5,7 @@ import java.util.Objects;
 import me.aikoo.stmary.core.abstracts.CommandAbstract;
 import me.aikoo.stmary.core.constants.BotConfigConstant;
 import me.aikoo.stmary.core.managers.CommandManager;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -37,6 +38,14 @@ public class EventsListener extends ListenerAdapter {
   @Override
   public void onReady(@NotNull ReadyEvent event) {
     LOGGER.info("StMary is logged as {}", event.getJDA().getSelfUser().getName());
+
+    // Fetch debugChannelId
+    TextChannel debugChannel = event.getJDA().getTextChannelById(BotConfigConstant.getDebugChannelId());
+
+    // Send a message to the debug channel
+    if (debugChannel != null) {
+      debugChannel.sendMessage(":fire: **Launched StMary.**\n**Mode:** `" + BotConfigConstant.getMode() + "`\n**Version:** `" + BotConfigConstant.getVersion() + "`").queue();
+    }
 
     if (BotConfigConstant.getMode().equals("dev")) {
       // Merge commands and admin commands

@@ -29,6 +29,15 @@ public class BotConfigConstant {
   private static final Logger LOGGER = LoggerFactory.getLogger(BotConfigConstant.class);
 
   /**
+   * Get the current version of the bot.
+   *
+   * @return The current version of the bot.
+   */
+  public static String getVersion() {
+      return "v0.0.1-alpha.1";
+  }
+
+  /**
    * Get the token of the bot.
    *
    * @return The token of the bot.
