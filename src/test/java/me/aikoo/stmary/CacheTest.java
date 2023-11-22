@@ -7,7 +7,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
-import me.aikoo.stmary.core.cache.Cache;
+import me.aikoo.stmary.discord.core.cache.Cache;
 import org.junit.jupiter.api.Test;
 
 class CacheTest {
