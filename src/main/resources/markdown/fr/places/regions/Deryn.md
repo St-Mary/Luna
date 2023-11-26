@@ -2,7 +2,7 @@
 
 ### Description
 
-Deryn est une région du continent Alysia. Elle est située au sud-est du continent, et est bordée par la mer Naia à l'est, et est à la frontière avec la région de Oraland à l'ouest. Haut zone commercial, la région est connue pour ses nombreuses villes commerçantes et routes commerciales. Abritant en son sein des mines, et étant bordée par la mer, Deryn est une région riche et prospère.
+Deryn est une région située au sud-est du continent Alysia, bordée par la mer Naia à l'orient, et est à la frontière avec la région d'Oraland à l'occident. Haute zone commerciale, elle est connue pour ses nombreuses villes et routes commerçantes. Ses mines et sa proximité avec la mer font donc de Deryn une région riche et prospère.
 
 ## 🌍 Deryn
 
