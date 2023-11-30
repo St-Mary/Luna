@@ -1,8 +1,5 @@
-package com.stmarygate.discord;
+package com.stmarygate.gameserver;
 
-import com.stmarygate.discord.core.bot.StMaryClient;
-import com.stmarygate.gameserver.GameClient;
-import com.stmarygate.gameserver.GameServer;
 import java.io.IOException;
 
 /** The main class of the application. */
@@ -14,7 +11,6 @@ public class Main {
    * @param args The arguments passed to the application.
    */
   public static void main(String[] args) {
-    new StMaryClient();
 
     GameServer gameServer = new GameServer();
 
