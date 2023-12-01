@@ -1,2 +1,2 @@
-rootProject.name = "stmary"
+rootProject.name = "stmarygate-gameserver"
 
