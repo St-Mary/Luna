@@ -2,13 +2,37 @@ plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "7.1.2"
     application
+    `maven-publish`
 }
 
-group = "me.aikoo"
-version = "1.0-SNAPSHOT"
+group = "com.stmarygate"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
+
+    kotlin.run {
+        val envFile = file(".env")
+        envFile.readLines().forEach {
+            if (it.isNotEmpty() && !it.startsWith("#")) {
+                val pos = it.indexOf("=")
+                val key = it.substring(0, pos)
+                val value = it.substring(pos + 1)
+                if (System.getProperty(key) == null) {
+                    System.setProperty(key, value)
+                }
+            }
+        }
+    }
+
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/St-Mary/StMary-CommonLib")
+        credentials {
+            username = System.getProperty("GITHUB_ACTOR").toString()
+            password = System.getProperty("GITHUB_TOKEN").toString()
+        }
+    }
 }
 
 sourceSets {
@@ -20,7 +44,7 @@ sourceSets {
 }
 
 // Required by the 'shadowJar' task
-project.setProperty("mainClassName", "me.aikoo.stmary.Main")
+project.setProperty("mainClassName", "com.stmarygate.gameserver.Main")
 
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.22")
@@ -28,8 +52,6 @@ dependencies {
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-
-    implementation("net.dv8tion", "JDA", "5.0.0-beta.12")
 
     implementation("org.reflections", "reflections", "0.10.2")
     implementation("io.github.cdimascio", "java-dotenv", "5.1.1")
@@ -42,6 +64,7 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-core:6.3.0.CR1")
     implementation("org.hibernate.orm:hibernate-hikaricp:6.3.0.CR1")
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
+    implementation("com.stmarygate.common:saintmary-commonlib:[0.0.0, )")
 }
 
 tasks {
@@ -54,7 +77,7 @@ tasks.jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest {
-        attributes["Main-Class"] = "me.aikoo.stmary.Main"
+        attributes["Main-Class"] = "com.stmarygate.gameserver.Main"
     }
 
     configurations["compileClasspath"].forEach { file: File ->
@@ -64,7 +87,7 @@ tasks.jar {
 
 tasks.shadowJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    archiveBaseName.set("stmary")
+    archiveBaseName.set("stmary-gameserver")
     archiveClassifier.set("")
     archiveVersion.set("")
 }
