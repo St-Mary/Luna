@@ -16,7 +16,7 @@ public class GameServer {
     try {
       socket = new DatagramSocket(4445);
       Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-      System.out.println("[" + timestamp + "] Game Server started on port :" + socket.getPort());
+      System.out.println("[" + timestamp + "] Game Server started on port: " + socket.getLocalPort());
     } catch (Exception e) {
       e.printStackTrace();
     }
