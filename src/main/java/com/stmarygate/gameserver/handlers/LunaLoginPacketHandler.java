@@ -8,15 +8,25 @@ import com.stmarygate.gameserver.Constant;
 
 public class LunaLoginPacketHandler extends PacketHandler {
 
-    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(LunaLoginPacketHandler.class);
+  private static final org.slf4j.Logger LOGGER =
+      org.slf4j.LoggerFactory.getLogger(LunaLoginPacketHandler.class);
 
-    public LunaLoginPacketHandler(BaseChannel channel) {
-        super(channel);
-    }
+  public LunaLoginPacketHandler(BaseChannel channel) {
+    super(channel);
+  }
 
-    public void handlePacketVersion(PacketVersion packet) {
-        LOGGER.info("Received version result packet: {build={}.{}.{} ({})}", packet.getMajor(), packet.getMinor(), packet.getPatch(), packet.getBuildVersion());
-        boolean accepted = packet.getMajor() == Constant.VERSION_MAJOR && packet.getMinor() == Constant.VERSION_MINOR && packet.getPatch() == Constant.VERSION_PATCH && packet.getBuildVersion().equals(Constant.VERSION_BUILD);
+  public void handlePacketVersion(PacketVersion packet) {
+    LOGGER.info(
+        "Received version result packet: {build={}.{}.{} ({})}",
+        packet.getMajor(),
+        packet.getMinor(),
+        packet.getPatch(),
+        packet.getBuildVersion());
+    boolean accepted =
+        packet.getMajor() == Constant.VERSION_MAJOR
+            && packet.getMinor() == Constant.VERSION_MINOR
+            && packet.getPatch() == Constant.VERSION_PATCH
+            && packet.getBuildVersion().equals(Constant.VERSION_BUILD);
     this.getChannel()
         .getSession()
         .write(
@@ -26,6 +36,6 @@ public class LunaLoginPacketHandler extends PacketHandler {
                 Constant.VERSION_MINOR,
                 Constant.VERSION_PATCH,
                 Constant.VERSION_BUILD));
-        LOGGER.info("Version result: {}", accepted ? "accepted" : "rejected");
-    }
+    LOGGER.info("Version result: {}", accepted ? "accepted" : "rejected");
+  }
 }

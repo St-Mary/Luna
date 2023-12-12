@@ -65,7 +65,7 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-core:6.3.0.CR1")
     implementation("org.hibernate.orm:hibernate-hikaricp:6.3.0.CR1")
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
-    implementation("com.stmarygate.common:stmarygate-commonlib:1.0.2")
+    implementation("com.stmarygate.common:stmarygate-commonlib:1.0.4")
 }
 
 tasks {
