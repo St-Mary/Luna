@@ -7,10 +7,12 @@ import com.stmarygate.common.network.packets.Packet;
 import com.stmarygate.common.network.packets.PacketBuffer;
 import com.stmarygate.common.network.packets.Protocol;
 import com.stmarygate.gameserver.handlers.BaseInitializer2;
+import com.stmarygate.gameserver.handlers.LunaLoginChannel;
 import com.stmarygate.gameserver.handlers.LunaLoginPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -36,25 +38,35 @@ public class Luna {
    */
   public static void main(String[] args) throws InterruptedException {
     LOGGER.info("Starting StMary's Gate");
-    Thread th = new Thread(() -> start(8080));
+    Thread th = new Thread(() -> startServer(8446));
     th.start();
-    TestClient.main(null);
+    try {
+      Thread.sleep(5000);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
+
+    try {
+      TestClient.main(null);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
-  private static void start(int port) {
-    Long time = System.currentTimeMillis();
-    BaseChannel channel = new BaseChannel(LunaLoginPacketHandler.class);
+  private static void startServer(int port) {
+    long time = System.currentTimeMillis();
+    BaseInitializer baseInitializer = new BaseInitializer(new LunaLoginChannel(LunaLoginPacketHandler.class));
 
     bootstrap
         .group(bossGroup, workerGroup)
         .channel(NioServerSocketChannel.class)
-        .localAddress(port)
-        .childHandler(new BaseInitializer2(channel, Packet.PacketType.CLIENT_MSG));
+        .childHandler(baseInitializer);
 
     try {
+      ChannelFuture future = bootstrap.bind(port).sync();
       LOGGER.info("StMary's Gate started on port {}", port);
       LOGGER.info("Startup took {}ms", System.currentTimeMillis() - time);
-      bootstrap.bind().awaitUninterruptibly().channel().closeFuture().awaitUninterruptibly();
+      future.channel().closeFuture().sync();
     } catch (Exception e) {
       LOGGER.error("Failed to start StMary's Gate", e);
     } finally {

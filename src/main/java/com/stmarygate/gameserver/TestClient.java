@@ -25,7 +25,7 @@ public class TestClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestClient.class);
     public static void main(String[] args) {
         String host = "localhost";
-        int port = 8080;
+        int port = 8446;
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
@@ -33,11 +33,12 @@ public class TestClient {
             Bootstrap b = new Bootstrap();
             b.group(workerGroup);
             b.channel(NioSocketChannel.class);
-            b.remoteAddress("localhost", port);
-            b.handler(new BaseInitializer2(channel, Packet.PacketType.SERVER_MSG));
+            b.handler(new BaseInitializer2(channel));
 
-            LOGGER.info("calledd");
-            b.connect().sync().channel().closeFuture().sync();
+            ChannelFuture f = b.connect("localhost", port).sync();
+            LOGGER.info("Client started");
+            channel.getSession().write(new PacketVersion(0, 0, 1, "SNAPSHOT"));
+            f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {

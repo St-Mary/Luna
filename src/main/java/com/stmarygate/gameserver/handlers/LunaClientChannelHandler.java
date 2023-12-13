@@ -9,11 +9,17 @@ import com.stmarygate.common.network.packets.client.PacketVersion;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.PendingWriteQueue;
 import io.netty.handler.codec.MessageToByteEncoder;
 import io.netty.handler.codec.MessageToMessageDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 public class LunaClientChannelHandler extends BaseChannel {
+
+    static Logger LOGGER = LoggerFactory.getLogger(LunaClientChannelHandler.class);
 
     public LunaClientChannelHandler(Class<? extends PacketHandler> clazz) {
         super(clazz);
@@ -22,22 +28,18 @@ public class LunaClientChannelHandler extends BaseChannel {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         super.channelActive(ctx);
-    this.session.write(new PacketVersion(0, 0, 1, "SNAPSHOT"));
-  }
+    }
 
   static class PacketDecoder2 extends MessageToMessageDecoder<ByteBuf> {
     private static final int HEADER_SIZE = 4;
-    private final Packet.PacketType packetType;
     private ByteBuf buffer;
 
-    public PacketDecoder2(Packet.PacketType packetType) {
-      this.packetType = packetType;
+    public PacketDecoder2() {
     }
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out)
         throws Exception {
-        System.out.println("fhuiekihfel " + msg.toString());
       if (this.buffer == null || this.buffer.readableBytes() == 0) {
         this.buffer = msg.duplicate().retain();
       } else {
@@ -54,13 +56,9 @@ public class LunaClientChannelHandler extends BaseChannel {
         }
 
         ByteBuf slice = this.buffer.readSlice(size);
-
         Packet packet = Protocol.getInstance().getPacket(id);
-        if (packet.getPacketType() != this.packetType) {
-          throw new IllegalStateException("Received packet with wrong type");
-        }
 
-        packet.decode(new PacketBuffer(slice, id, this.packetType));
+        packet.decode(new PacketBuffer(slice, id, Packet.PacketAction.READ));
         out.add(packet);
       }
      }
@@ -73,10 +71,17 @@ public class LunaClientChannelHandler extends BaseChannel {
 
         @Override
         protected void encode(ChannelHandlerContext ctx, Packet msg, ByteBuf out) throws Exception {
-            System.out.println("patate " + msg.toString());
-            System.out.println(ctx.channel().isActive() + " hfzkzj");
-            msg.encode(new PacketBuffer(out, Protocol.getInstance().getPacketId(msg), msg.getPacketType()));
-            ctx.channel().flush();
+            try {
+                LOGGER.warn("patate " + msg.toString());
+                msg.encode(new PacketBuffer(out, Protocol.getInstance().getPacketId(msg), Packet.PacketAction.WRITE));
+                PendingWriteQueue queue1 = new PendingWriteQueue(ctx.channel());
+                LOGGER.info(String.valueOf(queue1.isEmpty()));
+                LOGGER.info(ctx.channel().isWritable() + " " + ctx.channel().isActive());
+                ctx.channel().flush();
+                LOGGER.info("Sent");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
