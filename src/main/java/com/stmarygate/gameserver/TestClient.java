@@ -33,7 +33,7 @@ public class TestClient {
             Bootstrap b = new Bootstrap();
             b.group(workerGroup);
             b.channel(NioSocketChannel.class);
-            b.handler(new BaseInitializer2(channel));
+            b.handler(new BaseInitializer2(channel, false));
 
             ChannelFuture f = b.connect("localhost", port).sync();
             LOGGER.info("Client started");

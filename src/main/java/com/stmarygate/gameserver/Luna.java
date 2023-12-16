@@ -55,7 +55,7 @@ public class Luna {
 
   private static void startServer(int port) {
     long time = System.currentTimeMillis();
-    BaseInitializer baseInitializer = new BaseInitializer(new LunaLoginChannel(LunaLoginPacketHandler.class));
+    BaseInitializer2 baseInitializer = new BaseInitializer2(new LunaLoginChannel(LunaLoginPacketHandler.class), true);
 
     bootstrap
         .group(bossGroup, workerGroup)

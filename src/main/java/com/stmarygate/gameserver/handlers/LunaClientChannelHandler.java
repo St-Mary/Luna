@@ -72,13 +72,8 @@ public class LunaClientChannelHandler extends BaseChannel {
         @Override
         protected void encode(ChannelHandlerContext ctx, Packet msg, ByteBuf out) throws Exception {
             try {
-                LOGGER.warn("patate " + msg.toString());
                 msg.encode(new PacketBuffer(out, Protocol.getInstance().getPacketId(msg), Packet.PacketAction.WRITE));
-                PendingWriteQueue queue1 = new PendingWriteQueue(ctx.channel());
-                LOGGER.info(String.valueOf(queue1.isEmpty()));
-                LOGGER.info(ctx.channel().isWritable() + " " + ctx.channel().isActive());
                 ctx.channel().flush();
-                LOGGER.info("Sent");
             } catch (Exception e) {
                 e.printStackTrace();
             }
