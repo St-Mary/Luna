@@ -53,4 +53,8 @@ public class LunaLoginPacketHandler extends PacketHandler {
                 Constant.VERSION_BUILD));
     LOGGER.info("Version result: {}", accepted ? "accepted" : "rejected");
   }
+
+    public void handlePacketVersionResult(PacketVersionResult packet) {
+        LOGGER.info("Version result: {}", packet.isAccepted() ? "accepted" : "rejected");
+    }
 }

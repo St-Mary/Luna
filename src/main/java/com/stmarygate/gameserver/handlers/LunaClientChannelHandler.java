@@ -37,31 +37,31 @@ public class LunaClientChannelHandler extends BaseChannel {
     public PacketDecoder2() {
     }
 
-    @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out)
-        throws Exception {
-      if (this.buffer == null || this.buffer.readableBytes() == 0) {
-        this.buffer = msg.duplicate().retain();
-      } else {
-        this.buffer = Unpooled.copiedBuffer(this.buffer, msg).retain();
+      @Override
+      protected void decode(ChannelHandlerContext ctx, ByteBuf msg, List<Object> out) throws Exception {
+          if(this.buffer == null || this.buffer.readableBytes() == 0) {
+              this.buffer = msg.duplicate().retain();
+          } else {
+              this.buffer = Unpooled.copiedBuffer(this.buffer, msg).retain();
+          }
+
+          while(this.buffer.readableBytes() > Packet.HEADER_SIZE) {
+              int id = this.buffer.readShort();
+              int size = this.buffer.readShort();
+              if(size > this.buffer.readableBytes()) {
+                  // Not enough data to read the packet, wait for more data
+                  return;
+              }
+
+              this.buffer.resetReaderIndex();
+              ByteBuf slice = this.buffer.readSlice(size + Packet.HEADER_SIZE);
+              System.out.print("Slice size: " + slice.readableBytes() + " " + slice.writerIndex() + " " + slice.readerIndex() + " ");
+              Packet packet = Protocol.getInstance().getPacket(id);
+              PacketBuffer packetBuffer = new PacketBuffer(slice, id, Packet.PacketAction.READ);
+              packet.decode(packetBuffer);
+              out.add(packet);
+          }
       }
-
-      while (this.buffer.readableBytes() > HEADER_SIZE) {
-        int id = this.buffer.readShort();
-        int size = this.buffer.readShort();
-
-        if (size > this.buffer.readableBytes()) {
-          // Not enough data to read the packet, wait for more data
-          return;
-        }
-
-        ByteBuf slice = this.buffer.readSlice(size);
-        Packet packet = Protocol.getInstance().getPacket(id);
-
-        packet.decode(new PacketBuffer(slice, id, Packet.PacketAction.READ));
-        out.add(packet);
-      }
-     }
     }
 
     public static class PacketEncoder2 extends MessageToByteEncoder<Packet> {

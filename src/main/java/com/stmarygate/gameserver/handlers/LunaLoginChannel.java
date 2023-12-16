@@ -89,8 +89,9 @@ public class LunaLoginChannel extends BaseChannel {
                     return;
                 }
 
-                ByteBuf slice = this.buffer.readSlice(size);
-
+                this.buffer.resetReaderIndex();
+                ByteBuf slice = this.buffer.readSlice(size + Packet.HEADER_SIZE);
+                System.out.print("Slice size: " + slice.readableBytes() + " " + slice.writerIndex() + " " + slice.readerIndex() + " ");
                 Packet packet = Protocol.getInstance().getPacket(id);
                 PacketBuffer packetBuffer = new PacketBuffer(slice, id, Packet.PacketAction.READ);
                 packet.decode(packetBuffer);
