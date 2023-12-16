@@ -2,6 +2,7 @@ package com.stmarygate.gameserver;
 
 import com.stmarygate.common.network.BaseChannel;
 import com.stmarygate.common.network.BaseInitializer;
+import com.stmarygate.common.network.packets.client.PacketVersion;
 import com.stmarygate.gameserver.handlers.client.ClientLoginPacketHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -32,6 +33,7 @@ public class TestClient {
       try {
         ChannelFuture f = b.connect("localhost", Constants.PORT).sync();
         LOGGER.info("Time start: " + (System.currentTimeMillis() - time) + "ms");
+        baseChannel.getSession().write(new PacketVersion(Constants.VERSION_MAJOR, Constants.VERSION_MINOR, Constants.VERSION_PATCH, Constants.VERSION_BUILD));
         f.channel().closeFuture().sync();
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
