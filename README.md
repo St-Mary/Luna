@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/St-Mary/GameServer">
+  <a href="https://github.com/St-Mary/Luna">
     <img src="images/luna_icon.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -13,12 +13,12 @@
   <p align="center">
     A Game Server for Saint Mary's Gate game.
     <br />
-    <a href="https://github.com/St-Mary/GameServer"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/St-Mary/Luna"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/St-Mary/GameServer/issues">Report Bug</a>
+    <a href="https://github.com/St-Mary/Luna/issues">Report Bug</a>
     ·
-    <a href="https://github.com/St-Mary/GameServer/issues">Request Feature</a>
+    <a href="https://github.com/St-Mary/Luna/issues">Request Feature</a>
   </p>
 </div>
 
@@ -126,7 +126,7 @@ Distributed under the Apache Licence v2.0. See `LICENSE` for more information.
 
 Léa - [Discord](https://discord.com/users/985986599995187270) - [contact@aikoo.me](contact@aikoo.me)
 
-Project Link: [https://github.com/St-Mary/GameServer](https://github.com/St-Mary/GameServer)
+Project Link: [https://github.com/St-Mary/Luna](https://github.com/St-Mary/Luna)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -141,16 +141,16 @@ Project Link: [https://github.com/St-Mary/GameServer](https://github.com/St-Mary
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/St-Mary/GameServer.svg?style=for-the-badge
-[contributors-url]: https://github.com/St-Mary/GameServer/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/St-Mary/GameServer.svg?style=for-the-badge
-[forks-url]: https://github.com/St-Mary/GameServer/network/members
-[stars-shield]: https://img.shields.io/github/stars/St-Mary/GameServer.svg?style=for-the-badge
-[stars-url]: https://github.com/St-Mary/GameServer/stargazers
-[issues-shield]: https://img.shields.io/github/issues/St-Mary/GameServer.svg?style=for-the-badge
-[issues-url]: https://github.com/St-Mary/GameServer/issues
-[license-shield]: https://img.shields.io/github/license/St-Mary/GameServer.svg?style=for-the-badge
-[license-url]: https://github.com/St-Mary/GameServer/blob/master/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/St-Mary/Luna.svg?style=for-the-badge
+[contributors-url]: https://github.com/St-Mary/Luna/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/St-Mary/Luna.svg?style=for-the-badge
+[forks-url]: https://github.com/St-Mary/Luna/network/members
+[stars-shield]: https://img.shields.io/github/stars/St-Mary/Luna.svg?style=for-the-badge
+[stars-url]: https://github.com/St-Mary/Luna/stargazers
+[issues-shield]: https://img.shields.io/github/issues/St-Mary/Luna.svg?style=for-the-badge
+[issues-url]: https://github.com/St-Mary/Luna/issues
+[license-shield]: https://img.shields.io/github/license/St-Mary/Luna.svg?style=for-the-badge
+[license-url]: https://github.com/St-Mary/Luna/blob/master/LICENSE
 [Java-url]: https://www.java.com/fr/
 [Java]: https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white
 [Gradle]: https://img.shields.io/badge/gradle-02303A?logo=gradle&style=for-the-badge&logoWidth=25

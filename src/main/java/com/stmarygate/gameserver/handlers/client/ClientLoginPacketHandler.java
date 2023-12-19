@@ -25,6 +25,6 @@ public class ClientLoginPacketHandler extends PacketHandler {
    * @param packet The version result packet to handle.
    */
   public void handlePacketVersionResult(PacketVersionResult packet) {
-    LOGGER.info("Version result: {}", packet.isAccepted() ? "accepted" : "rejected");
+    LOGGER.info("CLIENT - VersionResultPacket received from server. Version result: {}", packet.isAccepted() ? "accepted" : "rejected");
   }
 }

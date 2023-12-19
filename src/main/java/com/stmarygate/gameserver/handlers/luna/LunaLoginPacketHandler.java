@@ -28,7 +28,7 @@ public class LunaLoginPacketHandler extends PacketHandler {
    */
   public void handlePacketVersion(PacketVersion packet) {
     LOGGER.info(
-        "Received version result packet: {build={}.{}.{} ({})}",
+        "SERVER - Received version result packet from client: {build={}.{}.{} ({})}",
         packet.getMajor(),
         packet.getMinor(),
         packet.getPatch(),
