@@ -27,7 +27,7 @@ repositories {
 
     maven {
         name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/St-Mary/CommonLib")
+        url = uri("https://maven.pkg.github.com/St-Mary/Coral")
         credentials {
             username = System.getProperty("GITHUB_ACTOR").toString()
             password = System.getProperty("GITHUB_TOKEN").toString()
@@ -56,7 +56,6 @@ dependencies {
     implementation("org.reflections", "reflections", "0.10.2")
     implementation("io.github.cdimascio", "java-dotenv", "5.1.1")
     implementation("ch.qos.logback", "logback-classic", "1.2.9")
-    implementation("com.google.code.gson:gson:2.10.1")
     implementation("io.netty:netty-all:4.1.101.Final")
 
     // Database
