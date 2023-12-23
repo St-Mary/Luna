@@ -65,8 +65,8 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-hikaricp:6.3.0.CR1")
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
 
-    implementation("com.stmarygate.common:stmarygate-commonlib:1.0.7.stable")
-    // implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/stmarygate-commonlib/build/libs/stmarygate-commonlib-1.0.6.stable.jar"))
+    implementation("com.stmarygate.common:stmarygate-commonlib:1.0.8")
+    // implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/stmarygate-commonlib/build/libs/stmarygate-commonlib-1.0.8.jar"))
 }
 
 tasks {

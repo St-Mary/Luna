@@ -1,4 +1,4 @@
-package com.stmarygate.gameserver.handlers.luna;
+package com.stmarygate.gameserver.handlers;
 
 import com.stmarygate.common.network.BaseChannel;
 import com.stmarygate.common.network.PacketHandler;

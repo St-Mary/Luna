@@ -2,7 +2,7 @@ package com.stmarygate.gameserver;
 
 import com.stmarygate.common.network.BaseChannel;
 import com.stmarygate.common.network.BaseInitializer;
-import com.stmarygate.gameserver.handlers.luna.LunaLoginPacketHandler;
+import com.stmarygate.gameserver.handlers.LunaLoginPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
@@ -27,10 +27,6 @@ public class Luna {
    */
   public static void main(String[] args) {
     startLunaThread();
-
-    if (Constants.TEST_CLIENT) {
-      startTestClientThread();
-    }
   }
 
   /** Start the Luna server thread. */
@@ -38,16 +34,6 @@ public class Luna {
     Thread serverThread = new Thread(Luna::startServer);
     serverThread.setName("LunaServer");
     serverThread.start();
-  }
-
-  /** Start the test client. */
-  private static void startTestClientThread() {
-    try {
-      Thread clientThread = new Thread(() -> TestClient.main(null));
-      clientThread.start();
-    } catch (Exception e) {
-      LOGGER.error("Failed to start test client", e);
-    }
   }
 
   /** Start the Luna server. */
