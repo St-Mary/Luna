@@ -1,4 +1,4 @@
-package com.stmarygate.gameserver;
+package com.stmarygate.luna;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import java.util.Objects;

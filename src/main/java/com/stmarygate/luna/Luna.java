@@ -1,8 +1,9 @@
-package com.stmarygate.gameserver;
+package com.stmarygate.luna;
 
-import com.stmarygate.common.network.BaseChannel;
-import com.stmarygate.common.network.BaseInitializer;
-import com.stmarygate.gameserver.handlers.LunaLoginPacketHandler;
+import com.stmarygate.coral.network.BaseChannel;
+import com.stmarygate.coral.network.BaseInitializer;
+import com.stmarygate.luna.handlers.LunaChannelHandler;
+import com.stmarygate.luna.handlers.LunaLoginPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
@@ -56,6 +57,7 @@ public class Luna {
     bootstrap
         .group(bossGroup, workerGroup)
         .channel(NioServerSocketChannel.class)
+        .childHandler(new LunaChannelHandler())
         .childHandler(baseInitializer);
   }
 
@@ -72,6 +74,7 @@ public class Luna {
 
       LOGGER.info("Luna server started on port {}", Constants.PORT);
       LOGGER.info("Startup took {}ms", System.currentTimeMillis() - startTime);
+
       future.channel().closeFuture().sync();
     } catch (Exception e) {
       LOGGER.error("Failed to start Luna", e);

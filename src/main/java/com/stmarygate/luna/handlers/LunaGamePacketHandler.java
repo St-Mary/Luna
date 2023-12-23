@@ -1,7 +1,7 @@
-package com.stmarygate.gameserver.handlers;
+package com.stmarygate.luna.handlers;
 
-import com.stmarygate.common.network.BaseChannel;
-import com.stmarygate.common.network.PacketHandler;
+import com.stmarygate.coral.network.BaseChannel;
+import com.stmarygate.coral.network.PacketHandler;
 
 public class LunaGamePacketHandler extends PacketHandler {
   /**

@@ -44,7 +44,7 @@ sourceSets {
 }
 
 // Required by the 'shadowJar' task
-project.setProperty("mainClassName", "com.stmarygate.gameserver.Luna")
+project.setProperty("mainClassName", "com.stmarygate.luna.Luna")
 
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.22")
@@ -65,8 +65,8 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-hikaricp:6.3.0.CR1")
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
 
-    implementation("com.stmarygate.common:stmarygate-commonlib:1.0.8")
-    // implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/stmarygate-commonlib/build/libs/stmarygate-commonlib-1.0.8.jar"))
+    implementation("com.stmarygate:coral:1.0.10")
+    // implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.8.jar"))
 }
 
 tasks {
@@ -79,7 +79,7 @@ tasks.jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest {
-        attributes["Main-Class"] = "com.stmarygate.gameserver.Luna"
+        attributes["Main-Class"] = "com.stmarygate.luna.Luna"
     }
 
     configurations["compileClasspath"].forEach { file: File ->
@@ -89,7 +89,7 @@ tasks.jar {
 
 tasks.shadowJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    archiveBaseName.set("stmary-gameserver")
+    archiveBaseName.set("luna")
     archiveClassifier.set("")
     archiveVersion.set("")
 }

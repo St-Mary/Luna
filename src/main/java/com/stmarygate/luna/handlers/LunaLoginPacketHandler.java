@@ -1,10 +1,10 @@
-package com.stmarygate.gameserver.handlers;
+package com.stmarygate.luna.handlers;
 
-import com.stmarygate.common.network.BaseChannel;
-import com.stmarygate.common.network.PacketHandler;
-import com.stmarygate.common.network.packets.client.PacketVersion;
-import com.stmarygate.common.network.packets.server.PacketVersionResult;
-import com.stmarygate.gameserver.Constants;
+import com.stmarygate.coral.network.BaseChannel;
+import com.stmarygate.coral.network.PacketHandler;
+import com.stmarygate.coral.network.packets.client.PacketVersion;
+import com.stmarygate.coral.network.packets.server.PacketVersionResult;
+import com.stmarygate.luna.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +27,7 @@ public class LunaLoginPacketHandler extends PacketHandler {
    * @param packet The version packet.
    */
   public void handlePacketVersion(PacketVersion packet) {
-    LOGGER.info(
-        "SERVER - Received version result packet from client: {build={}.{}.{} ({})}",
+    LOGGER.info("{build={}.{}.{} ({})}",
         packet.getMajor(),
         packet.getMinor(),
         packet.getPatch(),
