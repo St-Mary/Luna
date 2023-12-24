@@ -64,9 +64,12 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-core:6.3.0.CR1")
     implementation("org.hibernate.orm:hibernate-hikaricp:6.3.0.CR1")
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
+    implementation("org.springframework.security:spring-security-core:6.2.1")
+    implementation("org.springframework.security:spring-security-crypto:6.2.1")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.77")
 
-    implementation("com.stmarygate:coral:1.0.10")
-    // implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.8.jar"))
+    // implementation("com.stmarygate:coral:1.0.10")
+    implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.11.jar"))
 }
 
 tasks {

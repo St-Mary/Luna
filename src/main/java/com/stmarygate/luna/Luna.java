@@ -2,7 +2,6 @@ package com.stmarygate.luna;
 
 import com.stmarygate.coral.network.BaseChannel;
 import com.stmarygate.coral.network.BaseInitializer;
-import com.stmarygate.luna.handlers.LunaChannelHandler;
 import com.stmarygate.luna.handlers.LunaLoginPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -57,7 +56,6 @@ public class Luna {
     bootstrap
         .group(bossGroup, workerGroup)
         .channel(NioServerSocketChannel.class)
-        .childHandler(new LunaChannelHandler())
         .childHandler(baseInitializer);
   }
 
