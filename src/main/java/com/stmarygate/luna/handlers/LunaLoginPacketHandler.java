@@ -2,7 +2,7 @@ package com.stmarygate.luna.handlers;
 
 import com.stmarygate.coral.network.BaseChannel;
 import com.stmarygate.coral.network.PacketHandler;
-import com.stmarygate.coral.network.packets.client.PacketLogin;
+import com.stmarygate.coral.network.packets.client.PacketLoginUsingCredentials;
 import com.stmarygate.coral.network.packets.client.PacketVersion;
 import com.stmarygate.coral.network.packets.server.PacketVersionResult;
 import com.stmarygate.luna.Constants;
@@ -27,13 +27,7 @@ public class LunaLoginPacketHandler extends PacketHandler {
    *
    * @param packet The version packet.
    */
-  public void handlePacketVersion(PacketVersion packet) {
-    LOGGER.info("{build={}.{}.{} ({})}",
-        packet.getMajor(),
-        packet.getMinor(),
-        packet.getPatch(),
-        packet.getBuildVersion());
-
+  public void handlePacketVersion(PacketVersion packet) throws Exception {
     // Check if the version is accepted.
     boolean accepted =
         packet.getMajor() == Constants.VERSION_MAJOR
@@ -53,7 +47,10 @@ public class LunaLoginPacketHandler extends PacketHandler {
                 Constants.VERSION_BUILD));
   }
 
-    public void handlePacketLogin(PacketLogin packet) {
-      LOGGER.info("LoginPacket received. Username: {}, Password: {}", packet.getUsername(), packet.getPassword());
-    }
+  public void handlePacketLoginUsingCredentials(PacketLoginUsingCredentials packet) {
+    LOGGER.info(
+        "LoginPacket received. Username: {}, Password: {}",
+        packet.getUsername(),
+        packet.getPassword());
+  }
 }

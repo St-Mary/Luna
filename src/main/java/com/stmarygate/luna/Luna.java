@@ -1,6 +1,5 @@
 package com.stmarygate.luna;
 
-import com.stmarygate.coral.network.BaseChannel;
 import com.stmarygate.coral.network.BaseInitializer;
 import com.stmarygate.luna.handlers.LunaLoginPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -17,8 +16,9 @@ public class Luna {
   private static final EventLoopGroup bossGroup = new NioEventLoopGroup();
   private static final EventLoopGroup workerGroup = new NioEventLoopGroup();
   private static final ServerBootstrap bootstrap = new ServerBootstrap();
-  private static final BaseChannel baseChannel = new BaseChannel(LunaLoginPacketHandler.class);
+  private static final LunaChannel baseChannel = new LunaChannel(LunaLoginPacketHandler.class);
   private static final BaseInitializer baseInitializer = new BaseInitializer(baseChannel);
+  private static ChannelFuture future;
 
   /**
    * Start StMary's Gate
@@ -65,8 +65,6 @@ public class Luna {
    * @param startTime The time the server started.
    */
   private static void startServerAndLog(long startTime) {
-    ChannelFuture future = null;
-
     try {
       future = bootstrap.bind(Constants.PORT).sync();
 
@@ -77,16 +75,24 @@ public class Luna {
     } catch (Exception e) {
       LOGGER.error("Failed to start Luna", e);
     } finally {
-      if (future != null) {
-        try {
-          future.channel().close().sync();
-        } catch (InterruptedException e) {
-          LOGGER.error("Error while closing channel", e);
-        }
-      }
-
-      bossGroup.shutdownGracefully();
-      workerGroup.shutdownGracefully();
+      close();
     }
+  }
+
+  /** Close the Luna server. */
+  public static void close() {
+    LOGGER.info("Closing Luna server...");
+
+    if (future != null) {
+      try {
+        future.channel().close().sync();
+      } catch (InterruptedException e) {
+        LOGGER.error("Error while closing channel", e);
+      }
+    }
+
+    bossGroup.shutdownGracefully();
+    workerGroup.shutdownGracefully();
+    System.exit(0);
   }
 }
