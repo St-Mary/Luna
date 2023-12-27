@@ -9,13 +9,23 @@ config/config.properties
 ./config/config.properties
 =======
 src/main/resources/config/config.properties
-src/main/resources/config/config.properties
 logs/
 tmp/
 tmp
 ./tmp
 /tmp/
 *.gz
+
+/ssl/
+/ssl
+./ssl
+./ssl/
+ssl/
+ssl
+./ssl/*
+/ssl/*
+ssl/*
+ssl
 >>>>>>> Stashed changes
 
 ### IntelliJ IDEA ###
