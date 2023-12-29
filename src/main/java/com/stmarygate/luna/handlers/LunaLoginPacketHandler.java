@@ -47,6 +47,11 @@ public class LunaLoginPacketHandler extends PacketHandler {
                 Constants.VERSION_BUILD));
   }
 
+  /**
+   * Handle the login packet using credentials.
+   *
+   * @param packet The login packet using credentials instance.
+   */
   public void handlePacketLoginUsingCredentials(PacketLoginUsingCredentials packet) {
     LOGGER.info(
         "LoginPacket received. Username: {}, Password: {}",

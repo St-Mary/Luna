@@ -10,14 +10,18 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.ssl.SslHandler;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.security.*;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/** Initializes a {@link SocketChannel} by configuring its {@link ChannelPipeline} with necessary */
 public class LunaInitializer extends BaseInitializer {
   /** The {@link BaseChannel} responsible for handling business logic. */
   private final BaseChannel channel;
+
+  private final Logger LOGGER = LoggerFactory.getLogger(LunaInitializer.class);
 
   public LunaInitializer(BaseChannel channel) {
     super(channel);
@@ -45,12 +49,14 @@ public class LunaInitializer extends BaseInitializer {
       pipeline.addLast("decoder", new PacketDecoder());
       pipeline.addLast("encoder", new PacketEncoder());
     } catch (SSLException e) {
-      throw new RuntimeException(e);
+      LOGGER.error("SSL error: ", e);
+      System.exit(1);
     } catch (FileNotFoundException e) {
-
-      throw new RuntimeException(e);
+      LOGGER.error("SSL file not found: ", e);
+      System.exit(1);
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      LOGGER.error("Error: ", e);
+      System.exit(1);
     }
 
     // Add the business logic handler

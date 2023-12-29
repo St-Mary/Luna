@@ -3,6 +3,7 @@ package com.stmarygate.luna.handlers;
 import com.stmarygate.coral.network.BaseChannel;
 import com.stmarygate.coral.network.PacketHandler;
 
+/** A {@link PacketHandler} which handles all packets for the game. */
 public class LunaGamePacketHandler extends PacketHandler {
   /**
    * Create a new packet handler.
