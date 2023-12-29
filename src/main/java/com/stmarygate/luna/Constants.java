@@ -17,8 +17,7 @@ public class Constants {
   public static final String DB_DEV_DB = Objects.requireNonNull(dotenv.get("DB_DEV_DB"));
   public static final String DB_PROD_DB = Objects.requireNonNull(dotenv.get("DB_PROD_DB"));
   public static final int PORT = Integer.parseInt(Objects.requireNonNull(dotenv.get("PORT")));
-  public static final String KEYSTORE_PASSWORD =
-      Objects.requireNonNull(dotenv.get("KEYSTORE_PASSWORD"));
+  public static final String STOREPASS = Objects.requireNonNull(dotenv.get("STOREPASS"));
   public static final String GITHUB_ACTOR = Objects.requireNonNull(dotenv.get("GITHUB_ACTOR"));
   public static final String GITHUB_TOKEN = Objects.requireNonNull(dotenv.get("GITHUB_TOKEN"));
 }

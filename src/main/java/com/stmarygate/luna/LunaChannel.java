@@ -60,7 +60,7 @@ public class LunaChannel extends BaseChannel {
 
   @Override
   public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-    Utils.logChannel(LOGGER, Utils.getRemote(ctx), "User event triggered");
+    Utils.logChannel(LOGGER, Utils.getRemote(ctx), "User event triggered: " + evt.toString());
     super.userEventTriggered(ctx, evt);
   }
 
