@@ -8,7 +8,10 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslHandler;
 import java.io.File;
+import java.security.*;
+import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
 
 public class LunaInitializer extends BaseInitializer {
@@ -29,16 +32,19 @@ public class LunaInitializer extends BaseInitializer {
   @Override
   protected void initChannel(SocketChannel ch) {
     ChannelPipeline pipeline = ch.pipeline();
-
-    // Add packet decoding and encoding handlers
-    pipeline.addLast("decoder", new PacketDecoder());
-    pipeline.addLast("encoder", new PacketEncoder());
-
     try {
       SslContext sslContext =
-          SslContextBuilder.forServer(new File("./ssl/certificate.pem"), new File("./ssl/key.pem"))
+          SslContextBuilder.forServer(new File("./ssl/csr.pem"), new File("./ssl/privkey.pem"))
               .build();
-      pipeline.addLast("ssl", sslContext.newHandler(ch.alloc()));
+
+      SSLEngine engine = sslContext.newEngine(ch.alloc());
+      engine.setUseClientMode(false);
+      engine.setNeedClientAuth(false);
+      // Add engine to pipeline
+      pipeline.addFirst("ssl", new SslHandler(engine));
+      // Add packet decoding and encoding handlers
+      pipeline.addLast("decoder", new PacketDecoder());
+      pipeline.addLast("encoder", new PacketEncoder());
     } catch (SSLException e) {
       throw new RuntimeException(e);
     }
