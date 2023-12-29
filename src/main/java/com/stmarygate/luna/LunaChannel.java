@@ -1,7 +1,7 @@
 package com.stmarygate.luna;
 
 import com.stmarygate.coral.network.BaseChannel;
-import com.stmarygate.coral.network.PacketHandler;
+import com.stmarygate.coral.network.packets.PacketHandler;
 import com.stmarygate.coral.utils.Utils;
 import io.netty.channel.*;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +15,11 @@ import org.slf4j.LoggerFactory;
 public class LunaChannel extends BaseChannel {
   private final Logger LOGGER = LoggerFactory.getLogger(LunaChannel.class);
 
+  /**
+   * Create a new packet handler.
+   *
+   * @param clazz The channel from which the packet handler was created.
+   */
   public LunaChannel(Class<? extends PacketHandler> clazz) {
     super(clazz);
   }

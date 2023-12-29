@@ -1,7 +1,7 @@
 package com.stmarygate.luna.handlers;
 
 import com.stmarygate.coral.network.BaseChannel;
-import com.stmarygate.coral.network.PacketHandler;
+import com.stmarygate.coral.network.packets.PacketHandler;
 import com.stmarygate.coral.network.packets.client.PacketLoginUsingCredentials;
 import com.stmarygate.coral.network.packets.client.PacketVersion;
 import com.stmarygate.coral.network.packets.server.PacketVersionResult;
@@ -27,7 +27,8 @@ public class LunaLoginPacketHandler extends PacketHandler {
    *
    * @param packet The version packet.
    */
-  public void handlePacketVersion(PacketVersion packet) throws Exception {
+  @Override
+  public void handlePacketVersion(PacketVersion packet) {
     // Check if the version is accepted.
     boolean accepted =
         packet.getMajor() == Constants.VERSION_MAJOR
@@ -36,15 +37,19 @@ public class LunaLoginPacketHandler extends PacketHandler {
             && packet.getBuildVersion().equals(Constants.VERSION_BUILD);
 
     // Send the version result packet.
-    this.getChannel()
-        .getSession()
-        .write(
-            new PacketVersionResult(
-                accepted,
-                Constants.VERSION_MAJOR,
-                Constants.VERSION_MINOR,
-                Constants.VERSION_PATCH,
-                Constants.VERSION_BUILD));
+    try {
+      this.getChannel()
+          .getSession()
+          .write(
+              new PacketVersionResult(
+                  accepted,
+                  Constants.VERSION_MAJOR,
+                  Constants.VERSION_MINOR,
+                  Constants.VERSION_PATCH,
+                  Constants.VERSION_BUILD));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   /**
@@ -52,10 +57,6 @@ public class LunaLoginPacketHandler extends PacketHandler {
    *
    * @param packet The login packet using credentials instance.
    */
-  public void handlePacketLoginUsingCredentials(PacketLoginUsingCredentials packet) {
-    LOGGER.info(
-        "LoginPacket received. Username: {}, Password: {}",
-        packet.getUsername(),
-        packet.getPassword());
-  }
+  @Override
+  public void handlePacketLoginUsingCredentials(PacketLoginUsingCredentials packet) {}
 }

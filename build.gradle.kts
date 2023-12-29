@@ -68,8 +68,8 @@ dependencies {
     implementation("org.springframework.security:spring-security-crypto:6.2.1")
     implementation("org.bouncycastle:bcprov-jdk18on:1.77")
 
-    implementation("com.stmarygate:coral:1.0.13")
-    // implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.12.jar"))
+    implementation("com.stmarygate:coral:1.0.14")
+    // implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.14.jar"))
 }
 
 tasks {
