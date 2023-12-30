@@ -1,11 +1,15 @@
 package com.stmarygate.luna.handlers;
 
 import com.stmarygate.coral.network.BaseChannel;
+import com.stmarygate.coral.network.codes.LoginResultCode;
 import com.stmarygate.coral.network.packets.PacketHandler;
 import com.stmarygate.coral.network.packets.client.PacketLoginUsingCredentials;
 import com.stmarygate.coral.network.packets.client.PacketVersion;
+import com.stmarygate.coral.network.packets.server.PacketLoginResult;
 import com.stmarygate.coral.network.packets.server.PacketVersionResult;
 import com.stmarygate.luna.Constants;
+import com.stmarygate.luna.database.DatabaseManager;
+import com.stmarygate.luna.database.entities.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,5 +62,42 @@ public class LunaLoginPacketHandler extends PacketHandler {
    * @param packet The login packet using credentials instance.
    */
   @Override
-  public void handlePacketLoginUsingCredentials(PacketLoginUsingCredentials packet) {}
+  public void handlePacketLoginUsingCredentials(PacketLoginUsingCredentials packet) {
+    String username = packet.getUsername();
+    String password = packet.getPassword();
+
+    Account dbAccount = DatabaseManager.findByUsername(username, Account.class);
+
+    if (dbAccount == null) {
+      try {
+        this.getChannel()
+            .getSession()
+            .write(new PacketLoginResult(false, LoginResultCode.FAILURE_NO_ACCOUNT.getCode(), ""));
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+      return;
+    }
+
+    boolean matching = dbAccount.checkPassword(password);
+    if (matching) {
+      try {
+        this.getChannel()
+            .getSession()
+            .write(new PacketLoginResult(true, LoginResultCode.SUCCESS.getCode(), ""));
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    } else {
+      try {
+        this.getChannel()
+            .getSession()
+            .write(
+                new PacketLoginResult(
+                    false, LoginResultCode.FAILURE_INCORRECT_PASSWORD.getCode(), ""));
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
 }

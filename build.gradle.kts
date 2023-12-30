@@ -61,15 +61,16 @@ dependencies {
     // Database
     implementation("org.postgresql:postgresql:42.7.0")
     implementation("com.zaxxer:HikariCP:5.0.1")
-    implementation("org.hibernate.orm:hibernate-core:6.3.0.CR1")
-    implementation("org.hibernate.orm:hibernate-hikaricp:6.3.0.CR1")
+    implementation("org.hibernate.orm:hibernate-core:6.4.1.Final")
+    implementation("org.hibernate.orm:hibernate-hikaricp:6.4.1.Final")
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
     implementation("org.springframework.security:spring-security-core:6.2.1")
     implementation("org.springframework.security:spring-security-crypto:6.2.1")
     implementation("org.bouncycastle:bcprov-jdk18on:1.77")
 
-    implementation("com.stmarygate:coral:1.0.14")
-    // implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.14.jar"))
+    // implementation("com.stmarygate:coral:1.0.14")
+    implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.15.jar"))
 }
 
 tasks {

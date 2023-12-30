@@ -1,5 +1,6 @@
 package com.stmarygate.luna;
 
+import com.stmarygate.luna.database.DatabaseManager;
 import com.stmarygate.luna.handlers.LunaLoginPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -30,6 +31,7 @@ public class Luna {
 
   /** Start the Luna server thread. */
   private static void startLunaThread() {
+    DatabaseManager.getSessionFactory();
     Thread serverThread = new Thread(Luna::startServer);
     serverThread.setName("LunaServer");
     serverThread.start();

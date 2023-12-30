@@ -11,11 +11,10 @@ public class Constants {
 
   private static final Dotenv dotenv = Dotenv.load();
   public static final String DB_HOST = Objects.requireNonNull(dotenv.get("DB_HOST"));
-  public static final int DB_PORT = Integer.parseInt(Objects.requireNonNull(dotenv.get("DB_PORT")));
+  public static final String PASSWORD_HASH = Objects.requireNonNull(dotenv.get("PASSWORD_SALT"));
   public static final String DB_USER = Objects.requireNonNull(dotenv.get("DB_USER"));
   public static final String DB_PASSWORD = Objects.requireNonNull(dotenv.get("DB_PASSWORD"));
-  public static final String DB_DEV_DB = Objects.requireNonNull(dotenv.get("DB_DEV_DB"));
-  public static final String DB_PROD_DB = Objects.requireNonNull(dotenv.get("DB_PROD_DB"));
+  public static final String DB_NAME = Objects.requireNonNull(dotenv.get("DB_NAME"));
   public static final int PORT = Integer.parseInt(Objects.requireNonNull(dotenv.get("PORT")));
   public static final String STOREPASS = Objects.requireNonNull(dotenv.get("STOREPASS"));
   public static final String GITHUB_ACTOR = Objects.requireNonNull(dotenv.get("GITHUB_ACTOR"));

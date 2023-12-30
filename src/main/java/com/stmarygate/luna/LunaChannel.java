@@ -97,7 +97,7 @@ public class LunaChannel extends BaseChannel {
    */
   @Override
   public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-    Utils.logChannel(LOGGER, Utils.getRemote(ctx), "Received message: " + msg.toString());
+    Utils.logChannel(LOGGER, Utils.getRemote(ctx), "Received packet: " + msg.toString());
     super.channelRead(ctx, msg);
   }
 
