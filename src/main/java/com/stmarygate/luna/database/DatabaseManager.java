@@ -1,6 +1,7 @@
 package com.stmarygate.luna.database;
 
 import com.stmarygate.luna.Constants;
+import com.stmarygate.luna.database.entities.Account;
 import jakarta.persistence.Entity;
 import java.util.HashMap;
 import java.util.List;
@@ -173,6 +174,19 @@ public class DatabaseManager {
     Session session = getSessionFactory().openSession();
     session.beginTransaction();
     List<T> obj = session.createQuery("from " + cls.getSimpleName(), cls).getResultList();
+    session.getTransaction().commit();
+    session.close();
+    return obj;
+  }
+
+  public static Account findByJwt(String jwt, Class<Account> accountClass) {
+    Session session = getSessionFactory().openSession();
+    session.beginTransaction();
+    Account obj =
+        session
+            .createQuery("from " + accountClass.getSimpleName() + " WHERE jwt = :jwt", accountClass)
+            .setParameter("jwt", jwt)
+            .uniqueResult();
     session.getTransaction().commit();
     session.close();
     return obj;

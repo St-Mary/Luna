@@ -59,7 +59,7 @@ public class LunaChannel extends BaseChannel {
   @Override
   public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
     Utils.logChannel(LOGGER, Utils.getRemote(ctx), "Exception caught: " + cause.getMessage());
-    super.exceptionCaught(ctx, cause);
+    cause.printStackTrace();
   }
 
   /**

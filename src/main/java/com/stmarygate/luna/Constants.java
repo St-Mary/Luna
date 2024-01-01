@@ -17,6 +17,7 @@ public class Constants {
   public static final String DB_NAME = Objects.requireNonNull(dotenv.get("DB_NAME"));
   public static final int PORT = Integer.parseInt(Objects.requireNonNull(dotenv.get("PORT")));
   public static final String STOREPASS = Objects.requireNonNull(dotenv.get("STOREPASS"));
+  public static final String JWT_SECRET = Objects.requireNonNull(dotenv.get("JWT_SECRET"));
   public static final String GITHUB_ACTOR = Objects.requireNonNull(dotenv.get("GITHUB_ACTOR"));
   public static final String GITHUB_TOKEN = Objects.requireNonNull(dotenv.get("GITHUB_TOKEN"));
 }

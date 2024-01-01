@@ -1,6 +1,5 @@
 plugins {
     id("java")
-    id("com.github.johnrengelman.shadow") version "7.1.2"
     application
     `maven-publish`
 }
@@ -35,6 +34,13 @@ repositories {
     }
 }
 
+configurations {
+    all {
+        exclude(group = "org.slf4j", module = "slf4j-logback")
+    }
+}
+
+
 sourceSets {
     main {
         resources {
@@ -55,7 +61,7 @@ dependencies {
 
     implementation("org.reflections", "reflections", "0.10.2")
     implementation("io.github.cdimascio", "java-dotenv", "5.1.1")
-    implementation("ch.qos.logback", "logback-classic", "1.2.9")
+    implementation("ch.qos.logback:logback-classic:1.4.14")
     implementation("io.netty:netty-all:4.1.101.Final")
 
     // Database
@@ -65,12 +71,9 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-hikaricp:6.4.1.Final")
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
-    implementation("org.springframework.security:spring-security-core:6.2.1")
-    implementation("org.springframework.security:spring-security-crypto:6.2.1")
-    implementation("org.bouncycastle:bcprov-jdk18on:1.77")
 
-    // implementation("com.stmarygate:coral:1.0.14")
-    implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.15.jar"))
+    implementation("com.stmarygate:coral:1.0.16")
+    // implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.16.jar"))
 }
 
 tasks {
@@ -82,20 +85,9 @@ tasks {
 tasks.jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-    manifest {
-        attributes["Main-Class"] = "com.stmarygate.luna.Luna"
-    }
-
     configurations["compileClasspath"].forEach { file: File ->
         from(zipTree(file.absoluteFile))
     }
-}
-
-tasks.shadowJar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    archiveBaseName.set("luna")
-    archiveClassifier.set("")
-    archiveVersion.set("")
 }
 
 tasks.test {
