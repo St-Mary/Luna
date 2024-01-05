@@ -11,7 +11,7 @@
 <h3 align="center">Luna</h3>
 
   <p align="center">
-    A Game Server for Saint Mary's Gate game.
+    The Game Server of Saint Mary's Gate game.
     <br />
     <a href="https://docs.stmarygate.com"><strong>Explore the docs »</strong></a>
     <br />
@@ -53,7 +53,15 @@
 <!-- ABOUT LUNA -->
 ## About Luna
 
-Nothing to see here
+Luna, the dynamic and immersive game server powered by StMary’s Gate. Luna serves as the heartbeat of our gaming ecosystem, providing a seamless and thrilling experience for players worldwide.
+
+### Key Features:
+
+- SSL Integration
+- Packet Management
+- Password Hashing
+- JWT Authentication
+- PostgreSQL Database
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
