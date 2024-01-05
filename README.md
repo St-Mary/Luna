@@ -5,7 +5,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/St-Mary/Luna">
-    <img src="images/luna_icon.png" alt="Logo" width="80" height="80">
+    <img src="images/luna_icon.png" alt="Logo" height="150">
   </a>
 
 <h3 align="center">Luna</h3>
