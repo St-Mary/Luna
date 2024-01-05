@@ -13,7 +13,7 @@
   <p align="center">
     A Game Server for Saint Mary's Gate game.
     <br />
-    <a href="https://github.com/St-Mary/Luna"><strong>Explore the docs »</strong></a>
+    <a href="https://docs.stmarygate.com"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/St-Mary/Luna/issues">Report Bug</a>
