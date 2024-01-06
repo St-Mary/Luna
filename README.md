@@ -132,7 +132,9 @@ Distributed under the Apache Licence v2.0. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Léa - [Discord](https://discord.com/users/985986599995187270) - [contact@aikoo.me](contact@aikoo.me)
+Léa - [Discord](https://discord.com/users/985986599995187270) - [contact@aikoo.me](mailto:contact@aikoo.me)
+
+Saint Mary's Gate - [contact@stmarygate.com](mailto:contact@stmarygate.com)
 
 Project Link: [https://github.com/St-Mary/Luna](https://github.com/St-Mary/Luna)
 
