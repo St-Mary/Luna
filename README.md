@@ -19,6 +19,8 @@
     <a href="https://github.com/St-Mary/Luna/issues">Report Bug</a>
     ·
     <a href="https://github.com/St-Mary/Luna/issues">Request Feature</a>
+    .
+    <a href="https://status.stmarygate.com">Status</a>
   </p>
 </div>
 
