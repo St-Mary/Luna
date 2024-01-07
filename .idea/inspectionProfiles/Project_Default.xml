@@ -5,6 +5,21 @@
       <option name="METHOD_MATCHER_CONFIG" value="java.util.Formatter,format,java.io.Writer,append,com.google.common.base.Preconditions,checkNotNull,org.hibernate.Session,close,java.io.PrintWriter,printf,java.io.PrintStream,printf,java.util.concurrent.Executors,newFixedThreadPool,java.nio.file.Files,newInputStream" />
     </inspection_tool>
     <inspection_tool class="GrazieInspection" enabled="false" level="GRAMMAR_ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaAttributeMemberSignatureInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaAttributeTypeInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaConfigDomFacetInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JpaDataSourceORMDomInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaDataSourceORMInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaDomInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaEntityGraphsInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaEntityListenerInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaEntityListenerWarningsInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JpaMissingIdInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaModelReferenceInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaORMDomInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaObjectClassSignatureInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaQlInspection" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="JpaQueryApiInspection" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="LanguageDetectionInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">
       <option name="processCode" value="true" />
