@@ -12,7 +12,6 @@ import com.stmarygate.coral.utils.BCryptEncryptionUtils;
 import com.stmarygate.luna.Constants;
 import com.stmarygate.luna.database.DatabaseManager;
 import com.stmarygate.luna.database.entities.Account;
-import java.security.SecureRandom;
 import org.jetbrains.annotations.NotNull;
 
 public class LunaLoginPacketHandler extends PacketHandler {
