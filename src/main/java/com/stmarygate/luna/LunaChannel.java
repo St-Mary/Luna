@@ -54,10 +54,9 @@ public class LunaChannel extends BaseChannel {
    *
    * @param ctx The context which this {@link ChannelHandler} belongs to
    * @param cause The cause of the exception
-   * @throws Exception If something goes wrong
    */
   @Override
-  public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+  public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
     Utils.logChannel(LOGGER, Utils.getRemote(ctx), "Exception caught: " + cause.getMessage());
     cause.printStackTrace();
   }
