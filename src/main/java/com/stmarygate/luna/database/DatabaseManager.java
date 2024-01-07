@@ -13,7 +13,6 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Environment;
-import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +61,6 @@ public class DatabaseManager {
    *
    * @return The settings for the Hibernate session.
    */
-  @NotNull
   private static Map<String, Object> getStringObjectMap() {
     Map<String, Object> settings = new HashMap<>();
     settings.put(Environment.DRIVER, "org.postgresql.Driver");

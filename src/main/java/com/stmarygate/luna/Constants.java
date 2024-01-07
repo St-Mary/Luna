@@ -1,6 +1,8 @@
 package com.stmarygate.luna;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.util.Objects;
 
 public class Constants {
@@ -12,6 +14,8 @@ public class Constants {
   private static final Dotenv dotenv = Dotenv.load();
   public static final String DB_HOST = Objects.requireNonNull(dotenv.get("DB_HOST"));
   public static final String PASSWORD_HASH = Objects.requireNonNull(dotenv.get("PASSWORD_SALT"));
+  public static final SecureRandom PASSWORD_RANDOM =
+      new SecureRandom(Constants.PASSWORD_HASH.getBytes(StandardCharsets.UTF_8));
   public static final String DB_USER = Objects.requireNonNull(dotenv.get("DB_USER"));
   public static final String DB_PASSWORD = Objects.requireNonNull(dotenv.get("DB_PASSWORD"));
   public static final String DB_NAME = Objects.requireNonNull(dotenv.get("DB_NAME"));

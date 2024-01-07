@@ -76,10 +76,7 @@ public class LunaLoginPacketHandler extends PacketHandler {
     }
 
     boolean matching =
-        BCryptEncryptionUtils.check(
-            new SecureRandom(Constants.PASSWORD_HASH.getBytes()),
-            password,
-            dbAccount.getPassword());
+        BCryptEncryptionUtils.check(Constants.PASSWORD_RANDOM, password, dbAccount.getPassword());
 
     int code =
         matching

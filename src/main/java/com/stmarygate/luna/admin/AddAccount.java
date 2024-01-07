@@ -5,15 +5,13 @@ import com.stmarygate.coral.utils.JWTUtils;
 import com.stmarygate.luna.Constants;
 import com.stmarygate.luna.database.DatabaseManager;
 import com.stmarygate.luna.database.entities.Account;
-import java.security.SecureRandom;
 
 public class AddAccount {
   public static void main(String[] args) {
     DatabaseManager.getSessionFactory();
-    SecureRandom random = new SecureRandom(Constants.PASSWORD_HASH.getBytes());
-    String password = BCryptEncryptionUtils.encrypt(random, "admin");
+    String password = BCryptEncryptionUtils.encrypt(Constants.PASSWORD_RANDOM, "admin");
 
-    String randomNumber = String.valueOf(random.nextInt(1000000));
+    String randomNumber = String.valueOf(Constants.PASSWORD_RANDOM.nextInt(1000000));
 
     Account account = new Account();
     account.setUsername("admin" + randomNumber);
