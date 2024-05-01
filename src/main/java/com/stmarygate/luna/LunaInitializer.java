@@ -1,10 +1,11 @@
 package com.stmarygate.luna;
 
 import com.stmarygate.coral.network.BaseChannel;
-import com.stmarygate.coral.network.BaseInitializer;
 import com.stmarygate.coral.network.codec.PacketDecoder;
 import com.stmarygate.coral.network.codec.PacketEncoder;
 import com.stmarygate.coral.utils.SSLContextUtils;
+import com.stmarygate.luna.handlers.LunaLoginPacketHandler;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.ssl.SslHandler;
@@ -17,16 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** Initializes a {@link SocketChannel} by configuring its {@link ChannelPipeline} with necessary */
-public class LunaInitializer extends BaseInitializer {
-  /** The {@link BaseChannel} responsible for handling business logic. */
-  private final BaseChannel channel;
+public class LunaInitializer extends ChannelInitializer<SocketChannel> {
 
   private final Logger LOGGER = LoggerFactory.getLogger(LunaInitializer.class);
 
-  public LunaInitializer(BaseChannel channel) {
-    super(channel);
-    this.channel = channel;
-  }
+  public LunaInitializer() {}
 
   /**
    * Initializes the given {@link SocketChannel} by configuring its {@link ChannelPipeline}. Adds a
@@ -36,6 +32,7 @@ public class LunaInitializer extends BaseInitializer {
    */
   @Override
   protected void initChannel(SocketChannel ch) {
+    LunaChannel channel = new LunaChannel(LunaLoginPacketHandler.class);
     ChannelPipeline pipeline = ch.pipeline();
     try {
       SSLContext sslContext =
@@ -57,6 +54,6 @@ public class LunaInitializer extends BaseInitializer {
     }
 
     // Add the business logic handler
-    pipeline.addLast("handler", this.channel);
+    pipeline.addLast("handler", channel);
   }
 }

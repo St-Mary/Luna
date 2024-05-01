@@ -1,7 +1,6 @@
 package com.stmarygate.luna;
 
 import com.stmarygate.luna.database.DatabaseManager;
-import com.stmarygate.luna.handlers.LunaLoginPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
@@ -16,8 +15,7 @@ public class Luna {
   private static final EventLoopGroup bossGroup = new NioEventLoopGroup();
   private static final EventLoopGroup workerGroup = new NioEventLoopGroup();
   private static final ServerBootstrap bootstrap = new ServerBootstrap();
-  private static final LunaChannel baseChannel = new LunaChannel(LunaLoginPacketHandler.class);
-  private static final LunaInitializer baseInitializer = new LunaInitializer(baseChannel);
+  private static final LunaInitializer baseInitializer = new LunaInitializer();
   private static ChannelFuture future;
 
   /**
