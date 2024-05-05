@@ -2,6 +2,7 @@ plugins {
     id("java")
     application
     `maven-publish`
+    kotlin("jvm")
 }
 
 group = "com.stmarygate"
@@ -69,11 +70,12 @@ dependencies {
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.hibernate.orm:hibernate-core:6.4.1.Final")
     implementation("org.hibernate.orm:hibernate-hikaricp:6.4.1.Final")
-    implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
+    implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.7.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
 
-    implementation("com.stmarygate:coral:1.0.16")
-    // implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.16.jar"))
+    //implementation("com.stmarygate:coral:1.0.17")
+    implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.18.jar"))
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks {
@@ -92,4 +94,7 @@ tasks.jar {
 
 tasks.test {
     useJUnitPlatform()
+}
+kotlin {
+    jvmToolchain(19)
 }

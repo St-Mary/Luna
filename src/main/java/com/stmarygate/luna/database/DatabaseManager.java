@@ -1,7 +1,7 @@
 package com.stmarygate.luna.database;
 
-import com.stmarygate.luna.Constants;
-import com.stmarygate.luna.database.entities.Account;
+import com.stmarygate.coral.entities.Account;
+import com.stmarygate.luna.constants.Constants;
 import jakarta.persistence.Entity;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +38,7 @@ public class DatabaseManager {
         registry = registryBuilder.build();
 
         MetadataSources sources = new MetadataSources(registry);
-        Reflections reflections = new Reflections("com.stmarygate.luna.database.entities");
+        Reflections reflections = new Reflections("com.stmarygate.coral.entities");
         for (Class<?> cls : reflections.getTypesAnnotatedWith(Entity.class)) {
           sources.addAnnotatedClass(cls);
         }

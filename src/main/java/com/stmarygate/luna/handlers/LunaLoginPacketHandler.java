@@ -1,5 +1,6 @@
 package com.stmarygate.luna.handlers;
 
+import com.stmarygate.coral.entities.Account;
 import com.stmarygate.coral.network.BaseChannel;
 import com.stmarygate.coral.network.codes.LoginResultCode;
 import com.stmarygate.coral.network.packets.PacketHandler;
@@ -9,9 +10,8 @@ import com.stmarygate.coral.network.packets.client.PacketVersion;
 import com.stmarygate.coral.network.packets.server.PacketLoginResult;
 import com.stmarygate.coral.network.packets.server.PacketVersionResult;
 import com.stmarygate.coral.utils.BCryptEncryptionUtils;
-import com.stmarygate.luna.Constants;
+import com.stmarygate.luna.constants.Constants;
 import com.stmarygate.luna.database.DatabaseManager;
-import com.stmarygate.luna.database.entities.Account;
 import org.jetbrains.annotations.NotNull;
 
 public class LunaLoginPacketHandler extends PacketHandler {
@@ -70,7 +70,7 @@ public class LunaLoginPacketHandler extends PacketHandler {
     if (dbAccount == null) {
       this.getChannel()
           .sendPacket(
-              new PacketLoginResult(false, LoginResultCode.FAILURE_NO_ACCOUNT.getCode(), ""));
+              new PacketLoginResult(false, null, LoginResultCode.FAILURE_NO_ACCOUNT.getCode(), ""));
       return;
     }
 
@@ -83,10 +83,13 @@ public class LunaLoginPacketHandler extends PacketHandler {
             : LoginResultCode.FAILURE_INCORRECT_PASSWORD.getCode();
 
     String token = matching ? dbAccount.getJwt() : "";
+    Account account = matching ? dbAccount : null;
 
-    this.getChannel().sendPacket(new PacketLoginResult(matching, code, token));
+    this.getChannel().sendPacket(new PacketLoginResult(matching, account, code, token));
 
-    if (matching) this.getChannel().setHandler(new LunaGamePacketHandler(this.getChannel()));
+    if (matching) {
+      this.getChannel().setHandler(new LunaGamePacketHandler(this.getChannel()));
+    }
   }
 
   /**
@@ -104,12 +107,12 @@ public class LunaLoginPacketHandler extends PacketHandler {
     if (dbAccount == null) {
       this.getChannel()
           .sendPacket(
-              new PacketLoginResult(false, LoginResultCode.FAILURE_NO_ACCOUNT.getCode(), ""));
+              new PacketLoginResult(false, null, LoginResultCode.FAILURE_NO_ACCOUNT.getCode(), ""));
       return;
     }
 
-    this.getChannel()
-        .sendPacket(new PacketLoginResult(true, LoginResultCode.SUCCESS.getCode(), jwt));
     this.getChannel().setHandler(new LunaGamePacketHandler(this.getChannel()));
+    this.getChannel()
+        .sendPacket(new PacketLoginResult(true, dbAccount, LoginResultCode.SUCCESS.getCode(), jwt));
   }
 }

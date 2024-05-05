@@ -4,6 +4,8 @@ import com.stmarygate.coral.network.BaseChannel;
 import com.stmarygate.coral.network.codec.PacketDecoder;
 import com.stmarygate.coral.network.codec.PacketEncoder;
 import com.stmarygate.coral.utils.SSLContextUtils;
+import com.stmarygate.luna.codec.LunaPacketEncoder;
+import com.stmarygate.luna.constants.Constants;
 import com.stmarygate.luna.handlers.LunaLoginPacketHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -44,7 +46,7 @@ public class LunaInitializer extends ChannelInitializer<SocketChannel> {
 
       pipeline.addFirst("ssl", new SslHandler(engine));
       pipeline.addLast("decoder", new PacketDecoder());
-      pipeline.addLast("encoder", new PacketEncoder());
+      pipeline.addLast("encoder", new LunaPacketEncoder());
     } catch (SSLException e) {
       LOGGER.error("SSL error: ", e);
     } catch (FileNotFoundException e) {

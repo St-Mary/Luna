@@ -1,9 +1,12 @@
 package com.stmarygate.luna;
 
+import com.stmarygate.coral.entities.Account;
 import com.stmarygate.coral.network.BaseChannel;
 import com.stmarygate.coral.network.packets.PacketHandler;
 import com.stmarygate.coral.utils.Utils;
 import io.netty.channel.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +15,11 @@ import org.slf4j.LoggerFactory;
  * A {@link ChannelHandler} which handles all events for a {@link Channel} and delegates them to the
  * specified {@link PacketHandler}.
  */
+@Getter
+@Setter
 public class LunaChannel extends BaseChannel {
   private final Logger LOGGER = LoggerFactory.getLogger(LunaChannel.class);
+  private Account account;
 
   /**
    * Create a new packet handler.

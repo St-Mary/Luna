@@ -1,4 +1,4 @@
-package com.stmarygate.luna;
+package com.stmarygate.luna.constants;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import java.nio.charset.StandardCharsets;
