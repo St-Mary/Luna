@@ -66,7 +66,7 @@ dependencies {
     implementation("io.netty:netty-all:4.1.101.Final")
 
     // Database
-    implementation("org.postgresql:postgresql:42.7.0")
+    implementation("org.postgresql:postgresql:42.7.3")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.hibernate.orm:hibernate-core:6.4.1.Final")
     implementation("org.hibernate.orm:hibernate-hikaricp:6.4.1.Final")

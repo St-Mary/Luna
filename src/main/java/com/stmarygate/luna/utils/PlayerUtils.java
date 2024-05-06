@@ -15,6 +15,7 @@ public class PlayerUtils {
     player.setSpeed(PlayerConstants.INITIAL_SPEED);
     player.setHealth(PlayerConstants.INITIAL_HEALTH);
     player.setMaxHealth(PlayerConstants.INITIAL_MAX_HEALTH);
+    player.setExpToNextLevel(PlayerConstants.INITIAL_MAX_EXP);
     player.setStamina(PlayerConstants.INITIAL_STAMINA);
 
     return player;
