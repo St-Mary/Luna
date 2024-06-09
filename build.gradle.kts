@@ -73,8 +73,9 @@ dependencies {
     implementation("io.hypersistence:hypersistence-utils-hibernate-63:3.7.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
 
-    //implementation("com.stmarygate:coral:1.0.17")
-    implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build/libs/coral-1.0.18.jar"))
+    implementation("com.stmarygate:coral:1.0.19")
+    // implementation(files("/Users/noelle/Desktop/Developpement/Projets/StMary-Gate/coral/build" +
+    // "/libs/coral-1.0.20.jar"))
     implementation(kotlin("stdlib-jdk8"))
 }
 

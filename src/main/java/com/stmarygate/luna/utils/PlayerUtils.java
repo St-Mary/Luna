@@ -1,7 +1,7 @@
 package com.stmarygate.luna.utils;
 
+import com.stmarygate.coral.constants.PlayerConstants;
 import com.stmarygate.coral.entities.Player;
-import com.stmarygate.luna.constants.PlayerConstants;
 
 public class PlayerUtils {
   public static Player generateNewPlayer() {
