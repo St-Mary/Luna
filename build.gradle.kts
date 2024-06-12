@@ -28,10 +28,6 @@ repositories {
     maven {
         name = "GitHubPackages"
         url = uri("https://maven.pkg.github.com/St-Mary/Coral")
-        credentials {
-            username = System.getProperty("GITHUB_ACTOR").toString()
-            password = System.getProperty("GITHUB_TOKEN").toString()
-        }
     }
 }
 
